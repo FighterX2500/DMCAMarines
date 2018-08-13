@@ -511,7 +511,7 @@
 
 
 /obj/structure/dropship_equipment/electronics/landing_zone_detector
-	name = "\improper LZ detector"
+	name = "LZ detector"
 	desc = "An electronic device linked to the dropship's camera system that lets you observe your landing zone mid-flight."
 	icon_state = "lz_detector"
 	point_cost = 400
@@ -646,7 +646,7 @@
 	SA.detonate_on(impact)
 
 /obj/structure/dropship_equipment/weapon/heavygun
-	name = "\improper GAU-21 30mm cannon"
+	name = "GAU-21 30mm cannon"
 	desc = "A dismounted GAU-21 'Rattler' 30mm rotary cannon. It seems to be missing its feed links and has exposed connection wires. Capable of firing 5200 rounds a minute, feared by many for its power. Earned the nickname 'Rattler' from the vibrations it would cause on dropships in its inital production run."
 	icon_state = "30mm_cannon"
 	firing_sound = 'sound/effects/cannon30.ogg'

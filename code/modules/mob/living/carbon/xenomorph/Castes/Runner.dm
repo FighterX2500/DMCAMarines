@@ -13,8 +13,8 @@
 	plasma_stored = 50
 	plasma_gain = 1
 	plasma_max = 100
-	evolution_threshold = 200
-	upgrade_threshold = 200
+	evolution_threshold = 100
+	upgrade_threshold = 100
 	caste_desc = "A fast, four-legged terror, but weak in sustained combat."
 	speed = -1.8
 	evolves_to = list("Lurker")

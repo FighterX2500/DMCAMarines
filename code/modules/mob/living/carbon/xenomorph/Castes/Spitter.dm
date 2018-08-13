@@ -13,8 +13,8 @@
 	plasma_stored = 150
 	plasma_gain = 20
 	plasma_max = 600
-	evolution_threshold = 250
-	upgrade_threshold = 250
+	evolution_threshold = 140
+	upgrade_threshold = 140
 	spit_delay = 25
 	spit_types = list(/datum/ammo/xeno/toxin/medium, /datum/ammo/xeno/acid/medium)
 	speed = -0.5

@@ -1,9 +1,9 @@
 /obj/item/circuitboard/computer/atmoscontrol
-	name = "\improper Central Atmospherics Computer Circuitboard"
+	name = "Central Atmospherics Computer Circuitboard"
 	build_path = /obj/machinery/computer/atmoscontrol
 
 /obj/machinery/computer/atmoscontrol
-	name = "\improper Central Atmospherics Computer"
+	name = "Central Atmospherics Computer"
 	icon = 'icons/obj/machines/computer.dmi'
 	icon_state = "computer_generic"
 	density = 1

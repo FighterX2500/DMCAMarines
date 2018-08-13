@@ -91,7 +91,7 @@
 //DRINKS
 
 /obj/item/reagent_container/food/drinks/cans/cola
-	name = "\improper Fruit-Beer"
+	name = "Fruit-Beer"
 	desc = "In theory, Mango flavored root beer sounds like a pretty good idea. Weyland Yutani has disproved yet another theory with its latest line of cola. Canned by the Weyland-Yutani Corporation."
 	icon_state = "fruit_beer"
 	center_of_mass = list("x"=16, "y"=10)
@@ -100,7 +100,7 @@
 		reagents.add_reagent("cola", 30)
 
 /obj/item/reagent_container/food/drinks/cans/waterbottle
-	name = "\improper Weyland-Yutani Bottled Spring Water"
+	name = "Weyland-Yutani Bottled Spring Water"
 	desc = "Overpriced 'Spring' water. Bottled by the Weyland-Yutani Corporation."
 	icon_state = "wy_water"
 	center_of_mass = list("x"=15, "y"=8)
@@ -129,7 +129,7 @@
 
 
 /obj/item/reagent_container/food/drinks/cans/space_mountain_wind
-	name = "\improper Mountain Wind"
+	name = "Mountain Wind"
 	desc = "Blows right through you like a space wind."
 	icon_state = "space_mountain_wind"
 	center_of_mass = list("x"=16, "y"=10)
@@ -138,7 +138,7 @@
 		reagents.add_reagent("spacemountainwind", 30)
 
 /obj/item/reagent_container/food/drinks/cans/thirteenloko
-	name = "\improper Thirteen Loko"
+	name = "Thirteen Loko"
 	desc = "The CMO has advised crew members that consumption of Thirteen Loko may result in seizures, blindness, drunkeness, or even death. Please Drink Responsibly."
 	icon_state = "thirteen_loko"
 	center_of_mass = list("x"=16, "y"=8)
@@ -147,7 +147,7 @@
 		reagents.add_reagent("thirteenloko", 30)
 
 /obj/item/reagent_container/food/drinks/cans/dr_gibb
-	name = "\improper Dr. Gibb"
+	name = "Dr. Gibb"
 	desc = "A delicious mixture of 42 different flavors of chemicals that you can't pronoounce."
 	icon_state = "dr_gibb"
 	center_of_mass = list("x"=16, "y"=10)
@@ -156,7 +156,7 @@
 		reagents.add_reagent("dr_gibb", 30)
 
 /obj/item/reagent_container/food/drinks/cans/starkist
-	name = "\improper Star-kist"
+	name = "Star-kist"
 	desc = "The taste of a star in liquid form. And, a bit of tuna...?"
 	icon_state = "starkist"
 	center_of_mass = list("x"=16, "y"=10)
@@ -166,7 +166,7 @@
 		reagents.add_reagent("orangejuice", 15)
 
 /obj/item/reagent_container/food/drinks/cans/space_up
-	name = "\improper Space-Up"
+	name = "Space-Up"
 	desc = "Tastes like a hull breach in your mouth."
 	icon_state = "space-up"
 	center_of_mass = list("x"=16, "y"=10)
@@ -220,7 +220,7 @@
 		reagents.add_reagent("sodawater", 50)
 
 /obj/item/reagent_container/food/drinks/cans/souto
-	name = "\improper Souto Classic"
+	name = "Souto Classic"
 	desc = "The can boldly proclaims it to be tangerine flavored. You can't help but think that's a lie. Canned in Havana."
 	icon_state = "souto_classic"
 	center_of_mass = list("x"=16, "y"=10)
@@ -229,7 +229,7 @@
 		reagents.add_reagent("souto_classic", 50)
 
 /obj/item/reagent_container/food/drinks/cans/souto/diet
-	name = "\improper Diet Souto"
+	name = "Diet Souto"
 	desc = "Now with 0% fruit juice! Canned in Havana"
 	icon_state = "souto_diet_classic"
 	center_of_mass = list("x"=16, "y"=10)
@@ -239,7 +239,7 @@
 		reagents.add_reagent("water", 25)
 
 /obj/item/reagent_container/food/drinks/cans/souto/cherry
-	name = "\improper Cherry Souto"
+	name = "Cherry Souto"
 	desc = "Now with more artificial flavors! Canned in Havana"
 	icon_state = "souto_cherry"
 	center_of_mass = list("x"=16, "y"=10)
@@ -248,7 +248,7 @@
 		reagents.add_reagent("souto_cherry", 50)
 
 /obj/item/reagent_container/food/drinks/cans/souto/cherry/diet
-	name = "\improper Diet Cherry Souto"
+	name = "Diet Cherry Souto"
 	desc = "It's neither diet nor cherry flavored. Canned in Havanna."
 	icon_state = "souto_diet_cherry"
 	center_of_mass = list("x"=16, "y"=10)
@@ -258,7 +258,7 @@
 		reagents.add_reagent("water", 25)
 
 /obj/item/reagent_container/food/drinks/cans/aspen
-	name = "\improper Weyland Yutani Aspen Beer"
+	name = "Weyland Yutani Aspen Beer"
 	desc = "Pretty good when you get past the fact that it tastes like piss. Canned by the Weyland-Yutani Corporation."
 	icon_state = "6_pack_1"
 	center_of_mass = list("x"=16, "y"=10)
@@ -267,7 +267,7 @@
 		reagents.add_reagent("beer", 50)
 
 /obj/item/reagent_container/food/drinks/cans/souto/lime
-	name = "\improper Lime Souto"
+	name = "Lime Souto"
 	desc = "It's not bad. It's not good either, but it's not bad. Canned in Havana."
 	icon_state = "souto_lime"
 	center_of_mass = list("x"=16, "y"=10)
@@ -276,7 +276,7 @@
 		reagents.add_reagent("lemon_lime", 50)
 
 /obj/item/reagent_container/food/drinks/cans/souto/lime/diet
-	name = "\improper Diet Lime Souto"
+	name = "Diet Lime Souto"
 	desc = "Ten kinds of acid, two cups of fake sugar, almost a full tank of carbon dioxide, and about 210 kPs all crammed into an aluminum can. What's not to love? Canned in Havana."
 	icon_state = "souto_diet_lime"
 	center_of_mass = list("x"=16, "y"=10)
@@ -286,7 +286,7 @@
 		reagents.add_reagent("water", 25)
 
 /obj/item/reagent_container/food/drinks/cans/souto/grape
-	name = "\improper Grape Souto"
+	name = "Grape Souto"
 	desc = "An old standby for soda flavors. This, however, tastes like grape flavored cough syrup. Canned in Havana."
 	icon_state = "souto_grape"
 	center_of_mass = list("x"=16, "y"=10)
@@ -295,7 +295,7 @@
 		reagents.add_reagent("grapejuice", 50)
 
 /obj/item/reagent_container/food/drinks/cans/souto/grape/diet
-	name = "\improper Diet Grape Souto"
+	name = "Diet Grape Souto"
 	desc = "You're fairly certain that this is just grape cough syrup and carbonated water. Canned in Havana."
 	icon_state = "souto_diet_grape"
 	center_of_mass = list("x"=16, "y"=10)

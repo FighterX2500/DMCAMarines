@@ -407,7 +407,7 @@
 
 
 /obj/item/reagent_container/syringe/inaprovaline
-	name = "\improper syringe (Inaprovaline)"
+	name = "syringe (Inaprovaline)"
 	desc = "Contains inaprovaline - used to stabilize patients."
 	New()
 		..()
@@ -425,7 +425,7 @@
 		update_icon()
 
 /obj/item/reagent_container/syringe/antiviral
-	name = "\improper syringe (Spaceacillin)"
+	name = "syringe (Spaceacillin)"
 	desc = "Contains antiviral agents. Can also be used to treat infected wounds."
 	New()
 		..()
@@ -464,7 +464,7 @@
 		update_icon()
 
 /obj/item/reagent_container/syringe/robot/inoprovaline
-	name = "\improper syringe (Inoprovaline)"
+	name = "syringe (Inoprovaline)"
 	desc = "Contains inaprovaline - used to stabilize patients."
 	New()
 		..()
@@ -473,7 +473,7 @@
 		update_icon()
 
 /obj/item/reagent_container/syringe/robot/mixed
-	name = "\improper syringe (mixed)"
+	name = "syringe (mixed)"
 	desc = "Contains inaprovaline & anti-toxins."
 	New()
 		..()

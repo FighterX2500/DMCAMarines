@@ -80,8 +80,8 @@ A happy ship is a well-functioning ship."}
 	flag = ROLE_MAINTENANCE_TECH
 	department_flag = ROLEGROUP_MARINE_ENGINEERING
 	faction = "Station"
-	total_positions = 4
-	spawn_positions = 4
+	total_positions = 2
+	spawn_positions = 2
 	scaled = 1
 	supervisors = "the chief engineer"
 	selection_color = "#fff5cc"

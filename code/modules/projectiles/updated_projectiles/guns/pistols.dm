@@ -39,7 +39,7 @@
 //M4A3 PISTOL
 
 /obj/item/weapon/gun/pistol/m4a3
-	name = "\improper M4A3 service pistol"
+	name = "M4A3 service pistol"
 	desc = "An M4A3 Colt Service Pistol, the standard issue sidearm of the Colonial Marines. Uses 9mm pistol rounds."
 	icon_state = "m4a3"
 	item_state = "m4a3"
@@ -60,7 +60,7 @@
 
 
 /obj/item/weapon/gun/pistol/m4a3/custom
-	name = "\improper M4A3 custom pistol"
+	name = "M4A3 custom pistol"
 	desc = "An M4A3 Service Pistol, the standard issue sidearm of the Colonial Marines. Uses 9mm pistol rounds. This one has an ivory-colored grip and has a slide carefully polished yearly by a team of orphan children. Looks like it belongs to a low-ranking officer."
 	icon_state = "m4a3c"
 	item_state = "m4a3c"
@@ -82,7 +82,7 @@
 //M4A3 45 //Inspired by the 1911
 
 /obj/item/weapon/gun/pistol/m1911
-	name = "\improper M4A3 service pistol (.45)"
+	name = "M4A3 service pistol (.45)"
 	desc = "A standard M4A3 chambered in .45. Has a smaller magazine capacity, but packs a better punch."
 	icon_state = "m4a345"
 	item_state = "m4a3"
@@ -99,7 +99,7 @@
 //Beretta 92FS, the gun McClane carries around in Die Hard. Very similar to the service pistol, all around.
 
 /obj/item/weapon/gun/pistol/b92fs
-	name = "\improper Beretta 92FS pistol"
+	name = "Beretta 92FS pistol"
 	desc = "A popular police firearm in the 20th century, often employed by hardboiled cops while confronting terrorists. A classic of its time, chambered in 9mm."
 	icon_state = "b92fs"
 	item_state = "b92fs"
@@ -124,7 +124,7 @@
 
 //Captain's vintage pistol.
 /obj/item/weapon/gun/pistol/heavy
-	name = "\improper vintage Desert Eagle"
+	name = "vintage Desert Eagle"
 	desc = "A bulky 50 caliber pistol with a serious kick, probably taken from some museum somewhere. This one is engraved, 'Peace through superior firepower.'"
 	icon_state = "deagle"
 	item_state = "deagle"
@@ -168,7 +168,7 @@
 //MAUSER MERC PISTOL //Inspired by the Makarov.
 
 /obj/item/weapon/gun/pistol/c99
-	name = "\improper Korovin PK-9 pistol"
+	name = "Korovin PK-9 pistol"
 	desc = "An updated variant of an old eastern design, dating back to from the 20th century. Commonly found among mercenary companies due to its reliability, but also issued to UPP armed forces. Features an integrated silencer, and chambered in the razor small .22 rounds. This one is usually loaded with the more common .22 hollowpoint rounds and appears to be a mercenary version.."
 	icon_state = "pk9"
 	item_state = "pk9"
@@ -225,7 +225,7 @@
 //KT-42 //Inspired by the .44 Auto Mag pistol
 
 /obj/item/weapon/gun/pistol/kt42
-	name = "\improper KT-42 automag"
+	name = "KT-42 automag"
 	desc = "The KT-42 Automag is an archaic but reliable design, going back many decades. There have been many versions and variations, but the 42 is by far the most common. You can't go wrong with this handcannon."
 	icon_state = "kt42"
 	item_state = "kt42"
@@ -288,7 +288,7 @@
 //.45 MARSHALS PISTOL //Inspired by the Browning Hipower
 
 /obj/item/weapon/gun/pistol/highpower
-	name = "\improper Highpower automag"
+	name = "Highpower automag"
 	desc = "A Colonial Marshals issued, powerful semi-automatic pistol chambered in armor piercing 9mm caliber rounds. Used for centuries by law enforcement and criminals alike, recently recreated with this new model."
 	icon_state = "highpower"
 	item_state = "highpower"
@@ -318,7 +318,7 @@
 //VP70 //Not actually the VP70, but it's more or less the same thing. VP70 was the standard sidearm in Aliens though.
 
 /obj/item/weapon/gun/pistol/vp70
-	name = "\improper 88 Mod 4 combat pistol"
+	name = "88 Mod 4 combat pistol"
 	desc = "A powerful sidearm issued mainly to Weyland Yutani response teams, but issued to the USCM in small numbers, based on the original VP70 more than a century ago. Fires 9mm armor piercing rounds and is capable of 3-round burst."
 	icon_state = "88m4"
 	item_state = "88m4"
@@ -345,7 +345,7 @@
 //VP78
 
 /obj/item/weapon/gun/pistol/vp78
-	name = "\improper VP78 pistol"
+	name = "VP78 pistol"
 	desc = "A massive, formidable automatic handgun chambered in 9mm squash-head rounds. Commonly seen in the hands of wealthy Weyland Yutani members."
 	icon_state = "vp78"
 	item_state = "vp78"
@@ -378,7 +378,7 @@ It is a modified Beretta 93R, and can fire three round burst or single fire. Whe
 */
 
 /obj/item/weapon/gun/pistol/auto9
-	name = "\improper Auto-9 pistol"
+	name = "Auto-9 pistol"
 	desc = "An advanced, select-fire machine pistol capable of three round burst. Last seen cleaning up the mean streets of Detroit."
 	icon_state = "auto9"
 	item_state = "auto9"
@@ -406,7 +406,7 @@ It is a modified Beretta 93R, and can fire three round burst or single fire. Whe
 //The first rule of monkey pistol is we don't talk about monkey pistol.
 
 /obj/item/weapon/gun/pistol/chimp
-	name = "\improper CHIMP70 pistol"
+	name = "CHIMP70 pistol"
 	desc = "A powerful sidearm issued mainly to highly trained elite assassin necro-cyber-agents."
 	icon_state = "c70"
 	item_state = "c70"

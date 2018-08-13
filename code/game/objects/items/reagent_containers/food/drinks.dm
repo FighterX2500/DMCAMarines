@@ -200,7 +200,7 @@
 		reagents.add_reagent("soymilk", 50)
 
 /obj/item/reagent_container/food/drinks/coffee
-	name = "\improper Coffee"
+	name = "Coffee"
 	desc = "Careful, the beverage you're about to enjoy is extremely hot."
 	icon_state = "coffee"
 	center_of_mass = list("x"=15, "y"=10)
@@ -210,7 +210,7 @@
 		reagents.add_reagent("water", 20)
 
 /obj/item/reagent_container/food/drinks/tea
-	name = "\improper Duke Purple Tea"
+	name = "Duke Purple Tea"
 	desc = "An insult to Duke Purple is an insult to the Space Queen! Any proper gentleman will fight you, if you sully this tea."
 	icon_state = "teacup"
 	item_state = "coffee"
@@ -229,7 +229,7 @@
 		reagents.add_reagent("ice", 30)
 
 /obj/item/reagent_container/food/drinks/h_chocolate
-	name = "\improper Dutch hot coco"
+	name = "Dutch hot coco"
 	desc = "Made in Space South America."
 	icon_state = "hot_coco"
 	item_state = "coffee"
@@ -285,7 +285,7 @@
 	center_of_mass = list("x"=17, "y"=8)
 
 /obj/item/reagent_container/food/drinks/flask/marine
-	name = "\improper USCM flask"
+	name = "USCM flask"
 	desc = "A metal flask embossed with the USCM logo and probably filled with a slurry of water, motor oil, and medicinal alcohol."
 	icon_state = "flask_uscm"
 	volume = 60

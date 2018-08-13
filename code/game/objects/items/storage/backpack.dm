@@ -282,7 +282,7 @@
 //=======================================================================\\
 
 /obj/item/storage/backpack/marine
-	name = "\improper lightweight IMP backpack"
+	name = "lightweight IMP backpack"
 	desc = "The standard-issue pack of the USCM forces. Designed to slug gear into the battlefield."
 	icon_state = "marinepack"
 	var/has_gamemode_skin = TRUE
@@ -293,17 +293,17 @@
 		..()
 
 /obj/item/storage/backpack/marine/medic
-	name = "\improper USCM medic backpack"
+	name = "USCM medic backpack"
 	desc = "The standard-issue backpack worn by USCM medics."
 	icon_state = "marinepackm"
 
 /obj/item/storage/backpack/marine/tech
-	name = "\improper USCM technician backpack"
+	name = "USCM technician backpack"
 	desc = "The standard-issue backpack worn by USCM technicians."
 	icon_state = "marinepackt"
 
 /obj/item/storage/backpack/marine/satchel
-	name = "\improper USCM satchel"
+	name = "USCM satchel"
 	desc = "A heavy-duty satchel carried by some USCM soldiers and support personnel."
 	icon_state = "marinesat"
 	worn_accessible = TRUE
@@ -312,17 +312,17 @@
 
 
 /obj/item/storage/backpack/marine/satchel/medic
-	name = "\improper USCM medic satchel"
+	name = "USCM medic satchel"
 	desc = "A heavy-duty satchel carried by some USCM medics."
 	icon_state = "marinesatm"
 
 /obj/item/storage/backpack/marine/satchel/tech
-	name = "\improper USCM technician satchel"
+	name = "USCM technician satchel"
 	desc = "A heavy-duty satchel carried by some USCM technicians."
 	icon_state = "marinesatt"
 
 /obj/item/storage/backpack/marine/smock
-	name = "\improper M3 sniper's smock"
+	name = "M3 sniper's smock"
 	desc = "A specially designed smock with pockets for all your sniper needs."
 	icon_state = "smock"
 	worn_accessible = TRUE
@@ -331,7 +331,7 @@
 #define SCOUT_CLOAK_TIMER 50
 // Scout Cloak
 /obj/item/storage/backpack/marine/satchel/scout_cloak
-	name = "\improper M68 Thermal Cloak"
+	name = "M68 Thermal Cloak"
 	desc = "The lightweight thermal dampeners and optical camouflage provided by this cloak are weaker than those found in standard USCM ghillie suits. In exchange, the cloak can be worn over combat armor and offers the wearer high manueverability and adaptability to many environments."
 	icon_state = "scout_cloak"
 	uniform_restricted = list(/obj/item/clothing/suit/storage/marine/M3S, /obj/item/clothing/head/helmet/marine/scout) //Need to wear Scout armor and helmet to equip this.
@@ -438,7 +438,7 @@
 // Welder Backpacks //
 
 /obj/item/storage/backpack/marine/engineerpack
-	name = "\improper USCM technician welderpack"
+	name = "USCM technician welderpack"
 	desc = "A specialized backpack worn by USCM technicians. It carries a fueltank for quick welder refueling and use,"
 	icon_state = "engineerpack"
 	var/max_fuel = 260
@@ -497,7 +497,7 @@
 
 // Pyrotechnician Spec backpack fuel tank
 /obj/item/storage/backpack/marine/engineerpack/flamethrower
-	name = "\improper USCM Pyrotechnician fueltank"
+	name = "USCM Pyrotechnician fueltank"
 	desc = "A specialized fueltank worn by USCM Pyrotechnicians for use with the M240-T incinerator unit. A small general storage compartment is installed."
 	icon_state = "flamethrower_tank"
 	max_fuel = 500
@@ -516,7 +516,7 @@
 	. = ..()
 
 /obj/item/storage/backpack/lightpack
-	name = "\improper lightweight combat pack"
+	name = "lightweight combat pack"
 	desc = "A small lightweight pack for expeditions and short-range operations."
 	icon_state = "ERT_satchel"
 	worn_accessible = TRUE

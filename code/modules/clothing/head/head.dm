@@ -15,7 +15,7 @@
 
 
 /obj/item/clothing/head/cmbandana
-	name = "\improper USCM bandana"
+	name = "USCM bandana"
 	desc = "Typically worn by heavy-weapon operators, mercenaries and scouts, the bandana serves as a lightweight and comfortable hat. Comes in two stylish colors."
 	icon = 'icons/obj/clothing/cm_hats.dmi'
 	sprite_sheet_id = 1
@@ -31,7 +31,7 @@
 
 
 /obj/item/clothing/head/beanie
-	name = "\improper USCM beanie"
+	name = "USCM beanie"
 	desc = "A standard military beanie, often worn by non-combat military personnel and support crews, though the occasional one finds its way to the front line. Popular due to being comfortable and snug."
 	icon = 'icons/obj/clothing/cm_hats.dmi'
 	sprite_sheet_id = 1
@@ -40,7 +40,7 @@
 
 
 /obj/item/clothing/head/cmberet
-	name = "\improper USCM beret"
+	name = "USCM beret"
 	desc = "A hat typically worn by the field-officers of the USCM. Occasionally they find their way down the ranks into the hands of squad-leaders and decorated grunts."
 	icon = 'icons/obj/clothing/cm_hats.dmi'
 	sprite_sheet_id = 1
@@ -61,12 +61,12 @@
 	icon_state = "beretred"
 
 /obj/item/clothing/head/cmberet/wo
-	name = "\improper USCM chief MP beret"
+	name = "USCM chief MP beret"
 	desc = "A beret with the lieutenant insignia emblazoned on it. It shines with the glow of corrupt authority and a smudge of doughnut."
 	icon_state = "beretwo"
 
 /obj/item/clothing/head/headband
-	name = "\improper USCM headband"
+	name = "USCM headband"
 	desc = "A rag typically worn by the less-orthodox weapons operators in the USCM. While it offers no protection, it is certainly comfortable to wear compared to the standard helmet. Comes in two stylish colors."
 	icon = 'icons/obj/clothing/cm_hats.dmi'
 	sprite_sheet_id = 1
@@ -77,7 +77,7 @@
 	..()
 	switch(icon_state)
 		if("ushanka") //Weird case, since the item basically transforms into another item.
-			name = "\improper USCM ushanka"
+			name = "USCM ushanka"
 			desc = "Worn during cold operations by idiots."
 			flags_cold_protection = HEAD
 			min_cold_protection_temperature = ICE_PLANET_min_cold_protection_temperature
@@ -95,14 +95,14 @@
 	sprite_sheet_id = 0
 
 /obj/item/clothing/head/headset
-	name = "\improper USCM headset"
+	name = "USCM headset"
 	desc = "A headset typically found in use by radio-operators and officers. This one appears to be malfunctioning."
 	icon_state = "headset"
 	icon = 'icons/obj/clothing/cm_hats.dmi'
 	sprite_sheet_id = 1
 
 /obj/item/clothing/head/cmcap
-	name = "\improper USCM cap"
+	name = "USCM cap"
 	desc = "A casual cap occasionally worn by Squad-leaders and Combat-Engineers. While it has limited combat functionality, some prefer to wear it instead of the standard issue helmet."
 	icon_state = "cap"
 	icon = 'icons/obj/clothing/cm_hats.dmi'
@@ -133,7 +133,7 @@
 	update_clothing_icon()
 
 /obj/item/clothing/head/cmcap/ro
-	name = "\improper USCM officer cap"
+	name = "USCM officer cap"
 	desc = "A hat usually worn by officers in the USCM. While it has limited combat functionality, some prefer to wear it instead of the standard issue helmet."
 	icon_state = "rocap"
 
@@ -143,12 +143,12 @@
 
 
 /obj/item/clothing/head/cmcap/req
-	name = "\improper USCM requisition cap"
+	name = "USCM requisition cap"
 	desc = "It's a fancy hat for a not-so-fancy military supply clerk."
 	icon_state = "cargocap"
 
 /obj/item/clothing/head/cmo
-	name = "\improper Chief Medical hat"
+	name = "Chief Medical hat"
 	desc = "A somewhat fancy hat, typically worn by those who wish to command medical respect."
 	icon_state = "cmohat"
 
@@ -224,7 +224,7 @@
 
 
 /obj/item/clothing/head/uppcap
-	name = "\improper armored UPP cap"
+	name = "armored UPP cap"
 	desc = "Standard UPP head gear for covert operations and low-ranking officers alike. Sells for high prices on the black market due to their rarity."
 	icon = 'icons/obj/clothing/cm_hats.dmi'
 	icon_state = "upp_cap"
@@ -239,11 +239,11 @@
 	flags_inv_hide = HIDEEARS
 
 /obj/item/clothing/head/uppcap/beret
-	name = "\improper armored UPP beret"
+	name = "armored UPP beret"
 	icon_state = "upp_beret"
 
 /obj/item/clothing/head/frelancer
-	name = "\improper armored Freelancer cap"
+	name = "armored Freelancer cap"
 	desc = "A sturdy freelancer's cap. More protective than it seems."
 	icon = 'icons/obj/clothing/cm_hats.dmi'
 	sprite_sheet_id = 1
@@ -257,11 +257,11 @@
 	flags_inv_hide = HIDEEARS
 
 /obj/item/clothing/head/frelancer/beret
-	name = "\improper armored Freelancer beret"
+	name = "armored Freelancer beret"
 	icon_state = "freelancer_beret"
 
 /obj/item/clothing/head/militia
-	name = "\improper armored militia cowl"
+	name = "armored militia cowl"
 	desc = "A large hood in service with some militias, meant for obscurity on the frontier. Offers some head protection due to the study fibers utilized in production."
 	icon = 'icons/obj/clothing/cm_hats.dmi'
 	sprite_sheet_id = 1
@@ -275,7 +275,7 @@
 	flags_inv_hide = HIDEEARS|HIDETOPHAIR
 
 /obj/item/clothing/head/admiral
-	name = "\improper armored Admiral cap"
+	name = "armored Admiral cap"
 	desc = "A sturdy admiral's cap. More protective than it seems. Please don't ditch this for a helmet like a punk."
 	icon_state = "admiral_helmet"
 	siemens_coefficient = 2.0

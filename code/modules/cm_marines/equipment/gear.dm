@@ -13,7 +13,7 @@
 //MARINE SNIPER TARPS
 
 /obj/item/bodybag/tarp
-	name = "\improper V1 thermal-dapening tarp (folded)"
+	name = "V1 thermal-dapening tarp (folded)"
 	desc = "A tarp carried by USCM Snipers. When laying underneath the tarp, the sniper is almost indistinguishable from the landscape if utilized correctly. The tarp contains a thermal-dampening weave to hide the wearer's heat signatures, optical camoflauge, and smell dampening."
 	icon = 'icons/obj/bodybag.dmi'
 	icon_state = "jungletarp_folded"
@@ -28,7 +28,7 @@
 	unfolded_path = /obj/structure/closet/bodybag/tarp/snow
 
 /obj/structure/closet/bodybag/tarp
-	name = "\improper V1 thermal-dampening tarp"
+	name = "V1 thermal-dampening tarp"
 	desc = "A tarp carried by USCM Snipers. When laying underneath the tarp, the sniper is almost indistinguishable from the landscape if utilized correctly. The tarp contains a thermal-dampening weave to hide the wearer's heat signatures, optical camouflage, and smell dampening."
 	icon = 'icons/obj/bodybag.dmi'
 	icon_state = "jungletarp_closed"
@@ -57,7 +57,7 @@
 		return
 
 /obj/structure/broken_apc
-	name = "\improper M577 armored personnel carrier"
+	name = "M577 armored personnel carrier"
 	desc = "A large, armored behemoth capable of ferrying marines around. \nThis one is sitting nonfunctional."
 	anchored = 1
 	opacity = 1
@@ -67,7 +67,7 @@
 
 
 /obj/item/storage/box/uscm_mre
-	name = "\improper USCM meal ready to eat"
+	name = "USCM meal ready to eat"
 	desc = "<B>Instructions:</B> Extract food using maximum firepower. Eat.\n\nOn the box is a picture of a shouting Squad Leader. \n\"YOU WILL EAT YOUR NUTRIENT GOO AND YOU WILL ENJOY IT, MAGGOT.\""
 	icon_state = "mre1"
 
@@ -108,13 +108,13 @@
 
 
 /obj/item/reagent_container/food/snacks/mre_pack
-	name = "\improper generic MRE pack"
+	name = "generic MRE pack"
 	//trash = /obj/item/trash/USCMtray
 	trash = null
 	w_class = 2
 
 /obj/item/reagent_container/food/snacks/mre_pack/meal1
-	name = "\improper USCM Prepared Meal (cornbread)"
+	name = "USCM Prepared Meal (cornbread)"
 	desc = "A tray of standard USCM food. Stale cornbread, tomato paste and some green goop fill this tray."
 	icon_state = "MREa"
 	filling_color = "#ED1169"
@@ -125,7 +125,7 @@
 		bitesize = 3
 
 /obj/item/reagent_container/food/snacks/mre_pack/meal2
-	name = "\improper USCM Prepared Meal (pork)"
+	name = "USCM Prepared Meal (pork)"
 	desc = "A tray of standard USCM food. Partially raw pork, goopy corn and some water mashed potatos fill this tray."
 	icon_state = "MREb"
 
@@ -135,7 +135,7 @@
 		bitesize = 2
 
 /obj/item/reagent_container/food/snacks/mre_pack/meal3
-	name = "\improper USCM Prepared Meal (pasta)"
+	name = "USCM Prepared Meal (pasta)"
 	desc = "A tray of standard USCM food. Overcooked spaghetti, waterlogged carrots and two french fries fill this tray."
 	icon_state = "MREc"
 
@@ -145,7 +145,7 @@
 		bitesize = 3
 
 /obj/item/reagent_container/food/snacks/mre_pack/meal4
-	name = "\improper USCM Prepared Meal (pizza)"
+	name = "USCM Prepared Meal (pizza)"
 	desc = "A tray of standard USCM food. Cold pizza, wet greenbeans and a shitty egg fill this tray. Get something other than pizza, lardass."
 	icon_state = "MREd"
 
@@ -155,7 +155,7 @@
 		bitesize = 1
 
 /obj/item/reagent_container/food/snacks/mre_pack/meal5
-	name = "\improper USCM Prepared Meal (chicken)"
+	name = "USCM Prepared Meal (chicken)"
 	desc = "A tray of standard USCM food. Moist chicken, dry rice and a mildly depressed piece of broccoli fill this tray."
 	icon_state = "MREe"
 
@@ -165,7 +165,7 @@
 		bitesize = 3
 
 /obj/item/reagent_container/food/snacks/mre_pack/meal6
-	name = "\improper USCM Prepared Meal (tofu)"
+	name = "USCM Prepared Meal (tofu)"
 	desc = "The USCM doesn't serve tofu you grass sucking hippie. The flag signifies your defeat."
 	icon_state = "MREf"
 
@@ -175,7 +175,7 @@
 		bitesize = 1
 
 /obj/item/reagent_container/food/snacks/mre_pack/xmas1
-	name = "\improper Xmas Prepared Meal:sugar cookies"
+	name = "Xmas Prepared Meal:sugar cookies"
 	desc = "Delicious Sugar Cookies"
 	icon_state = "mreCookies"
 
@@ -185,7 +185,7 @@
 		bitesize = 2
 
 /obj/item/reagent_container/food/snacks/mre_pack/xmas2
-	name = "\improper Xmas Prepared Meal:gingerbread cookie"
+	name = "Xmas Prepared Meal:gingerbread cookie"
 	desc = "A cookie without a soul."
 	icon_state = "mreGingerbread"
 
@@ -195,7 +195,7 @@
 		bitesize = 2
 
 /obj/item/reagent_container/food/snacks/mre_pack/xmas3
-	name = "\improper Xmas Prepared Meal:fruitcake"
+	name = "Xmas Prepared Meal:fruitcake"
 	desc = "Also known as ''the Commander''."
 	icon_state = "mreFruitcake"
 
@@ -237,7 +237,7 @@
 
 
 /obj/item/storage/box/wy_mre
-	name = "\improper Weyland-Yutani brand MRE"
+	name = "Weyland-Yutani brand MRE"
 	desc = "A prepackaged, long-lasting food box from Weyland Yutani Industries.\nOn the box is the Weyland Yutani logo, with a slogan surrounding it: \n<b>WEYLAND-YUTANI. BUILDING BETTER LUNCHES</b>"
 	icon_state = "mre2"
 	can_hold = list("/obj/item/reagent_container/food/snacks")

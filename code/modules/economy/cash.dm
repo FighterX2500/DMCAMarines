@@ -154,7 +154,7 @@ proc/spawn_money(var/sum, spawnloc, mob/living/carbon/human/human_user as mob)
 	return
 
 /obj/item/spacecash/ewallet
-	name = "\improper Weyland Yutani cash card"
+	name = "Weyland Yutani cash card"
 	icon_state = "efundcard"
 	desc = "A Weyland Yutani backed cash card that holds an amount of money."
 	var/owner_name = "" //So the ATM can set it so the EFTPOS can put a valid name on transactions.

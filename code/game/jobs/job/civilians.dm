@@ -86,7 +86,7 @@ Make sure that the doctors and nurses are doing their jobs and keeping the marin
 				WEAR_BODY = /obj/item/clothing/under/rank/medical/green,
 				WEAR_FEET = /obj/item/clothing/shoes/white,
 				WEAR_HANDS = /obj/item/clothing/gloves/latex,
-				//WEAR_JACKET = /obj/item/clothing/suit/storage/labcoat,
+				WEAR_JACKET = /obj/item/clothing/suit/storage/labcoat,
 				WEAR_EYES = /obj/item/clothing/glasses/hud/health,
 				WEAR_HEAD = /obj/item/clothing/head/surgery/green,
 				WEAR_BACK = /obj/item/storage/backpack/marine/satchel,

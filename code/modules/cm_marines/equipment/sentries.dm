@@ -13,7 +13,7 @@
 	gun_type = null
 
 /obj/item/storage/box/sentry
-	name = "\improper UA 571-C sentry crate"
+	name = "UA 571-C sentry crate"
 	desc = "A large case containing all you need to set up an automated sentry, minus the tools."
 	icon = 'icons/Marine/marine-weapons.dmi'
 	icon_state = "sentry_case"
@@ -34,7 +34,7 @@
 			new /obj/item/ammo_magazine/sentry(src)
 
 /obj/machinery/marine_turret_frame
-	name = "\improper UA 571-C turret frame"
+	name = "UA 571-C turret frame"
 	desc = "An unfinished turret frame. It requires wrenching, cable coil, a turret piece, a sensor, and metal plating."
 	icon = 'icons/Marine/turret.dmi'
 	icon_state = "sentry_base"
@@ -242,7 +242,7 @@
 	return ..() //Just do normal stuff.
 
 /obj/item/device/turret_sensor
-	name = "\improper UA 571-C turret sensor"
+	name = "UA 571-C turret sensor"
 	desc = "An AI control and locking sensor for an automated sentry. This must be installed on the final product for it to work."
 	unacidable = 1
 	w_class = 1
@@ -250,7 +250,7 @@
 	icon_state = "sentry_sensor"
 
 /obj/item/device/turret_top
-	name = "\improper UA 571-C turret"
+	name = "UA 571-C turret"
 	desc = "The turret part of an automated sentry turret. This must be installed on a turret frame and welded together for it to do anything."
 	unacidable = 1
 	w_class = 5
@@ -258,7 +258,7 @@
 	icon_state = "sentry_head"
 
 /obj/machinery/marine_turret
-	name = "\improper UA 571-C sentry gun"
+	name = "UA 571-C sentry gun"
 	desc = "A deployable, semi-automated turret with AI targeting capabilities. Armed with an M30 Autocannon and a 500-round drum magazine."
 	icon = 'icons/Marine/turret.dmi'
 	icon_state = "sentry_off"

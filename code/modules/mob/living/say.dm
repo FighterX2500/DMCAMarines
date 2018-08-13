@@ -34,17 +34,40 @@ var/list/department_radio_keys = list(
 	  ":P" = "MP",			"#P" = "MP",			".P" = "MP",
 	  ":U" = "Req",			"#U" = "Req",			".U" = "Req",
 
-	  //kinda localization -- rastaf0
-	  //same keys as above, but on russian keyboard layout. This file uses cp1251 as encoding.
-	  ":ï¿½" = "right ear",	"#ï¿½" = "right ear",		".ï¿½" = "right ear",
-	  ":ï¿½" = "left ear",	"#ï¿½" = "left ear",		".ï¿½" = "left ear",
-	  ":ï¿½" = "intercom",	"#ï¿½" = "intercom",		".ï¿½" = "intercom",
-	  ":ï¿½" = "department",	"#ï¿½" = "department",	".ï¿½" = "department",
-	  ":ï¿½" = "Command",		"#ï¿½" = "Command",		".ï¿½" = "Command",
-	  ":ï¿½" = "Medical",		"#ï¿½" = "Medical",		".ï¿½" = "Medical",
-	  ":ï¿½" = "Engineering",	"#ï¿½" = "Engineering",	".ï¿½" = "Engineering",
-	  ":ï¿½" = "whisper",		"#ï¿½" = "whisper",		".ï¿½" = "whisper",
-	  ":ï¿½" = "Syndicate",	"#ï¿½" = "Syndicate",		".ï¿½" = "Syndicate",
+	  ":ø" = "intercom",	"#ø" = "intercom",		".ø" = "intercom",
+	  ":ð" = "department",	"#ð" = "department",	".ð" = "department",
+	  ":+" = "special",		"#+" = "special",		".+" = "special", //activate radio-specific special functions
+	  ":ö" = "whisper",		"#ö" = "whisper",		".ö" = "whisper",
+	  ":å" = "Syndicate",	"#å" = "Syndicate",		".å" = "Syndicate",
+
+	  ":ì" = "MedSci",		"#ì" = "MedSci",		".ì" = "MedSci",
+	  ":ó" = "Engi", 		"#ó" = "Engi",			".ó" = "Engi",
+	  ":ÿ" = "Almayer",		"#ÿ" = "Almayer",		".ÿ" = "Almayer",
+	  ":ì" = "Command",		"#ì" = "Command",		".ì" = "Command",
+	  ":é" = "Alpha",		"#é" = "Alpha",			".é" = "Alpha",
+	  ":è" = "Bravo",		"#è" = "Bravo",			".è" = "Bravo",
+	  ":ñ" = "Charlie",		"#ñ" = "Charlie",		".ñ" = "Charlie",
+	  ":â" = "Delta",		"#â" = "Delta",			".â" = "Delta",
+	  ":ç" = "MP",			"#ç" = "MP",			".ç" = "MP",
+	  ":ã" = "Req",			"#ã" = "Req",			".ã" = "Req",
+
+	  ":Ê" = "right ear",	"#Ê" = "right ear",		".Ê" = "right ear",
+	  ":Ä" = "left ear",	"#Ä" = "left ear",		".Ä" = "left ear",
+	  ":Ø" = "intercom",	"#Ø" = "intercom",		".Ø" = "intercom",
+	  ":Ð" = "department",	"#Ð" = "department",	".Ð" = "department",
+	  ":Ö" = "whisper",		"#Ö" = "whisper",		".Ö" = "whisper",
+	  ":Å" = "Syndicate",	"#Å" = "Syndicate",		".Å" = "Syndicate",
+
+	  ":Ì" = "MedSci",		"#Ì" = "MedSci",		".Ì" = "MedSci",
+	  ":Ó" = "Engi", 		"#Ó" = "Engi",			".Ó" = "Engi",
+	  ":ß" = "Almayer",		"#ß" = "Almayer",		".ß" = "Almayer",
+	  ":Ì" = "Command",		"#Ì" = "Command",		".Ì" = "Command",
+	  ":É" = "Alpha",		"#É" = "Alpha",			".É" = "Alpha",
+	  ":È" = "Bravo",		"#È" = "Bravo",			".È" = "Bravo",
+	  ":Ñ" = "Charlie",		"#Ñ" = "Charlie",		".Ñ" = "Charlie",
+	  ":Â" = "Delta",		"#Â" = "Delta",			".Â" = "Delta",
+	  ":Ç" = "MP",			"#Ç" = "MP",			".Ç" = "MP",
+	  ":Ã" = "Req",			"#Ã" = "Req",			".Ã" = "Req",
 )
 
 /mob/living/proc/binarycheck()

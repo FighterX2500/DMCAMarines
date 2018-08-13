@@ -18,7 +18,7 @@
 //rocket launchers
 
 /obj/item/ammo_magazine/rocket/nobugs
-	name = "\improper BUG ROCKER rocket tube"
+	name = "BUG ROCKER rocket tube"
 	desc = "Where did this come from? <b>NO BUGS</b>"
 	default_ammo = /datum/ammo/rocket/nobugs
 	caliber = "toy rocket"

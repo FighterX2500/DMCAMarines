@@ -5,8 +5,8 @@
 	department_flag = ROLEGROUP_MARINE_SQUAD_MARINES
 	supervisors = "the acting squad leader"
 	selection_color = "#ffeeee"
-	total_positions = 8
-	spawn_positions = 8
+	total_positions = 4
+	spawn_positions = 4
 	minimal_player_age = 3
 	skills_type = /datum/skills/pfc
 	idtype = /obj/item/card/id/dogtag
@@ -26,8 +26,8 @@
 	comm_title = "SL"
 	paygrade = "E6"
 	flag = ROLE_MARINE_LEADER
-	total_positions = 4
-	spawn_positions = 4
+	total_positions = 2
+	spawn_positions = 2
 	supervisors = "the acting commander"
 	access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_LEADER, ACCESS_MARINE_DROPSHIP)
 	minimal_access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_LEADER, ACCESS_MARINE_DROPSHIP)
@@ -51,8 +51,8 @@ You are also in charge of communicating with command and letting them know about
 	title = "Squad Engineer"
 	comm_title = "Eng"
 	paygrade = "E4"
-	total_positions = 12
-	spawn_positions = 12
+	total_positions = 6
+	spawn_positions = 6
 	flag = ROLE_MARINE_ENGINEER
 	access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_ENGPREP, ACCESS_CIVILIAN_ENGINEERING)
 	minimal_access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_ENGPREP, ACCESS_CIVILIAN_ENGINEERING)
@@ -83,8 +83,8 @@ Your squaddies will look to you when it comes to construction in the field of ba
 	title = "Squad Medic"
 	comm_title = "Med"
 	paygrade = "E4"
-	total_positions = 16
-	spawn_positions = 16
+	total_positions = 8
+	spawn_positions = 8
 	flag = ROLE_MARINE_MEDIC
 	access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_MEDPREP, ACCESS_MARINE_MEDBAY)
 	minimal_access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_MEDPREP, ACCESS_MARINE_MEDBAY)
@@ -116,8 +116,8 @@ You may not be a fully-fledged doctor, but you stand between life and death when
 	comm_title = "Spc"
 	paygrade = "E5"
 	flag = ROLE_MARINE_SPECIALIST
-	total_positions = 4
-	spawn_positions = 4
+	total_positions = 2
+	spawn_positions = 2
 	access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_SPECPREP)
 	minimal_access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_SPECPREP)
 	minimal_player_age = 7
@@ -145,8 +145,8 @@ You can serve a variety of roles, so choose carefully."}
 	comm_title = "LCpl"
 	paygrade = "E3"
 	flag = ROLE_MARINE_SMARTGUN
-	total_positions = 4
-	spawn_positions = 4
+	total_positions = 2
+	spawn_positions = 2
 	access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_SMARTPREP)
 	minimal_access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_SMARTPREP)
 	minimal_player_age = 7

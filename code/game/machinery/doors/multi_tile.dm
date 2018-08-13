@@ -75,7 +75,7 @@
 // ALMAYER
 
 /obj/machinery/door/airlock/multi_tile/almayer
-	name = "\improper Airlock"
+	name = "Airlock"
 	icon = 'icons/obj/doors/almayer/comdoor.dmi' //Tiles with is here FOR SAFETY PURPOSES
 	openspeed = 4 //shorter open animation.
 	tiles_with = list(
@@ -92,13 +92,13 @@
 
 
 /obj/machinery/door/airlock/multi_tile/almayer/generic
-	name = "\improper Airlock"
+	name = "Airlock"
 	icon = 'icons/obj/doors/almayer/2x1generic.dmi'
 	opacity = 0
 	glass = 1
 
 /obj/machinery/door/airlock/multi_tile/almayer/medidoor
-	name = "\improper Medical Airlock"
+	name = "Medical Airlock"
 	icon = 'icons/obj/doors/almayer/2x1medidoor.dmi'
 	opacity = 0
 	glass = 1
@@ -106,7 +106,7 @@
 	req_one_access_txt =  "2;8;19"
 
 /obj/machinery/door/airlock/multi_tile/almayer/comdoor
-	name = "\improper Command Airlock"
+	name = "Command Airlock"
 	icon = 'icons/obj/doors/almayer/2x1comdoor.dmi'
 	opacity = 0
 	glass = 1
@@ -190,11 +190,11 @@
 	..()
 
 /obj/machinery/door/airlock/multi_tile/almayer/dropshiprear/ds1
-	name = "\improper Alamo cargo door"
+	name = "Alamo cargo door"
 	icon = 'icons/obj/doors/almayer/dropship1_cargo.dmi'
 
 /obj/machinery/door/airlock/multi_tile/almayer/dropshiprear/ds2
-	name = "\improper Normandy cargo door"
+	name = "Normandy cargo door"
 	icon = 'icons/obj/doors/almayer/dropship2_cargo.dmi'
 
 
@@ -208,16 +208,16 @@
 	openspeed = 22
 
 /obj/machinery/door/airlock/multi_tile/elevator/research
-	name = "\improper Research Elevator Hatch"
+	name = "Research Elevator Hatch"
 
 /obj/machinery/door/airlock/multi_tile/elevator/arrivals
-	name = "\improper Arrivals Elevator Hatch"
+	name = "Arrivals Elevator Hatch"
 
 /obj/machinery/door/airlock/multi_tile/elevator/dormatory
-	name = "\improper Dormitory Elevator Hatch"
+	name = "Dormitory Elevator Hatch"
 
 /obj/machinery/door/airlock/multi_tile/elevator/freight
-	name = "\improper Freight Elevator Hatch"
+	name = "Freight Elevator Hatch"
 
 
 /obj/machinery/door/airlock/multi_tile/elevator/access
@@ -226,13 +226,13 @@
 	glass = 1
 
 /obj/machinery/door/airlock/multi_tile/elevator/access/research
-	name = "\improper Research Elevator Hatch"
+	name = "Research Elevator Hatch"
 
 /obj/machinery/door/airlock/multi_tile/elevator/access/arrivals
-	name = "\improper Arrivals Elevator Hatch"
+	name = "Arrivals Elevator Hatch"
 
 /obj/machinery/door/airlock/multi_tile/elevator/access/dormatory
-	name = "\improper Dormitory Elevator Hatch"
+	name = "Dormitory Elevator Hatch"
 
 /obj/machinery/door/airlock/multi_tile/elevator/access/freight
-	name = "\improper Freight Elevator Hatch"
+	name = "Freight Elevator Hatch"

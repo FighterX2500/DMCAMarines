@@ -39,7 +39,7 @@
 	plasma_gain = 30
 	is_intelligent = 1
 	speed = 0.6
-	upgrade_threshold = 800
+	upgrade_threshold = 400
 	evolution_allowed = FALSE
 	pixel_x = -16
 	old_x = -16

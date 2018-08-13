@@ -629,8 +629,8 @@
 	New()
 		..()
 		accurate_range = config.short_shell_range
-		damage = config.low_hit_damage
-		penetration= config.mlow_armor_penetration
+		damage = config.lmed_hit_damage
+		penetration= config.low_armor_penetration
 
 /datum/ammo/bullet/smartgun/lethal
 	flags_ammo_behavior = AMMO_BALLISTIC
@@ -1293,7 +1293,7 @@
 
 
 /datum/ammo/rocket/nobugs
-	name = "\improper NO BUGS rocket"
+	name = "NO BUGS rocket"
 	damage = 1
 
 	on_hit_mob(mob/M,obj/item/projectile/P)

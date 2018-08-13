@@ -1,5 +1,5 @@
 /obj/structure/closet/secure_closet/engineering_chief
-	name = "\improper Chief Engineer's locker"
+	name = "Chief Engineer's locker"
 	req_access = list(ACCESS_MARINE_CE)
 	icon_state = "securece1"
 	icon_closed = "securece"

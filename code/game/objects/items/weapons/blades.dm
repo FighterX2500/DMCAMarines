@@ -32,7 +32,7 @@
 	force = 65
 
 /obj/item/weapon/claymore/mercsword/machete
-	name = "\improper M2132 machete"
+	name = "M2132 machete"
 	desc = "Latest issue of the USCM Machete. Great for clearing out jungle or brush on outlying colonies. Found commonly in the hands of scouts and trackers, but difficult to carry with the usual kit."
 	icon_state = "machete"
 	force = 35
@@ -70,7 +70,7 @@
 	return ..()
 
 /obj/item/weapon/combat_knife
-	name = "\improper M5 'Night Raider' survival knife"
+	name = "M5 'Night Raider' survival knife"
 	icon = 'icons/obj/items/weapons.dmi'
 	icon_state = "combat_knife"
 	item_state = "combat_knife"
@@ -114,7 +114,7 @@
 		return (BRUTELOSS)
 
 /obj/item/weapon/combat_knife/upp
-	name = "\improper Type 30 survival knife"
+	name = "Type 30 survival knife"
 	icon_state = "upp_knife"
 	item_state = "knife"
 	desc = "The standard issue survival knife of the UPP forces, the Type 30 is effective, but humble. It is small enough to be non-cumbersome, but lethal none-the-less."
@@ -125,7 +125,7 @@
 
 
 /obj/item/weapon/throwing_knife
-	name ="\improper M11 throwing knife"
+	name ="M11 throwing knife"
 	icon='icons/obj/items/weapons.dmi'
 	icon_state = "throwing_knife"
 	desc="A military knife designed to be thrown at the enemy. Much quieter than a firearm, but requires a steady hand to be used effectively."

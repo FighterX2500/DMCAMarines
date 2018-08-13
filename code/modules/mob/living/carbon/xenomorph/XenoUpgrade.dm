@@ -59,7 +59,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 120
 					plasma_gain = 2
 					plasma_max = 150
-					upgrade_threshold = 400
+					upgrade_threshold = 200
 					caste_desc = "A fast, four-legged terror, but weak in sustained combat. It looks a little more dangerous."
 					speed = -1.9
 					armor_deflection = 5
@@ -75,7 +75,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 170
 					plasma_gain = 10
 					plasma_max = 150
-					upgrade_threshold = 800
+					upgrade_threshold = 400
 					caste_desc = "A fast, powerful front line combatant. It looks a little more dangerous."
 					speed = -1.6
 					armor_deflection = 20
@@ -91,7 +91,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 220
 					plasma_gain = 10
 					plasma_max = 150
-					upgrade_threshold = 1600
+					upgrade_threshold = 800
 					caste_desc = "A brutal, devastating front-line attacker. It looks a little more dangerous."
 					speed = -0.8
 					armor_deflection = 45
@@ -105,7 +105,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 275
 					plasma_gain = 8
 					plasma_max = 100
-					upgrade_threshold = 400
+					upgrade_threshold = 200
 					caste_desc = "An alien with an armored head crest. It looks a little more dangerous."
 					speed = -0.3
 					armor_deflection = 45
@@ -116,7 +116,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 225
 					plasma_gain = 8
 					plasma_max = 100
-					upgrade_threshold = 800
+					upgrade_threshold = 400
 					caste_desc = "An alien with an armored carapace. It looks a little more dangerous."
 					speed = -0.9
 					armor_deflection = 35
@@ -130,7 +130,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 325
 					plasma_gain = 15
 					plasma_max = 300
-					upgrade_threshold = 1600
+					upgrade_threshold = 800
 					caste_desc = "A huge tanky xenomorph. It looks a little more dangerous."
 					armor_deflection = 80
 				if("Sentinel")
@@ -140,7 +140,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 150
 					plasma_gain = 12
 					plasma_max = 400
-					upgrade_threshold = 400
+					upgrade_threshold = 200
 					spit_delay = 25
 					caste_desc = "A ranged combat alien. It looks a little more dangerous."
 					armor_deflection = 15
@@ -155,7 +155,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 180
 					plasma_gain = 25
 					plasma_max = 700
-					upgrade_threshold = 800
+					upgrade_threshold = 400
 					spit_delay = 20
 					caste_desc = "A ranged damage dealer. It looks a little more dangerous."
 					armor_deflection = 20
@@ -170,7 +170,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 200
 					plasma_gain = 35
 					plasma_max = 900
-					upgrade_threshold = 1600
+					upgrade_threshold = 800
 					spit_delay = 30
 					bomb_strength = 1.5
 					caste_desc = "Some sort of abomination. It looks a little more dangerous."
@@ -186,7 +186,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 220
 					plasma_gain = 30
 					plasma_max = 900
-					upgrade_threshold = 1600
+					upgrade_threshold = 800
 					spit_delay = 15
 					caste_desc = "A giant ranged monster. It looks a little more dangerous."
 					armor_deflection = 40
@@ -202,7 +202,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 120
 					plasma_max = 800
 					plasma_gain = 20
-					upgrade_threshold = 1000
+					upgrade_threshold = 500
 					caste_desc = "The workhorse of the hive. It looks a little more dangerous."
 					armor_deflection = 5
 					tacklemin = 3
@@ -217,7 +217,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 220
 					plasma_max = 900
 					plasma_gain = 40
-					upgrade_threshold = 1600
+					upgrade_threshold = 800
 					caste_desc = "A builder of REALLY BIG hives. It looks a little more dangerous."
 					armor_deflection = 10
 					tacklemin = 3
@@ -232,7 +232,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 200
 					plasma_max = 300
 					plasma_gain = 10
-					upgrade_threshold = 1600
+					upgrade_threshold = 800
 					caste_desc = "A portable Love transport. It looks a little more dangerous."
 					armor_deflection = 10
 					tacklemin = 3
@@ -251,7 +251,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 320
 					plasma_max = 800
 					plasma_gain = 40
-					upgrade_threshold = 1600
+					upgrade_threshold = 800
 					spit_delay = 20
 					caste_desc = "The biggest and baddest xeno. The Queen controls the hive and plants eggs."
 					armor_deflection = 50
@@ -274,7 +274,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 150
 					plasma_gain = 2
 					plasma_max = 200
-					upgrade_threshold = 800
+					upgrade_threshold = 400
 					caste_desc = "A fast, four-legged terror, but weak in sustained combat. It looks pretty strong."
 					speed = -2.0
 					armor_deflection = 10
@@ -290,7 +290,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 200
 					plasma_gain = 10
 					plasma_max = 200
-					upgrade_threshold = 1600
+					upgrade_threshold = 800
 					caste_desc = "A fast, powerful front line combatant. It looks pretty strong."
 					speed = -1.7
 					armor_deflection = 25
@@ -306,7 +306,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 250
 					plasma_gain = 15
 					plasma_max = 200
-					upgrade_threshold = 3200
+					upgrade_threshold = 1600
 					caste_desc = "A brutal, devastating front-line attacker. It looks pretty strong."
 					speed = -0.9
 					armor_deflection = 50
@@ -320,7 +320,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 300
 					plasma_gain = 8
 					plasma_max = 100
-					upgrade_threshold = 800
+					upgrade_threshold = 400
 					caste_desc = "An alien with an armored head crest. It looks pretty strong."
 					speed = -0.4
 					armor_deflection = 50
@@ -331,7 +331,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 250
 					plasma_gain = 8
 					plasma_max = 100
-					upgrade_threshold = 1600
+					upgrade_threshold = 800
 					caste_desc = "An alien with an armored carapace. It looks pretty strong."
 					speed = -1.0
 					armor_deflection = 40
@@ -345,7 +345,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 375
 					plasma_gain = 30
 					plasma_max = 400
-					upgrade_threshold = 3200
+					upgrade_threshold = 1600
 					caste_desc = "A huge tanky xenomorph. It looks pretty strong."
 					armor_deflection = 85
 				if("Sentinel")
@@ -355,7 +355,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 175
 					plasma_gain = 15
 					plasma_max = 500
-					upgrade_threshold = 800
+					upgrade_threshold = 400
 					spit_delay = 20
 					caste_desc = "A ranged combat alien. It looks pretty strong."
 					armor_deflection = 20
@@ -370,7 +370,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 200
 					plasma_gain = 30
 					plasma_max = 800
-					upgrade_threshold = 1600
+					upgrade_threshold = 800
 					spit_delay = 15
 					caste_desc = "A ranged damage dealer. It looks pretty strong."
 					armor_deflection = 25
@@ -385,7 +385,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 220
 					plasma_gain = 40
 					plasma_max = 1000
-					upgrade_threshold = 3200
+					upgrade_threshold = 1600
 					spit_delay = 20
 					bomb_strength = 2
 					caste_desc = "Some sort of abomination. It looks pretty strong."
@@ -401,7 +401,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 250
 					plasma_gain = 40
 					plasma_max = 1000
-					upgrade_threshold = 3200
+					upgrade_threshold = 1600
 					spit_delay = 10
 					caste_desc = "A giant ranged monster. It looks pretty strong."
 					armor_deflection = 45
@@ -417,7 +417,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 150
 					plasma_max = 900
 					plasma_gain = 30
-					upgrade_threshold = 1500
+					upgrade_threshold = 750
 					caste_desc = "The workhorse of the hive. It looks a little more dangerous."
 					armor_deflection = 10
 					tacklemin = 3
@@ -432,7 +432,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 250
 					plasma_max = 1000
 					plasma_gain = 50
-					upgrade_threshold = 3200
+					upgrade_threshold = 1600
 					caste_desc = "A builder of REALLY BIG hives. It looks pretty strong."
 					armor_deflection = 15
 					tacklemin = 4
@@ -447,7 +447,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 220
 					plasma_max = 350
 					plasma_gain = 12
-					upgrade_threshold = 3200
+					upgrade_threshold = 1600
 					caste_desc = "A portable Love transport. It looks pretty strong."
 					armor_deflection = 10
 					tacklemin = 4
@@ -466,7 +466,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 350
 					plasma_max = 900
 					plasma_gain = 50
-					upgrade_threshold = 3200
+					upgrade_threshold = 1600
 					spit_delay = 15
 					caste_desc = "The biggest and baddest xeno. The Empress controls multiple hives and planets."
 					armor_deflection = 55

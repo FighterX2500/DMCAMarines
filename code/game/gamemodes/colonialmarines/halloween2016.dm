@@ -1259,13 +1259,13 @@
 		/obj/item/explosive/grenade/incendiary = 4,
 		/obj/item/explosive/grenade/frag/m15 = 4
 		)
-	generate_supply_crate(supply_spawn,supply_manifest,"\improper explosives crate (WARNING)", "A crate full of high explosives. Not a good time to have a smoke.")
+	generate_supply_crate(supply_spawn,supply_manifest,"explosives crate (WARNING)", "A crate full of high explosives. Not a good time to have a smoke.")
 
 	supply_manifest=list(
 		/obj/item/weapon/gun/flamer = 2,
 		/obj/item/ammo_magazine/flamer_tank = 6
 		)
-	generate_supply_crate(supply_spawn,supply_manifest,"\improper M240 Incinerator crate", "A crate containing a functional flamethrower with spare fuel tanks.")
+	generate_supply_crate(supply_spawn,supply_manifest,"M240 Incinerator crate", "A crate containing a functional flamethrower with spare fuel tanks.")
 
 	supply_manifest=list(
 		/obj/item/ammo_magazine/rifle/extended = 3,
@@ -1284,7 +1284,7 @@
 	supply_manifest=list(
 		/obj/item/storage/box/wy_mre = 12
 		)
-	generate_supply_crate(supply_spawn,supply_manifest,"\improper W-Y MRE crate", "A crate containing Weyland-Yutani MREs. An army marches on its stomach, right?")
+	generate_supply_crate(supply_spawn,supply_manifest,"W-Y MRE crate", "A crate containing Weyland-Yutani MREs. An army marches on its stomach, right?")
 
 	supply_manifest=list(
 		/obj/item/storage/firstaid/regular = 1,
@@ -1425,12 +1425,12 @@
 		/obj/item/explosive/grenade/incendiary = 3,
 		/obj/item/explosive/grenade/frag/m15 = 3
 		)
-	generate_supply_crate(supply_spawn,supply_manifest,"\improper explosives crate (WARNING)", "A crate containing all sorts of explosives.")
+	generate_supply_crate(supply_spawn,supply_manifest,"explosives crate (WARNING)", "A crate containing all sorts of explosives.")
 
 	supply_manifest=list(
 		/obj/item/storage/box/uscm_mre = 12
 		)
-	generate_supply_crate(supply_spawn,supply_manifest,"\improper MRE crate", "A crate containing USCM MREs. Yuck.")
+	generate_supply_crate(supply_spawn,supply_manifest,"MRE crate", "A crate containing USCM MREs. Yuck.")
 
 	supply_manifest=list(
 		/obj/item/storage/firstaid/regular = 6,

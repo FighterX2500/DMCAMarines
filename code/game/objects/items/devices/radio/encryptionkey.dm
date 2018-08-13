@@ -62,7 +62,7 @@
 	channels = list("Req" = 1)
 
 /obj/item/device/encryptionkey/mmpo
-	name = "\improper Military Police radio encryption key"
+	name = "Military Police radio encryption key"
 	icon_state = "rob_cypherkey"
 	channels = list("MP" = 1, "Command" = 1)
 
@@ -80,12 +80,12 @@
 //MARINE ENCRYPTION KEYS
 
 /obj/item/device/encryptionkey/cmpcom
-	name = "\improper Marine Chief MP radio encryption key"
+	name = "Marine Chief MP radio encryption key"
 	icon_state = "cap_cypherkey"
 	channels = list("Command" = 1, "MP" = 1, "Alpha" = 0, "Bravo" = 0, "Charlie" = 0, "Delta" = 0, "Engi" = 1, "MedSci" = 1, "Req" = 1 )
 
 /obj/item/device/encryptionkey/mcom
-	name = "\improper Marine Command radio encryption key"
+	name = "Marine Command radio encryption key"
 	icon_state = "cap_cypherkey"
 	channels = list("Command" = 1, "Alpha" = 0, "Bravo" = 0, "Charlie" = 0, "Delta" = 0, "Engi" = 1, "MedSci" = 1, "Req" = 1 )
 
@@ -94,27 +94,27 @@
 
 
 /obj/item/device/encryptionkey/squadlead
-	name = "\improper Squad Leader encryption key"
+	name = "Squad Leader encryption key"
 	icon_state = "hop_cypherkey"
 	channels = list("Command" = 1)
 
 /obj/item/device/encryptionkey/alpha
-	name = "\improper Alpha Squad radio encryption key"
+	name = "Alpha Squad radio encryption key"
 	icon_state = "eng_cypherkey"
 	channels = list("Alpha" = 1)
 
 /obj/item/device/encryptionkey/bravo
-	name = "\improper Bravo Squad radio encryption key"
+	name = "Bravo Squad radio encryption key"
 	icon_state = "cypherkey"
 	channels = list("Bravo" = 1)
 
 /obj/item/device/encryptionkey/charlie
-	name = "\improper Charlie Squad radio encryption key"
+	name = "Charlie Squad radio encryption key"
 	icon_state = "sci_cypherkey"
 	channels = list("Charlie" = 1)
 
 /obj/item/device/encryptionkey/delta
-	name = "\improper Delta Squad radio encryption key"
+	name = "Delta Squad radio encryption key"
 	icon_state = "hos_cypherkey"
 	channels = list("Delta" = 1)
 
@@ -123,18 +123,18 @@
 
 //PMCs
 /obj/item/device/encryptionkey/dutch
-	name = "\improper Colonist encryption key"
+	name = "Colonist encryption key"
 	channels = list("Colonist" = 1)
 
 /obj/item/device/encryptionkey/PMC
-	name = "\improper Weyland Yutani encryption key"
+	name = "Weyland Yutani encryption key"
 	channels = list("WY PMC" = 1)
 
 /obj/item/device/encryptionkey/bears
-	name = "\improper UPP encryption key"
+	name = "UPP encryption key"
 	syndie = 1
 	channels = list("UPP" = 1)
 
 /obj/item/device/encryptionkey/commando
-	name = "\improper WY commando encryption key"
+	name = "WY commando encryption key"
 	channels = list("SpecOps" = 1)

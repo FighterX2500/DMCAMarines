@@ -2963,7 +2963,7 @@
 			icon_state = "hotdog"
 
 /obj/item/reagent_container/food/snacks/upp
-	name = "\improper UPP ration"
+	name = "UPP ration"
 	desc = "A sealed, freeze-dried, compressed package containing a single item of food. Commonplace in the UPP military, especially those units stationed on far-flung colonies. This one is stamped for consumption by the UPP's 'Smoldering Sons' battalion and was packaged in 2179."
 	icon_state = "upp_ration"
 	bitesize = 1
@@ -3069,7 +3069,7 @@
 //MREs
 
 /obj/item/reagent_container/food/snacks/packaged_meal
-	name = "\improper MRE component"
+	name = "MRE component"
 	desc = "A package from a Meal Ready-to-Eat, property of the US Colonial Marines. Contains a part of a meal, prepared for field consumption."
 	package = 1
 	bitesize = 1
@@ -3091,7 +3091,7 @@
 			package = 0
 
 /obj/item/reagent_container/food/snacks/packaged_meal/proc/determinetype(newflavor)
-	name = "\improper MRE component" + " (" + newflavor + ")"
+	name = "MRE component" + " (" + newflavor + ")"
 	flavor = newflavor
 
 	switch(newflavor)

@@ -93,7 +93,7 @@ var/list/ghostteleportlocs = list()
 
 /*-----------------------------------------------------------------------------*/
 /area/space
-	name = "\improper Space"
+	name = "Space"
 	requires_power = 1
 	always_unpowered = 1
 	lighting_use_dynamic = 1
@@ -112,11 +112,11 @@ var/list/ghostteleportlocs = list()
 	requires_power = 0
 
 /area/arrival/start
-	name = "\improper Arrival Area"
+	name = "Arrival Area"
 	icon_state = "start"
 
 /area/admin
-	name = "\improper Admin room"
+	name = "Admin room"
 	icon_state = "start"
 
 
@@ -131,7 +131,7 @@ var/list/ghostteleportlocs = list()
 	lighting_use_dynamic = 0
 
 /area/shuttle/arrival
-	name = "\improper abandoned  Arrival Shuttle"
+	name = "abandoned  Arrival Shuttle"
 
 /area/shuttle/arrival/pre_game
 	icon_state = "shuttle2"
@@ -140,23 +140,23 @@ var/list/ghostteleportlocs = list()
 	icon_state = "shuttle"
 
 /area/shuttle/escape
-	name = "\improper abandoned  Emergency Shuttle"
+	name = "abandoned  Emergency Shuttle"
 	music = "music/escape.ogg"
 
 /area/shuttle/escape/station
-	name = "\improper abandoned  Emergency Shuttle Station"
+	name = "abandoned  Emergency Shuttle Station"
 	icon_state = "shuttle2"
 
 /area/shuttle/escape/centcom
-	name = "\improper abandoned  Emergency Shuttle Centcom"
+	name = "abandoned  Emergency Shuttle Centcom"
 	icon_state = "shuttle"
 
 /area/shuttle/escape/transit // the area to pass through for 3 minute transit
-	name = "\improper abandoned  Emergency Shuttle Transit"
+	name = "abandoned  Emergency Shuttle Transit"
 	icon_state = "shuttle"
 
 /area/shuttle/escape_pod1
-	name = "\improper Escape Pod One"
+	name = "Escape Pod One"
 	music = "music/escape.ogg"
 
 /area/shuttle/escape_pod1/station
@@ -169,7 +169,7 @@ var/list/ghostteleportlocs = list()
 	icon_state = "shuttle"
 
 /area/shuttle/escape_pod2
-	name = "\improper Escape Pod Two"
+	name = "Escape Pod Two"
 	music = "music/escape.ogg"
 
 /area/shuttle/escape_pod2/station
@@ -182,7 +182,7 @@ var/list/ghostteleportlocs = list()
 	icon_state = "shuttle"
 
 /area/shuttle/escape_pod3
-	name = "\improper Escape Pod Three"
+	name = "Escape Pod Three"
 	music = "music/escape.ogg"
 
 /area/shuttle/escape_pod3/station
@@ -195,7 +195,7 @@ var/list/ghostteleportlocs = list()
 	icon_state = "shuttle"
 
 /area/shuttle/escape_pod5 //Pod 4 was lost to meteors
-	name = "\improper Escape Pod Five"
+	name = "Escape Pod Five"
 	music = "music/escape.ogg"
 
 /area/shuttle/escape_pod5/station
@@ -208,7 +208,7 @@ var/list/ghostteleportlocs = list()
 	icon_state = "shuttle"
 
 /area/shuttle/mining
-	name = "\improper abandoned Mining Shuttle"
+	name = "abandoned Mining Shuttle"
 	music = "music/escape.ogg"
 
 /area/shuttle/mining/station
@@ -219,22 +219,22 @@ var/list/ghostteleportlocs = list()
 
 /area/shuttle/transport1/centcom
 	icon_state = "shuttle"
-	name = "\improper abandoned  Transport Shuttle Centcom"
+	name = "abandoned  Transport Shuttle Centcom"
 
 /area/shuttle/transport1/station
 	icon_state = "shuttle"
-	name = "\improper abandoned  Transport Shuttle"
+	name = "abandoned  Transport Shuttle"
 /*
 /area/shuttle/alien/base
 	icon_state = "shuttle"
-	name = "\improper abandoned  Alien Shuttle Base"
+	name = "abandoned  Alien Shuttle Base"
 	requires_power = 1
 	luminosity = 0
 	lighting_use_dynamic = 1
 
 /area/shuttle/alien/mine
 	icon_state = "shuttle"
-	name = "\improper abandoned  Alien Shuttle Mine"
+	name = "abandoned  Alien Shuttle Mine"
 	requires_power = 1
 	luminosity = 0
 	lighting_use_dynamic = 1
@@ -242,7 +242,7 @@ var/list/ghostteleportlocs = list()
 
 
 /area/shuttle/prison/
-	name = "\improper abandoned  Prison Shuttle"
+	name = "abandoned  Prison Shuttle"
 
 /area/shuttle/prison/station
 	icon_state = "shuttle"
@@ -251,59 +251,59 @@ var/list/ghostteleportlocs = list()
 	icon_state = "shuttle2"
 
 /area/shuttle/specops/centcom
-	name = "\improper abandoned  Special Ops Shuttle"
+	name = "abandoned  Special Ops Shuttle"
 	icon_state = "shuttlered"
 
 /area/shuttle/specops/station
-	name = "\improper abandoned  Special Ops Shuttle"
+	name = "abandoned  Special Ops Shuttle"
 	icon_state = "shuttlered2"
 
 /area/shuttle/syndicate_elite/mothership
-	name = "\improper abandoned  Syndicate Elite Shuttle"
+	name = "abandoned  Syndicate Elite Shuttle"
 	icon_state = "shuttlered"
 
 /area/shuttle/syndicate_elite/station
-	name = "\improper abandoned  Syndicate Elite Shuttle"
+	name = "abandoned  Syndicate Elite Shuttle"
 	icon_state = "shuttlered2"
 
 /area/shuttle/administration/centcom
-	name = "\improper abandoned  Administration Shuttle Centcom"
+	name = "abandoned  Administration Shuttle Centcom"
 	icon_state = "shuttlered"
 
 /area/shuttle/administration/station
-	name = "\improper abandoned  Administration Shuttle"
+	name = "abandoned  Administration Shuttle"
 	icon_state = "shuttlered2"
 
 /area/shuttle/thunderdome
 	name = "honk"
 
 /area/shuttle/thunderdome/grnshuttle
-	name = "\improper abandoned  Thunderdome GRN Shuttle"
+	name = "abandoned  Thunderdome GRN Shuttle"
 	icon_state = "green"
 
 /area/shuttle/thunderdome/grnshuttle/dome
-	name = "\improper abandoned  GRN Shuttle"
+	name = "abandoned  GRN Shuttle"
 	icon_state = "shuttlegrn"
 
 /area/shuttle/thunderdome/grnshuttle/station
-	name = "\improper abandoned  GRN Station"
+	name = "abandoned  GRN Station"
 	icon_state = "shuttlegrn2"
 
 /area/shuttle/thunderdome/redshuttle
-	name = "\improper abandoned  Thunderdome RED Shuttle"
+	name = "abandoned  Thunderdome RED Shuttle"
 	icon_state = "red"
 
 /area/shuttle/thunderdome/redshuttle/dome
-	name = "\improper abandoned  RED Shuttle"
+	name = "abandoned  RED Shuttle"
 	icon_state = "shuttlered"
 
 /area/shuttle/thunderdome/redshuttle/station
-	name = "\improper abandoned  RED Station"
+	name = "abandoned  RED Station"
 	icon_state = "shuttlered2"
 // === Trying to remove these areas:
 /*
 /area/shuttle/research
-	name = "\improper abandoned  Research Shuttle"
+	name = "abandoned  Research Shuttle"
 	music = "music/escape.ogg"
 
 /area/shuttle/research/station
@@ -313,7 +313,7 @@ var/list/ghostteleportlocs = list()
 	icon_state = "shuttle"
 */
 /area/shuttle/vox/station
-	name = "\improper abandoned  Vox Skipjack"
+	name = "abandoned  Vox Skipjack"
 	icon_state = "yellow"
 	requires_power = 0
 
@@ -332,46 +332,46 @@ var/list/ghostteleportlocs = list()
 // === end remove
 /*
 /area/alien
-	name = "\improper abandoned  Alien base"
+	name = "abandoned  Alien base"
 	icon_state = "yellow"
 	requires_power = 0
 */
 // CENTCOM
 
 /area/centcom
-	name = "\improper abandoned  Centcom"
+	name = "abandoned  Centcom"
 	icon_state = "centcom"
 	requires_power = 0
 
 /area/centcom/control
-	name = "\improper abandoned  Centcom Control"
+	name = "abandoned  Centcom Control"
 
 /area/centcom/evac
-	name = "\improper abandoned  Centcom Emergency Shuttle"
+	name = "abandoned  Centcom Emergency Shuttle"
 
 /area/centcom/suppy
-	name = "\improper abandoned  Centcom Supply Shuttle"
+	name = "abandoned  Centcom Supply Shuttle"
 
 /area/centcom/ferry
-	name = "\improper abandoned  Centcom Transport Shuttle"
+	name = "abandoned  Centcom Transport Shuttle"
 
 /area/centcom/shuttle
-	name = "\improper abandoned  Centcom Administration Shuttle"
+	name = "abandoned  Centcom Administration Shuttle"
 
 /area/centcom/test
-	name = "\improper abandoned  Centcom Testing Facility"
+	name = "abandoned  Centcom Testing Facility"
 
 /area/centcom/living
-	name = "\improper abandoned  Centcom Living Quarters"
+	name = "abandoned  Centcom Living Quarters"
 
 /area/centcom/specops
-	name = "\improper abandoned  Centcom Special Ops"
+	name = "abandoned  Centcom Special Ops"
 
 /area/centcom/creed
 	name = "Creed's Office"
 
 /area/centcom/holding
-	name = "\improper abandoned  Holding Facility"
+	name = "abandoned  Holding Facility"
 
 /area/centcom/solitary
 	name = "Solitary Confinement"
@@ -380,33 +380,33 @@ var/list/ghostteleportlocs = list()
 //SYNDICATES
 
 /area/syndicate_mothership
-	name = "\improper abandoned  Syndicate Base"
+	name = "abandoned  Syndicate Base"
 	icon_state = "syndie-ship"
 	requires_power = 0
 	unlimited_power = 1
 
 /area/syndicate_mothership/control
-	name = "\improper abandoned  Syndicate Control Room"
+	name = "abandoned  Syndicate Control Room"
 	icon_state = "syndie-control"
 
 /area/syndicate_mothership/elite_squad
-	name = "\improper abandoned  Syndicate Elite Squad"
+	name = "abandoned  Syndicate Elite Squad"
 	icon_state = "syndie-elite"
 
 //EXTRA
 
 /area/asteroid					// -- TLE
-	name = "\improper abandoned  Asteroid"
+	name = "abandoned  Asteroid"
 	icon_state = "asteroid"
 	requires_power = 0
 
 /area/asteroid/cave				// -- TLE
-	name = "\improper abandoned  Asteroid - Underground"
+	name = "abandoned  Asteroid - Underground"
 	icon_state = "cave"
 	requires_power = 0
 
 /area/asteroid/artifactroom
-	name = "\improper abandoned  Asteroid - Artifact"
+	name = "abandoned  Asteroid - Artifact"
 	icon_state = "cave"
 
 
@@ -424,181 +424,181 @@ var/list/ghostteleportlocs = list()
 
 /*
 /area/planet/clown
-	name = "\improper abandoned  Clown Planet"
+	name = "abandoned  Clown Planet"
 	icon_state = "honk"
 	requires_power = 0
 */
 /area/tdome
-	name = "\improper abandoned  Thunderdome"
+	name = "abandoned  Thunderdome"
 	icon_state = "thunder"
 	requires_power = 0
 
 /area/tdome/tdome1
-	name = "\improper abandoned  Thunderdome (Team 1)"
+	name = "abandoned  Thunderdome (Team 1)"
 	icon_state = "green"
 
 /area/tdome/tdome2
-	name = "\improper abandoned  Thunderdome (Team 2)"
+	name = "abandoned  Thunderdome (Team 2)"
 	icon_state = "yellow"
 
 /area/tdome/tdomeadmin
-	name = "\improper abandoned  Thunderdome (Admin.)"
+	name = "abandoned  Thunderdome (Admin.)"
 	icon_state = "purple"
 
 /area/tdome/tdomeobserve
-	name = "\improper abandoned  Thunderdome (Observer.)"
+	name = "abandoned  Thunderdome (Observer.)"
 	icon_state = "purple"
 
 //ENEMY
 
 //names are used
 /area/syndicate_station
-	name = "\improper abandoned  Syndicate Station"
+	name = "abandoned  Syndicate Station"
 	icon_state = "yellow"
 	requires_power = 0
 	unlimited_power = 1
 
 /area/syndicate_station/start
-	name = "\improper abandoned  Syndicate Forward Operating Base"
+	name = "abandoned  Syndicate Forward Operating Base"
 	icon_state = "yellow"
 
 /area/syndicate_station/southwest
-	name = "\improper abandoned  south-west of SS13"
+	name = "abandoned  south-west of SS13"
 	icon_state = "southwest"
 
 /area/syndicate_station/northwest
-	name = "\improper abandoned  north-west of SS13"
+	name = "abandoned  north-west of SS13"
 	icon_state = "northwest"
 
 /area/syndicate_station/northeast
-	name = "\improper abandoned  north-east of SS13"
+	name = "abandoned  north-east of SS13"
 	icon_state = "northeast"
 
 /area/syndicate_station/southeast
-	name = "\improper abandoned  south-east of SS13"
+	name = "abandoned  south-east of SS13"
 	icon_state = "southeast"
 
 /area/syndicate_station/north
-	name = "\improper abandoned  north of SS13"
+	name = "abandoned  north of SS13"
 	icon_state = "north"
 
 /area/syndicate_station/south
-	name = "\improper abandoned  south of SS13"
+	name = "abandoned  south of SS13"
 	icon_state = "south"
 
 /area/syndicate_station/commssat
-	name = "\improper abandoned  south of the communication satellite"
+	name = "abandoned  south of the communication satellite"
 	icon_state = "south"
 
 /area/syndicate_station/mining
-	name = "\improper abandoned  north east of the mining asteroid"
+	name = "abandoned  north east of the mining asteroid"
 	icon_state = "north"
 
 /area/syndicate_station/transit
-	name = "\improper abandoned  hyperspace"
+	name = "abandoned  hyperspace"
 	icon_state = "shuttle"
 
 /area/wizard_station
-	name = "\improper abandoned  Wizard's Den"
+	name = "abandoned  Wizard's Den"
 	icon_state = "yellow"
 	requires_power = 0
 
 /area/vox_station/transit
-	name = "\improper abandoned  hyperspace"
+	name = "abandoned  hyperspace"
 	icon_state = "shuttle"
 	requires_power = 0
 
 /area/vox_station/southwest_solars
-	name = "\improper abandoned  aft port solars"
+	name = "abandoned  aft port solars"
 	icon_state = "southwest"
 	requires_power = 0
 
 /area/vox_station/northwest_solars
-	name = "\improper abandoned  fore port solars"
+	name = "abandoned  fore port solars"
 	icon_state = "northwest"
 	requires_power = 0
 
 /area/vox_station/northeast_solars
-	name = "\improper abandoned  fore starboard solars"
+	name = "abandoned  fore starboard solars"
 	icon_state = "northeast"
 	requires_power = 0
 
 /area/vox_station/southeast_solars
-	name = "\improper abandoned  aft starboard solars"
+	name = "abandoned  aft starboard solars"
 	icon_state = "southeast"
 	requires_power = 0
 
 /area/vox_station/mining
-	name = "\improper abandoned  nearby mining asteroid"
+	name = "abandoned  nearby mining asteroid"
 	icon_state = "north"
 	requires_power = 0
 
 //PRISON
 /*
 /area/prison
-	name = "\improper abandoned  Prison Station"
+	name = "abandoned  Prison Station"
 	icon_state = "brig"
 
 /area/prison/arrival_airlock
-	name = "\improper abandoned  Prison Station Airlock"
+	name = "abandoned  Prison Station Airlock"
 	icon_state = "green"
 	requires_power = 0
 
 /area/prison/control
-	name = "\improper abandoned  Prison Security Checkpoint"
+	name = "abandoned  Prison Security Checkpoint"
 	icon_state = "security"
 
 /area/prison/crew_quarters
-	name = "\improper abandoned  Prison Security Quarters"
+	name = "abandoned  Prison Security Quarters"
 	icon_state = "security"
 
 /area/prison/rec_room
-	name = "\improper abandoned  Prison Rec Room"
+	name = "abandoned  Prison Rec Room"
 	icon_state = "green"
 
 /area/prison/closet
-	name = "\improper abandoned  Prison Supply Closet"
+	name = "abandoned  Prison Supply Closet"
 	icon_state = "dk_yellow"
 
 /area/prison/hallway/fore
-	name = "\improper abandoned  Prison Fore Hallway"
+	name = "abandoned  Prison Fore Hallway"
 	icon_state = "yellow"
 
 /area/prison/hallway/aft
-	name = "\improper abandoned  Prison Aft Hallway"
+	name = "abandoned  Prison Aft Hallway"
 	icon_state = "yellow"
 
 /area/prison/hallway/port
-	name = "\improper abandoned  Prison Port Hallway"
+	name = "abandoned  Prison Port Hallway"
 	icon_state = "yellow"
 
 /area/prison/hallway/starboard
-	name = "\improper abandoned  Prison Starboard Hallway"
+	name = "abandoned  Prison Starboard Hallway"
 	icon_state = "yellow"
 
 /area/prison/morgue
-	name = "\improper abandoned  Prison Morgue"
+	name = "abandoned  Prison Morgue"
 	icon_state = "morgue"
 
 /area/prison/medical_research
-	name = "\improper abandoned  Prison Genetic Research"
+	name = "abandoned  Prison Genetic Research"
 	icon_state = "medresearch"
 
 /area/prison/medical
-	name = "\improper abandoned  Prison Medbay"
+	name = "abandoned  Prison Medbay"
 	icon_state = "medbay"
 
 /area/prison/solar
-	name = "\improper abandoned  Prison Solar Array"
+	name = "abandoned  Prison Solar Array"
 	icon_state = "storage"
 	requires_power = 0
 
 /area/prison/podbay
-	name = "\improper abandoned  Prison Podbay"
+	name = "abandoned  Prison Podbay"
 	icon_state = "dk_yellow"
 
 /area/prison/solar_control
-	name = "\improper abandoned  Prison Solar Array Control"
+	name = "abandoned  Prison Solar Array Control"
 	icon_state = "dk_yellow"
 
 /area/prison/solitary
@@ -706,7 +706,7 @@ var/list/ghostteleportlocs = list()
 	icon_state = "maint_engineering"
 
 /area/maintenance/evahallway
-	name = "\improper abandoned  EVA Maintenance"
+	name = "abandoned  EVA Maintenance"
 	icon_state = "maint_eva"
 
 /area/maintenance/dormitory
@@ -714,7 +714,7 @@ var/list/ghostteleportlocs = list()
 	icon_state = "maint_dormitory"
 
 /area/maintenance/incinerator
-	name = "\improper abandoned  Incinerator"
+	name = "abandoned  Incinerator"
 	icon_state = "disposal"
 
 /area/maintenance/locker
@@ -780,191 +780,191 @@ var/list/ghostteleportlocs = list()
 //Hallway
 
 /area/hallway/primary/fore
-	name = "\improper abandoned  Fore Primary Hallway"
+	name = "abandoned  Fore Primary Hallway"
 	icon_state = "hallF"
 
 /area/hallway/primary/starboard
-	name = "\improper abandoned  Starboard Primary Hallway"
+	name = "abandoned  Starboard Primary Hallway"
 	icon_state = "hallS"
 
 /area/hallway/primary/aft
-	name = "\improper abandoned  Aft Primary Hallway"
+	name = "abandoned  Aft Primary Hallway"
 	icon_state = "hallA"
 
 /area/hallway/primary/port
-	name = "\improper abandoned  Port Primary Hallway"
+	name = "abandoned  Port Primary Hallway"
 	icon_state = "hallP"
 
 /area/hallway/primary/central_one
-	name = "\improper abandoned  Central Primary Hallway"
+	name = "abandoned  Central Primary Hallway"
 	icon_state = "hallC1"
 	ambience = list('sound/ambience/signal.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen11.ogg')
 
 /area/hallway/primary/central_two
-	name = "\improper abandoned  Central Primary Hallway"
+	name = "abandoned  Central Primary Hallway"
 	icon_state = "hallC2"
 
 /area/hallway/primary/central_three
-	name = "\improper abandoned  Central Primary Hallway"
+	name = "abandoned  Central Primary Hallway"
 	icon_state = "hallC3"
 
 /area/hallway/secondary/exit
-	name = "\improper abandoned  Escape Shuttle Hallway"
+	name = "abandoned  Escape Shuttle Hallway"
 	icon_state = "escape"
 
 /area/hallway/secondary/construction
-	name = "\improper abandoned  Construction Area"
+	name = "abandoned  Construction Area"
 	icon_state = "construction"
 
 /area/hallway/secondary/entry
-	name = "\improper abandoned  Arrival Shuttle Hallway"
+	name = "abandoned  Arrival Shuttle Hallway"
 	icon_state = "entry"
 
 //Command
 
 /area/bridge
-	name = "\improper abandoned  Bridge"
+	name = "abandoned  Bridge"
 	icon_state = "bridge"
 	music = "signal"
 
 /area/bridge/meeting_room
-	name = "\improper abandoned  Heads of Staff Meeting Room"
+	name = "abandoned  Heads of Staff Meeting Room"
 	icon_state = "bridge"
 	music = null
 
 /area/crew_quarters/captain
-	name = "\improper abandoned  Captain's Office"
+	name = "abandoned  Captain's Office"
 	icon_state = "captain"
 
 /area/crew_quarters/heads/hop
-	name = "\improper abandoned  Head of Personnel's Office"
+	name = "abandoned  Head of Personnel's Office"
 	icon_state = "head_quarters"
 
 /area/crew_quarters/heads/hor
-	name = "\improper abandoned  Research Director's Office"
+	name = "abandoned  Research Director's Office"
 	icon_state = "head_quarters"
 
 /area/crew_quarters/heads/chief
-	name = "\improper abandoned  Chief Engineer's Office"
+	name = "abandoned  Chief Engineer's Office"
 	icon_state = "head_quarters"
 
 /area/crew_quarters/heads/hos
-	name = "\improper abandoned  Head of Security's Office"
+	name = "abandoned  Head of Security's Office"
 	icon_state = "head_quarters"
 
 /area/crew_quarters/heads/cmo
-	name = "\improper abandoned  Chief Medical Officer's Office"
+	name = "abandoned  Chief Medical Officer's Office"
 	icon_state = "head_quarters"
 
 /area/crew_quarters/courtroom
-	name = "\improper abandoned  Courtroom"
+	name = "abandoned  Courtroom"
 	icon_state = "courtroom"
 
 /area/mint
-	name = "\improper abandoned  Mint"
+	name = "abandoned  Mint"
 	icon_state = "green"
 
 /area/comms
-	name = "\improper abandoned  Communications Relay"
+	name = "abandoned  Communications Relay"
 	icon_state = "tcomsatcham"
 
 /area/server
-	name = "\improper abandoned  Messaging Server Room"
+	name = "abandoned  Messaging Server Room"
 	icon_state = "server"
 
 //Crew
 
 /area/crew_quarters
-	name = "\improper abandoned  Dormitories"
+	name = "abandoned  Dormitories"
 	icon_state = "Sleep"
 
 /area/crew_quarters/toilet
-	name = "\improper abandoned  Dormitory Toilets"
+	name = "abandoned  Dormitory Toilets"
 	icon_state = "toilet"
 
 /area/crew_quarters/sleep
-	name = "\improper abandoned  Dormitories"
+	name = "abandoned  Dormitories"
 	icon_state = "Sleep"
 
 /area/crew_quarters/sleep/engi
-	name = "\improper abandoned  Engineering Dormitories"
+	name = "abandoned  Engineering Dormitories"
 	icon_state = "Sleep"
 
 /area/crew_quarters/sleep/engi_wash
-	name = "\improper abandoned  Engineering Washroom"
+	name = "abandoned  Engineering Washroom"
 	icon_state = "toilet"
 
 /area/crew_quarters/sleep/sec
-	name = "\improper abandoned  Security Dormitories"
+	name = "abandoned  Security Dormitories"
 	icon_state = "Sleep"
 
 /area/crew_quarters/sleep/bedrooms
-	name = "\improper abandoned  Dormitory Bedroom"
+	name = "abandoned  Dormitory Bedroom"
 	icon_state = "Sleep"
 
 /area/crew_quarters/sleep/cryo
-	name = "\improper abandoned  Cryogenic Storage"
+	name = "abandoned  Cryogenic Storage"
 	icon_state = "Sleep"
 
 /area/crew_quarters/sleep_male
-	name = "\improper abandoned  Male Dorm"
+	name = "abandoned  Male Dorm"
 	icon_state = "Sleep"
 /*
 /area/crew_quarters/sleep_male/toilet_male
-	name = "\improper abandoned  Male Toilets"
+	name = "abandoned  Male Toilets"
 	icon_state = "toilet"
 
 /area/crew_quarters/sleep_female
-	name = "\improper abandoned  Female Dorm"
+	name = "abandoned  Female Dorm"
 	icon_state = "Sleep"
 
 /area/crew_quarters/sleep_female/toilet_female
-	name = "\improper abandoned  Female Toilets"
+	name = "abandoned  Female Toilets"
 	icon_state = "toilet"
 */
 /area/crew_quarters/locker
-	name = "\improper abandoned  Locker Room"
+	name = "abandoned  Locker Room"
 	icon_state = "locker"
 
 /area/crew_quarters/locker/locker_toilet
-	name = "\improper abandoned  Locker Toilets"
+	name = "abandoned  Locker Toilets"
 	icon_state = "toilet"
 
 /area/crew_quarters/fitness
-	name = "\improper abandoned  Fitness Room"
+	name = "abandoned  Fitness Room"
 	icon_state = "fitness"
 
 /area/crew_quarters/cafeteria
-	name = "\improper abandoned  Cafeteria"
+	name = "abandoned  Cafeteria"
 	icon_state = "cafeteria"
 
 /area/crew_quarters/kitchen
-	name = "\improper abandoned  Kitchen"
+	name = "abandoned  Kitchen"
 	icon_state = "kitchen"
 
 /area/crew_quarters/bar
-	name = "\improper abandoned  Bar"
+	name = "abandoned  Bar"
 	icon_state = "bar"
 
 /area/crew_quarters/theatre
-	name = "\improper abandoned  Theatre"
+	name = "abandoned  Theatre"
 	icon_state = "Theatre"
 
 /area/library
- 	name = "\improper abandoned  Library"
+ 	name = "abandoned  Library"
  	icon_state = "library"
 
 /area/chapel/main
-	name = "\improper abandoned  Chapel"
+	name = "abandoned  Chapel"
 	icon_state = "chapel"
 	ambience = list('sound/ambience/ambicha1.ogg','sound/ambience/ambicha2.ogg','sound/ambience/ambicha3.ogg','sound/ambience/ambicha4.ogg')
 
 /area/chapel/office
-	name = "\improper abandoned  Chapel Office"
+	name = "abandoned  Chapel Office"
 	icon_state = "chapeloffice"
 
 /area/lawoffice
-	name = "\improper abandoned  Internal Affairs"
+	name = "abandoned  Internal Affairs"
 	icon_state = "law"
 
 
@@ -974,58 +974,58 @@ var/list/ghostteleportlocs = list()
 
 
 /area/holodeck
-	name = "\improper abandoned  Holodeck"
+	name = "abandoned  Holodeck"
 	icon_state = "Holodeck"
 	luminosity = 1
 	lighting_use_dynamic = 0
 
 /area/holodeck/alphadeck
-	name = "\improper abandoned  Holodeck Alpha"
+	name = "abandoned  Holodeck Alpha"
 
 
 /area/holodeck/source_plating
-	name = "\improper abandoned  Holodeck - Off"
+	name = "abandoned  Holodeck - Off"
 	icon_state = "Holodeck"
 
 /area/holodeck/source_emptycourt
-	name = "\improper abandoned  Holodeck - Empty Court"
+	name = "abandoned  Holodeck - Empty Court"
 
 /area/holodeck/source_boxingcourt
-	name = "\improper abandoned  Holodeck - Boxing Court"
+	name = "abandoned  Holodeck - Boxing Court"
 
 /area/holodeck/source_basketball
-	name = "\improper abandoned  Holodeck - Basketball Court"
+	name = "abandoned  Holodeck - Basketball Court"
 
 /area/holodeck/source_thunderdomecourt
-	name = "\improper abandoned  Holodeck - Thunderdome Court"
+	name = "abandoned  Holodeck - Thunderdome Court"
 
 /area/holodeck/source_beach
-	name = "\improper abandoned  Holodeck - Beach"
+	name = "abandoned  Holodeck - Beach"
 	icon_state = "Holodeck" // Lazy.
 
 /area/holodeck/source_burntest
-	name = "\improper abandoned  Holodeck - Atmospheric Burn Test"
+	name = "abandoned  Holodeck - Atmospheric Burn Test"
 
 /area/holodeck/source_wildlife
-	name = "\improper abandoned  Holodeck - Wildlife Simulation"
+	name = "abandoned  Holodeck - Wildlife Simulation"
 
 /area/holodeck/source_meetinghall
-	name = "\improper abandoned  Holodeck - Meeting Hall"
+	name = "abandoned  Holodeck - Meeting Hall"
 
 /area/holodeck/source_theatre
-	name = "\improper abandoned  Holodeck - Theatre"
+	name = "abandoned  Holodeck - Theatre"
 
 /area/holodeck/source_picnicarea
-	name = "\improper abandoned  Holodeck - Picnic Area"
+	name = "abandoned  Holodeck - Picnic Area"
 
 /area/holodeck/source_snowfield
-	name = "\improper abandoned  Holodeck - Snow Field"
+	name = "abandoned  Holodeck - Snow Field"
 
 /area/holodeck/source_desert
-	name = "\improper abandoned  Holodeck - Desert"
+	name = "abandoned  Holodeck - Desert"
 
 /area/holodeck/source_space
-	name = "\improper abandoned  Holodeck - Space"
+	name = "abandoned  Holodeck - Space"
 
 
 
@@ -1042,7 +1042,7 @@ var/list/ghostteleportlocs = list()
 /area/engine
 
 	drone_fabrication
-		name = "\improper abandoned  Drone Fabrication"
+		name = "abandoned  Drone Fabrication"
 		icon_state = "engine"
 
 	engine_smes
@@ -1051,27 +1051,27 @@ var/list/ghostteleportlocs = list()
 //		requires_power = 0//This area only covers the batteries and they deal with their own power
 
 	engine_room
-		name = "\improper abandoned  Engine Room"
+		name = "abandoned  Engine Room"
 		icon_state = "engine"
 
 	engine_airlock
-		name = "\improper abandoned  Engine Room Airlock"
+		name = "abandoned  Engine Room Airlock"
 		icon_state = "engine"
 
 	engine_monitoring
-		name = "\improper abandoned  Engine Monitoring Room"
+		name = "abandoned  Engine Monitoring Room"
 		icon_state = "engine_monitoring"
 
 	engine_waste
-		name = "\improper abandoned  Engine Waste Handling"
+		name = "abandoned  Engine Waste Handling"
 		icon_state = "engine_waste"
 
 	engineering_monitoring
-		name = "\improper abandoned  Engineering Monitoring Room"
+		name = "abandoned  Engineering Monitoring Room"
 		icon_state = "engine_monitoring"
 
 	atmos_monitoring
-		name = "\improper abandoned  Atmospherics Monitoring Room"
+		name = "abandoned  Atmospherics Monitoring Room"
 		icon_state = "engine_monitoring"
 
 	engineering
@@ -1079,35 +1079,35 @@ var/list/ghostteleportlocs = list()
 		icon_state = "engine_smes"
 
 	engineering_foyer
-		name = "\improper abandoned  Engineering Foyer"
+		name = "abandoned  Engineering Foyer"
 		icon_state = "engine"
 
 	break_room
-		name = "\improper abandoned  Engineering Break Room"
+		name = "abandoned  Engineering Break Room"
 		icon_state = "engine"
 
 	hallway
-		name = "\improper abandoned  Engineering Hallway"
+		name = "abandoned  Engineering Hallway"
 		icon_state = "engine_hallway"
 
 	engine_hallway
-		name = "\improper abandoned  Engine Room Hallway"
+		name = "abandoned  Engine Room Hallway"
 		icon_state = "engine_hallway"
 
 	engine_eva
-		name = "\improper abandoned  Engine EVA"
+		name = "abandoned  Engine EVA"
 		icon_state = "engine_eva"
 
 	engine_eva_maintenance
-		name = "\improper abandoned  Engine EVA Maintenance"
+		name = "abandoned  Engine EVA Maintenance"
 		icon_state = "engine_eva"
 
 	workshop
-		name = "\improper abandoned  Engineering Workshop"
+		name = "abandoned  Engineering Workshop"
 		icon_state = "engine_storage"
 
 	locker_room
-		name = "\improper abandoned  Engineering Locker Room"
+		name = "abandoned  Engineering Locker Room"
 		icon_state = "engine_storage"
 
 
@@ -1120,27 +1120,27 @@ var/list/ghostteleportlocs = list()
 	lighting_use_dynamic = 0
 
 	auxport
-		name = "\improper abandoned  Fore Port Solar Array"
+		name = "abandoned  Fore Port Solar Array"
 		icon_state = "panelsA"
 
 	auxstarboard
-		name = "\improper abandoned  Fore Starboard Solar Array"
+		name = "abandoned  Fore Starboard Solar Array"
 		icon_state = "panelsA"
 
 	fore
-		name = "\improper abandoned  Fore Solar Array"
+		name = "abandoned  Fore Solar Array"
 		icon_state = "yellow"
 
 	aft
-		name = "\improper abandoned  Aft Solar Array"
+		name = "abandoned  Aft Solar Array"
 		icon_state = "aft"
 
 	starboard
-		name = "\improper abandoned  Aft Starboard Solar Array"
+		name = "abandoned  Aft Starboard Solar Array"
 		icon_state = "panelsS"
 
 	port
-		name = "\improper abandoned  Aft Port Solar Array"
+		name = "abandoned  Aft Port Solar Array"
 		icon_state = "panelsP"
 
 /area/maintenance/auxsolarport
@@ -1164,19 +1164,19 @@ var/list/ghostteleportlocs = list()
 	icon_state = "SolarcontrolA"
 
 /area/assembly/chargebay
-	name = "\improper abandoned  Mech Bay"
+	name = "abandoned  Mech Bay"
 	icon_state = "mechbay"
 
 /area/assembly/showroom
-	name = "\improper abandoned  Robotics Showroom"
+	name = "abandoned  Robotics Showroom"
 	icon_state = "showroom"
 
 /area/assembly/robotics
-	name = "\improper abandoned  Robotics Lab"
+	name = "abandoned  Robotics Lab"
 	icon_state = "ass_line"
 
 /area/assembly/assembly_line //Derelict Assembly Line
-	name = "\improper abandoned  Assembly Line"
+	name = "abandoned  Assembly Line"
 	icon_state = "ass_line"
 	power_equip = 0
 	power_light = 0
@@ -1185,17 +1185,17 @@ var/list/ghostteleportlocs = list()
 //Teleporter
 
 /area/teleporter
-	name = "\improper abandoned  Teleporter"
+	name = "abandoned  Teleporter"
 	icon_state = "teleporter"
 	music = "signal"
 
 /area/gateway
-	name = "\improper abandoned  Gateway"
+	name = "abandoned  Gateway"
 	icon_state = "teleporter"
 	music = "signal"
 
 /area/AIsattele
-	name = "\improper abandoned  AI Satellite Teleporter Room"
+	name = "abandoned  AI Satellite Teleporter Room"
 	icon_state = "teleporter"
 	music = "signal"
 	ambience = list('sound/ambience/ambimalf.ogg')
@@ -1203,163 +1203,163 @@ var/list/ghostteleportlocs = list()
 //MedBay
 
 /area/medical/medbay
-	name = "\improper abandoned  Medbay"
+	name = "abandoned  Medbay"
 	icon_state = "medbay"
 	music = 'sound/ambience/signal.ogg'
 
 //Medbay is a large area, these additional areas help level out APC load.
 /area/medical/medbay2
-	name = "\improper abandoned  Medbay"
+	name = "abandoned  Medbay"
 	icon_state = "medbay2"
 	music = 'sound/ambience/signal.ogg'
 
 /area/medical/medbay3
-	name = "\improper abandoned  Medbay"
+	name = "abandoned  Medbay"
 	icon_state = "medbay3"
 	music = 'sound/ambience/signal.ogg'
 
 /area/medical/biostorage
-	name = "\improper abandoned  Secondary Storage"
+	name = "abandoned  Secondary Storage"
 	icon_state = "medbay2"
 	music = 'sound/ambience/signal.ogg'
 
 /area/medical/reception
-	name = "\improper abandoned  Medbay Reception"
+	name = "abandoned  Medbay Reception"
 	icon_state = "medbay"
 	music = 'sound/ambience/signal.ogg'
 
 /area/medical/psych
-	name = "\improper abandoned  Psych Room"
+	name = "abandoned  Psych Room"
 	icon_state = "medbay3"
 	music = 'sound/ambience/signal.ogg'
 
 /area/crew_quarters/medbreak
-	name = "\improper abandoned  Break Room"
+	name = "abandoned  Break Room"
 	icon_state = "medbay3"
 	music = 'sound/ambience/signal.ogg'
 
 /area/medical/patients_rooms
-	name = "\improper abandoned  Patient's Rooms"
+	name = "abandoned  Patient's Rooms"
 	icon_state = "patients"
 
 /area/medical/ward
-	name = "\improper abandoned  Recovery Ward"
+	name = "abandoned  Recovery Ward"
 	icon_state = "patients"
 
 /area/medical/patient_a
-	name = "\improper abandoned  Isolation A"
+	name = "abandoned  Isolation A"
 	icon_state = "patients"
 
 /area/medical/patient_b
-	name = "\improper abandoned  Isolation B"
+	name = "abandoned  Isolation B"
 	icon_state = "patients"
 
 /area/medical/patient_c
-	name = "\improper abandoned  Isolation C"
+	name = "abandoned  Isolation C"
 	icon_state = "patients"
 
 /area/medical/patient_wing
-	name = "\improper abandoned  Patient Wing"
+	name = "abandoned  Patient Wing"
 	icon_state = "patients"
 
 /area/medical/cmostore
-	name = "\improper abandoned  Secure Storage"
+	name = "abandoned  Secure Storage"
 	icon_state = "CMO"
 
 /area/medical/robotics
-	name = "\improper abandoned  Robotics"
+	name = "abandoned  Robotics"
 	icon_state = "medresearch"
 
 /area/medical/virology
-	name = "\improper abandoned  Virology"
+	name = "abandoned  Virology"
 	icon_state = "virology"
 
 /area/medical/virologyaccess
-	name = "\improper abandoned  Virology Access"
+	name = "abandoned  Virology Access"
 	icon_state = "virology"
 
 /area/medical/morgue
-	name = "\improper abandoned  Morgue"
+	name = "abandoned  Morgue"
 	icon_state = "morgue"
 	ambience = list('sound/ambience/ambimo1.ogg','sound/ambience/ambimo2.ogg')
 
 /area/medical/chemistry
-	name = "\improper abandoned  Chemistry"
+	name = "abandoned  Chemistry"
 	icon_state = "chem"
 
 /area/medical/surgery
-	name = "\improper abandoned  Operating Theatre 1"
+	name = "abandoned  Operating Theatre 1"
 	icon_state = "surgery"
 
 /area/medical/surgery2
-	name = "\improper abandoned  Operating Theatre 2"
+	name = "abandoned  Operating Theatre 2"
 	icon_state = "surgery"
 
 /area/medical/surgeryobs
-	name = "\improper abandoned  Operation Observation Room"
+	name = "abandoned  Operation Observation Room"
 	icon_state = "surgery"
 
 /area/medical/surgeryprep
-	name = "\improper abandoned  Pre-Op Prep Room"
+	name = "abandoned  Pre-Op Prep Room"
 	icon_state = "surgery"
 
 /area/medical/cryo
-	name = "\improper abandoned  Cryogenics"
+	name = "abandoned  Cryogenics"
 	icon_state = "cryo"
 
 /area/medical/exam_room
-	name = "\improper abandoned  Exam Room"
+	name = "abandoned  Exam Room"
 	icon_state = "exam_room"
 
 /area/medical/genetics
-	name = "\improper abandoned  Genetics Lab"
+	name = "abandoned  Genetics Lab"
 	icon_state = "genetics"
 
 /area/medical/genetics_cloning
-	name = "\improper abandoned  Cloning Lab"
+	name = "abandoned  Cloning Lab"
 	icon_state = "cloning"
 
 /area/medical/sleeper
-	name = "\improper abandoned  Emergency Treatment Centre"
+	name = "abandoned  Emergency Treatment Centre"
 	icon_state = "exam_room"
 
 //Security
 
 /area/security/main
-	name = "\improper abandoned  Security Office"
+	name = "abandoned  Security Office"
 	icon_state = "security"
 
 /area/security/lobby
-	name = "\improper abandoned  Security lobby"
+	name = "abandoned  Security lobby"
 	icon_state = "security"
 
 /area/security/brig
-	name = "\improper abandoned  Brig"
+	name = "abandoned  Brig"
 	icon_state = "brig"
 
 /area/security/prison
-	name = "\improper abandoned  Prison Wing"
+	name = "abandoned  Prison Wing"
 	icon_state = "sec_prison"
 
 
 /area/security/warden
-	name = "\improper abandoned  Warden"
+	name = "abandoned  Warden"
 	icon_state = "Warden"
 
 /area/security/armoury
-	name = "\improper abandoned  Armory"
+	name = "abandoned  Armory"
 	icon_state = "Warden"
 
 /area/security/detectives_office
-	name = "\improper abandoned  Detective's Office"
+	name = "abandoned  Detective's Office"
 	icon_state = "detective"
 
 /area/security/range
-	name = "\improper abandoned  Firing Range"
+	name = "abandoned  Firing Range"
 	icon_state = "firingrange"
 
 /area/security/tactical
-	name = "\improper abandoned  Tactical Equipment"
+	name = "abandoned  Tactical Equipment"
 	icon_state = "Tactical"
 
 /*
@@ -1380,15 +1380,15 @@ var/list/ghostteleportlocs = list()
 */
 
 /area/security/nuke_storage
-	name = "\improper abandoned  Vault"
+	name = "abandoned  Vault"
 	icon_state = "nuke_storage"
 
 /area/security/checkpoint
-	name = "\improper abandoned  Security Checkpoint"
+	name = "abandoned  Security Checkpoint"
 	icon_state = "checkpoint1"
 
 /area/security/checkpoint2
-	name = "\improper abandoned  Security Checkpoint"
+	name = "abandoned  Security Checkpoint"
 	icon_state = "security"
 
 /area/security/checkpoint/supply
@@ -1408,113 +1408,113 @@ var/list/ghostteleportlocs = list()
 	icon_state = "checkpoint1"
 
 /area/security/vacantoffice
-	name = "\improper abandoned  Vacant Office"
+	name = "abandoned  Vacant Office"
 	icon_state = "security"
 
 /area/security/vacantoffice2
-	name = "\improper abandoned  Vacant Office"
+	name = "abandoned  Vacant Office"
 	icon_state = "security"
 
 /area/quartermaster
-	name = "\improper abandoned  Quartermasters"
+	name = "abandoned  Quartermasters"
 	icon_state = "quart"
 
 ///////////WORK IN PROGRESS//////////
 
 /area/quartermaster/sorting
-	name = "\improper abandoned  Delivery Office"
+	name = "abandoned  Delivery Office"
 	icon_state = "quartstorage"
 
 ////////////WORK IN PROGRESS//////////
 
 /area/quartermaster/office
-	name = "\improper abandoned  Cargo Office"
+	name = "abandoned  Cargo Office"
 	icon_state = "quartoffice"
 
 /area/quartermaster/storage
-	name = "\improper abandoned  Cargo Bay"
+	name = "abandoned  Cargo Bay"
 	icon_state = "quartstorage"
 
 /area/quartermaster/qm
-	name = "\improper abandoned  Quartermaster's Office"
+	name = "abandoned  Quartermaster's Office"
 	icon_state = "quart"
 
 /area/quartermaster/miningdock
-	name = "\improper abandoned  Mining Dock"
+	name = "abandoned  Mining Dock"
 	icon_state = "mining"
 
 /area/quartermaster/miningstorage
-	name = "\improper abandoned  Mining Storage"
+	name = "abandoned  Mining Storage"
 	icon_state = "green"
 
 /area/quartermaster/mechbay
-	name = "\improper abandoned  Mech Bay"
+	name = "abandoned  Mech Bay"
 	icon_state = "yellow"
 
 /area/janitor/
-	name = "\improper abandoned  Custodial Closet"
+	name = "abandoned  Custodial Closet"
 	icon_state = "janitor"
 
 /area/hydroponics
-	name = "\improper abandoned  Hydroponics"
+	name = "abandoned  Hydroponics"
 	icon_state = "hydro"
 
 /area/hydroponics/garden
-	name = "\improper abandoned  Garden"
+	name = "abandoned  Garden"
 	icon_state = "garden"
 
 //rnd (Research and Development
 
 /area/rnd/research
-	name = "\improper abandoned  Research and Development"
+	name = "abandoned  Research and Development"
 	icon_state = "research"
 
 /area/rnd/docking
-	name = "\improper abandoned  Research Dock"
+	name = "abandoned  Research Dock"
 	icon_state = "research_dock"
 
 /area/rnd/lab
-	name = "\improper abandoned  Research Lab"
+	name = "abandoned  Research Lab"
 	icon_state = "toxlab"
 
 /area/rnd/rdoffice
-	name = "\improper abandoned  Research Director's Office"
+	name = "abandoned  Research Director's Office"
 	icon_state = "head_quarters"
 
 /area/rnd/supermatter
-	name = "\improper abandoned  Supermatter Lab"
+	name = "abandoned  Supermatter Lab"
 	icon_state = "toxlab"
 
 /area/rnd/xenobiology
-	name = "\improper abandoned  Xenobiology Lab"
+	name = "abandoned  Xenobiology Lab"
 	icon_state = "xeno_lab"
 
 /area/rnd/xenobiology/xenoflora_storage
-	name = "\improper abandoned  Xenoflora Storage"
+	name = "abandoned  Xenoflora Storage"
 	icon_state = "xeno_f_store"
 
 /area/rnd/xenobiology/xenoflora
-	name = "\improper abandoned  Xenoflora Lab"
+	name = "abandoned  Xenoflora Lab"
 	icon_state = "xeno_f_lab"
 
 /area/rnd/storage
-	name = "\improper abandoned  Toxins Storage"
+	name = "abandoned  Toxins Storage"
 	icon_state = "toxstorage"
 
 /area/rnd/test_area
-	name = "\improper abandoned  Toxins Test Area"
+	name = "abandoned  Toxins Test Area"
 	icon_state = "toxtest"
 
 /area/rnd/mixing
-	name = "\improper abandoned  Toxins Mixing Room"
+	name = "abandoned  Toxins Mixing Room"
 	icon_state = "toxmix"
 
 /area/rnd/misc_lab
-	name = "\improper abandoned  Miscellaneous Research"
+	name = "abandoned  Miscellaneous Research"
 	icon_state = "toxmisc"
 
 /area/toxins/server
-	name = "\improper abandoned  Server Room"
+	name = "abandoned  Server Room"
 	icon_state = "server"
 
 //Storage
@@ -1565,35 +1565,35 @@ var/list/ghostteleportlocs = list()
 
 /area/storage/testroom
 	requires_power = 0
-	name = "\improper abandoned  Test Room"
+	name = "abandoned  Test Room"
 	icon_state = "storage"
 
 //DJSTATION
 
 /area/djstation
-	name = "\improper abandoned  Listening Post"
+	name = "abandoned  Listening Post"
 	icon_state = "LP"
 
 /area/djstation/solars
-	name = "\improper abandoned  Listening Post Solars"
+	name = "abandoned  Listening Post Solars"
 	icon_state = "LPS"
 
 //DERELICT
 /*
 /area/derelict
-	name = "\improper abandoned  Derelict Station"
+	name = "abandoned  Derelict Station"
 	icon_state = "storage"
 
 /area/derelict/hallway/primary
-	name = "\improper abandoned  Derelict Primary Hallway"
+	name = "abandoned  Derelict Primary Hallway"
 	icon_state = "hallP"
 
 /area/derelict/hallway/secondary
-	name = "\improper abandoned  Derelict Secondary Hallway"
+	name = "abandoned  Derelict Secondary Hallway"
 	icon_state = "hallS"
 
 /area/derelict/arrival
-	name = "\improper abandoned  Derelict Arrival Centre"
+	name = "abandoned  Derelict Arrival Centre"
 	icon_state = "yellow"
 
 /area/derelict/storage/equipment
@@ -1607,11 +1607,11 @@ var/list/ghostteleportlocs = list()
 	icon_state = "green"
 
 /area/derelict/bridge
-	name = "\improper abandoned  Derelict Control Room"
+	name = "abandoned  Derelict Control Room"
 	icon_state = "bridge"
 
 /area/derelict/secret
-	name = "\improper abandoned  Derelict Secret Room"
+	name = "abandoned  Derelict Secret Room"
 	icon_state = "library"
 
 /area/derelict/bridge/access
@@ -1619,15 +1619,15 @@ var/list/ghostteleportlocs = list()
 	icon_state = "auxstorage"
 
 /area/derelict/bridge/ai_upload
-	name = "\improper abandoned  Derelict Computer Core"
+	name = "abandoned  Derelict Computer Core"
 	icon_state = "ai"
 
 /area/derelict/solar_control
-	name = "\improper abandoned  Derelict Solar Control"
+	name = "abandoned  Derelict Solar Control"
 	icon_state = "engine"
 
 /area/derelict/crew_quarters
-	name = "\improper abandoned  Derelict Crew Quarters"
+	name = "abandoned  Derelict Crew Quarters"
 	icon_state = "fitness"
 
 /area/derelict/medical
@@ -1635,15 +1635,15 @@ var/list/ghostteleportlocs = list()
 	icon_state = "medbay"
 
 /area/derelict/medical/morgue
-	name = "\improper abandoned  Derelict Morgue"
+	name = "abandoned  Derelict Morgue"
 	icon_state = "morgue"
 
 /area/derelict/medical/chapel
-	name = "\improper abandoned  Derelict Chapel"
+	name = "abandoned  Derelict Chapel"
 	icon_state = "chapel"
 
 /area/derelict/teleporter
-	name = "\improper abandoned  Derelict Teleporter"
+	name = "abandoned  Derelict Teleporter"
 	icon_state = "teleporter"
 
 /area/derelict/eva
@@ -1651,98 +1651,98 @@ var/list/ghostteleportlocs = list()
 	icon_state = "eva"
 
 /area/derelict/ship
-	name = "\improper abandoned  Abandoned Ship"
+	name = "abandoned  Abandoned Ship"
 	icon_state = "yellow"
 
 /area/solar/derelict_starboard
-	name = "\improper abandoned  Derelict Starboard Solar Array"
+	name = "abandoned  Derelict Starboard Solar Array"
 	icon_state = "panelsS"
 
 /area/solar/derelict_aft
-	name = "\improper abandoned  Derelict Aft Solar Array"
+	name = "abandoned  Derelict Aft Solar Array"
 	icon_state = "aft"
 
 /area/derelict/singularity_engine
-	name = "\improper abandoned  Derelict Singularity Engine"
+	name = "abandoned  Derelict Singularity Engine"
 	icon_state = "engine"
 */
 //HALF-BUILT STATION (REPLACES DERELICT IN BAYCODE, ABOVE IS LEFT FOR DOWNSTREAM)
 /*
 /area/shuttle/constructionsite
-	name = "\improper abandoned  Construction Site Shuttle"
+	name = "abandoned  Construction Site Shuttle"
 	icon_state = "yellow"
 
 /area/shuttle/constructionsite/station
-	name = "\improper abandoned  Construction Site Shuttle"
+	name = "abandoned  Construction Site Shuttle"
 
 /area/shuttle/constructionsite/site
-	name = "\improper abandoned  Construction Site Shuttle"
+	name = "abandoned  Construction Site Shuttle"
 
 /area/constructionsite
-	name = "\improper abandoned  Construction Site"
+	name = "abandoned  Construction Site"
 	icon_state = "storage"
 
 /area/constructionsite/storage
-	name = "\improper abandoned  Construction Site Storage Area"
+	name = "abandoned  Construction Site Storage Area"
 
 /area/constructionsite/science
-	name = "\improper abandoned  Construction Site Research"
+	name = "abandoned  Construction Site Research"
 
 /area/constructionsite/bridge
-	name = "\improper abandoned  Construction Site Bridge"
+	name = "abandoned  Construction Site Bridge"
 	icon_state = "bridge"
 
 /area/constructionsite/maintenance
-	name = "\improper abandoned  Construction Site Maintenance"
+	name = "abandoned  Construction Site Maintenance"
 	icon_state = "yellow"
 
 /area/constructionsite/hallway/aft
-	name = "\improper abandoned  Construction Site Aft Hallway"
+	name = "abandoned  Construction Site Aft Hallway"
 	icon_state = "hallP"
 
 /area/constructionsite/hallway/fore
-	name = "\improper abandoned  Construction Site Fore Hallway"
+	name = "abandoned  Construction Site Fore Hallway"
 	icon_state = "hallS"
 
 /area/constructionsite/atmospherics
-	name = "\improper abandoned  Construction Site Atmospherics"
+	name = "abandoned  Construction Site Atmospherics"
 	icon_state = "green"
 
 /area/constructionsite/medical
-	name = "\improper abandoned  Construction Site Medbay"
+	name = "abandoned  Construction Site Medbay"
 	icon_state = "medbay"
 
 /area/constructionsite/ai
-	name = "\improper abandoned  Construction Computer Core"
+	name = "abandoned  Construction Computer Core"
 	icon_state = "ai"
 
 /area/constructionsite/engineering
-	name = "\improper abandoned  Construction Site Engine Bay"
+	name = "abandoned  Construction Site Engine Bay"
 	icon_state = "engine"
 
 /area/solar/constructionsite
-	name = "\improper abandoned  Construction Site Solars"
+	name = "abandoned  Construction Site Solars"
 	icon_state = "aft"
 
 //area/constructionsite
-//	name = "\improper abandoned  Construction Site Shuttle"
+//	name = "abandoned  Construction Site Shuttle"
 
 //area/constructionsite
-//	name = "\improper abandoned  Construction Site Shuttle"
+//	name = "abandoned  Construction Site Shuttle"
 
 */
 //Construction
 
 /area/construction
-	name = "\improper abandoned  Construction Area"
+	name = "abandoned  Construction Area"
 	icon_state = "yellow"
 
 /area/construction/supplyshuttle
-	name = "\improper abandoned  Supply Shuttle"
+	name = "abandoned  Supply Shuttle"
 	icon_state = "yellow"
 
 /area/construction/quarters
-	name = "\improper abandoned  Engineer's Quarters"
+	name = "abandoned  Engineer's Quarters"
 	icon_state = "yellow"
 
 /area/construction/qmaint
@@ -1750,15 +1750,15 @@ var/list/ghostteleportlocs = list()
 	icon_state = "yellow"
 
 /area/construction/hallway
-	name = "\improper abandoned  Hallway"
+	name = "abandoned  Hallway"
 	icon_state = "yellow"
 
 /area/construction/solars
-	name = "\improper abandoned  Solar Panels"
+	name = "abandoned  Solar Panels"
 	icon_state = "yellow"
 
 /area/construction/solarscontrol
-	name = "\improper abandoned  Solar Panel Control"
+	name = "abandoned  Solar Panel Control"
 	icon_state = "yellow"
 
 /area/construction/Storage
@@ -1780,7 +1780,7 @@ var/list/ghostteleportlocs = list()
 	icon_state = "storage"
 
 /area/turret_protected/ai_upload
-	name = "\improper abandoned  AI Upload Chamber"
+	name = "abandoned  AI Upload Chamber"
 	icon_state = "ai_upload"
 	ambience = list('sound/ambience/ambimalf.ogg')
 
@@ -1794,16 +1794,16 @@ var/list/ghostteleportlocs = list()
 	icon_state = "ai_server"
 
 /area/turret_protected/ai
-	name = "\improper abandoned  AI Chamber"
+	name = "abandoned  AI Chamber"
 	icon_state = "ai_chamber"
 	ambience = list('sound/ambience/ambimalf.ogg')
 
 /area/turret_protected/ai_cyborg_station
-	name = "\improper abandoned  Cyborg Station"
+	name = "abandoned  Cyborg Station"
 	icon_state = "ai_cyborg"
 
 /area/turret_protected/aisat
-	name = "\improper abandoned  AI Satellite"
+	name = "abandoned  AI Satellite"
 	icon_state = "ai"
 
 

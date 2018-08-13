@@ -133,12 +133,12 @@
 	//Queens have weird, hardcoded naming conventions based on upgrade levels. They also never get nicknumbers
 	if(caste == "Queen")
 		switch(upgrade)
-			if(0) name = "\improper [name_prefix]Queen"			 //Young
-			if(1) name = "\improper [name_prefix]Elite Queen"	 //Mature
-			if(2) name = "\improper [name_prefix]Elite Empress"	 //Elite
-			if(3) name = "\improper [name_prefix]Ancient Empress" //Ancient
-	else if(caste == "Predalien") name = "\improper [name_prefix][name] ([nicknumber])"
-	else name = "\improper [name_prefix][upgrade_name] [caste] ([nicknumber])"
+			if(0) name = "[name_prefix]Queen"			 //Young
+			if(1) name = "[name_prefix]Elite Queen"	 //Mature
+			if(2) name = "[name_prefix]Elite Empress"	 //Elite
+			if(3) name = "[name_prefix]Ancient Empress" //Ancient
+	else if(caste == "Predalien") name = "[name_prefix][name] ([nicknumber])"
+	else name = "[name_prefix][upgrade_name] [caste] ([nicknumber])"
 
 	//Update linked data so they show up properly
 	real_name = name

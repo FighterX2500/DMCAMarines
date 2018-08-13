@@ -25,7 +25,7 @@
 	armor = list(melee = 20, bullet = 30, laser = 25, energy = 10, bomb = 15, bio = 0, rad = 0)
 
 /obj/item/clothing/suit/armor/vest/pilot
-	name = "\improper M70 flak jacket"
+	name = "M70 flak jacket"
 	desc = "A flak jacket used by dropship pilots to protect themselves while flying in the cockpit. Excels in protecting the wearer against high-velocity solid projectiles."
 	icon = 'icons/obj/clothing/cm_suits.dmi'
 	icon_state = "pilot"
@@ -121,7 +121,7 @@
 	time_to_equip = 20
 
 /obj/item/clothing/suit/armor/riot/marine
-	name = "\improper M5 riot control armor"
+	name = "M5 riot control armor"
 	desc = "A heavily modified suit of M2 MP Armor used to supress riots from buckethead marines. Slows you down a lot."
 	icon_state = "riot"
 	item_state = "swat_suit"

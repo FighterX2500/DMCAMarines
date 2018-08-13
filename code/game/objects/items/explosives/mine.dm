@@ -4,7 +4,7 @@
 //Mines have an invisible "tripwire" atom that explodes when crossed
 //Stepping directly on the mine will also blow it up
 /obj/item/explosive/mine
-	name = "\improper M20 Claymore anti-personnel mine"
+	name = "M20 Claymore anti-personnel mine"
 	desc = "The M20 Claymore is a directional proximity triggered anti-personnel mine designed by Armat Systems for use by the United States Colonial Marines."
 	icon = 'icons/obj/items/grenade.dmi'
 	icon_state = "m20"
@@ -37,7 +37,7 @@
 	. = ..()
 
 /obj/item/explosive/mine/pmc
-	name = "\improper M20P Claymore anti-personnel mine"
+	name = "M20P Claymore anti-personnel mine"
 	desc = "The M20P Claymore is a directional proximity triggered anti-personnel mine designed by Armat Systems for use by the United States Colonial Marines. It has been modified for use by the W-Y PMC forces."
 	icon_state = "m20p"
 	iff_signal = ACCESS_IFF_PMC

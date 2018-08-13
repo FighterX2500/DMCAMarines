@@ -1,6 +1,6 @@
 //Base Instance
 /area/desert_dam
-	name = "\improper Desert Dam"
+	name = "Desert Dam"
 	icon_state = "cliff_blocked"
 
 
@@ -10,177 +10,177 @@
 
 //NorthEastern Lab Section
 /area/desert_dam/interior/lab_northeast
-	name = "\improper "
+	name = ""
 	icon_state = "purple"
 /area/desert_dam/interior/lab_northeast/lobby
-	name = "\improper "
+	name = ""
 	icon_state = "green"
 /area/desert_dam/interior/lab_northeast/west_hallway
-	name = "\improper "
+	name = ""
 	icon_state = "blue"
 /area/desert_dam/interior/lab_northeast/central_hallway
-	name = "\improper "
+	name = ""
 	icon_state = "green"
 /area/desert_dam/interior/lab_northeast/east_hallway
-	name = "\improper "
+	name = ""
 	icon_state = "yellow"
 /area/desert_dam/interior/lab_northeast/workshop
-	name = "\improper "
+	name = ""
 	icon_state = "ass_line"
 /area/desert_dam/interior/lab_northeast/storage
-	name = "\improper "
+	name = ""
 	icon_state = "storage"
 /area/desert_dam/interior/lab_northeast/RD_office
-	name = "\improper "
+	name = ""
 	icon_state = "yellow"
 /area/desert_dam/interior/lab_northeast/maintenence
-	name = "\improper "
+	name = ""
 	icon_state = "maintcentral"
 /area/desert_dam/interior/lab_northeast/containment
-	name = "\improper "
+	name = ""
 	icon_state = "purple"
 /area/desert_dam/interior/lab_northeast/RND
-	name = "\improper "
+	name = ""
 	icon_state = "purple"
 /area/desert_dam/interior/lab_northeast/biology
-	name = "\improper "
+	name = ""
 	icon_state = "purple"
 /area/desert_dam/interior/lab_northeast/surgury
-	name = "\improper "
+	name = ""
 	icon_state = "red"
 /area/desert_dam/interior/lab_northeast/excavation
-	name = "\improper "
+	name = ""
 	icon_state = "blue"
 /area/desert_dam/interior/lab_northeast/excavation
-	name = "\improper "
+	name = ""
 	icon_state = "blue"
 /area/desert_dam/interior/lab_northeast/west_entrance
-	name = "\improper "
+	name = ""
 	icon_state = "purple"
 /area/desert_dam/interior/lab_northeast/east_entrance
-	name = "\improper "
+	name = ""
 	icon_state = "purple"
 /area/desert_dam/interior/lab_northeast/security_checkpoint
-	name = "\improper "
+	name = ""
 	icon_state = "purple"
 /area/desert_dam/interior/lab_northeast/security_office
-	name = "\improper "
+	name = ""
 	icon_state = "security"
 /area/desert_dam/interior/lab_northeast/security_armory
-	name = "\improper "
+	name = ""
 	icon_state = "armory"
 /area/desert_dam/interior/lab_northeast/xenobiology
-	name = "\improper "
+	name = ""
 	icon_state = "red"
 
 //Dam Interior
 /area/desert_dam/interior/dam_interior/engine_room
-	name = "\improper "
+	name = ""
 	icon_state = "yellow"
 /area/desert_dam/interior/dam_interior/control_room
-	name = "\improper "
+	name = ""
 	icon_state = "red"
 /area/desert_dam/interior/dam_interior/smes_main
-	name = "\improper "
+	name = ""
 	icon_state = "purple"
 /area/desert_dam/interior/dam_interior/smes_backup
-	name = "\improper "
+	name = ""
 	icon_state = "green"
 /area/desert_dam/interior/dam_interior/engine_east_wing
-	name = "\improper "
+	name = ""
 	icon_state = "blue-red"
 /area/desert_dam/interior/dam_interior/engine_west_wing
-	name = "\improper "
+	name = ""
 	icon_state = "yellow"
 /area/desert_dam/interior/dam_interior/lobby
-	name = "\improper "
+	name = ""
 	icon_state = "purple"
 /area/desert_dam/interior/dam_interior/atmos_storage
-	name = "\improper "
+	name = ""
 	icon_state = "purple"
 /area/desert_dam/interior/dam_interior/northwestern_tunnel
-	name = "\improper "
+	name = ""
 	icon_state = "green"
 /area/desert_dam/interior/dam_interior/north_tunnel
-	name = "\improper "
+	name = ""
 	icon_state = "blue-red"
 /area/desert_dam/interior/dam_interior/west_tunnel
-	name = "\improper "
+	name = ""
 	icon_state = "yellow"
 /area/desert_dam/interior/dam_interior/central_tunnel
-	name = "\improper "
+	name = ""
 	icon_state = "red"
 /area/desert_dam/interior/dam_interior/south_tunnel
-	name = "\improper "
+	name = ""
 	icon_state = "purple"
 /area/desert_dam/interior/dam_interior/northeastern_tunnel
-	name = "\improper "
+	name = ""
 	icon_state = "green"
 /area/desert_dam/interior/dam_interior/CE_office
-	name = "\improper "
+	name = ""
 	icon_state = "yellow"
 /area/desert_dam/interior/dam_interior/workshop
-	name = "\improper "
+	name = ""
 	icon_state = "purple"
 /area/desert_dam/interior/dam_interior/hanger
-	name = "\improper "
+	name = ""
 	icon_state = "hangar"
 /area/desert_dam/interior/dam_interior/hangar_storage
-	name = "\improper "
+	name = ""
 	icon_state = "storage"
 /area/desert_dam/interior/dam_interior/auxilary_tool_storage
-	name = "\improper "
+	name = ""
 	icon_state = "red"
 /area/desert_dam/interior/dam_interior/primary_tool_storage
-	name = "\improper "
+	name = ""
 	icon_state = "blue"
 /area/desert_dam/interior/dam_interior/tech_storage
-	name = "\improper "
+	name = ""
 	icon_state = "dark"
 /area/desert_dam/interior/dam_interior/break_room
-	name = "\improper "
+	name = ""
 	icon_state = "yellow"
 /area/desert_dam/interior/dam_interior/disposals
-	name = "\improper "
+	name = ""
 	icon_state = "disposal"
 /area/desert_dam/interior/dam_interior/western_dam_cave
-	name = "\improper "
+	name = ""
 	icon_state = "red"
 /area/desert_dam/interior/dam_interior/office
-	name = "\improper "
+	name = ""
 	icon_state = "red"
 /area/desert_dam/interior/dam_interior
-	name = "\improper "
+	name = ""
 	icon_state = ""
 
 /area/desert_dam/interior/dam_interior/north_tunnel_entrance
-	name = "\improper "
+	name = ""
 	icon_state = "yellow"
 /area/desert_dam/interior/dam_interior/east_tunnel_entrance
-	name = "\improper "
+	name = ""
 	icon_state = "yellow"
 /area/desert_dam/interior/dam_interior/south_tunnel_entrance
-	name = "\improper "
+	name = ""
 	icon_state = "red"
 
 /area/desert_dam/interior/caves/northern_caves
-	name = "\improper "
+	name = ""
 	icon_state = "red"
 /area/desert_dam/interior/caves/east_caves
-	name = "\improper "
+	name = ""
 	icon_state = "red"
 
 /area/desert_dam/interior/caves/central_caves
-	name = "\improper "
+	name = ""
 	icon_state = "yellow"
 /area/desert_dam/interior/caves/central_caves/entrances/east_tunnel_entrance
-	name = "\improper "
+	name = ""
 	icon_state = "red"
 /area/desert_dam/interior/caves/central_caves/entrances/south_tunnel_entrance
-	name = "\improper "
+	name = ""
 	icon_state = "red"
 /area/desert_dam/interior/caves/central_caves/entrances/west_tunnel_entrance
-	name = "\improper "
+	name = ""
 	icon_state = "red"
 
 //BUILDING
@@ -538,19 +538,19 @@
 
 //Landing Pad for the Alamo. THIS IS NOT THE SHUTTLE AREA
 /area/desert_dam/exterior/landing_pad_one
-	name = "\improper Airstrip Landing Pad"
+	name = "Airstrip Landing Pad"
 	icon_state = "landing_pad"
 /area/desert_dam/exterior/landing_pad_one_external
-	name = "\improper Airstrip Landing Valley"
+	name = "Airstrip Landing Valley"
 	icon_state = "landing_pad_ext"
 
 
 //Landing Pad for the Normandy. THIS IS NOT THE SHUTTLE AREA
 /area/desert_dam/exterior/landing_pad_two
-	name = "\improper Aerodrome Landing Pad"
+	name = "Aerodrome Landing Pad"
 	icon_state = "landing_pad"
 /area/desert_dam/exterior/landing_pad_two_external
-	name = "\improper Aerodrome Landing Valley"
+	name = "Aerodrome Landing Valley"
 	icon_state = "landing_pad_ext"
 
 //Valleys

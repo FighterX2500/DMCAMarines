@@ -19,25 +19,25 @@
 	w_class = 4
 
 /obj/item/prop/almayer/flight_recorder
-	name = "\improper FR-112 flight recorder"
+	name = "FR-112 flight recorder"
 	desc = "A small red box that contains flight data from a dropship while its on mission. Usually refered to the black box, although this one comes in bloody red."
 	icon_state = "flight_recorder"
 	w_class = 4
 
 /obj/item/prop/almayer/lantern_pod
-	name = "\improper LANTERN pod"
+	name = "LANTERN pod"
 	desc = "A long green box mounted into a dropship to provide various optical support for its ground targeting systems."
 	icon_state = "lantern_pod"
 	w_class = 4
 
 /obj/item/prop/almayer/flare_launcher
-	name = "\improper MJU-77/C case"
+	name = "MJU-77/C case"
 	desc = "A flare launcher that usually gets mounted onto dropships to help survivability against infrared tracking missiles."
 	icon_state = "flare_launcher"
 	w_class = 2
 
 /obj/item/prop/almayer/chaff_launcher
-	name = "\improper RR-247 Chaff case"
+	name = "RR-247 Chaff case"
 	desc = "A chaff launcher that usually gets mounted onto dropships to help survivability against radar tracking missiles."
 	icon_state = "chaff_launcher"
 	w_class = 3
@@ -144,13 +144,13 @@
 
 
 /obj/structure/prop/almayer/mission_planning_system
-	name = "\improper MPS IV computer"
+	name = "MPS IV computer"
 	desc = "The Mission Planning System IV (MPS IV), a enhancement in mission planning and charting for dropship pilots across the USCM. Fully capable of customizing their flight paths and loadouts to suit their combat needs."
 	icon = 'icons/Marine/almayer_props.dmi'
 	icon_state = "mps"
 
 /obj/structure/prop/almayer/mapping_computer
-	name = "\improper CMPS II computer"
+	name = "CMPS II computer"
 	desc = "The Common Mapping Production System version II allows for sensory imput from satellites and ship systems to derive planetary maps in a standardized fashion for all USCM pilots."
 	icon = 'icons/Marine/almayer_props.dmi'
 	icon_state = "mapping_comp"
@@ -174,7 +174,7 @@
 	icon_state = "sensor_comp3"
 
 /obj/structure/prop/almayer/missile_tube
-	name = "\improper Mk 33 ASAT launcher system"
+	name = "Mk 33 ASAT launcher system"
 	desc = "Cold launch tubes that can fire a few varieties of missiles out of them The most common being the ASAT-21 Rapier IV missile used against satellites and other spacecraft and the BGM-227 Sledgehammer missile which is used for ground attack."
 	icon = 'icons/Marine/almayer_props96.dmi'
 	icon_state = "missiletubenorth"
@@ -219,7 +219,7 @@
 		user << "<span class='notice'>To our fallen soldiers:</span> <b>[faltext]</b>."
 
 /obj/structure/prop/almayer/particle_cannon
-	name = "\improper 75cm/140 Mark 74 General Atomics railgun"
+	name = "75cm/140 Mark 74 General Atomics railgun"
 	desc = "The Mark 74 Railgun is top of the line for space based weaponry. Capable of firing a round with a diameter of 3/4ths of a meter at 24 kilometers per second. It also is capable of using a variety of round types which can be interchanged at anytime with its newly designed feed system."
 	icon = 'icons/obj/machines/artillery.dmi'
 	icon_state = "1"
@@ -248,7 +248,7 @@
 
 
 /obj/structure/prop/almayer/anti_air_cannon
-	name = "\improper Anti-air Cannon"
+	name = "Anti-air Cannon"
 	desc = "An anti-air cannon for shooting spaceships. It looks broken."
 	icon = 'icons/effects/128x128.dmi'
 	icon_state = "anti_air_cannon"
@@ -268,7 +268,7 @@
 
 
 /obj/structure/prop/almayer/cannon_cables
-	name = "\improper Cannon cables"
+	name = "Cannon cables"
 	desc = "Some large cables."
 	icon = 'icons/Marine/almayer_props.dmi'
 	icon_state = "cannon_cables"
@@ -284,7 +284,7 @@
 
 
 /obj/structure/prop/almayer/cannon_cable_connector
-	name = "\improper Cannon cable connector"
+	name = "Cannon cable connector"
 	desc = "A connector for the large cannon cables."
 	icon = 'icons/Marine/almayer_props.dmi'
 	icon_state = "cannon_cable_connector"

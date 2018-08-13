@@ -44,12 +44,12 @@
 	usable = 1
 	radio_freq = ALPHA_FREQ
 
-/datum/squad/bravo
-	name = "Bravo"
-	color = 2
-	access = list(ACCESS_MARINE_BRAVO)
+/datum/squad/delta
+	name = "Delta"
+	color = 4
+	access = list(ACCESS_MARINE_DELTA)
 	usable = 1
-	radio_freq = BRAVO_FREQ
+	radio_freq = DELTA_FREQ
 
 //Straight-up insert a marine into a squad.
 //This sets their ID, increments the total count, and so on. Everything else is done in job_controller.dm.

@@ -267,7 +267,7 @@
 //M44 MAGNUM REVOLVER //Not actually cannon, but close enough.
 
 /obj/item/weapon/gun/revolver/m44
-	name = "\improper M44 combat revolver"
+	name = "M44 combat revolver"
 	desc = "A bulky revolver, occasionally carried by assault troops and officers in the Colonial Marines, as well civilian law enforcement. Uses .44 Magnum rounds."
 	icon_state = "m44"
 	item_state = "m44"
@@ -294,7 +294,7 @@
 //RUSSIAN REVOLVER //Based on the 7.62mm Russian revolvers.
 
 /obj/item/weapon/gun/revolver/upp
-	name = "\improper N-Y 7.62mm revolver"
+	name = "N-Y 7.62mm revolver"
 	desc = "The Nagant-Yamasaki 7.62 is an effective killing machine designed by a consortion of shady Not-Americans. It is frequently found in the hands of criminals or mercenaries."
 	icon_state = "ny762"
 	item_state = "ny762"
@@ -325,7 +325,7 @@
 //357 REVOLVER //Based on the generic S&W 357.
 
 /obj/item/weapon/gun/revolver/small
-	name = "\improper S&W .357 revolver"
+	name = "S&W .357 revolver"
 	desc = "A lean .357 made by Smith & Wesson. A timeless classic, from antiquity to the future."
 	icon_state = "sw357"
 	item_state = "ny762" //PLACEHOLDER
@@ -355,7 +355,7 @@
 //BURST REVOLVER //Mateba is pretty well known. The cylinder folds up instead of to the side.
 
 /obj/item/weapon/gun/revolver/mateba
-	name = "\improper Mateba autorevolver"
+	name = "Mateba autorevolver"
 	desc = "The Mateba is a powerful, fast-firing revolver that uses its own recoil to rotate the cylinders. It uses heavy .454 rounds."
 	icon_state = "mateba"
 	item_state = "mateba"
@@ -391,13 +391,13 @@
 
 
 /obj/item/weapon/gun/revolver/mateba/admiral
-	name = "\improper Mateba autorevolver custom++"
+	name = "Mateba autorevolver custom++"
 	desc = "The Mateba is a powerful, fast-firing revolver that uses its own recoil to rotate the cylinders. This version is snubnosed, engraved with gold, tinted black, and highly customized for a high-ranking admiral. It uses heavy .454 rounds."
 	icon_state = "amateba"
 	item_state = "amateba"
 
 /obj/item/weapon/gun/revolver/mateba/cmateba
-	name = "\improper Mateba autorevolver special"
+	name = "Mateba autorevolver special"
 	desc = "The Mateba is a powerful, fast-firing revolver that uses its own recoil to rotate the cylinders. It uses heavy .454 rounds. This version is a limited edition produced for the USCM, and issued in extremely small amounts. Was a mail-order item back in 2172, and is highly sought after by officers across many different battalions. This one is stamped 'Major Ike Saker, 7th 'Falling Falcons' Battalion.'"
 	icon_state = "cmateba"
 	item_state = "cmateba"
@@ -408,7 +408,7 @@
 //MARSHALS REVOLVER //Spearhead exists in Alien cannon.
 
 /obj/item/weapon/gun/revolver/cmb
-	name = "\improper CMB Spearhead autorevolver"
+	name = "CMB Spearhead autorevolver"
 	desc = "An automatic revolver chambered in .357. Commonly issued to Colonial Marshals. It has a burst mode."
 	icon_state = "spearhead"
 	item_state = "spearhead"

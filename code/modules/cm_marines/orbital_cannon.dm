@@ -5,7 +5,7 @@ var/obj/structure/orbital_cannon/almayer_orbital_cannon
 var/list/ob_type_fuel_requirements
 
 /obj/structure/orbital_cannon
-	name = "\improper Orbital Cannon"
+	name = "Orbital Cannon"
 	desc = "The USCM Orbital Cannon System. Used for shooting large targets on the planet that is orbited. It accelerates its payload with solid fuel for devastating results upon impact."
 	icon = 'icons/effects/128x128.dmi'
 	icon_state = "OBC_unloaded"
@@ -367,7 +367,7 @@ var/list/ob_type_fuel_requirements
 
 
 /obj/structure/ob_ammo/warhead/explosive
-	name = "\improper HE orbital warhead"
+	name = "HE orbital warhead"
 	warhead_kind = "explosive"
 	icon_state = "ob_warhead_1"
 
@@ -378,7 +378,7 @@ var/list/ob_type_fuel_requirements
 
 
 /obj/structure/ob_ammo/warhead/incendiary
-	name = "\improper Incendiary orbital warhead"
+	name = "Incendiary orbital warhead"
 	warhead_kind = "incendiary"
 	icon_state = "ob_warhead_2"
 
@@ -390,7 +390,7 @@ var/list/ob_type_fuel_requirements
 
 
 /obj/structure/ob_ammo/warhead/cluster
-	name = "\improper Cluster orbital warhead"
+	name = "Cluster orbital warhead"
 	warhead_kind = "cluster"
 	icon_state = "ob_warhead_3"
 
@@ -425,7 +425,7 @@ var/list/ob_type_fuel_requirements
 
 
 /obj/machinery/computer/orbital_cannon_console
-	name = "\improper Orbital Cannon Console"
+	name = "Orbital Cannon Console"
 	desc = "The console controlling the orbital cannon loading systems."
 	icon_state = "ob_console"
 	dir = WEST

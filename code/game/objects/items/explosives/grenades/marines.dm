@@ -1,7 +1,7 @@
 
 ///***GRENADES***///
 /obj/item/explosive/grenade/frag
-	name = "\improper M40 HEDP grenade"
+	name = "M40 HEDP grenade"
 	desc = "A small, but deceptively strong fragmentation grenade that has been phasing out the M15 Fragmentation Grenades. Capable of being loaded in the M92 Launcher, or thrown by hand."
 	icon_state = "grenade"
 	det_time = 40
@@ -58,7 +58,7 @@
 		return
 
 /obj/item/explosive/grenade/frag/m15
-	name = "\improper M15 fragmentation grenade"
+	name = "M15 fragmentation grenade"
 	desc = "An outdated USCM Fragmentation Grenade. With decades of service in the USCM, the old M15 Fragmentation Grenade is slowly being replaced with the slightly safer M40 HEDP. It is set to detonate in 4 seconds."
 	icon_state = "grenade_ex"
 	item_state = "grenade_ex"
@@ -71,7 +71,7 @@
 		return
 
 /obj/item/explosive/grenade/frag/stick
-	name = "\improper Webley Mk15 stick grenade"
+	name = "Webley Mk15 stick grenade"
 	desc = "A fragmentation grenade produced in the colonies, most commonly using old designs and schematics. It explodes 3 seconds after the pin has been pulled."
 	icon_state = "grenade_stick"
 	item_state = "grenade_stick"
@@ -89,7 +89,7 @@
 		return
 
 /obj/item/explosive/grenade/frag/upp
-	name = "\improper Type 5 shrapnel grenade"
+	name = "Type 5 shrapnel grenade"
 	desc = "A fragmentation grenade found within the ranks of the UPP. Designed to explode into shrapnel and rupture the bodies of opponents. It explodes 3 seconds after the pin has been pulled."
 	icon_state = "grenade_upp"
 	item_state = "grenade_upp"
@@ -104,7 +104,7 @@
 		return
 
 /obj/item/explosive/grenade/incendiary
-	name = "\improper M40 HIDP incendiary grenade"
+	name = "M40 HIDP incendiary grenade"
 	desc = "The M40 HIDP is a small, but deceptively strong incendiary grenade. It is set to detonate in 4 seconds."
 	icon_state = "grenade_fire"
 	det_time = 40
@@ -128,7 +128,7 @@ proc/flame_radius(radius = 1, turf/turf) //~Art updated fire.
 
 
 /obj/item/explosive/grenade/incendiary/molotov
-	name = "\improper improvised firebomb"
+	name = "improvised firebomb"
 	desc = "A potent, improvised firebomb, coupled with a pinch of gunpowder. Cheap, very effective, and deadly in confined spaces. Commonly found in the hands of rebels and terrorists. It can be difficult to predict how many seconds you have before it goes off, so be careful. Chances are, it might explode in your face."
 	icon_state = "molotov"
 	item_state = "molotov"
@@ -148,7 +148,7 @@ proc/flame_radius(radius = 1, turf/turf) //~Art updated fire.
 
 
 /obj/item/explosive/grenade/smokebomb
-	name = "\improper M40 HSDP smoke grenade"
+	name = "M40 HSDP smoke grenade"
 	desc = "The M40 HSDP is a small, but powerful smoke grenade. Based off the same platform as the M40 HEDP. It is set to detonate in 2 seconds."
 	icon_state = "grenade_smoke"
 	det_time = 20
@@ -168,7 +168,7 @@ proc/flame_radius(radius = 1, turf/turf) //~Art updated fire.
 		cdel(src)
 
 /obj/item/explosive/grenade/phosphorus
-	name = "\improper M40 HPDP grenade"
+	name = "M40 HPDP grenade"
 	desc = "The M40 HPDP is a small, but powerful phosphorus grenade. It is set to detonate in 2 seconds."
 	icon_state = "grenade_phos"
 	det_time = 20
@@ -189,7 +189,7 @@ proc/flame_radius(radius = 1, turf/turf) //~Art updated fire.
 		cdel(src)
 
 /obj/item/explosive/grenade/phosphorus/upp
-	name = "\improper Type 8 WP grenade"
+	name = "Type 8 WP grenade"
 	desc = "A deadly gas grenade found within the ranks of the UPP. Designed to spill white phosporus on the target. It explodes 2 seconds after the pin has been pulled."
 	icon_state = "grenade_upp_wp"
 	item_state = "grenade_upp_wp"

@@ -79,7 +79,7 @@
 //This gun is very powerful, but also has a kick.
 
 /obj/item/weapon/gun/minigun
-	name = "\improper Ol' Painless"
+	name = "Ol' Painless"
 	desc = "An enormous multi-barreled rotating gatling gun. This thing will no doubt pack a punch."
 	icon_state = "painless"
 	item_state = "painless"
@@ -114,7 +114,7 @@
 //Toy rocket launcher.
 
 /obj/item/weapon/gun/launcher/rocket/nobugs //Fires dummy rockets, like a toy gun
-	name = "\improper BUG ROCKER rocket launcher"
+	name = "BUG ROCKER rocket launcher"
 	desc = "Where did this come from? <b>NO BUGS</b>"
 	current_mag = /obj/item/ammo_magazine/internal/launcher/rocket/nobugs
 	gun_skill_category = GUN_SKILL_FIREARMS

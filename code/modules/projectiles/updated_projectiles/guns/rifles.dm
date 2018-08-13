@@ -35,7 +35,7 @@
 //M41A PULSE RIFLE
 
 /obj/item/weapon/gun/rifle/m41a
-	name = "\improper M41A pulse rifle MK2"
+	name = "M41A pulse rifle MK2"
 	desc = "The standard issue rifle of the Colonial Marines. Commonly carried by most combat personnel. Uses 10x24mm caseless ammunition."
 	icon_state = "m41a"
 	item_state = "m41a"
@@ -91,7 +91,7 @@
 //M41A PMC VARIANT
 
 /obj/item/weapon/gun/rifle/m41a/elite
-	name = "\improper M41A/2 battle rifle"
+	name = "M41A/2 battle rifle"
 	desc = "A reinforced and remachined version of the tried and tested M41A Pulse Rifle MK2. Given only to elite units."
 	icon_state = "m41a2"
 	item_state = "m41a2"
@@ -116,7 +116,7 @@
 //M41A TRUE AND ORIGINAL
 
 /obj/item/weapon/gun/rifle/m41aMK1
-	name = "\improper M41A pulse rifle"
+	name = "M41A pulse rifle"
 	desc = "An older design of the Pulse Rifle commonly used by Colonial Marines. Uses 10x24mm caseless ammunition."
 	icon_state = "m41amk1" //Placeholder.
 	item_state = "m41amk1" //Placeholder.
@@ -153,7 +153,7 @@
 
 
 /obj/item/weapon/gun/rifle/mar40
-	name = "\improper MAR-40 battle rifle"
+	name = "MAR-40 battle rifle"
 	desc = "A cheap, reliable assault rifle chambered in 7.62x39mm. Commonly found in the hands of criminals or mercenaries, or in the hands of the UPP or Iron Bears."
 	icon_state = "mar40"
 	item_state = "mar40"
@@ -197,7 +197,7 @@
 
 
 /obj/item/weapon/gun/rifle/mar40/carbine
-	name = "\improper MAR-30 battle carbine"
+	name = "MAR-30 battle carbine"
 	desc = "A cheap, reliable assault rifle chambered in 7.62x39mm. Commonly found in the hands of criminals or mercenaries. This is the carbine variant."
 	icon_state = "mar30"
 	item_state = "mar30"
@@ -219,7 +219,7 @@
 //M16 RIFLE
 
 /obj/item/weapon/gun/rifle/m16
-	name = "\improper M16 rifle"
+	name = "M16 rifle"
 	desc = "An old, reliable design first adopted by the U.S. military in the 1960s. Something like this belongs in a museum of war history. It is chambered in 5.56x45mm."
 	icon_state = "m16"
 	item_state = "m16"
@@ -266,7 +266,7 @@
 //M41AE2 HEAVY PULSE RIFLE
 
 /obj/item/weapon/gun/rifle/lmg
-	name = "\improper M41AE2 heavy pulse rifle"
+	name = "M41AE2 heavy pulse rifle"
 	desc = "A large weapon capable of laying down supressing fire. Currently undergoing field testing among USCM scout platoons and in mercenary companies. Like it's smaller brother, the M41A MK2, the M41AE2 is chambered in 10mm."
 	icon_state = "m41ae2"
 	item_state = "m41ae2"
@@ -314,7 +314,7 @@
 //UPP TYPE 71 RIFLE
 
 /obj/item/weapon/gun/rifle/type71
-	name = "\improper Type 71 pulse rifle"
+	name = "Type 71 pulse rifle"
 	desc = "The primary service rifle of the UPP forces, the Type 71 is a reliable pulse rifle chambered in 7.62x39mm. Firing in two round bursts to conserve ammunition, the Type 71 was originally designed as an ergonomic, lightweight rifle to be used in outer-space operations. The Type 71 suffers from some reliability issues, and is prone to jamming in terrestrial climates, but makes up for this with a high number of variants and ease of production."
 	icon_state = "type71"
 	item_state = "type71"
@@ -343,7 +343,7 @@
 
 
 /obj/item/weapon/gun/rifle/type71/flamer
-	name = "\improper Type 71 pulse rifle"
+	name = "Type 71 pulse rifle"
 	desc = " This appears to be a less common variant of the usual Type 71, with an undermounted flamethrower and improved iron sights."
 	New()
 		..()
@@ -356,14 +356,14 @@
 
 
 /obj/item/weapon/gun/rifle/type71/carbine
-	name = "\improper Type 71 pulse carbine"
+	name = "Type 71 pulse carbine"
 	icon_state = "type71c"
 	item_state = "type71c"
 	wield_delay = 2 //Carbine is more lightweight
 
 
 /obj/item/weapon/gun/rifle/type71/carbine/commando
-	name = "\improper Type 71 'Commando' pulse carbine"
+	name = "Type 71 'Commando' pulse carbine"
 	desc = "An much rarer variant of the standard Type 71, this version contains an integrated supressor, a scope, and lots of fine-tuning. Many parts have been replaced, filed down, and improved upon. As a result, this variant is rarely seen issued outside of commando units and officer cadres."
 	icon_state = "type73"
 	item_state = "type73"
