@@ -28,6 +28,7 @@
 
 /turf
 	icon = 'icons/turf/floors.dmi'
+	plane = GAME_PLANE
 	var/intact_tile = 1 //used by floors to distinguish floor with/without a floortile(e.g. plating).
 	var/can_bloody = TRUE //Can blood spawn on this turf?
 	var/oldTurf = "" //The previous turf's path as text. Used when deconning on LV --MadSnailDisease
