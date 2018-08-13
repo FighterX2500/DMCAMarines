@@ -1,5 +1,6 @@
 /atom/movable
 	layer = OBJ_LAYER
+	plane = GAME_PLANE
 	var/last_move_dir = null
 	var/anchored = 0
 	// var/elevation = 2    - not used anywhere
