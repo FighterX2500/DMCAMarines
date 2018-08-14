@@ -107,7 +107,7 @@ Currently only has the tank hardpoints
 
 	var/nx = dx * cos(deg) - dy * sin(deg)
 	var/ny = dx * sin(deg) + dy * cos(deg)
-	if(nx == 0) return max_angle >= 90
+	if(nx == 0) return max_angle >= 180
 	var/angle = arctan(ny/nx)
 	if(nx < 0) angle += 180
 	return abs(angle) <= max_angle
