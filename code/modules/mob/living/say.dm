@@ -40,7 +40,7 @@ var/list/department_radio_keys = list(
 	  ":ö" = "whisper",		"#ö" = "whisper",		".ö" = "whisper",
 	  ":å" = "Syndicate",	"#å" = "Syndicate",		".å" = "Syndicate",
 
-	  ":ì" = "MedSci",		"#ì" = "MedSci",		".ì" = "MedSci",
+	  ":ü" = "MedSci",		"#ü" = "MedSci",		".ü" = "MedSci",
 	  ":ó" = "Engi", 		"#ó" = "Engi",			".ó" = "Engi",
 	  ":ÿ" = "Almayer",		"#ÿ" = "Almayer",		".ÿ" = "Almayer",
 	  ":ì" = "Command",		"#ì" = "Command",		".ì" = "Command",
@@ -58,7 +58,7 @@ var/list/department_radio_keys = list(
 	  ":Ö" = "whisper",		"#Ö" = "whisper",		".Ö" = "whisper",
 	  ":Å" = "Syndicate",	"#Å" = "Syndicate",		".Å" = "Syndicate",
 
-	  ":Ì" = "MedSci",		"#Ì" = "MedSci",		".Ì" = "MedSci",
+	  ":Ü" = "MedSci",		"#Ü" = "MedSci",		".Ü" = "MedSci",
 	  ":Ó" = "Engi", 		"#Ó" = "Engi",			".Ó" = "Engi",
 	  ":ß" = "Almayer",		"#ß" = "Almayer",		".ß" = "Almayer",
 	  ":Ì" = "Command",		"#Ì" = "Command",		".Ì" = "Command",

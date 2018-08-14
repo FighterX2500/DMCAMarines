@@ -6,6 +6,7 @@
 	name = "floor"
 	icon = 'icons/turf/floors.dmi'
 	icon_state = "floor"
+	plane = FLOOR_PLANE
 	var/icon_regular_floor = "floor" //Used to remember what icon the tile should have by default
 	var/icon_plating = "plating"
 	var/broken = 0
