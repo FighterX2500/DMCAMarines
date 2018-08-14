@@ -352,11 +352,11 @@ Currently only has the tank hardpoints
 
 	ammo = new /obj/item/ammo_magazine/tank/m56_cupola
 	max_clips = 1
-	max_angle = 90
+	max_angle = 360
 
 	apply_buff()
 		owner.cooldowns["secondary"] = 5
-		owner.accuracies["secondary"] = 0.7
+		owner.accuracies["secondary"] = 0.9
 
 	is_ready()
 		if(world.time < next_use)
