@@ -48,6 +48,16 @@
 		if(weed_found)
 			new /obj/effect/alien/weeds/weedwall/frame(loc) //after smoothing to get the correct junction value
 
+/obj/structure/window_frame/attackby(obj/item/W, mob/living/user)
+	if(istype(W, /obj/item/tool/wrench))
+		playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
+		user << "\blue Now disassembling window frame"
+		if(do_after(user, 40, TRUE, 5, BUSY_ICON_BUILD))
+			user << "\blue You disassembled window frame!"
+			cdel(src)
+	else 
+		return
+
 
 /obj/structure/window_frame/proc/update_nearby_icons()
 	relativewall_neighbours()
