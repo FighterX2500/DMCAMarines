@@ -359,7 +359,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 			var/mob/living/carbon/Xenomorph/X = A
 			if (X.fortify)
 				return
-		if (isXenoQueen(A) && isXenoCrusher (A))
+		if (isXenoQueen(A) || isXenoCrusher (A))
 			return
 		var/mob/living/M = A
 		M.KnockDown(10, 1)

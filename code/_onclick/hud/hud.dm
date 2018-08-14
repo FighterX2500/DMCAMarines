@@ -55,11 +55,15 @@
 
 	var/obj/screen/action_button/hide_toggle/hide_actions_toggle
 	var/action_buttons_hidden = 0
-
+	var/list/obj/screen/plane_master/plane_masters = list()
 
 /datum/hud/New(mob/owner)
 	mymob = owner
 	hide_actions_toggle = new
+	for(var/mytype in subtypesof(/obj/screen/plane_master))
+		var/obj/screen/plane_master/instance = new mytype()
+		plane_masters["[instance.plane]"] = instance
+		instance.backdrop(mymob)
 
 /datum/hud/Dispose()
 	if(mymob.hud_used == src)
@@ -117,6 +121,11 @@
 	gun_item_use_icon = null
 	gun_move_icon = null
 	gun_run_icon = null
+
+	if(plane_masters.len)
+		for(var/thing in plane_masters)
+			cdel(plane_masters[thing])
+		plane_masters.Cut()
 
 	. = ..()
 
@@ -187,12 +196,20 @@
 			if(infodisplay.len)
 				mymob.client.screen -= infodisplay
 
+	if (mymob.hud_used)
+		mymob.hud_used.plane_masters_update()
+
 	hud_version = display_hud_version
 	persistant_inventory_update()
 	mymob.update_action_buttons(TRUE)
 	mymob.reload_fullscreens()
 
-
+/datum/hud/proc/plane_masters_update()
+	//Plane masters are always shown to OUR mob, never to observers
+	for(var/thing in plane_masters)
+		var/obj/screen/plane_master/PM = plane_masters[thing]
+		PM.backdrop(mymob)
+		mymob.client.screen += PM
 
 /datum/hud/human/show_hud(version = 0)
 	..()
