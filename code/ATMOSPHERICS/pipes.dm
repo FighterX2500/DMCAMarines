@@ -1,5 +1,6 @@
 /obj/machinery/atmospherics/pipe
 	layer = ATMOS_PIPE_LAYER
+	plane = FLOOR_PLANE
 
 	var/datum/pipeline/parent
 
