@@ -390,12 +390,29 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/obj/structure/table/T = A
 		T.visible_message("<span class='danger'>[root] crushes [T]!</span>")
 		T.destroy(1)
+	else if(istype(A, /obj/structure/rack))
+		var/obj/structure/rack/RK = A
+		RK.visible_message("<span class='danger'>[root] crushes [RK]!</span>")
+		RK.destroy(1)
 	else if(istype(A, /obj/structure/girder))
 		var/obj/structure/girder/G = A
 		G.dismantle()
 		var/obj/vehicle/multitile/root/cm_armored/CA = root
 		CA.take_damage_type(10, "blunt", G)
 		playsound(G, 'sound/effects/metal_crash.ogg', 35)
+	else if (istype(A, /obj/structure/reagent_dispensers/watertank))
+		var/obj/structure/reagent_dispensers/watertank/WT = A
+		WT.visible_message("<span class='danger'>[root] crushes [WT]!</span>")
+		new /obj/item/stack/sheet/metal(WT.loc, 1)
+		cdel(WT)
+	else if (istype(A, /obj/structure/reagent_dispensers/beerkeg))
+		var/obj/structure/reagent_dispensers/beerkeg/BT = A
+		BT.visible_message("<span class='danger'>[root] crushes [BT]!</span>")
+		cdel(BT)
+	else if (istype(A, /obj/structure/reagent_dispensers/fueltank))
+		var/obj/structure/reagent_dispensers/fueltank/FT = A
+		FT.visible_message("<span class='danger'>[root] crushes [FT]!</span>")
+		FT.explode()
 
 /obj/vehicle/multitile/hitbox/cm_armored/Move(var/atom/A, var/direction)
 

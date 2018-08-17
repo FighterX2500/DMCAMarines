@@ -271,7 +271,7 @@
 
 /mob/living/carbon/Xenomorph/proc/toggle_nightvision()
 	if(see_invisible == SEE_INVISIBLE_MINIMUM)
-		see_invisible = SEE_INVISIBLE_LEVEL_TWO //Turn it off.
+		see_invisible = INVISIBILITY_LIGHTING //Turn it off.
 		see_in_dark = 4
 		sight |= SEE_MOBS
 		sight &= ~SEE_TURFS

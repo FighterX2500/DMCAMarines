@@ -107,7 +107,7 @@ Currently only has the tank hardpoints
 
 	var/nx = dx * cos(deg) - dy * sin(deg)
 	var/ny = dx * sin(deg) + dy * cos(deg)
-	if(nx == 0) return max_angle >= 90
+	if(nx == 0) return max_angle >= 180
 	var/angle = arctan(ny/nx)
 	if(nx < 0) angle += 180
 	return abs(angle) <= max_angle
@@ -352,11 +352,11 @@ Currently only has the tank hardpoints
 
 	ammo = new /obj/item/ammo_magazine/tank/m56_cupola
 	max_clips = 1
-	max_angle = 90
+	max_angle = 360
 
 	apply_buff()
 		owner.cooldowns["secondary"] = 5
-		owner.accuracies["secondary"] = 0.7
+		owner.accuracies["secondary"] = 0.9
 
 	is_ready()
 		if(world.time < next_use)
