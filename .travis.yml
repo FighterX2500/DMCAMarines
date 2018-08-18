@@ -24,7 +24,7 @@ addons:
       - libstdc++6:i386
 
 before_script:
-  - chmod +x tools/travis/before_build_byond.sh
+  - chmod +x tools/travis
   - tools/travis/before_build_byond.sh
 
 script:
