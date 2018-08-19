@@ -386,7 +386,8 @@ can cause issues with ammo types getting mixed up during the burst.
 						/obj/item/attachable/compensator,
 						/obj/item/attachable/magnetic_harness,
 						/obj/item/attachable/attached_gun/flamer,
-						/obj/item/attachable/stock/shotgun)
+						/obj/item/attachable/stock/shotgun,
+						/obj/item/attachable/scope/mini)
 
 /obj/item/weapon/gun/shotgun/pump/New()
 	select_gamemode_skin(/obj/item/weapon/gun/shotgun/pump)

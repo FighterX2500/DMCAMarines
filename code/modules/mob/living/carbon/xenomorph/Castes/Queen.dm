@@ -252,7 +252,7 @@
 		return
 
 	var/queensWord = "<br><h2 class='alert'>The words of the queen reverberate in your head...</h2>"
-	queensWord += "<br><span class='alert'>[input]</span><br>"
+	queensWord += "<br><span class='alert'>[sanitize(input)]</span><br>"
 
 	if(ticker && ticker.mode)
 		for(var/datum/mind/L in ticker.mode.xenomorphs)
