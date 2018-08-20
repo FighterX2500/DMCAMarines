@@ -265,6 +265,7 @@
 	name = "ColMarTech Automated Closet"
 	desc = "An automated closet hooked up to a colossal storage of standard-issue uniform and armor."
 	icon_state = "uniform_marine"
+	use_points = TRUE
 
 	vendor_role = "Squad Marine"
 
@@ -294,7 +295,9 @@
 							list("Pistol pouch", 0, /obj/item/storage/pouch/pistol, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), "black"),
 							list("MASKS", 0, null, null, null),
 							list("Gas mask", 0, /obj/item/clothing/mask/gas, MARINE_CAN_BUY_MASK, "black"),
-
+							list("SPECIALTY ITEMS", 0, null, null, null),
+							list("Webbing", 30, /obj/item/clothing/tie/storage/webbing, null, "black"),
+							list("Barrel charger", 50, /obj/item/attachable/heavy_barrel, null, "black"), //haha, no
 							)
 
 
