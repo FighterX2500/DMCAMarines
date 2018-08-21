@@ -236,7 +236,6 @@ Defined in conflicts.dm of the #defines folder.
 	New()
 		..()
 		accuracy_mod = config.min_hit_accuracy_mult
-		damage_mod = -config.min_hit_damage_mult
 		recoil_mod = -config.min_recoil_value
 		scatter_mod = -config.min_scatter_value
 		attach_icon = pick("suppressor_a","suppressor2_a")
@@ -276,9 +275,6 @@ Defined in conflicts.dm of the #defines folder.
 
 	New()
 		..()
-		accuracy_mod = -config.min_hit_accuracy_mult
-
-		accuracy_unwielded_mod = -config.min_hit_accuracy_mult
 
 /obj/item/attachable/extended_barrel
 	name = "extended barrel"
@@ -290,7 +286,6 @@ Defined in conflicts.dm of the #defines folder.
 	New()
 		..()
 		accuracy_mod = config.med_hit_accuracy_mult
-		damage_mod = -config.min_hit_damage_mult
 
 
 
@@ -322,7 +317,7 @@ Defined in conflicts.dm of the #defines folder.
 	New()
 		..()
 		accuracy_mod = config.med_hit_accuracy_mult
-		damage_mod = -config.low_hit_damage_mult
+		damage_mod = -config.min_hit_damage_mult
 		recoil_mod = -config.med_recoil_value
 
 		damage_falloff_mod = 0.4
@@ -485,7 +480,6 @@ Defined in conflicts.dm of the #defines folder.
 		..()
 		delay_mod = config.mhigh_fire_delay
 		accuracy_mod = config.high_hit_accuracy_mult
-		burst_mod = -config.min_burst_value
 		movement_acc_penalty_mod = 2
 		accuracy_unwielded_mod = -config.min_hit_accuracy_mult
 
@@ -545,7 +539,6 @@ Defined in conflicts.dm of the #defines folder.
 		accuracy_mod = config.min_hit_accuracy_mult
 		recoil_mod = -config.min_recoil_value
 		scatter_mod = -config.min_scatter_value
-		delay_mod = config.high_fire_delay
 		movement_acc_penalty_mod = -1
 		accuracy_unwielded_mod = config.min_hit_accuracy_mult
 		recoil_unwielded_mod = -config.min_recoil_value
@@ -562,7 +555,6 @@ Defined in conflicts.dm of the #defines folder.
 		accuracy_mod = config.min_hit_accuracy_mult
 		recoil_mod = -config.min_recoil_value
 		scatter_mod = -config.min_scatter_value
-		delay_mod = config.high_fire_delay
 		movement_acc_penalty_mod = -1
 		accuracy_unwielded_mod = config.min_hit_accuracy_mult
 		recoil_unwielded_mod = -config.min_recoil_value
@@ -581,7 +573,6 @@ Defined in conflicts.dm of the #defines folder.
 		accuracy_mod = config.min_hit_accuracy_mult
 		recoil_mod = -config.min_recoil_value
 		scatter_mod = -config.min_scatter_value
-		delay_mod = config.med_fire_delay
 		movement_acc_penalty_mod = -1
 		accuracy_unwielded_mod = config.min_hit_accuracy_mult
 		recoil_unwielded_mod = -config.min_recoil_value
@@ -604,7 +595,6 @@ Defined in conflicts.dm of the #defines folder.
 		accuracy_mod = config.low_hit_accuracy_mult
 		recoil_mod = -config.min_recoil_value
 		scatter_mod = -config.min_scatter_value
-		delay_mod = config.med_fire_delay
 		movement_acc_penalty_mod = -1
 		accuracy_unwielded_mod = config.min_hit_accuracy_mult
 		recoil_unwielded_mod = -config.min_recoil_value
@@ -634,7 +624,6 @@ Defined in conflicts.dm of the #defines folder.
 		accuracy_mod = config.min_hit_accuracy_mult
 		recoil_mod = -config.min_recoil_value
 		scatter_mod = -config.min_scatter_value
-		delay_mod = config.mlow_fire_delay
 		movement_acc_penalty_mod = -1
 		accuracy_unwielded_mod = config.min_hit_accuracy_mult
 		recoil_unwielded_mod = -config.min_recoil_value
@@ -1012,7 +1001,6 @@ Defined in conflicts.dm of the #defines folder.
 
 	New()
 		..()
-		delay_mod = config.mlow_fire_delay
 
 	activate_attachment(obj/item/weapon/gun/G,mob/living/user, turn_off)
 		if(turn_off)

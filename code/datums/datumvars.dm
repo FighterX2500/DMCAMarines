@@ -861,6 +861,8 @@ client
 			if("powerloader")
 				H.mind.cm_skills.powerloader = new_skill_level
 
+		H.update_action_buttons()
+
 		usr << "[H]'s [selected_skill] skill is now set to [new_skill_level]."
 
 
