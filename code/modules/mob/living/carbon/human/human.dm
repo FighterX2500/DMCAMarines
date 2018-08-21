@@ -1470,10 +1470,6 @@
 			see_in_dark = 8
 			see_invisible = SEE_INVISIBLE_LEVEL_TWO
 
-		if(IS_SYNTHETIC)
-			sight |= SEE_TURFS
-			see_in_dark = 8
-
 		if(glasses)
 			process_glasses(glasses)
 		else
