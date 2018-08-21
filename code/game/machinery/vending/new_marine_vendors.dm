@@ -3,7 +3,6 @@
 
 /////////////////////////////////////////////////////////////
 
-
 #define MARINE_CAN_BUY_UNIFORM 		1
 #define MARINE_CAN_BUY_SHOES	 	2
 #define MARINE_CAN_BUY_HELMET 		4
@@ -18,7 +17,7 @@
 #define MARINE_CAN_BUY_MASK			2048
 #define MARINE_CAN_BUY_ESSENTIALS	4096
 #define MARINE_CAN_BUY_ATTACHMENT	8192
-#define MARINE_CAN_BUY_ALL			16383
+#define MARINE_CAN_BUY_ALL			16384
 
 #define MARINE_TOTAL_BUY_POINTS		45
 
@@ -256,10 +255,6 @@
 
 		src.add_fingerprint(usr)
 		ui_interact(usr) //updates the nanoUI window
-
-
-
-
 
 /obj/machinery/marine_selector/clothes
 	name = "ColMarTech Automated Closet"
@@ -579,10 +574,6 @@
 	req_access = list(ACCESS_MARINE_SPECPREP, ACCESS_MARINE_DELTA)
 	gloves_type = /obj/item/clothing/gloves/marine/delta
 	headset_type = /obj/item/device/radio/headset/almayer/marine/delta
-
-
-
-
 
 
 /obj/machinery/marine_selector/clothes/leader

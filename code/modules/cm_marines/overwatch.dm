@@ -290,7 +290,7 @@
 				dat += "<A href='?src=\ref[src];operation=refresh'>{Refresh}</a><br>"
 				dat += "<A href='?src=\ref[src];operation=back'>{Back}</a></body>"
 
-	user << browse(dat, "window=overwatch;size=550x550")
+	user << browse(sanitize_local(dat, SANITIZE_BROWSER), "window=overwatch;size=550x550")
 	onclose(user, "overwatch")
 	return
 

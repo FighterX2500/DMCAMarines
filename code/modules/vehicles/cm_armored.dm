@@ -279,7 +279,19 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		if(!HP)
 			user << "There is nothing installed on the [i] hardpoint slot."
 		else
-			user << "There is a [HP.health <= 0 ? "broken" : "working"] [HP] installed on the [i] hardpoint slot."
+			if((user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
+				if(HP.health <= 0)
+					user << "There is a broken [HP] installed on [i] hardpoint slot."
+				if(HP.health > 0 && (HP.health < (HP.maxhealth / 3)))
+					user << "There is a heavy damaged [HP] installed on [i] hardpoint slot."
+				if((HP.health > (HP.maxhealth / 3)) && (HP.health < (HP.maxhealth * (2/3))))
+					user << "There is a damaged [HP] installed on [i] hardpoint slot."
+				if((HP.health > (HP.maxhealth * (2/3))) && (HP.health < HP.maxhealth))
+					user << "There is a lightly damaged [HP] installed on [i] hardpoint slot."
+				if(HP.health == HP.maxhealth)
+					user << "There is a non-damaged [HP] installed on [i] hardpoint slot."
+			else
+				user << "There is a [HP.health <= 0 ? "broken" : "working"] [HP] installed on the [i] hardpoint slot."
 
 //Special armored vic healthcheck that mainly updates the hardpoint states
 /obj/vehicle/multitile/root/cm_armored/healthcheck()
@@ -413,6 +425,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/obj/structure/reagent_dispensers/fueltank/FT = A
 		FT.visible_message("<span class='danger'>[root] crushes [FT]!</span>")
 		FT.explode()
+
 
 /obj/vehicle/multitile/hitbox/cm_armored/Move(var/atom/A, var/direction)
 

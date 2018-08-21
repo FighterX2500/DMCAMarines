@@ -759,24 +759,57 @@
 		penetration= config.max_armor_penetration
 
 	on_hit_mob(mob/M, obj/item/projectile/P)
-		explosion(get_turf(M), -1, 1, 2, 5)
+		explosion(get_turf(M), 0, 1, 2, 5)
 		smoke.set_up(1, get_turf(M))
 		smoke.start()
 
 	on_hit_obj(obj/O, obj/item/projectile/P)
-		explosion(get_turf(O), -1, 1, 2, 5)
+		explosion(get_turf(O), 0, 1, 2, 5)
 		smoke.set_up(1, get_turf(O))
 		smoke.start()
 
 	on_hit_turf(turf/T, obj/item/projectile/P)
-		explosion(T,  -1, 1, 2, 5)
+		explosion(T,  0, 1, 2, 5)
 		smoke.set_up(1, T)
 		smoke.start()
 
 	do_at_max_range(obj/item/projectile/P)
-		explosion(get_turf(P),  -1, 1, 2, 5)
+		explosion(get_turf(P),  0, 1, 2, 5)
 		smoke.set_up(1, get_turf(P))
 		smoke.start()
+
+/datum/ammo/rocket/tow
+	name = "TOW rocket"
+	damage_falloff = 0
+	New()
+		..()
+		accuracy = config.med_hit_accuracy
+		accuracy_var_low = config.med_proj_variance
+		accurate_range = config.short_shell_range
+		max_range = config.max_shell_range
+		damage = config.ultra_hit_damage //lmao tons of hit damage but it's never processed due to the below proc redefinitions
+		penetration= config.max_armor_penetration
+
+	on_hit_mob(mob/M, obj/item/projectile/P)
+		explosion(get_turf(M), 1, 1, 2, 5)
+		smoke.set_up(1, get_turf(M))
+		smoke.start()
+
+	on_hit_obj(obj/O, obj/item/projectile/P)
+		explosion(get_turf(O), 1, 1, 2, 5)
+		smoke.set_up(1, get_turf(O))
+		smoke.start()
+
+	on_hit_turf(turf/T, obj/item/projectile/P)
+		explosion(T,  0, 1, 2, 5)
+		smoke.set_up(1, T)
+		smoke.start()
+
+	do_at_max_range(obj/item/projectile/P)
+		explosion(get_turf(P),  0, 1, 2, 5)
+		smoke.set_up(1, get_turf(P))
+		smoke.start()
+
 
 /datum/ammo/rocket/ltb
 	name = "cannon round"
@@ -788,7 +821,7 @@
 		accuracy = config.med_hit_accuracy
 		accurate_range = config.long_shell_range
 		max_range = config.max_shell_range
-		damage = config.low_hit_damage
+		damage = config.mhigh_hit_damage
 		shell_speed = config.fast_shell_speed
 
 	on_hit_mob(mob/M, obj/item/projectile/P)
@@ -811,7 +844,7 @@
 		..()
 		accuracy_var_low = config.med_proj_variance
 		accurate_range = config.short_shell_range
-		damage = config.super_hit_damage
+		damage = config.ultra_hit_damage
 		max_range = config.norm_shell_range
 
 	drop_flame(turf/T)
