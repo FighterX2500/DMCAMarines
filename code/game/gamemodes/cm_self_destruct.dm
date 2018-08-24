@@ -9,7 +9,7 @@ Finish the game mode announcement thing.
 Fix escape doors to work properly.
 */
 
-#define SELF_DESTRUCT_ROD_STARTUP_TIME 12000
+#define SELF_DESTRUCT_ROD_STARTUP_TIME 6000
 
 /*
 How this works:

@@ -1470,10 +1470,19 @@
 			see_in_dark = 8
 			see_invisible = SEE_INVISIBLE_LEVEL_TWO
 
+		if(species.flags & IS_SYNTHETIC)
+			see_in_dark = 20
+			see_invisible = SEE_INVISIBLE_MINIMUM
+
+		if(artymod_use == 1)
+			see_in_dark = 20
+			see_invisible = SEE_INVISIBLE_MINIMUM
+
 		if(glasses)
 			process_glasses(glasses)
 		else
 			see_invisible = SEE_INVISIBLE_LIVING
+
 
 
 

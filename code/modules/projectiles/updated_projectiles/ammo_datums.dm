@@ -821,11 +821,11 @@
 		accuracy = config.med_hit_accuracy
 		accurate_range = config.long_shell_range
 		max_range = config.max_shell_range
-		damage = config.mhigh_hit_damage
+		damage = config.low_hit_damage
 		shell_speed = config.fast_shell_speed
 
 	on_hit_mob(mob/M, obj/item/projectile/P)
-		explosion(get_turf(M), 0, 0, 5, 6)
+		explosion(get_turf(M), 1, 1, 5, 6)
 
 	on_hit_obj(obj/O, obj/item/projectile/P)
 		explosion(get_turf(P), 1, 1, 5, 6)

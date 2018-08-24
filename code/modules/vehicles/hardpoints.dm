@@ -324,7 +324,7 @@ Currently only has the tank hardpoints
 
 	apply_buff()
 		owner.cooldowns["secondary"] = 150
-		owner.accuracies["secondary"] = 0.8
+		owner.accuracies["secondary"] = 0.97
 
 	is_ready()
 		if(world.time < next_use)
@@ -583,13 +583,11 @@ Currently only has the tank hardpoints
 			M.client.change_view(7)
 			M.client.pixel_x = 0
 			M.client.pixel_y = 0
-			M.see_in_dark = 2
-			M.sight &= ~SEE_TURFS
+			M.artymod_use = 0
 			is_active = 0
 			return
 		M.client.change_view(view_buff)
-		M.see_in_dark = 20
-		M.sight |= SEE_TURFS
+		M.artymod_use = 1
 		is_active = 1
 		switch(C.dir)
 			if(NORTH)
@@ -614,8 +612,7 @@ Currently only has the tank hardpoints
 		M.client.change_view(7)
 		M.client.pixel_x = 0
 		M.client.pixel_y = 0
-		M.see_in_dark = 2
-		M.sight &= ~SEE_TURFS
+		M.artymod_use = 0
 
 	remove_buff()
 		deactivate()
