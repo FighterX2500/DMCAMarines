@@ -61,7 +61,6 @@ var/global/datum/authority/branch/role/RoleAuthority
 	var/list/L = new
 	var/datum/job/J
 	var/datum/squad/S
-	var/i
 
 	for(var/i in roles_all) //Setting up our roles.
 		J = new i
