@@ -488,7 +488,7 @@ should be alright.
 	var/detach_delay = 30
 	if(A == "bayonet") //Detach the bayonet fast
 		detach_delay = 10
-		if(usr.mind && usr.mind.cm_skills && usr.mind.cm_skills.firearms == 0) //If the user has no training, detaching takes twice as long and they fumble about, looking like a retard.
+	if(usr.mind && usr.mind.cm_skills && usr.mind.cm_skills.firearms == 0) //If the user has no training, detaching takes twice as long and they fumble about, looking like a retard.
 		detach_delay *= 2
 		usr.visible_message("<span class='notice'>[usr] begins fumbling about, trying to strip the [A] from [src].</span>",
 		"<span class='notice'>You begin fumbling about, trying to strip the [A] from [src].</span>", null, 4)
