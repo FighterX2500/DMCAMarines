@@ -222,7 +222,8 @@
 	if(last_special > world.time)
 		return
 	plasma_stored -= 50
-	var/txt = copytext(sanitize(input("Set the hive's orders to what? Leave blank to clear it.", "Hive Orders","")), 1, MAX_MESSAGE_LEN)
+	var/txt = copytext(sanitize(input("Set the hive's orders to what? Leave blank to clear it.", "Hive Orders", null) as text), 1, MAX_MESSAGE_LEN)
+
 
 	var/datum/hive_status/hive
 	if(hivenumber && hivenumber <= hive_datum.len)

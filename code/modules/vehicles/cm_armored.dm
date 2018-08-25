@@ -425,6 +425,13 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/obj/structure/reagent_dispensers/fueltank/FT = A
 		FT.visible_message("<span class='danger'>[root] crushes [FT]!</span>")
 		FT.explode()
+	else if (istype(A, /obj/structure/window_frame))
+		var/obj/structure/window_frame/WF = A
+		WF.visible_message("<span class='danger'>[root] crushes through [WF]!</span>")
+		var/obj/vehicle/multitile/root/cm_armored/CA = root
+		CA.take_damage_type(10, "blunt", WF)
+		cdel(WF)
+
 
 
 /obj/vehicle/multitile/hitbox/cm_armored/Move(var/atom/A, var/direction)

@@ -83,7 +83,7 @@
 
 		if(hivenumber != XENO_HIVE_CORRUPTED)
 			if(hive.hive_orders && hive.hive_orders != "")
-				stat(null,"Hive Orders: [hive.hive_orders]")
+				stat(null,"Hive Orders: [sanitize(hive.hive_orders)]")
 		else
 			stat(null,"Hive Orders: Follow the instructions of your masters")
 
