@@ -81,7 +81,7 @@
 
 	if(has_power)
 		if(machine_processing)
-			if(stat & NOPOWER) 
+			if(stat & NOPOWER)
 				processing_machines += src // power interupted us, start processing again
 		stat &= ~NOPOWER
 
@@ -262,11 +262,11 @@
 
 /obj/machinery/power/proc/disconnect_from_network()
 	if(!powernet)
-		//world << " no powernet"
+		//to_chat(world, " no powernet")
 		return 0
 	powernet.nodes -= src
 	powernet = null
-	//world << "powernet null"
+	//to_chat(world, "powernet null")
 	return 1
 
 /turf/proc/get_cable_node()

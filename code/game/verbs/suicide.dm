@@ -4,11 +4,11 @@
 	set hidden = 1
 
 	if (stat == DEAD)
-		src << "You're already dead!"
+		to_chat(src, "You're already dead!")
 		return
 
 	if (!ticker)
-		src << "You can't commit suicide before the game starts!"
+		to_chat(src, "You can't commit suicide before the game starts!")
 		return
 
 
@@ -21,18 +21,18 @@
 
 	if(!permitted)
 		message_admins("[ckey] has tried to suicide, but they were not permitted due to not being antagonist as human.", 1)
-		src << "No. Adminhelp if there is a legitimate reason."
+		to_chat(src, "No. Adminhelp if there is a legitimate reason.")
 		return
 
 	if (suiciding)
-		src << "You're already committing suicide! Be patient!"
+		to_chat(src, "You're already committing suicide! Be patient!")
 		return
 
 	var/confirm = alert("Are you sure you want to commit suicide?", "Confirm Suicide", "Yes", "No")
 
 	if(confirm == "Yes")
 		if(!canmove || is_mob_restrained())	//just while I finish up the new 'fun' suiciding verb. This is to prevent metagaming via suicide
-			src << "You can't commit suicide whilst restrained! ((You can type Ghost instead however.))"
+			to_chat(src, "You can't commit suicide whilst restrained! ((You can type Ghost instead however.))")
 			return
 		suiciding = 1
 		var/obj/item/held_item = get_active_hand()
@@ -90,15 +90,15 @@
 	set hidden = 1
 
 	if (stat == 2)
-		src << "You're already dead!"
+		to_chat(src, "You're already dead!")
 		return
 
 	if (!ticker)
-		src << "You can't commit suicide before the game starts!"
+		to_chat(src, "You can't commit suicide before the game starts!")
 		return
 
 	if (suiciding)
-		src << "You're already committing suicide! Be patient!"
+		to_chat(src, "You're already committing suicide! Be patient!")
 		return
 
 	var/confirm = alert("Are you sure you want to commit suicide?", "Confirm Suicide", "Yes", "No")
@@ -114,22 +114,22 @@
 	set hidden = 1
 
 	if (stat == 2)
-		src << "You're already dead!"
+		to_chat(src, "You're already dead!")
 		return
 
 	if (!ticker)
-		src << "You can't commit suicide before the game starts!"
+		to_chat(src, "You can't commit suicide before the game starts!")
 		return
 
 	if (suiciding)
-		src << "You're already committing suicide! Be patient!"
+		to_chat(src, "You're already committing suicide! Be patient!")
 		return
 
 	var/confirm = alert("Are you sure you want to commit suicide?", "Confirm Suicide", "Yes", "No")
 
 	if(confirm == "Yes")
 		if(!canmove || is_mob_restrained())
-			src << "You can't commit suicide whilst restrained! ((You can type Ghost instead however.))"
+			to_chat(src, "You can't commit suicide whilst restrained! ((You can type Ghost instead however.))")
 			return
 		suiciding = 1
 		//instead of killing them instantly, just put them at -175 health and let 'em gasp for a while
@@ -141,11 +141,11 @@
 	set hidden = 1
 
 	if (stat == 2)
-		src << "You're already dead!"
+		to_chat(src, "You're already dead!")
 		return
 
 	if (suiciding)
-		src << "You're already committing suicide! Be patient!"
+		to_chat(src, "You're already committing suicide! Be patient!")
 		return
 
 	var/confirm = alert("Are you sure you want to commit suicide?", "Confirm Suicide", "Yes", "No")
@@ -161,11 +161,11 @@
 	set hidden = 1
 
 	if (stat == 2)
-		src << "You're already dead!"
+		to_chat(src, "You're already dead!")
 		return
 
 	if (suiciding)
-		src << "You're already committing suicide! Be patient!"
+		to_chat(src, "You're already committing suicide! Be patient!")
 		return
 
 	var/confirm = alert("Are you sure you want to commit suicide?", "Confirm Suicide", "Yes", "No")

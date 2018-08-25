@@ -314,7 +314,7 @@ datum/mind
 						ticker.mode.traitors -= src
 						special_role = null
 						current.hud_set_special_role()
-						current << "\red <FONT size = 3><B>You have been brainwashed! You are no longer a traitor!</B></FONT>"
+						to_chat(current, "\red <FONT size = 3><B>You have been brainwashed! You are no longer a traitor!</B></FONT>")
 						log_admin("[key_name_admin(usr)] has de-traitor'ed [current].")
 						if(isAI(current))
 							var/mob/living/silicon/ai/A = current
@@ -326,7 +326,7 @@ datum/mind
 						ticker.mode.traitors += src
 						special_role = "traitor"
 						current.hud_set_special_role()
-						current << "<B>\red You are a traitor!</B>"
+						to_chat(current, "<B>\red You are a traitor!</B>")
 						log_admin("[key_name_admin(usr)] has traitor'ed [current].")
 						show_objectives()
 
@@ -338,7 +338,7 @@ datum/mind
 				if("autoobjectives")
 					if (!config.objectives_disabled)
 						ticker.mode.forge_traitor_objectives(src)
-						usr << "\blue The objectives for traitor [key] have been generated. You can edit them and anounce manually."
+						to_chat(usr, "\blue The objectives for traitor [key] have been generated. You can edit them and anounce manually.")
 
 		else if (href_list["common"])
 			switch(href_list["common"])
@@ -360,13 +360,13 @@ datum/mind
 								suplink.uses = crystals
 				if("uplink")
 					if (!ticker.mode.equip_traitor(current, !(src in ticker.mode.traitors)))
-						usr << "\red Equipping a syndicate failed!"
+						to_chat(usr, "\red Equipping a syndicate failed!")
 
 		else if (href_list["obj_announce"])
 			var/obj_count = 1
-			current << "\blue Your current objectives:"
+			to_chat(current, "\blue Your current objectives:")
 			for(var/datum/objective/objective in objectives)
-				current << "<B>Objective #[obj_count]</B>: [objective.explanation_text]"
+				to_chat(current, "<B>Objective #[obj_count]</B>: [objective.explanation_text]")
 				obj_count++
 
 		edit_memory()
