@@ -495,6 +495,8 @@ should be alright.
 	else //attaching as usual.
 		usr.visible_message("<span class='notice'>[usr] begins stripping the [A] from [src].</span>",
 		"<span class='notice'>You begin stripping the [A] from [src].</span>", null, 4)
+	if(!do_after(usr,detach_delay, TRUE, 5, BUSY_ICON_FRIENDLY))
+		return
 
 	if(A != rail && A != muzzle && A != under && A != stock)
 		return
