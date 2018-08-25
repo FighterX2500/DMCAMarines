@@ -1,4 +1,4 @@
-var/list/allEvents = typesof(/datum/event) - /datum/event
+var/list/allEvents = subtypesof(/datum/event)
 var/list/potentialRandomEvents = typesof(/datum/event) - /datum/event
 //var/list/potentialRandomEvents = typesof(/datum/event) - /datum/event - /datum/event/spider_infestation - /datum/event/alien_infestation
 
