@@ -17,7 +17,7 @@ var/const/INGEST = 2
 	//I dislike having these here but map-objects are initialised before world/New() is called. >_>
 	if(!chemical_reagents_list)
 		//Chemical Reagents - Initialises all /datum/reagent into a list indexed by reagent id
-		var/paths = typesof(/datum/reagent) - /datum/reagent
+		var/paths = subtypesof(/datum/reagent)
 		chemical_reagents_list = list()
 		for(var/path in paths)
 			var/datum/reagent/D = new path()
@@ -28,7 +28,7 @@ var/const/INGEST = 2
 		// For example:
 		// chemical_reaction_list["phoron"] is a list of all reactions relating to phoron
 
-		var/paths = typesof(/datum/chemical_reaction) - /datum/chemical_reaction
+		var/paths = subtypesof(/datum/chemical_reaction)
 		chemical_reactions_list = list()
 
 		for(var/path in paths)
