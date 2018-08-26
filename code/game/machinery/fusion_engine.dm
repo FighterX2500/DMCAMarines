@@ -18,7 +18,7 @@
 	var/power_gen_percent = 0 //50,000W at full capacity
 	var/buildstate = 0 //What state of building it are we on, 0-3, 1 is "broken", the default
 	var/is_on = 0  //Is this damn thing on or what?
-	var/fail_rate = 5 //% chance of failure each fail_tick check
+  //var/fail_rate = 5 //% chance of failure each fail_tick check
 	var/cur_tick = 0 //Tick updater
 
 	var/obj/item/fuelCell/fusion_cell = new //Starts with a fuel cell loaded in.  Maybe replace with the plasma tanks in the future and have it consume plasma?  Possibly remove this later if it's irrelevent...
@@ -48,7 +48,7 @@
 		buildstate = 2  //No fuel really fucks it.
 		is_on = 0
 		power_gen_percent = 0
-		fail_rate+=2 //Each time the engine is allowed to seize up it's fail rate for the future increases because reasons.
+	  //fail_rate+=2 //Each time the engine is allowed to seize up it's fail rate for the future increases because reasons.
 		update_icon()
 		stop_processing()
 		return FALSE
@@ -293,7 +293,7 @@
 		if(3)
 			icon_state = "wrench"
 
-
+/*
 /obj/machinery/power/fusion_engine/proc/check_failure()
 	if(cur_tick < FUSION_ENGINE_FAIL_CHECK_TICKS) //Nope, not time for it yet
 		cur_tick++
@@ -313,11 +313,7 @@
 		return 1
 	else
 		return 0
-
-
-
-
-
+*/
 
 
 //FUEL CELL
