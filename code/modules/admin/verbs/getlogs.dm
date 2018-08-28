@@ -52,7 +52,7 @@
 		return
 
 	message_admins("[key_name_admin(src)] accessed file: [path]")
-	src, run( file(path) )
+	src << run( file(path) )
 	to_chat(src, "Attempting to send file, this may take a fair few minutes if the file is very large.")
 	return
 
@@ -72,7 +72,7 @@
 		return
 
 	message_admins("[key_name_admin(src)] accessed file: [path]")
-	to_chat(src, run( file(path) ))
+	src << run( file(path) )
 	to_chat(src, "Attempting to send file, this may take a fair few minutes if the file is very large.")
 	return
 
@@ -87,11 +87,11 @@
 
 	var/path = "data/logs/[time2text(world.realtime,"YYYY/MM-Month/DD-Day")].log"
 	if( fexists(path) )
-		src, run( file(path) )
+		src << run( file(path) )
 	else
 		var/pathyesteday = "data/logs/[time2text(world.realtime-400000,"YYYY/MM-Month/DD-Day")].log" // roughly 12 hours before this, should cover for most issues
 		if( fexists(pathyesteday) )
-			src, run( file(pathyesteday) )
+			src << run( file(pathyesteday) )
 		else
 			to_chat(src, "<font color='red'>Error: view_txt_log(): File not found/Invalid path([path]) or path([pathyesteday]).</font>")
 			return
@@ -106,10 +106,10 @@
 
 	var/path = "data/logs/[time2text(world.realtime,"YYYY/MM-Month/DD-Day")] Attack.log"
 	if( fexists(path) )
-		src, run( file(path) )
+		src << run( file(path) )
 	else
 		to_chat(src, "<font color='red'>Error: view_atk_log(): File not found/Invalid path([path]).</font>")
 		return
-	usr, run( file(path) )
+	usr << run( file(path) )
 	feedback_add_details("admin_verb","SSAL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	return
