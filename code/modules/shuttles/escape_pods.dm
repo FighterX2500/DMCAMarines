@@ -165,7 +165,7 @@ This can probably be done a lot more elegantly either way, but it'll suffice for
 	for(var/obj/machinery/cryopod/evacuation/C in cryo_cells)
 		if(C.occupant)
 			n++
-			if(C.occupant.stat != DEAD && msg) C.to_chat(occupant, msg)
+			if(C.occupant.stat != DEAD && msg) to_chat(C.occupant, msg)
 	//Hardcoded typecast, which should be changed into some weight system of some kind eventually.
 	var/area/A = msg ? evacuation_program.master.loc.loc : staging_area //Before or after launch.
 	for(var/i in A)

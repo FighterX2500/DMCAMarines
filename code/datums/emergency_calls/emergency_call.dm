@@ -183,7 +183,7 @@
 					if(candidates.len)
 						for(var/datum/mind/I in candidates)
 							if(I.current)
-								to_chat(current, "<span class='warning'>You didn't get selected to join the distress team. Better luck next time!</span>")
+								to_chat(I.current, "<span class='warning'>You didn't get selected to join the distress team. Better luck next time!</span>")
 
 			if (announce)
 				command_announcement.Announce(dispatch_message, "Distress Beacon", new_sound='sound/AI/distressreceived.ogg') //Announcement that the Distress Beacon has been answered, does not hint towards the chosen ERT

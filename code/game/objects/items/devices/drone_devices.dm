@@ -51,7 +51,7 @@
 		wrapped = null
 		return
 
-	src.to_chat(loc, "\red You drop \the [wrapped].")
+	to_chat(src.loc, "\red You drop \the [wrapped].")
 	wrapped.loc = get_turf(src)
 	wrapped = null
 	//update_icon()
