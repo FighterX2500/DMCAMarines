@@ -379,7 +379,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 				hackState = 0
 				icon_state="req_comp_open"
 		else
-			to_chat(user, "You can't do much with that."*/)
+			to_chat(user, "You can't do much with that.")*/
 
 	if (istype(O, /obj/item/card/id))
 		if(screen == 9)

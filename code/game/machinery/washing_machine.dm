@@ -73,7 +73,7 @@
 /obj/machinery/washing_machine/attackby(obj/item/W as obj, mob/user as mob)
 	/*if(istype(W,/obj/item/tool/screwdriver))
 		panel = !panel
-		to_chat(user, "\blue you [panel ? "open" : "close"] the [src]'s maintenance panel"*/)
+		to_chat(user, "\blue you [panel ? "open" : "close"] the [src]'s maintenance panel")*/
 	if(istype(W,/obj/item/toy/crayon) ||istype(W,/obj/item/tool/stamp))
 		if( state in list(	1, 3, 6 ) )
 			if(!crayon)

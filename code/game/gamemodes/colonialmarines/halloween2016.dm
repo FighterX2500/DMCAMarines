@@ -666,7 +666,7 @@
 				to_chat(H, "Make sure you keep the Colonial Marines from tampering with our equipment. It is very, very expensive, and will be hard to replace.")
 				to_chat(H, "As usual, you will be handsomely rewarded upon completion of this mission. Should you fail, we will deny our involvement.")
 				to_chat(H, "Hold out for an hour, and your job is finished. It goes without saying, <b>do not let us down.</b>")
-				to_chat(H, "________________________"*/)
+				to_chat(H, "________________________")*/
 
 	//SQUADS
 	else

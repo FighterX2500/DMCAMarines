@@ -328,7 +328,7 @@ var/global/datum/controller/gameticker/ticker
 						to_chat(Player, "<font color='red'><b>You did not survive the events on [station_name()]...</b></font>")
 				else
 					to_chat(Player, "<font color='red'><b>You did not survive the events on [station_name()]...</b></font>")
-	to_chat(world, "<br>" */)
+	to_chat(world, "<br>") */
 
 	for (var/mob/living/silicon/ai/aiPlayer in mob_list)
 		if (aiPlayer.stat != 2)
