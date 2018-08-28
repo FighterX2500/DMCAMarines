@@ -908,7 +908,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			L = P.loc
 
 		if(L)
-			to_chat(L, "\icon[P] <b>Message from [src.owner] ([ownjob]), </b>\"[t]\" (<a href='byond:)
+			to_chat(L, "\icon[P] <b>Message from [src.owner] ([ownjob]), </b>\"[t]\" (<a href='byond://?src=\ref[P];choice=Message;notap=[istype(L, /mob/living/silicon)];skiprefresh=1;target=\ref[src]'>Reply</a>)")
 			nanomanager.update_user_uis(L, P) // Update the receiving user's PDA UI so that they can see the new message
 
 		nanomanager.update_user_uis(U, P) // Update the sending user's PDA UI so that they can see the new message
