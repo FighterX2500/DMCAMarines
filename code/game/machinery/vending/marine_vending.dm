@@ -427,7 +427,7 @@
 	icon_deny = "tool-deny"
 	wrenchable = FALSE
 	products = list(
-					/obj/item/coin/marine/engineer = 1,
+					/obj/item/coin/marine/engineer = 2,
 					)
 	contraband = list(/obj/item/cell/super = 1)
 

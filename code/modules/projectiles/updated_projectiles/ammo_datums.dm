@@ -660,7 +660,7 @@
 	name = "autocannon bullet"
 	icon_state 	= "redbullet" //Red bullets to indicate friendly fire restriction
 	iff_signal = ACCESS_IFF_MARINE
-	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SKIPS_HUMANS
+	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SKIPS_HUMANS|AMMO_SKIP_BARRICADE
 	New()
 		..()
 		accurate_range = config.short_shell_range
@@ -673,10 +673,12 @@
 
 /datum/ammo/bullet/turret/dumb
 	icon_state 	= "bullet"
+	flags_ammo_behavior = AMMO_SKIP_BARRICADE
 	iff_signal = 0
 
 /datum/ammo/bullet/machinegun //Adding this for the MG Nests (~Art)
 	name = "machinegun bullet"
+	flags_ammo_behavior = AMMO_SKIP_BARRICADE
 	icon_state 	= "bullet" // Keeping it bog standard with the turret but allows it to be changed. Had to remove IFF so you have to watch out.
 	New()
 		..()
@@ -687,6 +689,7 @@
 
 /datum/ammo/bullet/minigun
 	name = "minigun bullet"
+	flags_ammo_behavior = AMMO_SKIP_BARRICADE
 	New()
 		..()
 		accuracy = -config.low_hit_accuracy
@@ -727,22 +730,22 @@
 		. = ..()
 
 	on_hit_mob(mob/M, obj/item/projectile/P)
-		explosion(get_turf(M), -1, 1, 4, 5)
+		explosion(get_turf(M), 0, 1, 4, 5)
 		smoke.set_up(1, get_turf(M))
 		smoke.start()
 
 	on_hit_obj(obj/O, obj/item/projectile/P)
-		explosion(get_turf(O), -1, 1, 4, 5)
+		explosion(get_turf(O), 0, 1, 4, 5)
 		smoke.set_up(1, get_turf(O))
 		smoke.start()
 
 	on_hit_turf(turf/T, obj/item/projectile/P)
-		explosion(T,  -1, 1, 4, 5)
+		explosion(T,  0, 1, 4, 5)
 		smoke.set_up(1, T)
 		smoke.start()
 
 	do_at_max_range(obj/item/projectile/P)
-		explosion(get_turf(P),  -1, 1, 4, 5)
+		explosion(get_turf(P),  0, 1, 4, 5)
 		smoke.set_up(1, get_turf(P))
 		smoke.start()
 
@@ -759,22 +762,22 @@
 		penetration= config.max_armor_penetration
 
 	on_hit_mob(mob/M, obj/item/projectile/P)
-		explosion(get_turf(M), 0, 1, 2, 5)
+		explosion(get_turf(M), 1, 1, 1, 3)
 		smoke.set_up(1, get_turf(M))
 		smoke.start()
 
 	on_hit_obj(obj/O, obj/item/projectile/P)
-		explosion(get_turf(O), 0, 1, 2, 5)
+		explosion(get_turf(O), 1, 1, 1, 3)
 		smoke.set_up(1, get_turf(O))
 		smoke.start()
 
 	on_hit_turf(turf/T, obj/item/projectile/P)
-		explosion(T,  0, 1, 2, 5)
+		explosion(T,  1, 1, 1, 3)
 		smoke.set_up(1, T)
 		smoke.start()
 
 	do_at_max_range(obj/item/projectile/P)
-		explosion(get_turf(P),  0, 1, 2, 5)
+		explosion(get_turf(P),  1, 1, 1, 3)
 		smoke.set_up(1, get_turf(P))
 		smoke.start()
 
@@ -814,7 +817,7 @@
 /datum/ammo/rocket/ltb
 	name = "cannon round"
 	icon_state = "ltb"
-	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET
+	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET|AMMO_SKIP_BARRICADE
 
 	New()
 		..()
@@ -852,14 +855,14 @@
 		smoke.set_up(1, T)
 		smoke.start()
 		if(locate(/obj/flamer_fire) in T) return
-		new /obj/flamer_fire(T, pick(15, 20, 25, 30))
+		new /obj/flamer_fire(T, pick(15, 30, 45, 30))
 
 		for(var/mob/living/carbon/M in range(3, T))
 			if(istype(M,/mob/living/carbon/Xenomorph))
 				if(M:fire_immune) continue
 
 			if(M.stat == DEAD) continue
-			M.adjust_fire_stacks(rand(5, 25))
+			M.adjust_fire_stacks(rand(20, 45))
 			M.IgniteMob()
 			M.visible_message("<span class='danger'>[M] bursts into flames!</span>","[isXeno(M)?"<span class='xenodanger'>":"<span class='highdanger'>"]You burst into flames!</span>")
 

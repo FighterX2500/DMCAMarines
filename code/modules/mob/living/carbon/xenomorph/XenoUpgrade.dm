@@ -75,7 +75,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 170
 					plasma_gain = 10
 					plasma_max = 150
-					upgrade_threshold = 400
+					upgrade_threshold = 800
 					caste_desc = "A fast, powerful front line combatant. It looks a little more dangerous."
 					speed = -1.6
 					armor_deflection = 20
@@ -290,7 +290,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 200
 					plasma_gain = 10
 					plasma_max = 200
-					upgrade_threshold = 800
+					upgrade_threshold = 1600
 					caste_desc = "A fast, powerful front line combatant. It looks pretty strong."
 					speed = -1.7
 					armor_deflection = 25
