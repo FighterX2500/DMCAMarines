@@ -18,7 +18,7 @@
 	var/power_gen_percent = 0 //50,000W at full capacity
 	var/buildstate = 0 //What state of building it are we on, 0-3, 1 is "broken", the default
 	var/is_on = 0  //Is this damn thing on or what?
-	var/fail_rate = 5 //% chance of failure each fail_tick check
+  //var/fail_rate = 5 //% chance of failure each fail_tick check
 	var/cur_tick = 0 //Tick updater
 
 	var/obj/item/fuelCell/fusion_cell = new //Starts with a fuel cell loaded in.  Maybe replace with the plasma tanks in the future and have it consume plasma?  Possibly remove this later if it's irrelevent...
@@ -48,40 +48,38 @@
 		buildstate = 2  //No fuel really fucks it.
 		is_on = 0
 		power_gen_percent = 0
-		fail_rate+=2 //Each time the engine is allowed to seize up it's fail rate for the future increases because reasons.
+	  //fail_rate+=2 //Each time the engine is allowed to seize up it's fail rate for the future increases because reasons.
 		update_icon()
 		stop_processing()
 		return FALSE
 
-	if(!check_failure())
+	if(power_gen_percent < 100) power_gen_percent++
 
-		if(power_gen_percent < 100) power_gen_percent++
+	switch(power_gen_percent) //Flavor text!
+		if(10)
+			visible_message("\icon[src] <span class='notice'><b>[src]</b> begins to whirr as it powers up.</span>")
+			fuel_rate = 0.025
+		if(50)
+			visible_message("\icon[src] <span class='notice'><b>[src]</b> begins to hum loudly as it reaches half capacity.</span>")
+			fuel_rate = 0.05
+		if(99)
+			visible_message("\icon[src] <span class='notice'><b>[src]</b> rumbles loudly as the combustion and thermal chambers reach full strength.</span>")
+			fuel_rate = 0.1
 
-		switch(power_gen_percent) //Flavor text!
-			if(10)
-				visible_message("\icon[src] <span class='notice'><b>[src]</b> begins to whirr as it powers up.</span>")
-				fuel_rate = 0.025
-			if(50)
-				visible_message("\icon[src] <span class='notice'><b>[src]</b> begins to hum loudly as it reaches half capacity.</span>")
-				fuel_rate = 0.05
-			if(99)
-				visible_message("\icon[src] <span class='notice'><b>[src]</b> rumbles loudly as the combustion and thermal chambers reach full strength.</span>")
-				fuel_rate = 0.1
+	add_avail(FUSION_ENGINE_MAX_POWER_GEN * (power_gen_percent / 100) ) //Nope, all good, just add the power
+	fusion_cell.fuel_amount-=fuel_rate //Consumes fuel
 
-		add_avail(FUSION_ENGINE_MAX_POWER_GEN * (power_gen_percent / 100) ) //Nope, all good, just add the power
-		fusion_cell.fuel_amount-=fuel_rate //Consumes fuel
-
-		switch(fusion_cell.fuel_amount)
-			if(0 to 10)
-				icon_state = "on-10"
-			if(11 to 25)
-				icon_state = "on-25"
-			if(26 to 50)
-				icon_state = "on-50"
-			if(51 to 75)
-				icon_state = "on-75"
-			if(76 to INFINITY)
-				icon_state = "on-100"
+	switch(fusion_cell.fuel_amount)
+		if(0 to 10)
+			icon_state = "on-10"
+		if(11 to 25)
+			icon_state = "on-25"
+		if(26 to 50)
+			icon_state = "on-50"
+		if(51 to 75)
+			icon_state = "on-75"
+		if(76 to INFINITY)
+			icon_state = "on-100"
 
 
 /obj/machinery/power/fusion_engine/attack_hand(mob/user)
@@ -293,7 +291,7 @@
 		if(3)
 			icon_state = "wrench"
 
-
+/*
 /obj/machinery/power/fusion_engine/proc/check_failure()
 	if(cur_tick < FUSION_ENGINE_FAIL_CHECK_TICKS) //Nope, not time for it yet
 		cur_tick++
@@ -313,11 +311,7 @@
 		return 1
 	else
 		return 0
-
-
-
-
-
+*/
 
 
 //FUEL CELL
