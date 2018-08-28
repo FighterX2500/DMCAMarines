@@ -186,7 +186,7 @@
 				canmove = 1
 
 		if("help")
-			to_chat(src, "<br><br><b>To use an emote, type an asterix (*) before a following word. Emotes with a sound are <span style='color: green;'>green</span>. Spamming emotes with sound will likely get you banned. Don't do it.<br><br>\)
+			var/msg = "<br><br><b>To use an emote, type an asterix (*) before a following word. Emotes with a sound are <span style='color: green;'>green</span>. Spamming emotes with sound will likely get you banned. Don't do it.<br><br>\
 			dance, \
 			<span style='color: green;'>growl</span>, \
 			<span style='color: green;'>growl1</span>, \
@@ -209,6 +209,7 @@
 			<span style='color: green;'>tail1</span>, \
 			<span style='color: green;'>tail2</span>, \
 			<span style='color: green;'>tail3</span></b><br>"
+			to_chat(src, msg)
 		else
 			to_chat(src, text("Invalid Emote: []", act))
 	if(message)
