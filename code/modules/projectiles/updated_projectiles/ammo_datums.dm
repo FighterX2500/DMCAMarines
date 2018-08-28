@@ -660,7 +660,7 @@
 	name = "autocannon bullet"
 	icon_state 	= "redbullet" //Red bullets to indicate friendly fire restriction
 	iff_signal = ACCESS_IFF_MARINE
-	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SKIPS_HUMANS
+	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SKIPS_HUMANS|AMMO_SKIP_BARRICADE
 	New()
 		..()
 		accurate_range = config.short_shell_range
@@ -673,10 +673,12 @@
 
 /datum/ammo/bullet/turret/dumb
 	icon_state 	= "bullet"
+	flags_ammo_behavior = AMMO_SKIP_BARRICADE
 	iff_signal = 0
 
 /datum/ammo/bullet/machinegun //Adding this for the MG Nests (~Art)
 	name = "machinegun bullet"
+	flags_ammo_behavior = AMMO_SKIP_BARRICADE
 	icon_state 	= "bullet" // Keeping it bog standard with the turret but allows it to be changed. Had to remove IFF so you have to watch out.
 	New()
 		..()
@@ -687,6 +689,7 @@
 
 /datum/ammo/bullet/minigun
 	name = "minigun bullet"
+	flags_ammo_behavior = AMMO_SKIP_BARRICADE
 	New()
 		..()
 		accuracy = -config.low_hit_accuracy
@@ -814,7 +817,7 @@
 /datum/ammo/rocket/ltb
 	name = "cannon round"
 	icon_state = "ltb"
-	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET
+	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET|AMMO_SKIP_BARRICADE
 
 	New()
 		..()

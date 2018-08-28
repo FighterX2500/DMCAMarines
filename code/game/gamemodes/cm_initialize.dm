@@ -93,10 +93,6 @@ datum/game_mode/proc/initialize_special_clamps()
 	surv_starting_num = Clamp((ready_players/25), 0, 8)
 	merc_starting_num = Clamp((ready_players/3), 1, INFINITY)
 	marine_starting_num = ready_players - xeno_starting_num - surv_starting_num - merc_starting_num
-	for(var/datum/squad/sq in RoleAuthority.squads)
-		if(sq)
-			sq.max_engineers = engi_slot_formula(marine_starting_num)
-			sq.max_medics = medic_slot_formula(marine_starting_num)
 
 	for(var/datum/job/J in RoleAuthority.roles_by_name)
 		if(J.scaled)
