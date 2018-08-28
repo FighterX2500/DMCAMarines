@@ -318,7 +318,7 @@ var/global/list/frozen_items = list("Alpha"=list(),"Bravo"=list(),"Charlie"=list
 				else if(O.target && istype(O.target,/datum/mind))
 					if(O.target == occupant.mind)
 						if(O.owner && O.owner.current)
-							O.owner.to_chat(current, "<span class='danger'>You get the feeling your target is no longer within your reach. Time for Plan [pick(list("A","B","C","D","X","Y","Z"))].</span>")
+							to_chat(O.owner.current, "<span class='danger'>You get the feeling your target is no longer within your reach. Time for Plan [pick(list("A","B","C","D","X","Y","Z"))].</span>")
 						O.target = null
 						spawn(1) //This should ideally fire after the occupant is deleted.
 							if(!O) return

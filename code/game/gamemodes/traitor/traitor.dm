@@ -116,7 +116,7 @@
 
 
 /datum/game_mode/proc/greet_traitor(var/datum/mind/traitor)
-	traitor.to_chat(current, "<B><font size=3 color=red>You are the traitor.</font></B>")
+	to_chat(traitor.current, "<B><font size=3 color=red>You are the traitor.</font></B>")
 	show_objectives(traitor)
 
 

@@ -1331,7 +1331,7 @@
 /obj/mecha/proc/occupant_message(message as text)
 	if(message)
 		if(src.occupant && src.occupant.client)
-			src.to_chat(occupant, "\icon[src] [message]")
+			to_chat(src.occupant, "\icon[src] [message]")
 	return
 
 /obj/mecha/proc/log_message(message as text,red=null)

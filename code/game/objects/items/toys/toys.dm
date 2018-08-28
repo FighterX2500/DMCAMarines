@@ -231,7 +231,7 @@
 				for(var/atom/T in get_turf(D))
 					D.reagents.reaction(T)
 					if(ismob(T) && T:client)
-						T:to_chat(client, "\red [user] has sprayed you with water!")
+						to_chat(T:client, "\red [user] has sprayed you with water!")
 				sleep(4)
 			cdel(D)
 

@@ -698,10 +698,10 @@ datum/game_mode/proc/initialize_special_clamps()
 				story = replacetext(story, "{name}", "[random_name]")
 				spawn(6)
 					var/temp_story = "<b>Your story thus far</b>: " + replacetext(story, "{surv}", "[another_survivor.current.real_name]")
-					survivor.to_chat(current,  temp_story)
+					to_chat(survivor.current, temp_story)
 					survivor.memory += temp_story //Add it to their memories.
 					temp_story = "<b>Your story thus far</b>: " + replacetext(story, "{surv}", "[survivor.current.real_name]")
-					another_survivor.to_chat(current, temp_story)
+					to_chat(another_survivor.current, temp_story)
 					another_survivor.memory += temp_story
 		else
 			if(survivor_story.len) //Shouldn't happen, but technically possible.
@@ -709,7 +709,7 @@ datum/game_mode/proc/initialize_special_clamps()
 				survivor_story -= story
 				spawn(6)
 					var/temp_story = "<b>Your story thus far</b>: " + replacetext(story, "{name}", "[random_name]")
-					survivor.to_chat(current, temp_story)
+					to_chat(survivor.current, temp_story)
 					survivor.memory += temp_story
 		current_survivors -= survivor
 	return 1

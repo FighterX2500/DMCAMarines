@@ -35,7 +35,7 @@
 			to_chat(usr, "Upload failed. Only a faint signal is being detected from the AI, and it is not responding to our requests. It may be low on power.")
 		else
 			src.transmitInstructions(comp.current, usr)
-			comp.to_chat(current, "These are your laws now:")
+			to_chat(comp.current, "These are your laws now:")
 			comp.current.show_laws()
 			for(var/mob/living/silicon/robot/R in mob_list)
 				if(R.lawupdate && (R.connected_ai == comp.current))
@@ -62,7 +62,7 @@
 			to_chat(usr, "Upload failed. The robot is slaved to an AI.")
 		else
 			src.transmitInstructions(comp.current, usr)
-			comp.to_chat(current, "These are your laws now:")
+			to_chat(comp.current, "These are your laws now:")
 			comp.current.show_laws()
 			to_chat(usr, "Upload complete. The robot's laws have been modified.")
 

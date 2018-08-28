@@ -473,9 +473,9 @@ proc/get_nt_opposed()
 		return
 
 	var/obj_count = 1
-	player.to_chat(current, "\blue Your current objectives:")
+	to_chat(player.current, "\blue Your current objectives:")
 	for(var/datum/objective/objective in player.objectives)
-		player.to_chat(current, "<B>Objective #[obj_count]</B>: [objective.explanation_text]")
+		to_chat(player.current, "<B>Objective #[obj_count]</B>: [objective.explanation_text]")
 		obj_count++
 
 /datum/game_mode/proc/printplayer(var/datum/mind/ply)

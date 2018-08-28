@@ -29,7 +29,7 @@
 	if(C.connected_ai)
 		var/mob/A = P.fields["author"]
 		C.connected_ai.aiCamera.injectaialbum(P, " (taken by [A.name])")
-		C.to_chat(connected_ai, "<span class='unconscious'>Image recorded and saved by [name]</span>")
+		to_chat(C.connected_ai, "<span class='unconscious'>Image recorded and saved by [name]</span>")
 		to_chat(usr, "<span class='unconscious'>Image recorded and saved to remote database</span>"	)
 	else
 		injectaialbum(P)

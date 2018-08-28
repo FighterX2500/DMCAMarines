@@ -261,7 +261,7 @@ That prevents a few funky behaviors.
 								else
 									C.icon_state = "aicard-full"
 									T.overlays -= image('icons/obj/machines/computer.dmi', "ai-fixer-full")
-								T.to_chat(occupant, "You have been downloaded to a mobile storage device. Still no remote access.")
+								to_chat(T.occupant, "You have been downloaded to a mobile storage device. Still no remote access.")
 								to_chat(U, "\blue <b>Transfer successful</b>: \black [T.occupant.name] ([rand(1000,9999)].exe) removed from host terminal and stored within local memory.")
 								T.occupant.loc = C
 								T.occupant.cancel_camera()

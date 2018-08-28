@@ -67,7 +67,7 @@
 		for(var/i in ticker.mode.predators)
 			M = i
 			if(M.current && M.current.stat != DEAD)
-				M.to_chat(current, "<span class='event_announcement'>An abomination to your people has been brought onto the world at [get_area(src)]! Hunt it down and destroy it!</span>")
+				to_chat(M.current, "<span class='event_announcement'>An abomination to your people has been brought onto the world at [get_area(src)]! Hunt it down and destroy it!</span>")
 				M.current.emote("roar")
 
 	to_chat(src, {"
