@@ -386,7 +386,7 @@
 
 
 		if ("help")
-			to_chat(src, "<br><br><b>To use an emote, type an asterix (*) before a following word. Emotes with a sound are <span style='color: green;'>green</span>. Spamming emotes with sound will likely get you banned. Don't do it.<br><br> \)
+			var/msg = "<br><br><b>To use an emote, type an asterix (*) before a following word. Emotes with a sound are <span style='color: green;'>green</span>. Spamming emotes with sound will likely get you banned. Don't do it.<br><br> \
 			blink, \
 			blink_r, \
 			bow-(mob name), \
@@ -430,8 +430,9 @@
 			twitch, \
 			wave, \
 			yawn</b><br>"
+			to_chat(src, msg)
 			if (has_species(src,"Yautja"))
-				to_chat(src, "<br><b>As a Predator, you have the following additional emotes. Tip: The *medic emote has neither a cooldown nor a visibile origin...<br><br>\)
+				var/yautja_msg = "<br><b>As a Predator, you have the following additional emotes. Tip: The *medic emote has neither a cooldown nor a visibile origin...<br><br>\
 				<span style='color: green;'>anytime</span>, \
 				<span style='color: green;'>click</span>, \
 				<span style='color: green;'>helpme</span>, \
@@ -446,6 +447,7 @@
 				<span style='color: green;'>overhere</span>, \
 				<span style='color: green;'>turnaround</span>, \
 				<span style='color: green;'>roar</span></b><br>"
+				to_chat(src, yautja_msg)
 
 
 		// Pred emotes
