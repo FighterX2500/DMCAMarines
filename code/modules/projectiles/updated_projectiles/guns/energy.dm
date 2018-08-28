@@ -129,7 +129,8 @@
 	if(isYautja(user))
 		..()
 		to_chat(user, "It currently has [charge_time] / 100 charge.")
-	else to_chat(user, "This thing looks like an alien rifle of some kind. Strange.")
+	else
+		to_chat(user, "This thing looks like an alien rifle of some kind. Strange.")
 
 /obj/item/weapon/gun/energy/plasmarifle/update_icon()
 	if(last_regen < charge_time + 20 || last_regen > charge_time || charge_time > 95)

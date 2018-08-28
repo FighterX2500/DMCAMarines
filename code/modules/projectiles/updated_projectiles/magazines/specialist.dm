@@ -117,7 +117,8 @@
 				M.amount = 2
 				user.drop_held_item()
 				cdel(src)
-		else to_chat(user, "Not with a missile inside!")
+		else
+			to_chat(user, "Not with a missile inside!")
 
 	update_icon()
 		overlays.Cut()

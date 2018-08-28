@@ -485,11 +485,11 @@ var/list/mechtoys = list(
 
 /obj/machinery/computer/supplycomp/Topic(href, href_list)
 	if(!supply_controller)
-		world.log << "## ERROR: Eek. The supply_controller controller datum is missing somehow."
+		to_chat(world.log, "## ERROR: Eek. The supply_controller controller datum is missing somehow.")
 		return
 	var/datum/shuttle/ferry/supply/shuttle = supply_controller.shuttle
 	if (!shuttle)
-		world.log << "## ERROR: Eek. The supply/shuttle datum is missing somehow."
+		to_chat(world.log, "## ERROR: Eek. The supply/shuttle datum is missing somehow.")
 		return
 	if(..())
 		return

@@ -73,7 +73,8 @@
 			num_flares--
 			if(user) to_chat(user, "<span class='notice'>You unload a flare from [src].</span>")
 			update_icon()
-		else to_chat(user, "<span class='warning'>It's empty!</span>")
+		else
+			to_chat(user, "<span class='warning'>It's empty!</span>")
 
 //-------------------------------------------------------
 //This gun is very powerful, but also has a kick.

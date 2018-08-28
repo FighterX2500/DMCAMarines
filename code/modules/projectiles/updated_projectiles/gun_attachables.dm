@@ -797,8 +797,10 @@ obj/item/attachable/attack_hand(var/mob/user as mob)
 
 	examine(mob/user)
 		..()
-		if(current_rounds > 0) to_chat(user, "It has [current_rounds] unit\s of fuel left.")
-		else to_chat(user, "It's empty.")
+		if(current_rounds > 0)
+			to_chat(user, "It has [current_rounds] unit\s of fuel left.")
+		else
+			to_chat(user, "It's empty.")
 
 	reload_attachment(obj/item/ammo_magazine/flamer_tank/FT, mob/user)
 		if(istype(FT))

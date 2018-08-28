@@ -386,7 +386,8 @@
 		if(grenades.len)
 			fire_grenade(target,user)
 			playsound(user.loc, cocked_sound, 25, 1)
-		else to_chat(user, "<span class='warning'>The grenade launcher is empty.</span>")
+		else
+			to_chat(user, "<span class='warning'>The grenade launcher is empty.</span>")
 
 //Doesn't use most of any of these. Listed for reference.
 /obj/item/weapon/gun/launcher/m92/load_into_chamber()
@@ -501,7 +502,8 @@
 		if(grenade)
 			fire_grenade(target,user)
 			playsound(user.loc, cocked_sound, 25, 1)
-		else to_chat(user, "<span class='warning'>The grenade launcher is empty.</span>")
+		else
+			to_chat(user, "<span class='warning'>The grenade launcher is empty.</span>")
 
 //Doesn't use most of any of these. Listed for reference.
 /obj/item/weapon/gun/launcher/m81/load_into_chamber()
@@ -518,7 +520,8 @@
 			playsound(user, unload_sound, 25, 1)
 		else nade.loc = get_turf(src)
 		grenade = null
-	else to_chat(user, "<span class='warning'>It's empty!</span>")
+	else
+		to_chat(user, "<span class='warning'>It's empty!</span>")
 
 /obj/item/weapon/gun/launcher/m81/able_to_fire(mob/living/user)
 	. = ..()
@@ -603,8 +606,10 @@
 
 /obj/item/weapon/gun/launcher/rocket/examine(mob/user)
 	..()
-	if(current_mag.current_rounds)  to_chat(user, "It's ready to rocket.")
-	else 							to_chat(user, "It's empty.")
+	if(current_mag.current_rounds)
+		to_chat(user, "It's ready to rocket.")
+	else
+		to_chat(user, "It's empty.")
 
 
 /obj/item/weapon/gun/launcher/rocket/able_to_fire(mob/living/user)
