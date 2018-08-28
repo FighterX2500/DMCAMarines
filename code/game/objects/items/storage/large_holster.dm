@@ -74,6 +74,7 @@
 	base_icon = "machete_holster"
 	icon_state = "machete_holster"
 	can_hold = list("/obj/item/weapon/claymore/mercsword/machete")
+	flags_equip_slot = SLOT_WAIST|SLOT_BACK
 
 /obj/item/storage/large_holster/machete/full/New()
 	..()
