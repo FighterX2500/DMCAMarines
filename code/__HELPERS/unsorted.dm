@@ -1638,3 +1638,5 @@ var/list/WALLITEMS = list(
 			error -= deltax
 	return line
 
+/proc/to_chat(target, message)
+	target << message
