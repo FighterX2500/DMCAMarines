@@ -53,35 +53,33 @@
 		stop_processing()
 		return FALSE
 
-	if(!check_failure())
+	if(power_gen_percent < 100) power_gen_percent++
 
-		if(power_gen_percent < 100) power_gen_percent++
+	switch(power_gen_percent) //Flavor text!
+		if(10)
+			visible_message("\icon[src] <span class='notice'><b>[src]</b> begins to whirr as it powers up.</span>")
+			fuel_rate = 0.025
+		if(50)
+			visible_message("\icon[src] <span class='notice'><b>[src]</b> begins to hum loudly as it reaches half capacity.</span>")
+			fuel_rate = 0.05
+		if(99)
+			visible_message("\icon[src] <span class='notice'><b>[src]</b> rumbles loudly as the combustion and thermal chambers reach full strength.</span>")
+			fuel_rate = 0.1
 
-		switch(power_gen_percent) //Flavor text!
-			if(10)
-				visible_message("\icon[src] <span class='notice'><b>[src]</b> begins to whirr as it powers up.</span>")
-				fuel_rate = 0.025
-			if(50)
-				visible_message("\icon[src] <span class='notice'><b>[src]</b> begins to hum loudly as it reaches half capacity.</span>")
-				fuel_rate = 0.05
-			if(99)
-				visible_message("\icon[src] <span class='notice'><b>[src]</b> rumbles loudly as the combustion and thermal chambers reach full strength.</span>")
-				fuel_rate = 0.1
+	add_avail(FUSION_ENGINE_MAX_POWER_GEN * (power_gen_percent / 100) ) //Nope, all good, just add the power
+	fusion_cell.fuel_amount-=fuel_rate //Consumes fuel
 
-		add_avail(FUSION_ENGINE_MAX_POWER_GEN * (power_gen_percent / 100) ) //Nope, all good, just add the power
-		fusion_cell.fuel_amount-=fuel_rate //Consumes fuel
-
-		switch(fusion_cell.fuel_amount)
-			if(0 to 10)
-				icon_state = "on-10"
-			if(11 to 25)
-				icon_state = "on-25"
-			if(26 to 50)
-				icon_state = "on-50"
-			if(51 to 75)
-				icon_state = "on-75"
-			if(76 to INFINITY)
-				icon_state = "on-100"
+	switch(fusion_cell.fuel_amount)
+		if(0 to 10)
+			icon_state = "on-10"
+		if(11 to 25)
+			icon_state = "on-25"
+		if(26 to 50)
+			icon_state = "on-50"
+		if(51 to 75)
+			icon_state = "on-75"
+		if(76 to INFINITY)
+			icon_state = "on-100"
 
 
 /obj/machinery/power/fusion_engine/attack_hand(mob/user)
