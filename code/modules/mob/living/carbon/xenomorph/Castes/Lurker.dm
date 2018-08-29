@@ -20,10 +20,9 @@
 	pixel_x = -12
 	old_x = -12
 	evolves_to = list("Ravager")
-	charge_type = 2 //Pounce - Hunter
+	charge_type = 1 //Pounce - Hunter // PLZ NO LURKER SHIT
 	armor_deflection = 15
 	attack_delay = -2
-	pounce_delay = 55
 	tier = 2
 	upgrade = 0
 	actions = list(
