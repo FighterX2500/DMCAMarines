@@ -10,7 +10,7 @@
 	set name = "Say"
 	set category = "IC"
 	if(say_disabled)	//This is here to try to identify lag problems
-		usr << "\red Speech is currently admin-disabled."
+		to_chat(usr, "\red Speech is currently admin-disabled.")
 		return
 	if(message == "*dance")
 		set_typing_indicator(0)
@@ -31,7 +31,7 @@
 	set category = "IC"
 
 	if(say_disabled)	//This is here to try to identify lag problems
-		usr << "\red Speech is currently admin-disabled."
+		to_chat(usr, "\red Speech is currently admin-disabled.")
 		return
 
 	message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
@@ -51,7 +51,7 @@
 	var/name = src.real_name
 
 	if(say_disabled)	//This is here to try to identify lag problems
-		usr << "\red Speech is currently admin-disabled."
+		to_chat(usr, "\red Speech is currently admin-disabled.")
 		return
 
 	if(!src.client) //Somehow
@@ -59,11 +59,11 @@
 
 	if(!src.client.holder)
 		if(!dsay_allowed)
-			src << "\red Deadchat is globally muted"
+			to_chat(src, "\red Deadchat is globally muted")
 			return
 
 	if(client && client.prefs && !(client.prefs.toggles_chat & CHAT_DEAD))
-		usr << "\red You have deadchat muted."
+		to_chat(usr, "\red You have deadchat muted.")
 		return
 /*
 	if(mind && mind.name)
@@ -80,11 +80,11 @@
 		if(istype(M, /mob/new_player))
 			continue
 		if(M.client && M.stat == DEAD && (M.client.prefs.toggles_chat & CHAT_DEAD))
-			M << rendered
+			to_chat(M, rendered)
 			continue
 
 		if(M.client && M.client.holder && !is_mentor(M.client) && (M.client.prefs.toggles_chat & CHAT_DEAD) ) // Show the message to admins/mods with deadchat toggled on
-			M << rendered	//Admins can hear deadchat, if they choose to, no matter if they're blind/deaf or not.
+			to_chat(M, rendered	)
 
 	usr.talked = 1
 	spawn (5)
