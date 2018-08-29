@@ -360,7 +360,7 @@
 	icon_state="grenadebelt" // temp
 	item_state="s_marine"
 	w_class = 4
-	storage_slots = 8
+	storage_slots = 18
 	max_w_class = 3
 	max_storage_space = 24
 	can_hold = list("/obj/item/explosive/grenade")
@@ -373,6 +373,16 @@
 		new /obj/item/explosive/grenade/incendiary(src)
 		new /obj/item/explosive/grenade/incendiary(src)
 		new /obj/item/explosive/grenade/incendiary(src)
+		new /obj/item/explosive/grenade/incendiary(src)
+		new /obj/item/explosive/grenade/incendiary(src)
+		new /obj/item/explosive/grenade/incendiary(src)
+		new /obj/item/explosive/grenade/incendiary(src)
+		new /obj/item/explosive/grenade/frag(src)
+		new /obj/item/explosive/grenade/frag(src)
+		new /obj/item/explosive/grenade/frag(src)
+		new /obj/item/explosive/grenade/frag(src)
+		new /obj/item/explosive/grenade/frag(src)
+		new /obj/item/explosive/grenade/frag(src)
 		new /obj/item/explosive/grenade/frag(src)
 		new /obj/item/explosive/grenade/frag(src)
 		new /obj/item/explosive/grenade/frag(src)

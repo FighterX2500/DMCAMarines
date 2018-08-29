@@ -122,7 +122,7 @@
 	var/const/deafness = 2//Carbon
 	var/const/muteness = 4//Carbon
 
-	var/artymod_use = 0 // Artillery Module Night Vision check.
+	var/artmod_use = 0 // Artillery Module Night Vision check.
 
 
 	var/datum/dna/dna = null//Carbon
