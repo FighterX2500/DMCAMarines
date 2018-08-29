@@ -13,7 +13,7 @@
 	var/mob/living/buckled_mob
 	var/buckle_lying = FALSE //Is the mob buckled in a lying position
 	var/can_buckle = FALSE
-	
+
 	var/explosion_resistance = 0
 
 /obj/New()
@@ -166,10 +166,10 @@
 		return
 
 	if (M.mob_size > MOB_SIZE_HUMAN)
-		user << "<span class='warning'>[M] is too big to buckle in.</span>"
+		to_chat(user, "<span class='warning'>[M] is too big to buckle in.</span>")
 		return
 	if (istype(user, /mob/living/carbon/Xenomorph))
-		user << "<span class='warning'>You don't have the dexterity to do that, try a nest.</span>"
+		to_chat(user, "<span class='warning'>You don't have the dexterity to do that, try a nest.</span>")
 		return
 
 	if(density)
