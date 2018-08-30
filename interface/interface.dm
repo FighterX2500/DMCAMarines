@@ -8,7 +8,7 @@
 			return
 		src << link(config.wikiurl)
 	else
-		src << "\red The wiki URL is not set in the server configuration."
+		to_chat(src, "\red The wiki URL is not set in the server configuration.")
 	return
 
 /client/verb/forum()
@@ -20,7 +20,7 @@
 			return
 		src << link(config.forumurl)
 	else
-		src << "\red The forum URL is not set in the server configuration."
+		to_chat(src, "\red The forum URL is not set in the server configuration.")
 	return
 
 /client/verb/rules()
@@ -32,7 +32,7 @@
 			return
 		src << link(config.rulesurl)
 	else
-		src << "\red The rules URL is not set in the server configuration."
+		to_chat(src, "\red The rules URL is not set in the server configuration.")
 	return
 
 /client/verb/donate()
