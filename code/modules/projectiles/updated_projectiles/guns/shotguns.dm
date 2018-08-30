@@ -144,7 +144,6 @@ can cause issues with ammo types getting mixed up during the burst.
 
 	return 1
 
-
 //-------------------------------------------------------
 //GENERIC MERC SHOTGUN //Not really based on anything.
 
