@@ -38,7 +38,7 @@
 					transf_amt = amount
 				ET.dirt_amt = transf_amt
 				ET.dirt_type = DIRT_TYPE_SNOW
-				user <<"<span class='notice'>You take snow from [src].</span>"
+				to_chat(user, "<span class='notice'>You take snow from [src].</span>")
 				ET.update_icon()
 				use(transf_amt)
 				return TRUE

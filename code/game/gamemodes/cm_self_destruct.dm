@@ -406,7 +406,8 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 					playsound(src, 'sound/machines/switch.ogg', 25, 1)
 					icon_state = "rod_3"
 					active_state = SELF_DESTRUCT_MACHINE_ACTIVE
-				else to_chat(user, "<span class='warning'>The control rod is not ready.</span>")
+				else
+					to_chat(user, "<span class='warning'>The control rod is not ready.</span>")
 
 
 #undef SELF_DESTRUCT_MACHINE_INACTIVE

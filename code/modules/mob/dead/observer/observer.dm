@@ -337,8 +337,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		if(following && following == target)
 			return
 		following = target
+		loc = target.loc
 		to_chat(src, "\blue Now following [target]")
-		spawn(0)
+		spawn(0) //Backup
 			while(target && following == target && client)
 				var/turf/T = get_turf(target)
 				if(!T)

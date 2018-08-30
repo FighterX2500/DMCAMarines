@@ -52,7 +52,7 @@
 				can_stuck = 0
 			C.next_move_slowdown += slow_amount * slayer
 			if(prob(2))
-				to_chat(C, "<span class='warning'>Moving through [src] slows you down.</span>" )
+				to_chat(C, "<span class='warning'>Moving through [src] slows you down.</span>")
 			else if(can_stuck && slayer == 3 && prob(2))
 				to_chat(C, "<span class='warning'>You get stuck in [src] for a moment!</span>")
 				C.next_move_slowdown += 10

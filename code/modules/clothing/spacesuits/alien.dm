@@ -205,4 +205,4 @@
 /obj/item/clothing/shoes/magboots/vox/examine(mob/user)
 	..()
 	if (magpulse)
-		to_chat(user, "It would be hard to take these off without relaxing your grip first." )
+		to_chat(user, "It would be hard to take these off without relaxing your grip first.")

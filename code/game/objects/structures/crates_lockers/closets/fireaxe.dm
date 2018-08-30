@@ -110,7 +110,7 @@
 			hasaxe = 1
 		if(!ishuman(user)) return
 		if(src.locked)
-			user <<"\red The cabinet won't budge!"
+			to_chat(user, "\red The cabinet won't budge!")
 			return
 		if(localopened)
 			if(fireaxe)

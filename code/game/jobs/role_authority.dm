@@ -42,15 +42,15 @@ var/global/datum/authority/branch/role/RoleAuthority
 							/datum/job/pmc/elite_responder)
 	var/list/squads_all = subtypesof(/datum/squad)
 
-	if(!roles_all.len)
-		to_chat(world, "<span class='debug'>Error setting up jobs, no job datums found.</span>")
-		log_debug("Error setting up jobs, no job datums found.")
-		return //No real reason this should be length zero, so we'll just return instead.
+		if(!roles_all.len)
+			to_chat(world, "<span class='debug'>Error setting up jobs, no job datums found.</span>")
+			log_debug("Error setting up jobs, no job datums found.")
+			return //No real reason this should be length zero, so we'll just return instead.
 
-	if(!squads_all.len)
-		to_chat(world, "<span class='debug'>Error setting up squads, no squad datums found.</span>")
-		log_debug("Error setting up squads, no squad datums found.")
-		return
+		if(!squads_all.len)
+			to_chat(world, "<span class='debug'>Error setting up squads, no squad datums found.</span>")
+			log_debug("Error setting up squads, no squad datums found.")
+			return
 
 	roles_by_path 	= new
 	roles_by_name 	= new
@@ -65,10 +65,10 @@ var/global/datum/authority/branch/role/RoleAuthority
 	for(var/i in roles_all) //Setting up our roles.
 		J = new i
 
-		if(!J.title) //In case you forget to subtract one of those variable holder jobs.
-			to_chat(world, "<span class='debug'>Error setting up jobs, blank title job: [J.type].</span>")
-			log_debug("Error setting up jobs, blank title job: [J.type].")
-			continue
+			if(!J.title) //In case you forget to subtract one of those variable holder jobs.
+				to_chat(world, "<span class='debug'>Error setting up jobs, blank title job: [J.type].</span>")
+				log_debug("Error setting up jobs, blank title job: [J.type].")
+				continue
 
 		roles_by_path[J.type] = J
 		if(J.flags_startup_parameters & ROLE_ADD_TO_DEFAULT)
@@ -331,7 +331,7 @@ roles willy nilly.
 			M.mind.role_alt_title 		= J.get_alternative_title(M)
 			M.mind.role_comm_title 		= J.comm_title
 			J.current_positions++
-			//to_chat(world, "[J.title]: [J.current_positions] current positions filled." )
+			//to_chat(world, "[J.title]: [J.current_positions] current positions filled.")
 			return 1
 
 /datum/authority/branch/role/proc/check_role_entry(mob/new_player/M, datum/job/J, latejoin=0)
@@ -604,8 +604,10 @@ roles willy nilly.
 						else if(S.num_smartgun < lowest.num_smartgun)
 							lowest = S
 
-		if(lowest)	lowest.put_marine_in_squad(H)
-		else to_chat(H, "Something went badly with randomize_squad()! Tell a coder!")
+		if(lowest)
+			lowest.put_marine_in_squad(H)
+		else
+			to_chat(H, "Something went badly with randomize_squad()! Tell a coder!")
 
 	else
 		//Deal with marines. They get distributed to the lowest populated squad.

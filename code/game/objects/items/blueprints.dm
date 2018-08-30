@@ -21,7 +21,7 @@
 
 /obj/item/blueprints/attack_self(mob/M as mob)
 	if (!istype(M,/mob/living/carbon/human))
-		to_chat(M, "This stack of blue paper means nothing to you." )
+		to_chat(M, "This stack of blue paper means nothing to you.")
 		return
 	interact()
 	return

@@ -625,7 +625,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					speed = -0.2
 					aura_strength = 4.5
 				if("Drone")
-					src <<"<span class='xenoannounce'>You are the ultimate worker of the Hive. Time to clock in, and clock the tallhosts out.</span>"
+					to_chat(src, "<span class='xenoannounce'>You are the ultimate worker of the Hive. Time to clock in, and clock the tallhosts out.</span>")
 					melee_damage_lower = 20
 					melee_damage_upper = 30
 					health = 200
@@ -640,7 +640,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					speed = -1.1
 					aura_strength = 2
 				if("Hivelord")
-					src <<"<span class='xenoannounce'>You are the builder of walls. Ensure that the marines are the ones who pay for them.</span>"
+					to_chat(src, "<span class='xenoannounce'>You are the builder of walls. Ensure that the marines are the ones who pay for them.</span>")
 					melee_damage_lower = 20
 					melee_damage_upper = 30
 					health = 300
