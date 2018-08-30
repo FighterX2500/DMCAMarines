@@ -882,6 +882,39 @@
 	smoke.set_up(1, get_turf(P))
 	smoke.start()
 
+/datum/ammo/rocket/tow
+	name = "TOW rocket"
+	damage_falloff = 0
+
+/datum/ammo/rocket/tow/New()
+		..()
+		accuracy = config.med_hit_accuracy
+		accuracy_var_low = config.med_proj_variance
+		accurate_range = config.short_shell_range
+		max_range = config.max_shell_range
+		damage = config.ultra_hit_damage
+		penetration= config.max_armor_penetration
+
+/datum/ammo/rocket/tow/on_hit_mob(mob/M, obj/item/projectile/P)
+		explosion(get_turf(M), 1, 1, 2, 5)
+		smoke.set_up(1, get_turf(M))
+		smoke.start()
+
+/datum/ammo/rocket/tow/on_hit_obj(obj/O, obj/item/projectile/P)
+		explosion(get_turf(O), 1, 1, 2, 5)
+		smoke.set_up(1, get_turf(O))
+		smoke.start()
+
+/datum/ammo/rocket/tow/on_hit_turf(turf/T, obj/item/projectile/P)
+		explosion(T,  0, 1, 2, 5)
+		smoke.set_up(1, T)
+		smoke.start()
+
+/datum/ammo/rocket/tow/do_at_max_range(obj/item/projectile/P)
+		explosion(get_turf(P),  0, 1, 2, 5)
+		smoke.set_up(1, get_turf(P))
+		smoke.start()
+
 /datum/ammo/rocket/ltb
 	name = "cannon round"
 	icon_state = "ltb"
