@@ -42,15 +42,15 @@ var/global/datum/authority/branch/role/RoleAuthority
 							/datum/job/pmc/elite_responder)
 	var/list/squads_all = subtypesof(/datum/squad)
 
-		if(!roles_all.len)
-			to_chat(world, "<span class='debug'>Error setting up jobs, no job datums found.</span>")
-			log_debug("Error setting up jobs, no job datums found.")
-			return //No real reason this should be length zero, so we'll just return instead.
+	if(!roles_all.len)
+		to_chat(world, "<span class='debug'>Error setting up jobs, no job datums found.</span>")
+		log_debug("Error setting up jobs, no job datums found.")
+		return //No real reason this should be length zero, so we'll just return instead.
 
-		if(!squads_all.len)
-			to_chat(world, "<span class='debug'>Error setting up squads, no squad datums found.</span>")
-			log_debug("Error setting up squads, no squad datums found.")
-			return
+	if(!squads_all.len)
+		to_chat(world, "<span class='debug'>Error setting up squads, no squad datums found.</span>")
+		log_debug("Error setting up squads, no squad datums found.")
+		return
 
 	roles_by_path 	= new
 	roles_by_name 	= new
@@ -65,10 +65,10 @@ var/global/datum/authority/branch/role/RoleAuthority
 	for(var/i in roles_all) //Setting up our roles.
 		J = new i
 
-			if(!J.title) //In case you forget to subtract one of those variable holder jobs.
-				to_chat(world, "<span class='debug'>Error setting up jobs, blank title job: [J.type].</span>")
-				log_debug("Error setting up jobs, blank title job: [J.type].")
-				continue
+		if(!J.title) //In case you forget to subtract one of those variable holder jobs
+			to_chat(world, "<span class='debug'>Error setting up jobs, blank title job: [J.type].</span>")
+			log_debug("Error setting up jobs, blank title job: [J.type].")
+			continue
 
 		roles_by_path[J.type] = J
 		if(J.flags_startup_parameters & ROLE_ADD_TO_DEFAULT)
