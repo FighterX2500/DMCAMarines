@@ -102,12 +102,6 @@
 		reagents.add_reagent("tramadol", 15)
 		update_icon()
 
-/obj/item/reagent_container/hypospray/autoinjector/Tramadol/skillless
-	name = "Pain-stop autoinjector"
-	desc = "An auto-injector loaded with a small amount of painkiller for marines to self-administer."
-	skilllock = 0
-
-
 /obj/item/reagent_container/hypospray/autoinjector/Oxycodone
 	name = "Oxycodone (EXTREME PAINKILLER) autoinjector"
 	desc = "An auto-injector loaded with 5 units of Oxycodone, a powerful pankiller intended for life-threatening situations."

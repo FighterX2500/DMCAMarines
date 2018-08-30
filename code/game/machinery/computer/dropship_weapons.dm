@@ -154,6 +154,7 @@
 
 /obj/machinery/computer/dropship_weapons/dropship2
 	name = "'Normandy' weapons controls"
+	req_access = list(ACCESS_MARINE_DROPSHIP)
 
 /obj/machinery/computer/dropship_weapons/dropship2/New()
 	..()
