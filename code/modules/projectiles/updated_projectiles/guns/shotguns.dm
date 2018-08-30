@@ -388,8 +388,9 @@ can cause issues with ammo types getting mixed up during the burst.
 						/obj/item/attachable/compensator,
 						/obj/item/attachable/magnetic_harness,
 						/obj/item/attachable/attached_gun/flamer,
-						/obj/item/attachable/stock/shotgun,
-						/obj/item/attachable/scope/mini)
+						/obj/item/attachable/attached_gun/shotgun, //if it can mount a flamer, why can't it mount a shotgun
+						/obj/item/attachable/scope/mini,
+						/obj/item/attachable/stock/shotgun)
 
 /obj/item/weapon/gun/shotgun/pump/New()
 	select_gamemode_skin(/obj/item/weapon/gun/shotgun/pump)
@@ -474,7 +475,8 @@ can cause issues with ammo types getting mixed up during the burst.
 						/obj/item/attachable/compensator,
 						/obj/item/attachable/scope/mini,
 						/obj/item/attachable/magnetic_harness,
-						/obj/item/attachable/attached_gun/flamer)
+						/obj/item/attachable/attached_gun/flamer,
+						/obj/item/attachable/attached_gun/shotgun)
 
 
 /obj/item/weapon/gun/shotgun/pump/cmb/New()
