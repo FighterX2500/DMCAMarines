@@ -55,9 +55,9 @@
 /obj/item/weapon/baton/examine(mob/user)
 	..()
 	if(bcell)
-		user <<"<span class='notice'>The baton is [round(bcell.percent())]% charged.</span>"
+		to_chat(user, "<span class='notice'>The baton is [round(bcell.percent())]% charged.</span>")
 	else
-		user <<"<span class='warning'>The baton does not have a power source installed.</span>"
+		to_chat(user, "<span class='warning'>The baton does not have a power source installed.</span>")
 
 /obj/item/weapon/baton/attack_hand(mob/user)
 	if(check_user_auth(user))

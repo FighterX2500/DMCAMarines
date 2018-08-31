@@ -31,7 +31,7 @@
 				if(evolution_allowed && evolution_stored < evolution_threshold && hive.living_xeno_queen && hive.living_xeno_queen.ovipositor)
 					evolution_stored = min(evolution_stored + 1, evolution_threshold)
 					if(evolution_stored == evolution_threshold - 1)
-						to_chat(src, "<span class='xenodanger'>Your carapace crackles and your tendons strengthen. You are ready to evolve!</span>" )
+						to_chat(src, "<span class='xenodanger'>Your carapace crackles and your tendons strengthen. You are ready to evolve!</span>")
 						src << sound('sound/effects/xeno_evolveready.ogg')
 
 		//Status updates, death etc.

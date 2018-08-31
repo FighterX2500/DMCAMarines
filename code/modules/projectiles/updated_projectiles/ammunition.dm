@@ -44,7 +44,7 @@ They're all essentially identical when it comes to getting the job done.
 	..()
 	// It should never have negative ammo after spawn. If it does, we need to know about it.
 	if(current_rounds < 0)
-		user<< "Something went horribly wrong. Ahelp the following: ERROR CODE R1: negative current_rounds on examine."
+		to_chat(user, "Something went horribly wrong. Ahelp the following: ERROR CODE R1: negative current_rounds on examine.")
 		log_debug("ERROR CODE R1: negative current_rounds on examine. User: <b>[usr]</b>")
 	else
 		to_chat(user, "[src] has <b>[current_rounds]</b> rounds out of <b>[max_rounds]</b>.")
@@ -56,7 +56,8 @@ They're all essentially identical when it comes to getting the job done.
 			if (current_rounds > 0)
 				if(create_handful(user))
 					return
-			else to_chat(user, "[src] is empty. Nothing to grab.")
+			else
+				to_chat(user, "[src] is empty. Nothing to grab.")
 			return
 	return ..() //Do normal stuff.
 
@@ -70,8 +71,10 @@ They're all essentially identical when it comes to getting the job done.
 				if(src == user.get_inactive_hand() ) //It has to be held.
 					if(default_ammo == transfer_from.default_ammo)
 						transfer_ammo(transfer_from,user,transfer_from.current_rounds) // This takes care of the rest.
-					else to_chat(user, "Those aren't the same rounds. Better not mix them up.")
-				else to_chat(user, "Try holding [src] before you attempt to restock it.")
+					else
+						to_chat(user, "Those aren't the same rounds. Better not mix them up.")
+				else
+					to_chat(user, "Try holding [src] before you attempt to restock it.")
 
 //Generic proc to transfer ammo between ammo mags. Can work for anything, mags, handfuls, etc.
 /obj/item/ammo_magazine/proc/transfer_ammo(obj/item/ammo_magazine/source, mob/user, transfer_amount = 1)
@@ -187,7 +190,8 @@ If it is the same and the other stack isn't full, transfer an amount (default 1)
 	if(istype(transfer_from)) // We have a handful. They don't need to hold it.
 		if(default_ammo == transfer_from.default_ammo) //Has to match.
 			transfer_ammo(transfer_from,user, transfer_from.current_rounds) // Transfer it from currently held to src
-		else to_chat(user, "Those aren't the same rounds. Better not mix them up.")
+		else
+			to_chat(user, "Those aren't the same rounds. Better not mix them up.")
 
 /obj/item/ammo_magazine/handful/proc/generate_handful(new_ammo, new_caliber, maximum_rounds, new_rounds, new_gun_type)
 	var/datum/ammo/A = ammo_list[new_ammo]

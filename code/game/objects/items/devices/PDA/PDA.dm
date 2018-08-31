@@ -1159,7 +1159,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		// feature to the PDA, which would better convey the availability of the feature, but this will work for now.
 
 		// Inform the user
-		to_chat(user, "\blue Paper scanned and OCRed to notekeeper." )
+		to_chat(user, "\blue Paper scanned and OCRed to notekeeper.")
 
 
 

@@ -151,7 +151,7 @@
 		else if(task == "permissions")
 			if(!D)	return
 			var/list/permissionlist = list()
-			for(var/i=1, i<=R_HOST, i<<=1)		//that <<= is shorthand for i = to_chat(i, 1. Which is a left bitshift)
+			for(var/i=1, i<=R_HOST, i<<=1)
 				permissionlist[rights2text(i)] = i
 			var/new_permission = input("Select a permission to turn on/off", "Permission toggle", null, null) as null|anything in permissionlist
 			if(!new_permission)	return
@@ -2403,7 +2403,7 @@
 		message_staff("[usr.key] has used 'Mark' on the Adminhelp from [key_name_admin(ref_person)] and is preparing to respond...", 1)
 		var/msgplayer = "\blue <b>NOTICE: <font color=red>[usr.key]</font> has marked your request and is preparing to respond...</b>"
 
-		to_chat(ref_person, msgplayer )
+		to_chat(ref_person, msgplayer)
 
 		unansweredAhelps.Remove(ref_person.computer_id) //It has been answered so take it off of the unanswered list
 		src.viewUnheardAhelps() //This SHOULD refresh the page
@@ -2425,7 +2425,7 @@
 		message_staff("[usr.key] has used 'No Response' on the Adminhelp from [key_name_admin(ref_person)]. The player has been notified that their issue 'is being handled, it's fixed, or it's nonsensical'.", 1)
 		var/msgplayer = "\blue <b>NOTICE: <font color=red>[usr.key]</font> has received your Adminhelp and marked it as 'No response necessary'. Either your Adminhelp is being handled, it's fixed, or it's nonsensical.</font></b>"
 
-		to_chat(ref_person, msgplayer )
+		to_chat(ref_person, msgplayer)
 		ref_person << sound('sound/effects/adminhelp-error.ogg')
 
 		unansweredAhelps.Remove(ref_person.computer_id) //It has been answered so take it off of the unanswered list
@@ -2448,7 +2448,7 @@
 		message_staff("[usr.key] has used 'Warn' on the Adminhelp from [key_name_admin(ref_person)]. The player has been warned for abusing the Adminhelp system.", 1)
 		var/msgplayer = "\blue <b>NOTICE: <font color=red>[usr.key]</font> has given you a <font color=red>warning</font>. Adminhelps are for serious inquiries only. Please do not abuse this system.</b>"
 
-		to_chat(ref_person, msgplayer )
+		to_chat(ref_person, msgplayer)
 		ref_person << sound('sound/effects/adminhelp-error.ogg')
 
 		unansweredAhelps.Remove(ref_person.computer_id) //It has been answered so take it off of the unanswered list
@@ -2507,7 +2507,7 @@
 
 		message_staff("[usr.key] is autoresponding to [ref_person] with <font color='#009900'>'[choice]'</font>. They have been shown the following:\n[msgplayer]", 1)
 
-		to_chat(ref_person, msgplayer )
+		to_chat(ref_person, msgplayer)
 		ref_person << sound('sound/effects/adminhelp-reply.ogg')
 
 		unansweredAhelps.Remove(ref_person.computer_id) //It has been answered so take it off of the unanswered list
@@ -2531,7 +2531,7 @@
 	// 		if((R_ADMIN|R_MOD|R_MENTOR) & X.holder.rights)
 	// 			to_chat(X, msg)
 	//
-	// 	to_chat(ref_person, msgplayer )
+	// 	to_chat(ref_person, msgplayer)
 
 
 	if(href_list["ccmark"]) // CentComm-mark. We want to let all Admins know that something is "Marked", but not let the player know because it's not very RP-friendly.

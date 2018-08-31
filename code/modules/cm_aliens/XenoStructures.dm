@@ -541,7 +541,8 @@
 					cdel(F)
 				if(DESTROYED) to_chat(user, "<span class='xenowarning'>This egg is no longer usable.</span>")
 				if(GROWING,GROWN) to_chat(user, "<span class='xenowarning'>This one is occupied with a child.</span>")
-		else to_chat(user, "<span class='xenowarning'>This child is dead.</span>")
+		else
+			to_chat(user, "<span class='xenowarning'>This child is dead.</span>")
 		return
 
 	if(W.flags_item & NOBLUDGEON)

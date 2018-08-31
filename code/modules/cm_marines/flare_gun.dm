@@ -106,7 +106,7 @@ obj/item/projectile/flareburst
 									direction = "Southwest"
 								else
 									direction = "sky"
-							user<<"<B><I><font color=red>You see a signal flare light up in the [direction]!"
+							to_chat(user, "<B><I><font color=red>You see a signal flare light up in the [direction]!")
 						sleep(600)
 						target.SetLuminosity(3 + rand(0,3))
 						sleep(30)
@@ -149,7 +149,7 @@ obj/item/projectile/flareburst
 									direction = "Southwest"
 								else
 									direction = "sky"
-							user<<"<B><I><font color=red>You see a signal flare light up in the [direction]!"
+							to_chat(user, "<B><I><font color=red>You see a signal flare light up in the [direction]!")
 						sleep(600)
 						target.SetLuminosity(3 + rand(0,3))
 						sleep(30)

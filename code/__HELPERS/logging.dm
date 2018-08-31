@@ -18,7 +18,7 @@
 
 //print a testing-mode debug message to world.log
 /proc/testing(msg)
-		to_chat(world.log, "## TESTING: [msg][log_end]")
+	to_chat(world.log, "## TESTING: [msg][log_end]")
 
 /proc/log_admin(text)
 	admin_log.Add(text)

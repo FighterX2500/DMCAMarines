@@ -21,7 +21,8 @@
 	if(mind in ticker.mode.xenomorphs)
 		to_chat(src, "<span class='debuginfo'>[src] mind is in the xenomorph list. Mind key is [mind.key].</span>")
 		to_chat(src, "<span class='debuginfo'>Current mob is: [mind.current]. Original mob is: [mind.original].</span>")
-	else to_chat(src, "<span class='debuginfo'>This xenomorph is not in the xenomorph list.</span>")
+	else
+		to_chat(src, "<span class='debuginfo'>This xenomorph is not in the xenomorph list.</span>")
 #endif
 
 #undef DEBUG_XENO

@@ -127,7 +127,7 @@
 				if(3)
 					tierC++
 				else
-					src <<"<span class='warning'>You shouldn't see this. If you do, bug repot it! (Error XE01).</span>"
+					to_chat(src, "<span class='warning'>You shouldn't see this. If you do, bug repot it! (Error XE01).</span>")
 
 					continue
 			if(M.client && M.ckey)

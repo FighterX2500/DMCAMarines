@@ -1099,7 +1099,7 @@ var/global/floorIsLava = 0
 		else
 			S.laws.show_laws(usr)
 	if(!ai_number)
-		to_chat(usr, "<b>No AIs located</b>" )
+		to_chat(usr, "<b>No AIs located</b>")
 
 /datum/admins/proc/show_skills(var/mob/living/carbon/human/M as mob in player_list)
 	set category = "Admin"

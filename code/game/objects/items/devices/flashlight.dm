@@ -48,7 +48,7 @@
 
 /obj/item/device/flashlight/attack_self(mob/user)
 	if(!isturf(user.loc))
-		to_chat(user, "You cannot turn the light on while in [user.loc]." )
+		to_chat(user, "You cannot turn the light on while in [user.loc].")
 		return 0
 	on = !on
 	update_brightness(user)

@@ -454,7 +454,7 @@
 					visible_message("\icon[src] <span class='notice'>The [name] buzzes: AI targeting re-initialized.</span>")
 					user.unset_interaction()
 				else
-					to_chat(user, "<span class='warning'>You are not currently overriding this turret.</span>" )
+					to_chat(user, "<span class='warning'>You are not currently overriding this turret.</span>")
 			if(stat == 2)
 				stat = 0 //Weird bug goin on here
 
