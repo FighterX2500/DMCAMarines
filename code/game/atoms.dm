@@ -234,7 +234,7 @@ its easier to just keep the beam vertical.
 	examine(usr)
 
 /atom/proc/examine(mob/user)
-	to_chat(user, "\icon[src] That's \a [src]." )
+	to_chat(user, "\icon[src] That's \a [src].")
 	if(desc)
 		to_chat(user, desc)
 

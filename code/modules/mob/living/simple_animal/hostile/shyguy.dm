@@ -172,7 +172,7 @@
 /mob/living/simple_animal/shyguy/examine(var/userguy)
 	if (istype(userguy, /mob/living/carbon))
 		if (!(userguy in shitlist))
-			to_chat(userguy,  target_desc_1)
+			to_chat(userguy, target_desc_1)
 			shitlist += userguy
 			spawn(20)
 				if(userguy)

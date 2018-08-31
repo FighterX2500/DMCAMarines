@@ -796,7 +796,7 @@ and you're good to go.
 		if(world.time >= last_fired + added_delay + extra_delay) //check the last time it was fired.
 			extra_delay = 0
 		else
-			if (world.time % 3) to_chat(user, "<span class='warning'>[src] is not ready to fire again!</span>" )
+			if (world.time % 3) to_chat(user, "<span class='warning'>[src] is not ready to fire again!</span>")
 			return
 	return 1
 

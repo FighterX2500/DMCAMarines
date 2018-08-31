@@ -442,7 +442,7 @@
 				to_chat(user, "<span class='warning'>[src]'s wiring confuses you.</span>")
 				return
 			if(cell)
-				to_chat(user, "<span class='warning'>Close the APC first.</span>" )
+				to_chat(user, "<span class='warning'>Close the APC first.</span>")
 				return
 			else
 				if(has_electronics == 1 && terminal)

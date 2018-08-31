@@ -260,7 +260,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 						linked_destroy.busy = 0
 						if(!linked_destroy.hacked)
 							if(!linked_destroy.loaded_item)
-								usr <<"\red The destructive analyzer appears to be empty."
+								to_chat(usr, "\red The destructive analyzer appears to be empty.")
 								screen = 1.0
 								return
 							if(linked_destroy.loaded_item.reliability >= 90)

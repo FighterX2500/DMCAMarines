@@ -64,7 +64,7 @@
 
 /turf/Enter(atom/movable/mover as mob|obj, atom/forget as mob|obj|turf|area)
 	if(movement_disabled && usr.ckey != movement_disabled_exception)
-		to_chat(usr, "\red Movement is admin-disabled." )
+		to_chat(usr, "\red Movement is admin-disabled.")
 		return
 	if (!mover || !isturf(mover.loc))
 		return 1

@@ -1123,7 +1123,7 @@
 		var/obj/I = O
 
 		if(I.unacidable || istype(I, /obj/machinery/computer) || istype(I, /obj/effect)) //So the aliens don't destroy energy fields/singularies/other aliens/etc with their acid.
-			to_chat(src, "<span class='warning'>You cannot dissolve \the [I].</span>" )
+			to_chat(src, "<span class='warning'>You cannot dissolve \the [I].</span>")
 			return
 		if(istype(O, /obj/structure/window_frame))
 			var/obj/structure/window_frame/WF = O
