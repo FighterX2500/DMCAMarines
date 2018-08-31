@@ -171,7 +171,7 @@
 		to_chat(usr, "\blue <B>The cell is already occupied!</B>")
 		return
 	if (!usr:cell)
-		usr<<"\blue Without a powercell, you can't be recharged."
+		to_chat(usr, "\blue Without a powercell, you can't be recharged.")
 		//Make sure they actually HAVE a cell, now that they can get in while powerless. --NEO
 		return
 	usr.stop_pulling()

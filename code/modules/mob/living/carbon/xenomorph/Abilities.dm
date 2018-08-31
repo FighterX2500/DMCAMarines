@@ -99,7 +99,7 @@
 		X.visible_message("<span class='xenowarning'>\The [X] hurls out the contents of their stomach!</span>", \
 		"<span class='xenowarning'>You hurl out the contents of your stomach!</span>", null, 5)
 	else
-		X<< "<span class='warning'>There's nothing in your belly that needs regurgitating.</span>"
+		to_chat(X, "<span class='warning'>There's nothing in your belly that needs regurgitating.</span>")
 
 
 // Choose Resin

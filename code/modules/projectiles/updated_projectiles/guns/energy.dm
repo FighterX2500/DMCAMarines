@@ -182,7 +182,8 @@
 			charge_time = 0
 			to_chat(user, "<span class='notice'>Your bracers absorb some of the released energy.</span>")
 			update_icon()
-	else to_chat(user, "<span class='warning'>The weapon's not charged enough with ambient energy!</span>")
+	else
+		to_chat(user, "<span class='warning'>The weapon's not charged enough with ambient energy!</span>")
 
 
 

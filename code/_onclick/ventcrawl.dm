@@ -30,7 +30,7 @@ var/list/ventcrawl_machinery = list(/obj/machinery/atmospherics/unary/vent_pump,
 		if(is_type_in_list(U,ventcrawl_machinery) && Adjacent(U))
 			pipes |= U
 	if(!pipes || !pipes.len)
-		to_chat(src,  "<span class='warning'>There are no pipes that you can ventcrawl into within range!</span>")
+		to_chat(src, "<span class='warning'>There are no pipes that you can ventcrawl into within range!</span>")
 		return
 	if(pipes.len == 1)
 		pipe = pipes[1]
@@ -114,7 +114,7 @@ var/list/ventcrawl_machinery = list(/obj/machinery/atmospherics/unary/vent_pump,
 				to_chat(src, "<span class='warning'>You must be standing on or beside an air vent to enter it.</span>")
 
 		else
-			to_chat(src,  "<span class='warning'>You can't vent crawl while you're stunned!</span>")
+			to_chat(src, "<span class='warning'>You can't vent crawl while you're stunned!</span>")
 
 	else
 		to_chat(src, "<span class='warning'>You must be conscious to do this!</span>")

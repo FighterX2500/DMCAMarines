@@ -137,7 +137,7 @@
 	if(istype(W,/obj/item/tool/screwdriver))
 		if(active) return
 		open = !open
-		to_chat(user, "\blue You [open ? "open" : "close"] the maintenance panel." )
+		to_chat(user, "\blue You [open ? "open" : "close"] the maintenance panel.")
 		return
 	else
 		if(!open || active) return ..()

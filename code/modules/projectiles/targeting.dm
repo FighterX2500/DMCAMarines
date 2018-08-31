@@ -174,7 +174,7 @@
 			I.lower_aim()
 			return
 //		if(m_intent == MOVE_INTENT_RUN && T.client.target_can_move == 1 && T.client.target_can_run == 0)
-//			to_chat(src, "\red Your move intent is now set to walk, as your targeter permits it."  )
+//			to_chat(src, "\red Your move intent is now set to walk, as your targeter permits it.")
 //			set_m_intent(MOVE_INTENT_WALK)
 
 		//Processing the aiming. Should be probably in separate object with process() but lasy.

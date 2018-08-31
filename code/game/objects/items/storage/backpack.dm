@@ -104,7 +104,7 @@
 	proc/failcheck(mob/user as mob)
 		if (prob(src.reliability)) return 1 //No failure
 		if (prob(src.reliability))
-			to_chat(user, "\red The Bluespace portal resists your attempt to add another item." )
+			to_chat(user, "\red The Bluespace portal resists your attempt to add another item.")
 		else
 			to_chat(user, "\red The Bluespace generator malfunctions!")
 			for (var/obj/O in src.contents) //it broke, delete what was in it

@@ -84,7 +84,7 @@
 
 /obj/machinery/power/fusion_engine/attack_hand(mob/user)
 	if(!ishuman(user))
-		to_chat(user, "<span class='warning'>You have no idea how to use that.</span>" )
+		to_chat(user, "<span class='warning'>You have no idea how to use that.</span>")
 		return FALSE
 	add_fingerprint(user)
 	switch(buildstate)

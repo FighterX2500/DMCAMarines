@@ -174,7 +174,8 @@
 	if(isYautja(user))
 		..()
 		to_chat(user, "It currently has [spikes] / [max_spikes] spikes.")
-	else to_chat(user, "Looks like some kind of...mechanical donut.")
+	else
+		to_chat(user, "Looks like some kind of...mechanical donut.")
 
 /obj/item/weapon/gun/launcher/spike/update_icon()
 	var/new_icon_state = spikes <=1 ? null : icon_state + "[round(spikes/4, 1)]"

@@ -70,7 +70,7 @@
 				to_chat(M.current, "<span class='event_announcement'>An abomination to your people has been brought onto the world at [get_area(src)]! Hunt it down and destroy it!</span>")
 				M.current.emote("roar")
 
-	to_chat(src, {"
+	to_chat(src,  {"
 <span class='role_body'>|______________________|</span>
 <span class='role_header'>You are a predator-alien hybrid!</span>
 <span class='role_body'>You are a very powerful xenomorph creature that was born of a Yautja warrior body.

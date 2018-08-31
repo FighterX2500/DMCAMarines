@@ -53,7 +53,7 @@
 		to_chat(usr, "Doesn't work that way")
 		return
 	if (A.anti_hug >= 1)
-		usr <<"This Helmet can't be further reinforced."
+		to_chat(usr, "This Helmet can't be further reinforced.")
 		return
 	to_chat(usr, "You reinforce the Helmet...")
 	A.anti_hug++
@@ -73,7 +73,7 @@
 		to_chat(usr, "Doesn't work that way...")
 		return
 	if (A.flags_marine_armor & ARMOR_IS_REINFORCED)
-		usr <<"This armor is already reinforced."
+		to_chat(usr, "This armor is already reinforced.")
 		return
 	to_chat(usr, "You reinforce the armor with some Chitin Plating...")
 	A.armor = list(melee = 70, bullet = 90, laser = 7, energy = 40, bomb = 50, bio = 40, rad = 20)

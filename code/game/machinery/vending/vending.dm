@@ -419,7 +419,7 @@
 		if ((href_list["vend"]) && vend_ready && !currently_vending)
 
 			if(!allowed(usr) && !emagged && (wires & WIRE_SCANID || hacking_safety)) //For SECURE VENDING MACHINES YEAH. Hacking safety always prevents bypassing emag or access
-				to_chat(usr, "<span class='warning'>Access denied.</span>" )
+				to_chat(usr, "<span class='warning'>Access denied.</span>")
 				flick(src.icon_deny,src)
 				return
 
@@ -490,7 +490,7 @@
 
 /obj/machinery/vending/proc/vend(datum/data/vending_product/R, mob/user)
 	if(!allowed(user) && !emagged && (wires & WIRE_SCANID || hacking_safety)) //For SECURE VENDING MACHINES YEAH
-		to_chat(user, "<span class='warning'>Access denied.</span>" )
+		to_chat(user, "<span class='warning'>Access denied.</span>")
 		flick(src.icon_deny,src)
 		return
 
