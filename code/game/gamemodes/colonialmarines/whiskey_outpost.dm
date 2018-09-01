@@ -653,7 +653,7 @@
 		if(count_xenos() < 50)//Checks braindead too, so we don't overpopulate! Also make sure its less than twice us in the world, so we advance waves/get more xenos the more marines survive.
 			to_chat(world, "<br><br>")
 			to_chat(world, "<br><br>")
-			to_chat(world, "<span class='notice'>*___________________________________*</span>" )
+			to_chat(world, "<span class='notice'>*___________________________________*</span>")
 			to_chat(world, "<span class='boldnotice'>***Whiskey Outpost Controller***</span>")
 			to_chat(world, "\blue <b>Wave:</b> [xeno_wave][wave_times_delayed?"|\red Times delayed: [wave_times_delayed]":""]")
 			to_chat(world, "<span class='notice'>*___________________________________*</span>")

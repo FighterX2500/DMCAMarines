@@ -292,7 +292,7 @@
 				var/sidename = is_right_side ? "right" : "left"
 				if(M.locked)
 					M.unlock()
-					to_chat(usr, "<span class='warning'>You hear a [sidename] door unlock.</span>" )
+					to_chat(usr, "<span class='warning'>You hear a [sidename] door unlock.</span>")
 				else
 					M.lock()
 					to_chat(usr, "<span class='warning'>You hear a [sidename] door lock.</span>")

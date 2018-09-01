@@ -170,7 +170,8 @@ TO DO: Implement more support for /mob.
 		for(var/I in TrashAuthority.cannot_trash)
 			var/deletion_time = TrashAuthority.cannot_trash[I]
 			to_chat(usr, "<b>[TrashAuthority.cannot_trash[I]]</b> deleted at:[TrashAuthority.cannot_trash[deletion_time]].")
-	else to_chat(usr, "\blue Empty!")
+	else
+		to_chat(usr, "\blue Empty!")
 	log_debug("TA: Currently processed: <b>[TrashAuthority.soft_del_count]</b> soft deletions and <b>[TrashAuthority.hard_del_count]</b> hard deletions.")
 
 /datum/proc/ta_purge()

@@ -187,7 +187,7 @@ dat += " You failed to evacuate \the [MAIN_SHIP_NAME]"
 //Disperses fog, doing so gradually.
 /datum/game_mode/proc/disperse_fog()
 	set waitfor = 0
-	//to_chat(world, "<span class='boldnotice'>The fog north of the colony is starting to recede.</span>" )
+	//to_chat(world, "<span class='boldnotice'>The fog north of the colony is starting to recede.</span>")
 	flags_round_type &= ~MODE_FOG_ACTIVATED
 	var/i
 	for(i in round_fog)

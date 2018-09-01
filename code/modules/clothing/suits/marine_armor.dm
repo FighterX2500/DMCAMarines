@@ -164,7 +164,7 @@ var/list/squad_colors = list(rgb(230,25,25), rgb(255,195,45), rgb(200,100,200), 
 
 /obj/item/clothing/suit/storage/marine/attack_self(mob/user)
 	if(!isturf(user.loc))
-		to_chat(user, "<span class='warning'>You cannot turn the light on while in [user.loc].</span>" )
+		to_chat(user, "<span class='warning'>You cannot turn the light on while in [user.loc].</span>")
 		return
 
 	if(flashlight_cooldown > world.time)
@@ -575,7 +575,7 @@ var/list/squad_colors = list(rgb(230,25,25), rgb(255,195,45), rgb(200,100,200), 
 
 /obj/item/clothing/suit/storage/faction/attack_self(mob/user)
 	if(!isturf(user.loc))
-		to_chat(user, "<span class='warning'>You cannot turn the light on while in [user.loc].</span>" )
+		to_chat(user, "<span class='warning'>You cannot turn the light on while in [user.loc].</span>")
 		return
 
 	if(flashlight_cooldown > world.time)

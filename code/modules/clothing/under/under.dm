@@ -190,8 +190,8 @@
 		flags_cold_protection = flags_armor_protection
 		flags_heat_protection = flags_armor_protection
 		update_clothing_icon()
-
-	else to_chat(usr, "<span class='warning'>You cannot roll down the uniform!</span>")
+	else
+		to_chat(usr, "<span class='warning'>You cannot roll down the uniform!</span>")
 
 //proper proc to remove the uniform's tie (user optional)
 /obj/item/clothing/under/proc/remove_accessory(mob/user)
