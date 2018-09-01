@@ -7,7 +7,7 @@
 
 	if(client)
 		if(client.prefs.muted & MUTE_IC)
-			src << "\red You cannot speak in IC (Muted)."
+			to_chat(src, "\red You cannot speak in IC (Muted).")
 			return
 
 	message =  trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
@@ -227,21 +227,21 @@
 		verb = pick("yells","roars","hollers")
 		handled = 1
 	if(slurring)
-		message = slur(message)
+		message = slur(sanitize(message))
 		verb = pick("stammers","stutters")
 		handled = 1
 	if(stuttering)
-		message = NewStutter(message)
+		message = NewStutter(sanitize(message))
 		verb = pick("stammers", "stutters")
 		handled = 1
 	var/braindam = getBrainLoss()
 	if(braindam >= 60)
 		handled = 1
 		if(prob(braindam/4))
-			message = stutter(message)
+			message = stutter(sanitize(message))
 			verb = pick("stammers", "stutters")
 		if(prob(braindam))
-			message = uppertext(message)
+			message = uppertext(sanitize(message))
 			verb = pick("yells like an idiot","says rather loudly")
 
 	returns[1] = message

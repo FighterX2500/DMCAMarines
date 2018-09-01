@@ -7,7 +7,7 @@
 	area = A
 	sources = sourcelist
 	cameras = cameralist
-	
+
 /mob/living/silicon
 	var/alarms = list("Motion"=list(), "Fire"=list(), "Atmosphere"=list(), "Power"=list(), "Camera"=list())	//each sublist stores alarms keyed by the area name
 	var/list/alarms_to_show = list()
@@ -17,7 +17,7 @@
 
 /mob/living/silicon/proc/triggerAlarm(var/class, area/A, list/cameralist, var/source)
 	var/list/alarmlist = alarms[class]
-	
+
 	//see if there is already an alarm of this class for this area
 	if (A.name in alarmlist)
 		var/datum/alarm/existing = alarmlist[A.name]
@@ -29,11 +29,11 @@
 /mob/living/silicon/proc/cancelAlarm(var/class, area/A as area, var/source)
 	var/cleared = 0
 	var/list/alarmlist = alarms[class]
-	
+
 	if (A.name in alarmlist)
 		var/datum/alarm/alarm = alarmlist[A.name]
 		alarm.sources -= source
-		
+
 		if (!(alarm.sources.len))
 			cleared = 1
 			alarmlist -= A.name
@@ -54,7 +54,7 @@
 
 			if(alarms_to_show.len < 5)
 				for(var/msg in alarms_to_show)
-					src << msg
+					to_chat(src, msg)
 			else if(alarms_to_show.len)
 
 				var/msg = "--- "
@@ -75,11 +75,11 @@
 					msg += "CAMERA: [alarm_types_show["Power"]] alarms detected. - "
 
 				msg += "<A href=?src=\ref[src];showalerts=1'>\[Show Alerts\]</a>"
-				src << msg
+				to_chat(src, msg)
 
 			if(alarms_to_clear.len < 3)
 				for(var/msg in alarms_to_clear)
-					src << msg
+					to_chat(src, msg)
 
 			else if(alarms_to_clear.len)
 				var/msg = "--- "
@@ -100,7 +100,7 @@
 					msg += "CAMERA: [alarm_types_show["Power"]] alarms detected. - "
 
 				msg += "<A href=?src=\ref[src];showalerts=1'>\[Show Alerts\]</a>"
-				src << msg
+				to_chat(src, msg)
 
 
 			alarms_to_show = list()

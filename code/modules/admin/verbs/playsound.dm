@@ -5,7 +5,7 @@
 	if(!check_rights(R_SOUNDS))	return
 
 	if(midi_playing)
-		usr << "No. An Admin already played a midi recently."
+		to_chat(usr, "No. An Admin already played a midi recently.")
 		return
 
 	var/sound/uploaded_sound = sound(S, repeat = 0, wait = 1, channel = 777)
@@ -15,7 +15,7 @@
 		if("Global")
 			for(var/mob/M in player_list)
 				if(M.client.prefs.toggles_sound & SOUND_MIDI)
-					M << uploaded_sound
+					to_chat(M, uploaded_sound)
 					heard_midi++
 		if("Local")
 			playsound(get_turf(src.mob), uploaded_sound, 50, 0)
