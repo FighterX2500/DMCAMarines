@@ -132,7 +132,7 @@
 		target.set_zeroth_law(law)
 		lawchanges.Add("The law specified [targetName]")
 	else
-		to_chat(target, "[sender.real_name] attempted to modify your zeroth law." )
+		to_chat(target, "[sender.real_name] attempted to modify your zeroth law.")
 		to_chat(target, "It would be in your best interest to play along with [sender.real_name] that [law]")
 		lawchanges.Add("The law specified [targetName], but the AI's existing law 0 cannot be overriden.")
 

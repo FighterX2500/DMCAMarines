@@ -672,7 +672,7 @@ Buildable meters
 
 			P.initialize()
 			if (!P)
-				to_chat(usr, pipefailtext )
+				to_chat(usr, pipefailtext)
 				return 1
 			P.build_network()
 			if (P.node1)

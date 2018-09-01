@@ -48,7 +48,7 @@
 	if(istype(target, /obj/structure/window))
 		var/obj/structure/window/W = target
 		if(W.not_damageable)
-			to_chat(user, "<span class='warning'>[W] is much too tough for you to do anything to it with [src]</span>." )
+			to_chat(user, "<span class='warning'>[W] is much too tough for you to do anything to it with [src]</span>.")
 			return FALSE
 
 	user.visible_message("<span class='warning'>[user] is trying to plant [name] on [target]!</span>",

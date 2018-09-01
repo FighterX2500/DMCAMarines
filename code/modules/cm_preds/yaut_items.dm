@@ -982,8 +982,8 @@
 				if(0) to_chat(user, "<span class='warning'>There was nothing to dig out!</span>")
 				if(1 to 4) to_chat(user, "<span class='warning'>That hurt like hell!!</span>")
 				if(5 to INFINITY) user.emote("roar")
-
-		else to_chat(user, "<span class='warning'>You were interrupted!</span>")
+		else
+			to_chat(user, "<span class='warning'>You were interrupted!</span>")
 
 /obj/item/weapon/yautja_sword
 	name = "clan sword"

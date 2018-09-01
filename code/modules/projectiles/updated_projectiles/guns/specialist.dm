@@ -388,7 +388,8 @@
 			playsound(user, unload_sound, 25, 1)
 		else nade.loc = get_turf(src)
 		grenades -= nade
-	else to_chat(user, "<span class='warning'>It's empty!</span>")
+	else
+		to_chat(user, "<span class='warning'>It's empty!</span>")
 
 /obj/item/weapon/gun/launcher/m92/proc/fire_grenade(atom/target, mob/user)
 	set waitfor = 0

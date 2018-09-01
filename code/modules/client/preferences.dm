@@ -1036,8 +1036,10 @@ datum/preferences
 					var/raw_name = input(user, "Choose your Synthetic's name:", "Character Preference")  as text|null
 					if(raw_name) // Check to ensure that the user entered text (rather than cancel.)
 						var/new_name = reject_bad_name(raw_name)
-						if(new_name) synthetic_name = new_name
-						else to_chat(user, "<font color='red'>Invalid name. Your name should be at least 2 and at most [MAX_NAME_LEN] characters long. It may only contain the characters A-Z, a-z, -, ' and .</font>")
+						if(new_name)
+							synthetic_name = new_name
+						else
+							to_chat(user, "<font color='red'>Invalid name. Your name should be at least 2 and at most [MAX_NAME_LEN] characters long. It may only contain the characters A-Z, a-z, -, ' and .</font>")
 				if("synth_type")
 					var/new_synth_type = input(user, "Choose your model of synthetic:", "Make and Model") as null|anything in synth_types
 					if(new_synth_type) synthetic_type = new_synth_type
@@ -1045,8 +1047,10 @@ datum/preferences
 					var/raw_name = input(user, "Choose your Predator's name:", "Character Preference")  as text|null
 					if(raw_name) // Check to ensure that the user entered text (rather than cancel.)
 						var/new_name = reject_bad_name(raw_name)
-						if(new_name) predator_name = new_name
-						else to_chat(user, "<font color='red'>Invalid name. Your name should be at least 2 and at most [MAX_NAME_LEN] characters long. It may only contain the characters A-Z, a-z, -, ' and .</font>")
+						if(new_name)
+							predator_name = new_name
+						else
+							to_chat(user, "<font color='red'>Invalid name. Your name should be at least 2 and at most [MAX_NAME_LEN] characters long. It may only contain the characters A-Z, a-z, -, ' and .</font>")
 				if("pred_gender")
 					predator_gender = predator_gender == MALE ? FEMALE : MALE
 				if("pred_age")

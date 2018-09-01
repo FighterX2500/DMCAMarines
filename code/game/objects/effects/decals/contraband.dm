@@ -102,7 +102,7 @@ obj/structure/sign/poster/attackby(obj/item/W as obj, mob/user as mob)
 			to_chat(user, "<span class='notice'>The wall is far too cluttered to place a poster!</span>")
 			return
 
-	to_chat(user, "<span class='notice'>You start placing the poster on the wall...</span>" )
+	to_chat(user, "<span class='notice'>You start placing the poster on the wall...</span>")
 
 	//declaring D because otherwise if P gets 'deconstructed' we lose our reference to P.resulting_poster
 	var/obj/structure/sign/poster/D = new(P.serial_number)

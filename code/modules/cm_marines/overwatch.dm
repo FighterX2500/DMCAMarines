@@ -38,8 +38,10 @@
 
 	user.set_interaction(src)
 	var/dat = "<head><title>Overwatch Console</title></head><body>"
-
-	if(!operator)
+	if(!allowed(user))
+		to_chat(user, "\red You don't have access.")
+		return
+	else if(!operator)
 		dat += "<BR><B>Operator:</b> <A href='?src=\ref[src];operation=change_operator'>----------</A><BR>"
 	else
 		dat += "<BR><B>Operator:</b> <A href='?src=\ref[src];operation=change_operator'>[operator.name]</A><BR>"
@@ -212,8 +214,8 @@
 								misc_text += marine_infos
 
 					dat += "<b>[leader_count ? "Squad Leader Deployed":"<font color='red'>No Squad Leader Deployed!</font>"]</b><BR>"
-					dat += "<b>[spec_count ? "Squad Specialist Deployed":"<font color='red'>No Specialist Deployed!</font>"]</b><BR>"
-					dat += "<b>[smart_count ? "Squad Smartgunner Deployed":"<font color='red'>No Smartgunner Deployed!</font>"]</b><BR>"
+					dat += "<b>Squad Specialists: [spec_count] Deployed</b><BR>"
+					dat += "<b>Squad Smartgunners: [smart_count] Deployed</b><BR>"
 					dat += "<b>Squad Medics: [medic_count] Deployed | Squad Engineers: [engi_count] Deployed</b><BR>"
 					dat += "<b>Squad Marines: [marine_count] Deployed</b><BR>"
 					dat += "<b>Total: [current_squad.marines_list.len] Deployed</b><BR>"

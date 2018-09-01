@@ -448,7 +448,7 @@
 				var/fumbling_time = 50 * ( SKILL_ENGINEER_ENGI - user.mind.cm_skills.engineer )
 				if(!do_after(user, fumbling_time, TRUE, 5, BUSY_ICON_BUILD)) return
 			if(cell)
-				to_chat(user, "<span class='warning'>Close the APC first.</span>" )
+				to_chat(user, "<span class='warning'>Close the APC first.</span>")
 				return
 			else
 				if(has_electronics == 1 && terminal)

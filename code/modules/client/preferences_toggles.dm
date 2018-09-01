@@ -104,7 +104,7 @@
 		to_chat(src, "The currently playing midi has been silenced.")
 		var/sound/break_sound = sound(null, repeat = 0, wait = 0, channel = 777)
 		break_sound.priority = 250
-		to_chat(src, break_sound	)
+		src << break_sound
 		if(src.mob.client.midi_silenced)	return
 		if(midi_playing)
 			total_silenced++

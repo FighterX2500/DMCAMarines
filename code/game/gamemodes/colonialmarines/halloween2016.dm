@@ -962,7 +962,7 @@
 								'sound/hallucinations/turn_around2.ogg',
 								'sound/hallucinations/veryfar_noise.ogg',
 								'sound/hallucinations/wail.ogg')
-							to_chat(M, pick(spooky_sounds))
+							M << spooky_sounds
 						else
 							var/mob/living/carbon/human/H = M
 							H.hallucination += 60
@@ -1213,16 +1213,21 @@
 		return
 
 	horror.key = horror_key
-	if(horror.client) horror.client.change_view(world.view)
+	if(horror.client)
+		horror.client.change_view(world.view)
 	horror.mind.key = horror.key
 
 	to_chat(world, "<span class='event_announcement'>An otherwordly presence is reaching through the fabric of reality!</span>")
 	sleep(10)
 	switch(shuffle1)
-		if(1 to 4) to_chat(horror, "<span class='alien'>You must baptize everything in fire! The world will burn! ROAR!</span>")
-		if(5 to 15) to_chat(horror, "<span class='rough'>You hunger for blood of the living! Murder! Death! KILL!</span>")
-		else to_chat(horror, "<span class='notice'>You have been transported to who-knows where from elsewhere! Fight the horrors of this place!</span>")
-	if(entry_sound) to_chat(world, entry_sound)
+		if(1 to 4)
+			to_chat(horror, "<span class='alien'>You must baptize everything in fire! The world will burn! ROAR!</span>")
+		if(5 to 15)
+			to_chat(horror, "<span class='rough'>You hunger for blood of the living! Murder! Death! KILL!</span>")
+		else
+			to_chat(horror, "<span class='notice'>You have been transported to who-knows where from elsewhere! Fight the horrors of this place!</span>")
+	if(entry_sound)
+		world << entry_sound
 
 /datum/game_mode/colonialmarines_halloween_2016/proc/generate_supply_crate(turf/supply_spawn[], supply_manifest[], crate_name = "supplies", crate_desc = "A crate of supplies. Surely the contents will help, somehow.")
 	var/turf/spawn_point = pick(supply_spawn)
