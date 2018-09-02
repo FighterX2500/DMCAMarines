@@ -396,7 +396,7 @@ var/list/ob_type_fuel_requirements
 	desc = "!DANGER! Unauthorized use of these warheads are strictly punishable by USCM"
 	icon_state = "ob_warhead_4"
 
-/obj/structure/ob_ammo/warhead/explosive/warhead_impact(turf/target, inaccuracy_amt = 0)
+/obj/structure/ob_ammo/warhead/nuclear/warhead_impact(turf/target, inaccuracy_amt = 0)
 	var/reduc = min(inaccuracy_amt*3, 5)
 	explosion(target,32 - reduc,50 - reduc,64 - reduc,70 - reduc,1,0) //massive boom
 	var/range_num = max(32 - inaccuracy_amt*2, 3)
