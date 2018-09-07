@@ -385,7 +385,7 @@ var/list/ob_type_fuel_requirements
 	icon_state = "ob_warhead_2"
 
 /obj/structure/ob_ammo/warhead/incendiary/warhead_impact(turf/target, inaccuracy_amt = 0)
-	var/range_num = max(32 - inaccuracy_amt*2, 3)
+	var/range_num = max(8 - inaccuracy_amt*2, 3)
 	for(var/turf/TU in range(range_num,target))
 		if(!locate(/obj/flamer_fire) in TU)
 			new/obj/flamer_fire(TU, 10, 50) //super hot flames
