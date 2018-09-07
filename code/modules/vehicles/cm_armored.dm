@@ -430,6 +430,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		WF.visible_message("<span class='danger'>[root] crushes through [WF]!</span>")
 		var/obj/vehicle/multitile/root/cm_armored/CA = root
 		CA.take_damage_type(10, "blunt", WF)
+		playsound(WF, 'sound/effects/metal_crash.ogg', 35)
 		cdel(WF)
 
 

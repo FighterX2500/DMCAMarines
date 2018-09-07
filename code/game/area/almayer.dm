@@ -102,6 +102,11 @@
 	icon_state = "coreroom"
 	fake_zlevel = 2 // lowerdeck
 
+/area/almayer/command/nuclear_warhead_storage
+	name = "Nuclear Warhead Storage"
+	icon_state = "selfdestruct"
+	fake_zlevel = 2 // lowerdeck
+
 /area/almayer/engineering/starboard_atmos
 	name = "Atmospherics Starboard"
 	icon_state = "starboardatmos"
