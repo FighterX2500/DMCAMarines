@@ -81,6 +81,7 @@
 	name = "ColMarTech automated armaments vendor"
 	desc = "A automated rack hooked up to a small supply of various firearms and explosives."
 	hacking_safety = 1
+	req_access = list(ACCESS_MARINE_CARGO)
 	wrenchable = FALSE
 	products = list(
 					/obj/item/storage/backpack/marine = 10,
@@ -166,6 +167,7 @@
 	name = "ColMarTech automated munition vendor"
 	desc = "A automated rack hooked up to a small supply of ammo magazines."
 	hacking_safety = 1
+	req_access = list(ACCESS_MARINE_CARGO)
 	wrenchable = FALSE
 	products = list(
 					///obj/item/weapon/claymore/mercsword/machete = 5,
