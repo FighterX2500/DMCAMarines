@@ -12,3 +12,5 @@ tools/Runtime Condenser/Input.txt
 tools/Runtime Condenser/Output.txt
 tools/MapDaemon/logs/*.txt
 *.json
+tools/AddToChangelog/AddToChangelog/obj/x86/Debug/AddToChangelog.csproj.CoreCompileInputs.cache
+tools/AddToChangelog/AddToChangelog/obj/x86/Debug/AddToChangelog.csprojAssemblyReference.cache

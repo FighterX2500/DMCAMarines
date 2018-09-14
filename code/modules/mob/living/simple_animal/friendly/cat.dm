@@ -94,15 +94,15 @@
 	icon_living = "cat"
 	icon_dead = "cat_dead"
 
-/mob/living/simple_animal/cat/Jones
-	name = "Jones"
+/mob/living/simple_animal/cat/Barsik
+	name = "Barsik"
 	desc = "A tough, old stray whose origin no one seems to know."
 	icon_state = "cat2"
 	icon_living = "cat2"
 	icon_dead = "cat2_dead"
 	health = 50
 	maxHealth = 50
-	holder_type = /obj/item/holder/Jones
+	holder_type = /obj/item/holder/Barsik
 
 /mob/living/simple_animal/cat/kitten
 	name = "kitten"
