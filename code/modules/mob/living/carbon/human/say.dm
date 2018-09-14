@@ -227,18 +227,18 @@
 		verb = pick("yells","roars","hollers")
 		handled = 1
 	if(slurring)
-		message = slur(sanitize(message))
+		message = sanitize(slur(message))
 		verb = pick("stammers","stutters")
 		handled = 1
 	if(stuttering)
-		message = NewStutter(sanitize(message))
+		message = sanitize(NewStutter(message))
 		verb = pick("stammers", "stutters")
 		handled = 1
 	var/braindam = getBrainLoss()
 	if(braindam >= 60)
 		handled = 1
 		if(prob(braindam/4))
-			message = stutter(sanitize(message))
+			message = sanitize(stutter(message))
 			verb = pick("stammers", "stutters")
 		if(prob(braindam))
 			message = uppertext(sanitize(message))

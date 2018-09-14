@@ -274,8 +274,8 @@
 					dat += "<font color='red'>No ammo chambered in the cannon.</font><br>"
 				else
 					dat += "<font color='green'>Ready!</font><br>"
-				dat += "<B>Latitude:</B> [x_input_bomb] <A href='?src=\ref[src];operation=bomb_x'>\[Change\]</a><BR>"
-				dat += "<B>Longitude:</B> [y_input_bomb] <A href='?src=\ref[src];operation=bomb_y'>\[Change\]</a><BR><BR>"
+				dat += "<B>Longitude:</B> [x_input_bomb] <A href='?src=\ref[src];operation=bomb_x'>\[Change\]</a><BR>"
+				dat += "<B>Latitude:</B> [y_input_bomb] <A href='?src=\ref[src];operation=bomb_y'>\[Change\]</a><BR><BR>"
 				dat += "<A href='?src=\ref[src];operation=dropbomb'>\[FIRE!\]</a>"
 				dat += "<BR><BR>----------------------<br>"
 				dat += "<A href='?src=\ref[src];operation=refresh'>{Refresh}</a><br>"
@@ -383,7 +383,7 @@
 		if("set_primary")
 			var/input = stripped_input(usr, "What will be the squad's primary objective?", "Primary Objective")
 			if(input)
-				current_squad.primary_objective = input + " ([worldtime2text()])"
+				current_squad.primary_objective = fix_rus_nanoui(input) + " ([worldtime2text()])"
 				send_to_squad("Your primary objective has changed. See Status pane for details.")
 				visible_message("\icon[src] <span class='boldnotice'>Primary objective of squad '[current_squad]' set.</span>")
 		if("set_secondary")

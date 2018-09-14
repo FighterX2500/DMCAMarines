@@ -110,8 +110,11 @@ You may not be a fully-fledged doctor, but you stand between life and death when
 
 	generate_wearable_equipment()
 		. = list(
-				WEAR_HEAD = /obj/item/clothing/head/helmet/specrag,
 				WEAR_BACK = /obj/item/storage/backpack/marine/satchel
+				)
+	generate_stored_equipment()
+		. = list(
+				WEAR_L_HAND = /obj/item/clothing/head/helmet/specrag
 				)
 
 	generate_entry_message()

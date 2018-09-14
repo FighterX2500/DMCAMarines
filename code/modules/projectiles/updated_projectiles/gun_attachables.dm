@@ -288,8 +288,6 @@ obj/item/attachable/attack_hand(var/mob/user as mob)
 
 /obj/item/attachable/bayonet/New()
 	..()
-	accuracy_mod = -config.min_hit_accuracy_mult
-	accuracy_unwielded_mod = -config.min_hit_accuracy_mult
 	size_mod = 1
 
 /obj/item/attachable/extended_barrel
@@ -302,7 +300,6 @@ obj/item/attachable/attack_hand(var/mob/user as mob)
 /obj/item/attachable/extended_barrel/New()
 	..()
 	accuracy_mod = config.med_hit_accuracy_mult
-	damage_mod = -config.min_hit_damage_mult
 	scatter_mod = -config.min_scatter_value
 	size_mod = 1
 
@@ -335,7 +332,6 @@ obj/item/attachable/attack_hand(var/mob/user as mob)
 /obj/item/attachable/compensator/New()
 	..()
 	accuracy_mod = config.med_hit_accuracy_mult
-	damage_mod = -config.min_hit_damage_mult
 	recoil_mod = -config.med_recoil_value
 	accuracy_unwielded_mod = config.med_hit_accuracy_mult
 	recoil_unwielded_mod = -config.low_recoil_value
