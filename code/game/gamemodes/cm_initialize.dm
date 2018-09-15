@@ -764,7 +764,8 @@ datum/game_mode/proc/initialize_special_clamps()
 					/obj/item/attachable/stock/shotgun = round(scale * 4),
 					/obj/item/attachable/stock/rifle = round(scale * 4) ,
 					/obj/item/attachable/stock/revolver = round(scale * 4),
-					/obj/item/attachable/stock/smg = round(scale * 4) ,
+					/obj/item/attachable/stock/smg = round(scale * 4),
+					/obj/item/attachable/stock/tactical = (scale * 3),
 
 					/obj/item/attachable/attached_gun/grenade = round(scale * 10),
 					/obj/item/attachable/attached_gun/shotgun = round(scale * 4),
@@ -786,9 +787,9 @@ datum/game_mode/proc/initialize_special_clamps()
 						/obj/item/ammo_magazine/pistol = round(scale * 20),
 						/obj/item/ammo_magazine/pistol/hp = 0,
 						/obj/item/ammo_magazine/pistol/ap = round(scale * 5),
-						/obj/item/ammo_magazine/pistol/incendiary = 0,
+						/obj/item/ammo_magazine/pistol/incendiary = round(scale * 2),
 						/obj/item/ammo_magazine/pistol/extended = round(scale * 10),
-						/obj/item/ammo_magazine/pistol/m1911 = round(scale * 5),
+						/obj/item/ammo_magazine/pistol/m1911 = round(scale * 10),
 						/obj/item/ammo_magazine/revolver = round(scale * 20),
 						/obj/item/ammo_magazine/revolver/marksman = round(scale * 5),
 						/obj/item/ammo_magazine/smg/m39 = round(scale * 20),
@@ -887,6 +888,7 @@ datum/game_mode/proc/initialize_special_clamps()
 						/obj/item/ammo_magazine/rifle/ap = 0,
 						/obj/item/ammo_magazine/shotgun = round(scale * 10),
 						/obj/item/ammo_magazine/shotgun/buckshot = round(scale * 10),
+						/obj/item/ammo_magazine/shotgun/flechette = round(scale * 10),
 
 						/obj/item/weapon/combat_knife = round(scale * 30),
 						/obj/item/weapon/throwing_knife = round(scale * 10),
@@ -897,9 +899,9 @@ datum/game_mode/proc/initialize_special_clamps()
 
 						)
 
-		M.contraband =   list(/obj/item/ammo_magazine/revolver/marksman = 0,
-							/obj/item/ammo_magazine/pistol/ap = 0,
-							/obj/item/ammo_magazine/smg/m39/ap = 0
+		M.contraband =   list(/obj/item/ammo_magazine/revolver/marksman = round(scale * 2),
+							/obj/item/ammo_magazine/pistol/ap = round(scale * 2),
+							/obj/item/ammo_magazine/smg/m39/ap = round(scale * 2)
 							)
 
 		M.premium = list(/obj/item/weapon/gun/rifle/m41aMK1 = 0,
