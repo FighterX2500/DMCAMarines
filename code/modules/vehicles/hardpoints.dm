@@ -367,7 +367,7 @@ Currently only has the tank hardpoints
 	max_angle = 360
 
 	apply_buff()
-		owner.cooldowns["secondary"] = 5
+		owner.cooldowns["secondary"] = 2
 		owner.accuracies["secondary"] = 0.9
 
 	is_ready()

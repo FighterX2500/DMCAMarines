@@ -432,7 +432,28 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		CA.take_damage_type(10, "blunt", WF)
 		playsound(WF, 'sound/effects/metal_crash.ogg', 35)
 		cdel(WF)
-
+	else if (istype(A, /obj/structure/window/framed)) //This definitely is shitty. It is better to refactor this shitcode by making a new variable for "destroyable objects"
+		var/obj/structure/window/framed/WN = A
+		WN.visible_message("<span class='danger'>[root] crushes [WN]!</span>")
+		if(WN.not_damageable)
+			return
+		WN.drop_window_frame()
+	else if (istype(A, /obj/machinery/computer))
+		var/obj/machinery/computer/CP = A
+		if(CP.exproof)
+			return
+		CP.visible_message("<span class='danger'>[root] crushes [CP]!</span>")
+		cdel(CP)
+	else if (istype(A, /obj/structure/largecrate))
+		var/obj/structure/largecrate/LC = A
+		LC.visible_message("<span class='danger'>[root] crushes [LC]!</span>")
+		cdel(LC)
+	else if(istype(A, /obj/machinery/door/airlock))
+		var/obj/machinery/door/airlock/AR = A
+		var/obj/vehicle/multitile/root/cm_armored/CA = root
+		CA.take_damage_type(30, "blunt", AR)
+		playsound(AR, 'sound/effects/metal_crash.ogg', 35)
+		cdel(AR)
 
 
 /obj/vehicle/multitile/hitbox/cm_armored/Move(var/atom/A, var/direction)

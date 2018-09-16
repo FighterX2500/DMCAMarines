@@ -885,6 +885,7 @@
 /datum/ammo/rocket/tow
 	name = "TOW rocket"
 	damage_falloff = 0
+	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET|AMMO_SKIP_BARRICADE
 
 /datum/ammo/rocket/tow/New()
 		..()
