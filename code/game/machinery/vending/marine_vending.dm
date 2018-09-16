@@ -28,6 +28,7 @@
 					/obj/item/ammo_magazine/rifle = 22,
 					/obj/item/ammo_magazine/shotgun = 8,
 					/obj/item/ammo_magazine/shotgun/buckshot = 8,
+					/obj/item/ammo_magazine/shotgun/flechette = 8,
 					/obj/item/weapon/combat_knife = 20,
 					/obj/item/weapon/throwing_knife = 5,
 					/obj/item/storage/box/m94 = 5,
@@ -81,6 +82,7 @@
 	name = "ColMarTech automated armaments vendor"
 	desc = "A automated rack hooked up to a small supply of various firearms and explosives."
 	hacking_safety = 1
+	req_access = list(ACCESS_MARINE_CARGO)
 	wrenchable = FALSE
 	products = list(
 					/obj/item/storage/backpack/marine = 10,
@@ -117,10 +119,10 @@
 					/obj/item/weapon/gun/shotgun/combat = 0,
 					/obj/item/explosive/mine = 1,
 					/obj/item/storage/box/nade_box = 4,
-					/obj/item/explosive/grenade/frag = 1,
-					/obj/item/explosive/grenade/frag/m15 = 1,
-					/obj/item/explosive/grenade/incendiary = 1,
-					/obj/item/explosive/grenade/smokebomb = 1,
+					/obj/item/explosive/grenade/frag = 2,
+					/obj/item/explosive/grenade/frag/m15 = 2,
+					/obj/item/explosive/grenade/incendiary = 4,
+					/obj/item/explosive/grenade/smokebomb = 2,
 					/obj/item/explosive/grenade/phosphorus = 0,
 					/obj/item/storage/box/m94 = 8,
 					/obj/item/storage/box/zipcuffs = 4,
@@ -129,6 +131,7 @@
 					)
 
 	contraband = list(
+					/obj/item/weapon/gun/smg/ppsh = 4,
 					/obj/item/weapon/gun/pistol/holdout = 0,
 					/obj/item/weapon/gun/pistol/heavy = 0,
 					/obj/item/weapon/gun/pistol/highpower = 0,
@@ -137,7 +140,7 @@
 					/obj/item/weapon/gun/revolver/cmb = 0,
 					/obj/item/weapon/gun/shotgun/merc = 0,
 					/obj/item/weapon/gun/shotgun/pump/cmb = 0,
-					/obj/item/weapon/gun/shotgun/double = 0,
+					/obj/item/weapon/gun/shotgun/double = 2,
 					/obj/item/weapon/gun/smg/mp7 = 0,
 					/obj/item/weapon/gun/smg/skorpion = 0,
 					/obj/item/weapon/gun/smg/uzi = 0,
@@ -165,6 +168,7 @@
 	name = "ColMarTech automated munition vendor"
 	desc = "A automated rack hooked up to a small supply of ammo magazines."
 	hacking_safety = 1
+	req_access = list(ACCESS_MARINE_CARGO)
 	wrenchable = FALSE
 	products = list(
 					///obj/item/weapon/claymore/mercsword/machete = 5,
@@ -197,6 +201,8 @@
 					)
 
 	contraband = list(
+					/obj/item/ammo_magazine/smg/ppsh/ = 20,
+					/obj/item/ammo_magazine/smg/ppsh/extended = 4,
 					/obj/item/ammo_magazine/pistol/incendiary = 0,
 					/obj/item/ammo_magazine/pistol/heavy = 0,
 					/obj/item/ammo_magazine/pistol/holdout = 0,
@@ -271,6 +277,7 @@
 					/obj/item/reagent_container/hypospray/autoinjector/Kelo = 6,
 					/obj/item/reagent_container/hypospray/autoinjector/Oxycodone = 4,
 					/obj/item/reagent_container/hypospray/autoinjector/tricord = 8,
+					/obj/item/reagent_container/hypospray/autoinjector/hypervene = 4,
 					/obj/item/storage/pill_bottle/bicaridine = 3,
 					/obj/item/storage/pill_bottle/dexalin = 3,
 					/obj/item/storage/pill_bottle/antitox = 3,
@@ -281,6 +288,7 @@
 					/obj/item/storage/pill_bottle/russianRed = 5,
 					/obj/item/storage/pill_bottle/peridaxon = 2,
 					/obj/item/storage/pill_bottle/quickclot = 2,
+					/obj/item/storage/pill_bottle/hypervene = 2,
 					/obj/item/stack/medical/advanced/bruise_pack = 6,
 					/obj/item/stack/medical/bruise_pack = 8,
 					/obj/item/stack/medical/advanced/ointment = 6,
@@ -552,6 +560,7 @@
 						/obj/item/attachable/stock/rifle = 3 ,
 						/obj/item/attachable/stock/revolver = 3,
 						/obj/item/attachable/stock/smg = 3,
+						/obj/item/attachable/stock/tactical = 3,
 
 						/obj/item/attachable/attached_gun/grenade = 5,
 						/obj/item/attachable/attached_gun/shotgun = 3,
@@ -585,6 +594,7 @@
 					/obj/item/storage/backpack/marine = 10,
 					/obj/item/storage/backpack/marine/satchel = 10,
 					/obj/item/storage/belt/marine = 10,
+					/obj/item/storage/belt/shotgun = 10,
 					/obj/item/clothing/shoes/marine = 20,
 					/obj/item/clothing/under/marine = 20,
 					/obj/item/clothing/suit/storage/marine = 20,

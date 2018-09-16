@@ -10,8 +10,8 @@
 	var/list/network = list("LEADER")
 	var/x_offset_s = 0
 	var/y_offset_s = 0
-	var/x_offset_b = 0
-	var/y_offset_b = 0
+	var/x_input_bomb = 0
+	var/y_input_bomb = 0
 	var/living_marines_sorting = FALSE
 	var/busy = 0 //The overwatch computer is busy launching an OB/SB, lock controls
 	var/dead_hidden = FALSE //whether or not we show the dead marines in the squad.
@@ -266,28 +266,17 @@
 				dat += "<A href='?src=\ref[src];operation=back'>{Back}</a></body>"
 			if(3)
 				dat += "<BR><B>Orbital Bombardment Control</B><BR><BR>"
-				if(!current_squad)
-					dat += "No squad selected!"
+				dat += "<B>Current Cannon Status:</B> "
+				var/cooldown_left = (almayer_orbital_cannon.last_orbital_firing + 5000) - world.time
+				if(cooldown_left > 0)
+					dat += "Cannon on cooldown ([round(cooldown_left/10)] seconds)<br>"
+				else if(!almayer_orbital_cannon.chambered_tray)
+					dat += "<font color='red'>No ammo chambered in the cannon.</font><br>"
 				else
-					dat += "<B>Current Cannon Status:</B> "
-					var/cooldown_left = (almayer_orbital_cannon.last_orbital_firing + 5000) - world.time
-					if(cooldown_left > 0)
-						dat += "Cannon on cooldown ([round(cooldown_left/10)] seconds)<br>"
-					else if(!almayer_orbital_cannon.chambered_tray)
-						dat += "<font color='red'>No ammo chambered in the cannon.</font><br>"
-					else
-						dat += "<font color='green'>Ready!</font><br>"
-					dat += "<B>Beacon Status:</b> "
-					if(current_squad.bbeacon)
-						if(istype(current_squad.bbeacon.loc,/turf))
-							dat += "<font color='green'>Transmitting!</font><BR>"
-						else
-							dat += "Not Transmitting<BR>"
-					else
-						dat += "Not Transmitting<BR>"
-					dat += "<B>X-Coordinate Offset:</B> [x_offset_b] <A href='?src=\ref[src];operation=bomb_x'>\[Change\]</a><BR>"
-					dat += "<B>Y-Coordinate Offset:</B> [y_offset_b] <A href='?src=\ref[src];operation=bomb_y'>\[Change\]</a><BR><BR>"
-					dat += "<A href='?src=\ref[src];operation=dropbomb'>\[FIRE!\]</a>"
+					dat += "<font color='green'>Ready!</font><br>"
+				dat += "<B>Longitude:</B> [x_input_bomb] <A href='?src=\ref[src];operation=bomb_x'>\[Change\]</a><BR>"
+				dat += "<B>Latitude:</B> [y_input_bomb] <A href='?src=\ref[src];operation=bomb_y'>\[Change\]</a><BR><BR>"
+				dat += "<A href='?src=\ref[src];operation=dropbomb'>\[FIRE!\]</a>"
 				dat += "<BR><BR>----------------------<br>"
 				dat += "<A href='?src=\ref[src];operation=refresh'>{Refresh}</a><br>"
 				dat += "<A href='?src=\ref[src];operation=back'>{Back}</a></body>"
@@ -394,7 +383,7 @@
 		if("set_primary")
 			var/input = stripped_input(usr, "What will be the squad's primary objective?", "Primary Objective")
 			if(input)
-				current_squad.primary_objective = input + " ([worldtime2text()])"
+				current_squad.primary_objective = fix_rus_nanoui(input) + " ([worldtime2text()])"
 				send_to_squad("Your primary objective has changed. See Status pane for details.")
 				visible_message("\icon[src] <span class='boldnotice'>Primary objective of squad '[current_squad]' set.</span>")
 		if("set_secondary")
@@ -416,17 +405,17 @@
 			to_chat(usr, "\icon[src] <span class='notice'>Y-offset is now [input].</span>")
 			y_offset_s = input
 		if("bomb_x")
-			var/input = input(usr,"What X-coordinate offset between -5 and 5 would you like? (Positive means east)","X Offset",0) as num
-			if(input > 5) input = 5
-			if(input < -5) input = -5
-			to_chat(usr, "\icon[src] <span class='notice'>X-offset is now [input].</span>")
-			x_offset_b = input
+			var/input = input(usr,"What longitude would you like?","Longitude",0) as num
+			if(input >= world.maxx) input = world.maxx
+			if(input <= 0) input = 0
+			to_chat(usr, "\icon[src] <span class='notice'>Longitude is now [input].</span>")
+			x_input_bomb = input
 		if("bomb_y")
-			var/input = input(usr,"What X-coordinate offset between -5 and 5 would you like? (Positive means north)","Y Offset",0) as num
-			if(input > 5) input = 5
-			if(input < -5) input = -5
-			to_chat(usr, "\icon[src] <span class='notice'>Y-offset is now [input].</span>")
-			y_offset_b = input
+			var/input = input(usr,"What latitude would you like?","Latitude",0) as num
+			if(input >= world.maxy) input = world.maxy
+			if(input <= 0) input = 0
+			to_chat(usr, "\icon[src] <span class='notice'>Latitude is now [input].</span>")
+			y_input_bomb = input
 		if("refresh")
 			src.attack_hand(usr)
 		if("change_sort")
@@ -539,75 +528,51 @@
 		to_chat(usr, "\icon[src] <span class='warning'>The [name] is busy processing another action!</span>")
 		return
 
-	if(!current_squad)
-		to_chat(usr, "\icon[src] <span class='warning'>No squad selected!</span>")
-		return
-
-	if(!current_squad.bbeacon)
-		to_chat(usr, "\icon[src] <span class='warning'>No orbital beacon detected!</span>")
-		return
-
 	if(!almayer_orbital_cannon.chambered_tray)
 		to_chat(usr, "\icon[src] <span class='warning'>The orbital cannon has no ammo chambered.</span>")
 		return
 
-	if(!isturf(current_squad.bbeacon.loc) || current_squad.bbeacon.z != 1)
-		to_chat(usr, "\icon[src] <span class='warning'>The [current_squad.bbeacon.name] is not transmitting from the ground.</span>")
-		return
+	var/x_bomb = x_input_bomb
+	var/y_bomb = y_input_bomb
+	x_bomb = round(x_bomb)
+	y_bomb = round(y_bomb)
+	if(x_bomb <= 0) x_bomb = 0 //None of these should be possible, but whatever
+	if(x_bomb >= world.maxy) x_bomb = world.maxx
+	if(y_bomb <= 0) y_bomb = 0
+	if(y_bomb >= world.maxy) y_bomb = world.maxy
 
-	var/area/A = get_area(current_squad.bbeacon)
+	var/turf/T = locate(x_bomb,y_bomb,1)
+
+	var/area/A = get_area(T)
 	if(istype(A) && A.ceiling >= CEILING_DEEP_UNDERGROUND)
 		to_chat(usr, "\icon[src] <span class='warning'>The [current_squad.bbeacon.name]'s signal is too weak. It is probably underground.</span>")
 		return
-
-	var/turf/T = get_turf(current_squad.bbeacon)
 
 	if(istype(T, /turf/open/space))
 		to_chat(usr, "\icon[src] <span class='warning'>The [current_squad.bbeacon.name]'s landing zone appears to be out of bounds.</span>")
 		return
 
-	var/x_offset = x_offset_b
-	var/y_offset = y_offset_b
-	x_offset = round(x_offset)
-	y_offset = round(y_offset)
-	if(x_offset < -5) x_offset = -5 //None of these should be possible, but whatever
-	if(x_offset > 5) x_offset = 5
-	if(y_offset < -5) y_offset = -5
-	if(y_offset > 5) y_offset = 5
-
 	//All set, let's do this.
 	busy = 1
-	visible_message("\icon[src] <span class='boldnotice'>Orbital bombardment request for squad '[current_squad]' accepted. Orbital cannons are now calibrating.</span>")
-	send_to_squad("Initializing fire coordinates.")
-	if(current_squad.bbeacon)
-		playsound(current_squad.bbeacon.loc,'sound/effects/alert.ogg', 25, 1)  //Placeholder
+	visible_message("\icon[src] <span class='boldnotice'>Orbital bombardment request accepted. Orbital cannons are now calibrating.</span>")
+	playsound(src,'sound/effects/alert.ogg', 25, 1)  //Placeholder
 	sleep(20)
-	send_to_squad("Transmitting beacon feed.")
+	visible_message("Analyzing surface.")
 	sleep(20)
-	send_to_squad("Calibrating trajectory window.")
+	visible_message("Calibrating trajectory window.")
 	sleep(20)
 	for(var/mob/living/carbon/H in living_mob_list)
 		if(H.z == MAIN_SHIP_Z_LEVEL && !H.stat) //USS Almayer decks.
 			to_chat(H, "<span class='warning'>The deck of the USS Almayer shudders as the orbital cannons open fire on the colony.</span>")
 			if(H.client)
 				shake_camera(H, 10, 1)
-	visible_message("\icon[src] <span class='boldnotice'>Orbital bombardment for squad '[current_squad]' has fired! Impact imminent!</span>")
-	send_to_squad("WARNING! Ballistic trans-atmospheric launch detected! Get outside of Danger Close!")
+	visible_message("\icon[src] <span class='boldnotice'>Orbital bombardment has fired! Impact imminent!</span>")
 	spawn(6)
-		if(!current_squad.bbeacon) //May have been destroyed en route
-			send_to_squad("Critical error. Orbital beacon signal lost, shell has landed off-site.")
-			busy = 0
-			return
 		if(A)
-			message_mods("ALERT: [usr] ([usr.key]) fired an orbital bombardment in [A.name] for squad '[current_squad]' (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)")
-			log_attack("[usr.name] ([usr.ckey]) fired an orbital bombardment in [A.name] for squad '[current_squad]'")
+			message_mods("ALERT: [usr] ([usr.key]) fired an orbital bombardment in [A.name]' (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)")
+			log_attack("[usr.name] ([usr.ckey]) fired an orbital bombardment in [A.name]'")
 		busy = 0
-		if(current_squad.bbeacon)
-			cdel(current_squad.bbeacon) //Wipe the beacon. It's only good for one use.
-			current_squad.bbeacon = null
-		x_offset += rand(-2,2) //Little bit of randomness.
-		y_offset += rand(-2,2)
-		var/turf/target = locate(T.x + x_offset,T.y + y_offset,T.z)
+		var/turf/target = locate(T.x,T.y,T.z)
 		if(target && istype(target))
 			target.ceiling_debris_check(5)
 			spawn(2)

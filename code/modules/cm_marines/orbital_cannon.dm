@@ -207,6 +207,8 @@ var/list/ob_type_fuel_requirements
 			inaccurate_fuel = abs(ob_type_fuel_requirements[2] - tray.fuel_amt)
 		if("cluster")
 			inaccurate_fuel = abs(ob_type_fuel_requirements[3] - tray.fuel_amt)
+		if("nuclear")
+			inaccurate_fuel = abs(ob_type_fuel_requirements[1] - tray.fuel_amt)
 
 	var/turf/target = locate(T.x + inaccurate_fuel * pick(-1,1),T.y + inaccurate_fuel * pick(-1,1),T.z)
 
@@ -388,6 +390,19 @@ var/list/ob_type_fuel_requirements
 		if(!locate(/obj/flamer_fire) in TU)
 			new/obj/flamer_fire(TU, 10, 50) //super hot flames
 
+/obj/structure/ob_ammo/warhead/nuclear
+	name = "Tactical nuclear warhead"
+	warhead_kind = "nuclear"
+	desc = "!DANGER! Unauthorized use of these warheads are strictly punishable by USCM"
+	icon_state = "ob_warhead_4"
+
+/obj/structure/ob_ammo/warhead/nuclear/warhead_impact(turf/target, inaccuracy_amt = 0)
+	var/reduc = min(inaccuracy_amt*3, 5)
+	explosion(target,32 - reduc,50 - reduc,64 - reduc,70 - reduc,1,0) //massive boom
+	var/range_num = max(32 - inaccuracy_amt*2, 3)
+	for(var/turf/TU in range(range_num,target))
+		if(!locate(/obj/flamer_fire) in TU)
+			new/obj/flamer_fire(TU, 10, 50) //super hot flames
 
 /obj/structure/ob_ammo/warhead/cluster
 	name = "Cluster orbital warhead"
@@ -464,6 +479,7 @@ var/list/ob_type_fuel_requirements
 			dat += "- HE Orbital Warhead: <b>[ob_type_fuel_requirements[1]] Solid Fuel blocks.</b><BR>"
 			dat += "- Incendiary Orbital Warhead: <b>[ob_type_fuel_requirements[2]] Solid Fuel blocks.</b><BR>"
 			dat += "- Cluster Orbital Warhead: <b>[ob_type_fuel_requirements[3]] Solid Fuel blocks.</b><BR>"
+			dat += "- Tactical Nuclear Warhead: <b>[ob_type_fuel_requirements[3]] Solid Fuel blocks.</b><BR>"
 
 			dat += "<BR><BR><A href='?src=\ref[src];back=1'><font size=3>Back</font></A><BR>"
 		else

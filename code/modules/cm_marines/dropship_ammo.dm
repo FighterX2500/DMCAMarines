@@ -298,6 +298,46 @@
 			cdel(src)
 
 
+//agent orange
+
+/obj/structure/ship_ammo/rocket/agentorange
+	name = "\improper DMC-1207 'CreepClean'"
+	desc = "The DMC-1207 is a modification of the AGM-227 that has had it's explosive payload replaced with a canister of pressurized nitrogen sorrunded with defoliants and toxins, meant for cleaning out large areas during asymetrical warfare to deny cover to the enemy."
+	icon_state = "single"
+	travelling_time = 30 //not powerful, but reaches target fast
+	ammo_id = ""
+	point_cost = 100
+
+	detonate_on(turf/impact)
+		impact.ceiling_debris_check(3)
+		spawn(5)
+			for(var/obj/structure/jungle/vines/V in range(14, impact))
+				spawn(rand(5, 20))
+					if(prob(10))
+						V.visible_message("The vines wither away!")
+					cdel(V)
+			for(var/obj/effect/alien/weeds/W in range(14, impact))
+				spawn(rand(10, 25))
+					if(prob(10))
+						W.visible_message("The weeds froth and sizzle away!")
+					cdel(W)
+			for(var/turf/closed/wall/resin/T in range(14, impact))
+				if(istype(T, /turf/closed/wall/resin/ondirt))
+					return //let's not fuck with the map
+				spawn(rand(20, 30))
+					T.visible_message("The wall starts to wither and die")
+					spawn(rand(20, 30))
+						T.visible_message("The wall froths and sizzles away under the bubbling chemicals!")
+						T.take_damage(300)
+			for(var/obj/effect/alien/resin/sticky/S in range(14, impact))
+				cdel(S)
+			for(var/obj/structure/bed/nest/B in range(14, impact))
+				cdel(B) // No message so hives don't get spammed.
+			spawn(5)
+				var/datum/effect_system/smoke_spread/agentorange/S = new/datum/effect_system/smoke_spread/agentorange()
+				S.set_up(10,0,impact,null)
+				S.start()
+			cdel(src)
 
 //minirockets
 
@@ -354,7 +394,7 @@
 	name = "illumination rocket-launched flare stack"
 	desc = "A pack of laser guided mini rockets, each loaded with a payload of white-star illuminant and a parachute, while extremely ineffective at damaging the enemy, it is very effective at lighting the battlefield so marines can damage the enemy."
 	icon_state = "minirocket_ilm"
-	point_cost = 250
+	point_cost = 50
 	detonate_on(turf/impact)
 		impact.ceiling_debris_check(2)
 		spawn(5)

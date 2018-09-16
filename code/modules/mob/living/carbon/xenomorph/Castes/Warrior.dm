@@ -11,6 +11,7 @@
 	plasma_stored = 50
 	plasma_gain = 8
 	plasma_max = 100
+	mob_size = MOB_SIZE_BIG
 	evolution_threshold = 250
 	upgrade_threshold = 250
 	caste_desc = "A powerful front line combatant."

@@ -15,6 +15,7 @@
 	upgrade_threshold = 100
 	caste_desc = "A sturdy front line combatant."
 	speed = -0.2
+	mob_size = MOB_SIZE_BIG
 	pixel_x = -16
 	old_x = -16
 	evolves_to = list("Warrior")

@@ -15,7 +15,7 @@
 	var/targ_y = 0
 	var/offset_x = 0 //Automatic offset from target
 	var/offset_y = 0
-	var/offset_per_turfs = 10 //Number of turfs to offset from target by 1
+	var/offset_per_turfs = 30 //Number of turfs to offset from target by 1
 	var/dial_x = 0 //Dial adjustment from target
 	var/dial_y = 0
 	var/travel_time = 45 //Constant, assuming perfect parabolic trajectory. ONLY THE DELAY BEFORE INCOMING WARNING WHICH ADDS 45 TICKS

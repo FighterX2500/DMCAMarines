@@ -905,7 +905,7 @@
 	icon_state = "scim"
 	item_state = "scim"
 	force = 50
-	attack_speed = 18 //Will have the same speed as the glaive if there are two.
+	attack_speed = 12 //Will have the same speed as the glaive if there are two.
 	hitsound = 'sound/weapons/pierce.ogg'
 
 //I need to go over these weapons and balance them out later. Right now they're pretty all over the place.
@@ -925,7 +925,7 @@
 
 	attack(mob/target as mob, mob/living/user as mob)
 		if(user.zone_selected == "r_leg" || user.zone_selected == "l_leg" || user.zone_selected == "l_foot" || user.zone_selected == "r_foot")
-			if(prob(35) && !target.lying)
+			if(prob(45) && !target.lying)
 				if(isXeno(target))
 					if(target.mob_size == MOB_SIZE_BIG) //Can't trip the big ones.
 						return ..()
