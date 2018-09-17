@@ -77,9 +77,9 @@
 
 	if(assigned_squad)
 		if(assigned_squad.primary_objective)
-			stat("Primary Objective: ", html_encode(fix_rus_stats(assigned_squad.primary_objective)))
+			stat("Primary Objective: ", fix_rus_stats(assigned_squad.primary_objective))
 		if(assigned_squad.secondary_objective)
-			stat("Secondary Objective: ", html_encode(fix_rus_stats(assigned_squad.secondary_objective)))
+			stat("Secondary Objective: ", fix_rus_stats(assigned_squad.secondary_objective))
 
 	if(mobility_aura)
 		stat(null, "You are affected by a MOVE order.")
