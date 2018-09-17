@@ -567,7 +567,11 @@ var/list/intents = list("help","disarm","grab","hurt")
 	return FALSE
 
 /mob/living/carbon/Xenomorph/can_be_operated_on()
-	return FALSE
+	if(!lying) return FALSE
+	if(locate(/obj/machinery/optable, loc) || locate(/obj/structure/bed/roller, loc))
+		return TRUE
+	var/obj/structure/table/T = locate(/obj/structure/table, loc)
+	if(T && !T.flipped) return TRUE
 
 
 /mob/proc/is_mob_restrained()
