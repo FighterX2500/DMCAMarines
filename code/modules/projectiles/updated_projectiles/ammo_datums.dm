@@ -1006,6 +1006,28 @@
 	drop_flame(get_turf(P))
 	explosion(P.loc,  -1, 2, 4, 5)
 
+
+/*
+//================================================
+					Crude Ammo
+//================================================
+*/
+
+/datum/ammo/bullet/rifle/cannon
+   name = "heavy cannon round"
+
+/datum/ammo/bullet/rifle/cannon/New()
+	..()
+	accuracy 			= config.min_hit_accuracy 	// This is added to the bullet's base accuracy.
+	accuracy_var_low	= config.min_proj_variance 	// How much the accuracy varies when fired.
+	accuracy_var_high	= config.min_proj_variance
+	accurate_range 		= config.close_shell_range 	// For most guns, this is where the bullet dramatically looses accuracy. Not for snipers though.
+	max_range 			= config.norm_shell_range 	// This will de-increment a counter on the bullet.
+	damage_var_low		= config.min_proj_variance 	// Same as with accuracy variance.
+	damage_var_high		= config.min_proj_variance
+	damage_falloff 		= config.reg_damage_falloff 	// How much damage the bullet loses per turf traveled.
+	shell_speed 		= config.slow_shell_speed 	// How fast the projectile moves.
+
 /*
 //================================================
 					Energy Ammo
