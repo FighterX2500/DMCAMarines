@@ -298,6 +298,7 @@
 							list("MASKS", 0, null, null, null),
 							list("Gas mask", 0, /obj/item/clothing/mask/gas, MARINE_CAN_BUY_MASK, "black"),
 							list("GUN ATTACHMENTS (Choose 1)", 0, null, null, null),
+							list("Rifle stock", 0, /obj/item/attachable/stock/rifle, MARINE_CAN_BUY_ATTACHMENT, "black"),
 							list("Red-dot sight", 0, /obj/item/attachable/reddot, MARINE_CAN_BUY_ATTACHMENT, "black"),
 							list("Extended Barrel", 0, /obj/item/attachable/extended_barrel, MARINE_CAN_BUY_ATTACHMENT, "black"),
 							list("Angled Grip",0,/obj/item/attachable/angledgrip/New(), MARINE_CAN_BUY_ATTACHMENT, "black"),
