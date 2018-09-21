@@ -264,7 +264,7 @@
 	icon_state = "rocket_case"
 	spec_set = "demolitionist"
 	w_class = 5
-	storage_slots = 1
+	storage_slots = 13
 	slowdown = 1
 	can_hold = list() //Nada. Once you take the stuff out it doesn't fit back in.
 	foldable = null
