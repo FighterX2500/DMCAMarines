@@ -453,12 +453,29 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		for(var/obj/O in contents)
 			O.loc = T
 		cdel(LC)
-		/obj/structure/showcase
 	else if (istype(A, /obj/structure/showcase))
 		var/obj/structure/showcase/SW = A
 		SW.visible_message("<span class='danger'>[root] crushes [SW]!</span>")
 		new /obj/item/stack/sheet/metal(SW.loc, 2)
 		cdel(SW)
+	else if (istype(A, /obj/structure/inflatable) && !istype(A, /obj/structure/inflatable/door))
+		var/obj/structure/inflatable/IW = A
+		IW.visible_message("<span class='danger'>[root] crushes [IW]!</span>")
+		playsound(loc, 'sound/machines/hiss.ogg', 25, 1)
+		visible_message("[IW] rapidly deflates!")
+		flick("wall_popping", IW)
+		sleep(3)
+		new /obj/structure/inflatable/popped(IW.loc)
+		cdel(IW)
+	else if (istype(A, /obj/structure/inflatable/door))
+		var/obj/structure/inflatable/ID = A
+		ID.visible_message("<span class='danger'>[root] crushes [ID]!</span>")
+		playsound(loc, 'sound/machines/hiss.ogg', 25, 1)
+		visible_message("[ID] rapidly deflates!")
+		flick("wall_popping", ID)
+		sleep(3)
+		new /obj/structure/inflatable/popped/door(ID.loc)
+		cdel(ID)
 	else if (istype(A, /obj/structure/closet))
 		var/obj/structure/closet/crate/CL = A
 		CL.break_open()
