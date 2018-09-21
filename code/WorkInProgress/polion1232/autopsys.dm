@@ -48,10 +48,10 @@
 /datum/surgery_step/xeno/chitin/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
 	user.visible_message("<span class='notice'>[user] cut chunk of chitin out of [target]'s body</span>")
 	if(isXenoCrusher(target))
-		var/obj/item/marineResearch/xenomorp/chitin/crusher/A = new(target.loc)
+		new /obj/item/marineResearch/xenomorp/chitin/crusher(target.loc)
 		target.xeno_surgery_step = 1
 		return
-	var/obj/item/marineResearch/xenomorp/chitin/A = new(target.loc)
+	new /obj/item/marineResearch/xenomorp/chitin(target.loc)
 	target.xeno_surgery_step = 1
 	return
 
@@ -73,7 +73,7 @@
 
 /datum/surgery_step/xeno/muscle/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
 	user.visible_message("<span class='notice'>[user] cut piece of muscle out of [target]'s body</span>")
-	var/obj/item/marineResearch/xenomorp/muscle/A = new(target.loc)
+	new /obj/item/marineResearch/xenomorp/muscle(target.loc)
 	target.xeno_surgery_step = 2
 	return
 
@@ -102,7 +102,6 @@
 
 /datum/surgery_step/xeno/retract/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
 	user.visible_message("<span class='notice'>[user] retracted open flesh inside [target]'s body</span>")
-	var/obj/item/marineResearch/xenomorp/muscle/A = new(target.loc)
 	target.xeno_surgery_step = 3
 	return
 
@@ -122,6 +121,8 @@
 /datum/surgery_step/xeno/internal/acid/can_use(mob/living/user, mob/living/carbon/Xenomorph/target, target_zone, obj/item/tool, datum/limb/affected, only_checks)
 	if(isXenoSentinel(target) || isXenoSpitter(target)) // Because spitting is their league
 		return target.xeno_surgery_step == xeno_step // checking steps
+	else
+		target.xeno_forbid_retract = 1 // Poor xeno butchered
 	return 0
 
 /datum/surgery_step/xeno/internal/acid/begin_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
@@ -131,11 +132,11 @@
 /datum/surgery_step/xeno/internal/acid/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
 	user.visible_message("<span class='notice'>[user] cut acid gland out of [target]'s body</span>")
 	if(isXenoSpitter(target))
-		var/obj/item/marineResearch/xenomorp/acid_gland/spitter/A = new(target.loc)
+		new /obj/item/marineResearch/xenomorp/acid_gland/spitter(target.loc)
 		target.xeno_forbid_retract = 1 // Poor xeno butchered
 		target.xeno_surgery_step = 0
 		return
-	var/obj/item/marineResearch/xenomorp/acid_gland/A = new(target.loc)
+	new /obj/item/marineResearch/xenomorp/acid_gland(target.loc)
 	target.xeno_surgery_step = 0
 	target.xeno_forbid_retract = 1 // Poor xeno butchered
 	return
@@ -155,6 +156,8 @@
 /datum/surgery_step/xeno/internal/secretor/can_use(mob/living/user, mob/living/carbon/Xenomorph/target, target_zone, obj/item/tool, datum/limb/affected, only_checks)
 	if(isXenoDrone(target) || isXenoHivelord(target)) // Because spitting is their league
 		return target.xeno_surgery_step == xeno_step // checking steps
+	else
+		target.xeno_forbid_retract = 1 // Poor xeno butchered
 	return 0
 
 /datum/surgery_step/xeno/internal/secretor/begin_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
@@ -163,7 +166,7 @@
 
 /datum/surgery_step/xeno/internal/secretor/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
 	user.visible_message("<span class='notice'>[user] cut secretor gland out of [target]'s body</span>")
-	var/obj/item/marineResearch/xenomorp/secretor/A = new(target.loc)
+	new /obj/item/marineResearch/xenomorp/secretor(target.loc)
 	if(isXenoHivelord(target))
 		target.xeno_surgery_step = 4
 		return
@@ -195,7 +198,7 @@
 
 /datum/surgery_step/xeno/internal/secretor/hivelord/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
 	user.visible_message("<span class='notice'>[user] cut bioplasma syntesate out of [target]'s body</span>")
-	var/obj/item/marineResearch/xenomorp/secretor/hivelord/A = new(target.loc)
+	new /obj/item/marineResearch/xenomorp/secretor/hivelord(target.loc)
 	target.xeno_surgery_step = 0
 	target.xeno_forbid_retract = 1 // Poor xeno butchered
 	return
