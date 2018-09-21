@@ -48,10 +48,10 @@
 /datum/surgery_step/xeno/chitin/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
 	user.visible_message("<span class='notice'>[user] cut chunk of chitin out of [target]'s body</span>")
 	if(isXenoCrusher(target))
-		var/obj/item/xenomorp/chitin/crusher/A = new(target.loc)
+		var/obj/item/marineResearch/xenomorp/chitin/crusher/A = new(target.loc)
 		target.xeno_surgery_step = 1
 		return
-	var/obj/item/xenomorp/chitin/A = new(target.loc)
+	var/obj/item/marineResearch/xenomorp/chitin/A = new(target.loc)
 	target.xeno_surgery_step = 1
 	return
 
@@ -73,7 +73,7 @@
 
 /datum/surgery_step/xeno/muscle/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
 	user.visible_message("<span class='notice'>[user] cut piece of muscle out of [target]'s body</span>")
-	var/obj/item/xenomorp/muscle/A = new(target.loc)
+	var/obj/item/marineResearch/xenomorp/muscle/A = new(target.loc)
 	target.xeno_surgery_step = 2
 	return
 
@@ -102,7 +102,7 @@
 
 /datum/surgery_step/xeno/retract/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
 	user.visible_message("<span class='notice'>[user] retracted open flesh inside [target]'s body</span>")
-	var/obj/item/xenomorp/muscle/A = new(target.loc)
+	var/obj/item/marineResearch/xenomorp/muscle/A = new(target.loc)
 	target.xeno_surgery_step = 3
 	return
 
@@ -131,11 +131,11 @@
 /datum/surgery_step/xeno/internal/acid/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
 	user.visible_message("<span class='notice'>[user] cut acid gland out of [target]'s body</span>")
 	if(isXenoSpitter(target))
-		var/obj/item/xenomorp/acid_gland/spitter/A = new(target.loc)
+		var/obj/item/marineResearch/xenomorp/acid_gland/spitter/A = new(target.loc)
 		target.xeno_forbid_retract = 1 // Poor xeno butchered
 		target.xeno_surgery_step = 0
 		return
-	var/obj/item/xenomorp/acid_gland/A = new(target.loc)
+	var/obj/item/marineResearch/xenomorp/acid_gland/A = new(target.loc)
 	target.xeno_surgery_step = 0
 	target.xeno_forbid_retract = 1 // Poor xeno butchered
 	return
@@ -163,7 +163,7 @@
 
 /datum/surgery_step/xeno/internal/secretor/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
 	user.visible_message("<span class='notice'>[user] cut secretor gland out of [target]'s body</span>")
-	var/obj/item/xenomorp/secretor/A = new(target.loc)
+	var/obj/item/marineResearch/xenomorp/secretor/A = new(target.loc)
 	if(isXenoHivelord(target))
 		target.xeno_surgery_step = 4
 		return
@@ -195,7 +195,7 @@
 
 /datum/surgery_step/xeno/internal/secretor/hivelord/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
 	user.visible_message("<span class='notice'>[user] cut bioplasma syntesate out of [target]'s body</span>")
-	var/obj/item/xenomorp/secretor/hivelord/A = new(target.loc)
+	var/obj/item/marineResearch/xenomorp/secretor/hivelord/A = new(target.loc)
 	target.xeno_surgery_step = 0
 	target.xeno_forbid_retract = 1 // Poor xeno butchered
 	return
