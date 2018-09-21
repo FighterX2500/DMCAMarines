@@ -239,6 +239,7 @@
 	New()
 		..()
 		spawn(1)
+			new /obj/item/storage/pouch/rpg(src)
 			new /obj/item/weapon/gun/launcher/rocket(src)
 			new /obj/item/ammo_magazine/rocket(src)
 			new /obj/item/ammo_magazine/rocket(src)
@@ -258,12 +259,12 @@
 
 /obj/item/storage/box/spec/demolitionist
 	name = "Demolitionist equipment crate"
-	desc = "A large case containing light armor, a heavy-caliber antitank missile launcher, missiles, C4, and claymore mines. Drag this sprite into you to open it up!\nNOTE: You cannot put items back inside this case."
+	desc = "A large case containing light armor, a heavy-caliber antitank missile launcher, missiles, C4, claymore mines and one brand new rockets pouch. Drag this sprite into you to open it up!\nNOTE: You cannot put items back inside this case."
 	icon = 'icons/Marine/marine-weapons.dmi'
 	icon_state = "rocket_case"
 	spec_set = "demolitionist"
 	w_class = 5
-	storage_slots = 12
+	storage_slots = 1
 	slowdown = 1
 	can_hold = list() //Nada. Once you take the stuff out it doesn't fit back in.
 	foldable = null
@@ -283,6 +284,7 @@
 			new /obj/item/explosive/mine(src)
 			new /obj/item/explosive/plastique(src)
 			new /obj/item/explosive/plastique(src)
+			new /obj/item/storage/pouch/rpg(src)
 
 
 
@@ -396,7 +398,7 @@
 	icon = 'icons/Marine/marine-weapons.dmi'
 	icon_state = "grenade_case"
 	w_class = 5
-	storage_slots = 6
+	storage_slots = 5
 	slowdown = 1
 	can_hold = list() //Nada. Once you take the stuff out it doesn't fit back in.
 	foldable = null
@@ -406,7 +408,6 @@
 		..()
 		spawn(1)
 			new /obj/item/weapon/gun/launcher/m92(src)
-			new /obj/item/storage/belt/grenade(src)
 			new /obj/item/storage/belt/grenade(src)
 			new /obj/item/clothing/gloves/marine/specialist(src)
 			new /obj/item/clothing/suit/storage/marine/specialist(src)

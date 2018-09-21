@@ -361,8 +361,8 @@
 		new /obj/item/weapon/throwing_knife(src)
 
 /obj/item/storage/belt/grenade
-	name="M276 pattern M40 HEDP rig"
-	desc="The M276 is the standard load-bearing equipment of the USCM. It consists of a modular belt with various clips. This version is designed to carry bulk quantities of M40 HEDP Grenades."
+	name="M276 pattern M40 grenade rig"
+	desc="The M276 is the standard load-bearing equipment of the USCM. It consists of a modular belt with various clips. This version is designed to carry bulk quantities of M40 Grenades."
 	icon_state="grenadebelt" // temp
 	item_state="s_marine"
 	w_class = 4
