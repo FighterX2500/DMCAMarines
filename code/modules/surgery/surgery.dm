@@ -103,6 +103,9 @@ proc/do_surgery(mob/living/carbon/M, mob/living/user, obj/item/tool)
 	if(user.mind && user.mind.cm_skills && user.mind.cm_skills.surgery < SKILL_SURGERY_TRAINED)
 		to_chat(user, "<span class='warning'>You have no idea how to do surgery...</span>")
 		return 1
+	if(isXeno(M))
+		xeno_do_surgery(M, user, tool)
+		return 1
 	var/datum/limb/affected = M.get_limb(user.zone_selected)
 	if(!affected)
 		return 0

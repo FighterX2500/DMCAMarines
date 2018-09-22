@@ -91,6 +91,10 @@
 
 	var/queen_chosen_lead //whether the xeno has been selected by the queen as a leader.
 
+	//Surgery var
+	var/xeno_surgery_step = 0 // counting steps
+	var/xeno_forbid_retract = 0 // after butchering insides you will get nothing
+
 	//Old crusher specific vars, moved here so the Queen can use charge, and potential future Xenos
 	var/charge_dir = 0 //Stores initial charge dir to immediately cut out any direction change shenanigans
 	var/charge_timer = 0 //Has a small charge window. has to keep moving to build speed.
