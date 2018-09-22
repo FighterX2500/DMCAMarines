@@ -427,17 +427,21 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		FT.explode()
 	else if (istype(A, /obj/structure/window_frame))
 		var/obj/structure/window_frame/WF = A
+		new /obj/item/stack/sheet/metal(WF.loc, 2)
+		new /obj/item/stack/sheet/glass(WF.loc, 2)
 		WF.visible_message("<span class='danger'>[root] crushes through [WF]!</span>")
 		var/obj/vehicle/multitile/root/cm_armored/CA = root
 		CA.take_damage_type(10, "blunt", WF)
 		playsound(WF, 'sound/effects/metal_crash.ogg', 35)
 		cdel(WF)
-	else if (istype(A, /obj/structure/window/framed)) //This definitely is shitty. It is better to refactor this shitcode by making a new variable for "destroyable objects"
-		var/obj/structure/window/framed/WN = A
+	else if (istype(A, /obj/structure/window)) //This definitely is shitty. It is better to refactor this shitcode by making a new variable for "destroyable objects"
+		var/obj/structure/window/WN = A
+		new /obj/item/stack/sheet/glass(WN.loc, 2)
 		WN.visible_message("<span class='danger'>[root] crushes [WN]!</span>")
 		if(WN.not_damageable)
 			return
-		WN.drop_window_frame()
+		WN.health = 0
+		WN.healthcheck(0, 1)
 	else if (istype(A, /obj/machinery/computer))
 		var/obj/machinery/computer/CP = A
 		if(CP.exproof)
@@ -445,6 +449,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		CP.visible_message("<span class='danger'>[root] crushes [CP]!</span>")
 		new /obj/item/stack/sheet/metal(CP.loc, 1)
 		cdel(CP)
+
 	else if (istype(A, /obj/structure/largecrate))
 		var/obj/structure/largecrate/LC = A
 		LC.visible_message("<span class='danger'>[root] crushes [LC]!</span>")
@@ -456,7 +461,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	else if (istype(A, /obj/structure/showcase))
 		var/obj/structure/showcase/SW = A
 		SW.visible_message("<span class='danger'>[root] crushes [SW]!</span>")
-		new /obj/item/stack/sheet/metal(SW.loc, 2)
 		cdel(SW)
 	else if (istype(A, /obj/structure/inflatable) && !istype(A, /obj/structure/inflatable/door))
 		var/obj/structure/inflatable/IW = A
@@ -464,7 +468,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		playsound(loc, 'sound/machines/hiss.ogg', 25, 1)
 		visible_message("[IW] rapidly deflates!")
 		flick("wall_popping", IW)
-		sleep(3)
 		new /obj/structure/inflatable/popped(IW.loc)
 		cdel(IW)
 	else if (istype(A, /obj/structure/inflatable/door))
@@ -473,7 +476,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		playsound(loc, 'sound/machines/hiss.ogg', 25, 1)
 		visible_message("[ID] rapidly deflates!")
 		flick("wall_popping", ID)
-		sleep(3)
 		new /obj/structure/inflatable/popped/door(ID.loc)
 		cdel(ID)
 	else if (istype(A, /obj/structure/closet))
@@ -494,7 +496,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		if(MTF.has_sensor)
 			new /obj/item/device/turret_sensor(MTF.loc)
 		cdel(MTF)
-
 	else if (istype(A, /obj/machinery/marine_turret))
 		var/obj/machinery/marine_turret/MT = A
 		MT.visible_message("<span class='danger'>[root] drives over [MT]!</span>")
@@ -502,25 +503,21 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		MT.density = 0
 		MT.health = MT.health - 15
 		MT.update_icon()
-
 	else if (istype(A, /obj/machinery/m56d_post))
 		var/obj/machinery/m56d_post/MD = A
 		new /obj/item/device/m56d_post(MD.loc)
 		cdel(MD)
-
 	else if (istype(A, /obj/machinery/m56d_hmg) && !istype(A, /obj/machinery/m56d_hmg/mg_turret))
 		var/obj/machinery/m56d_hmg/MG = A
 		var/obj/item/device/m56d_gun/HMG = new(MG.loc) //Here we generate our disassembled mg.
 		new /obj/item/device/m56d_post(MG.loc)
 		HMG.rounds = MG.rounds //Inherent the amount of ammo we had.
 		cdel(MG)
-
 	else if (istype(A, /obj/structure/mortar))
 		var/obj/structure/mortar/MR = A
 		var/turf/T = get_turf(MR)
 		new /obj/item/mortar_kit(T)
 		cdel(MR)
-
 	else if(istype(A, /obj/machinery/door/airlock))
 		var/obj/machinery/door/airlock/AR = A
 		var/obj/vehicle/multitile/root/cm_armored/CA = root
@@ -529,7 +526,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		AR.visible_message("<span class='danger'>[root] crushes through[AR]!</span>")
 		new /obj/item/stack/sheet/metal(AR.loc, 2)
 		cdel(AR)
-
 	else if(istype(A, /obj/machinery/door/poddoor/almayer))
 		var/obj/machinery/door/poddoor/almayer/PA = A
 		var/obj/vehicle/multitile/root/cm_armored/CA = root
@@ -538,7 +534,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		PA.visible_message("<span class='danger'>[root] crushes through[PA]!</span>")
 		new /obj/item/stack/sheet/metal(PA.loc, 3)
 		cdel(PA)
-
 	else if(istype(A, /obj/machinery/door/poddoor/shutters) && !istype(A, /obj/machinery/door/poddoor/shutters/transit))
 		var/obj/machinery/door/poddoor/almayer/SH = A
 		var/obj/vehicle/multitile/root/cm_armored/CA = root
@@ -546,60 +541,63 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		playsound(SH, 'sound/effects/metal_crash.ogg', 35)
 		SH.visible_message("<span class='danger'>[root] crushes through[SH]!</span>")
 		cdel(SH)
-
 	else if (istype(A, /obj/structure/ship_ammo))
 		var/obj/structure/ship_ammo/SA = A
 		SA.visible_message("<span class='danger'>[root] crushes [SA]!</span>")
 		cdel(SA)
-
 	else if (istype(A, /obj/structure/dropship_equipment))
 		var/obj/structure/dropship_equipment/DE = A
 		DE.visible_message("<span class='danger'>[root] crushes [DE]!</span>")
 		cdel(DE)
-
 	else if (istype(A, /obj/machinery/microwave))
 		var/obj/machinery/microwave/MW = A
 		MW.visible_message("<span class='danger'>[root] crushes [MW]!</span>")
 		cdel(MW)
-
 	else if (istype(A, /obj/structure/ore_box))
 		var/obj/structure/ore_box/OB = A
 		OB.visible_message("<span class='danger'>[root] crushes [OB]!</span>")
 		cdel(OB)
-
 	else if (istype(A, /obj/structure/mopbucket))
 		var/obj/structure/mopbucket/MB = A
 		MB.visible_message("<span class='danger'>[root] crushes [MB]!</span>")
 		cdel(MB)
-
 	else if (istype(A, /obj/machinery/portable_atmospherics/hydroponics))
 		var/obj/machinery/portable_atmospherics/hydroponics/HY = A
 		new /obj/item/stack/sheet/metal(HY.loc, 1)
 		HY.visible_message("<span class='danger'>[root] crushes [HY]!</span>")
 		cdel(HY)
-
 	else if (istype(A, /obj/structure/door_assembly))
 		var/obj/structure/door_assembly/DA = A
 		new /obj/item/stack/sheet/metal(DA.loc, 2)
 		DA.visible_message("<span class='danger'>[root] crushes through[DA]!</span>")
 		cdel(DA)
-
 	else if (istype(A,/obj/structure/grille))
 		var/obj/structure/grille/GR = A
 		new /obj/item/stack/rods(GR.loc, 2)
 		GR.visible_message("<span class='danger'>[root] crushes through[GR]!</span>")
 		cdel(GR)
-
 	else if (istype(A, /obj/structure/foamedmetal))
 		var/obj/structure/foamedmetal/FM = A
 		FM.visible_message("<span class='danger'>[root] crushes through[FM]!</span>")
 		cdel(FM)
-
 	else if (istype(A, /obj/structure/device))
 		var/obj/structure/device/DV = A
 		new /obj/item/stack/sheet/wood(DV.loc, 1)
 		DV.visible_message("<span class='danger'>[root] crushes [DV]!</span>")
 		cdel(DV)
+	else if (istype(A, /obj/machinery/disposal))
+		var/obj/machinery/disposal/DI = A
+		new /obj/item/stack/sheet/metal(DI.loc, 2)
+		DI.visible_message("<span class='danger'>[root] crushes [DI]!</span>")
+		cdel(DI)
+	else if (istype(A, /obj/vehicle/train))
+		var/obj/vehicle/train/TR = A
+		TR.visible_message("<span class='danger'>[root] crushes [TR]!</span>")
+		TR.explode()
+	else if (istype(A, /obj/machinery/door/window))
+		var/obj/machinery/door/window/WD = A
+		WD.visible_message("<span class='danger'>[root] crushes through[WD]!</span>")
+		WD.take_damage(350)
 
 /obj/vehicle/multitile/hitbox/cm_armored/Move(var/atom/A, var/direction)
 
