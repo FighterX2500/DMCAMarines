@@ -44,9 +44,6 @@
 	icon_state = "bear_mask"
 	anti_hug = 2
 
-
-
-
 //Plague Dr suit can be found in clothing/suits/bio.dm
 /obj/item/clothing/mask/gas/plaguedoctor
 	name = "plague doctor mask"
@@ -60,6 +57,8 @@
 	name = "SWAT mask"
 	desc = "A close-fitting tactical mask that can be connected to an air supply."
 	icon_state = "swat"
+	anti_hug = 1
+	vision_impair = FALSE
 	siemens_coefficient = 0.7
 	flags_armor_protection = FACE|EYES
 

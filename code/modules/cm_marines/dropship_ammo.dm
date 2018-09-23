@@ -301,7 +301,7 @@
 //agent orange
 
 /obj/structure/ship_ammo/rocket/agentorange
-	name = "\improper DMC-1207 'CreepClean'"
+	name = "DMC-1207 'CreepClean'"
 	desc = "The DMC-1207 is a modification of the AGM-227 that has had it's explosive payload replaced with a canister of pressurized nitrogen sorrunded with defoliants and toxins, meant for cleaning out large areas during asymetrical warfare to deny cover to the enemy."
 	icon_state = "single"
 	travelling_time = 30 //not powerful, but reaches target fast
