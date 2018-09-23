@@ -57,7 +57,7 @@
 	gun_type = /obj/item/weapon/gun/pistol/b92fs
 
 /obj/item/ammo_magazine/pistol/b92fstranq
-	name = "\improper M9 tranq magazine (9mm)"
+	name = "M9 tranq magazine (9mm)"
 	caliber = "9mm"
 	icon_state = "m4a3"
 	max_rounds = 12

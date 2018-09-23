@@ -116,7 +116,7 @@
 	damage_mult = config.base_hit_damage_mult
 
 /obj/item/weapon/gun/pistol/b92fs/M9
-	name = "\improper M9 Custom pistol"
+	name = "M9 Custom pistol"
 	desc = "A 20th century military firearm customized for special forces use, fires tranq darts to take down enemies nonlethally"
 	icon_state = "b92fs"
 	item_state = "b92fs"
