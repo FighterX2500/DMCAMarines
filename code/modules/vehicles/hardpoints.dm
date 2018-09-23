@@ -551,7 +551,7 @@ Currently only has the tank hardpoints
 	disp_icon_state = "odrive_enhancer"
 
 	apply_buff()
-		owner.misc_ratios["move"] = 0.5
+		owner.misc_ratios["move"] = 0.6
 
 	remove_buff()
 		owner.misc_ratios["move"] = 1.0
