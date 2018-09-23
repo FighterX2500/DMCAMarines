@@ -12,20 +12,3 @@ tools/Runtime Condenser/Input.txt
 tools/Runtime Condenser/Output.txt
 tools/MapDaemon/logs/*.txt
 *.json
-tools/AddToChangelog/AddToChangelog/obj/x86/Debug/AddToChangelog.csproj.CoreCompileInputs.cache
-tools/AddToChangelog/AddToChangelog/obj/x86/Debug/AddToChangelog.csprojAssemblyReference.cache
-/ColonialMarinesALPHA.dme
-/code/modules/projectiles/updated_projectiles/guns/crude.dm
-/code/modules/projectiles/updated_projectiles/magazines/crude.dm
-/config/access levels.txt
-/config/admin_ranks.txt
-/config/admins.txt
-/config/alienwhitelist.txt
-/config/combat_defines.txt
-/config/config.txt
-/config/custom_items.txt
-/config/dbconfig.txt
-/config/forumdbconfig.txt
-/config/game_options.txt
-/config/motd.txt
-/config/role_whitelist.txt

@@ -142,7 +142,6 @@
 	flags_atom = CONDUCT
 	matter = list("metal" = 3750)
 
-
 /obj/item/frame/rack/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 	if(istype(W, /obj/item/tool/wrench))
