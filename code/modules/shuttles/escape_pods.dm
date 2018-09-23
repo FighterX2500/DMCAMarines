@@ -73,7 +73,7 @@ suffice.
 		return FALSE
 
 	staging_area = T.loc //Grab the area and store it on file.
-	staging_area.name = "\improper[shuttle_tag]"
+	staging_area.name = "[shuttle_tag]"
 
 	D = locate() in staging_area
 	if(!D)
