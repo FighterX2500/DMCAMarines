@@ -8,6 +8,7 @@
 		Ideally, sprite_sheets_refit should be used for "hard" clothing items that can't change shape very well to fit the wearer (e.g. helmets, hardsuits),
 		while sprite_sheets should be used for "flexible" clothing items that do not need to be refitted (e.g. vox wearing jumpsuits).
 	*/
+	var/is_modifyed = 0 //var for checking modification
 	var/list/sprite_sheets_refit = null
 	var/eye_protection = 0 //used for headgear, masks, and glasses, to see how much they protect eyes from bright lights.
 

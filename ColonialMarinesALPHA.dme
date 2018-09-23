@@ -1468,6 +1468,7 @@
 #include "code\WorkInProgress\Mini\atmos_control.dm"
 #include "code\WorkInProgress\polion1232\autopsys.dm"
 #include "code\WorkInProgress\polion1232\dissector.dm"
+#include "code\WorkInProgress\polion1232\modifyer.dm"
 #include "code\WorkInProgress\polion1232\xenoitems.dm"
 #include "code\WorkInProgress\polion1232\xenoresearch.dm"
 #include "code\WorkInProgress\polion1232\xenornd.dm"

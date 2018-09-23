@@ -10,7 +10,7 @@ datum/marineResearch/New()
 datum/marineResearch/proc/Check_tech(tech)					// return 0 if tech not available nor known, return 1 if known, return 2 if available
 	for(var/datum/marineTech/avail in available_tech)
 		if(avail.id == tech)
-			return 1
+			return 2
 	for(var/datum/marineTech/avail in known_tech)
 		if(avail.id == tech)
 			return 1
