@@ -301,9 +301,9 @@
 							list("Rifle stock", 0, /obj/item/attachable/stock/rifle, MARINE_CAN_BUY_ATTACHMENT, "black"),
 							list("Red-dot sight", 0, /obj/item/attachable/reddot, MARINE_CAN_BUY_ATTACHMENT, "black"),
 							list("Extended Barrel", 0, /obj/item/attachable/extended_barrel, MARINE_CAN_BUY_ATTACHMENT, "black"),
-							list("Angled Grip",0,/obj/item/attachable/angledgrip/New(), MARINE_CAN_BUY_ATTACHMENT, "black"),
-							list("Vertical Grip",0,/obj/item/attachable/verticalgrip/New(), MARINE_CAN_BUY_ATTACHMENT, "black"),
-							list("Laser Sight",0,/obj/item/attachable/lasersight/New(), MARINE_CAN_BUY_ATTACHMENT, "black"),
+							list("Angled Grip",0,/obj/item/attachable/angledgrip, MARINE_CAN_BUY_ATTACHMENT, "black"),
+							list("Vertical Grip",0,/obj/item/attachable/verticalgrip, MARINE_CAN_BUY_ATTACHMENT, "black"),
+							list("Laser Sight",0,/obj/item/attachable/lasersight, MARINE_CAN_BUY_ATTACHMENT, "black"),
 							)
 
 
@@ -737,11 +737,11 @@
 							list("Laser sight", 0, /obj/item/attachable/lasersight, MARINE_CAN_BUY_ATTACHMENT, "black"),
 							list("Gyroscopic stabilizer", 0, /obj/item/attachable/gyro, MARINE_CAN_BUY_ATTACHMENT, "black"),
 							list("Red-dot sight", 0, /obj/item/attachable/reddot, MARINE_CAN_BUY_ATTACHMENT, "black"),
-							list("Shotgun stock", 0, /obj/item/attachable/stock/shotgun/New(), MARINE_CAN_BUY_ATTACHMENT, "black"),
+							list("Shotgun stock", 0, /obj/item/attachable/stock/shotgun, MARINE_CAN_BUY_ATTACHMENT, "black"),
 							list("Magnetic harness", 0, /obj/item/attachable/magnetic_harness, MARINE_CAN_BUY_ATTACHMENT, "black"),
 							list("Extended Barrel", 0, /obj/item/attachable/extended_barrel, MARINE_CAN_BUY_ATTACHMENT, "black"),
-							list("Angled Grip",0,/obj/item/attachable/angledgrip/New(), MARINE_CAN_BUY_ATTACHMENT, "black"),
-							list("Vertical Grip",0,/obj/item/attachable/verticalgrip/New(), MARINE_CAN_BUY_ATTACHMENT, "black"),
+							list("Angled Grip",0,/obj/item/attachable/angledgrip, MARINE_CAN_BUY_ATTACHMENT, "black"),
+							list("Vertical Grip",0,/obj/item/attachable/verticalgrip, MARINE_CAN_BUY_ATTACHMENT, "black"),
 							)
 
 
@@ -782,8 +782,8 @@
 							list("Quickfire adapter", 0, /obj/item/attachable/quickfire, MARINE_CAN_BUY_ATTACHMENT, "black"),
 							list("Magnetic harness", 0, /obj/item/attachable/magnetic_harness, MARINE_CAN_BUY_ATTACHMENT, "black"),
 							list("Extended Barrel", 0, /obj/item/attachable/extended_barrel, MARINE_CAN_BUY_ATTACHMENT, "black"),
-							list("Angled Grip",0,/obj/item/attachable/angledgrip/New(), MARINE_CAN_BUY_ATTACHMENT, "black"),
-							list("Vertical Grip",0,/obj/item/attachable/verticalgrip/New(), MARINE_CAN_BUY_ATTACHMENT, "black"),
+							list("Angled Grip",0,/obj/item/attachable/angledgrip, MARINE_CAN_BUY_ATTACHMENT, "black"),
+							list("Vertical Grip",0,/obj/item/attachable/verticalgrip, MARINE_CAN_BUY_ATTACHMENT, "black"),
  							)
 
 
