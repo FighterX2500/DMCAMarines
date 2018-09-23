@@ -124,7 +124,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //Same thing but for rotations
 /obj/vehicle/multitile/root/cm_armored/try_rotate(var/deg, var/mob/user, var/force = 0)
 	if(world.time < next_move && !force) return
-	next_move = world.time + move_delay * misc_ratios["move"] * (force ? 2 : 3) //3 for a 3 point turn, idk
+	next_move = world.time + move_delay * (misc_ratios["move"] - 0.1) * (force ? 2 : 3) //3 for a 3 point turn, idk
 	return ..()
 
 /obj/vehicle/multitile/root/cm_armored/proc/can_use_hp(var/mob/M)
@@ -374,8 +374,15 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		if (isXenoQueen(A) || isXenoCrusher (A))
 			return
 		var/mob/living/M = A
+		if(M.lying==0)
+			step_away(M,root,0,0)
+			M.KnockDown(10, 1)
+			M.apply_damage(7 + rand(0, 5), BRUTE)
+			return
 		M.KnockDown(10, 1)
-		M.apply_damage(7 + rand(0, 5), BRUTE)
+		if (!isXeno())
+			M.apply_damage(5 + rand(0, 10), BRUTE)
+		M.apply_damage(10 + rand(0, 10), BRUTE)
 		M.visible_message("<span class='danger'>[src] runs over [M]!</span>", "<span class='danger'>[src] runs you over! Get out of the way!</span>")
 		var/obj/vehicle/multitile/root/cm_armored/CA = root
 		var/list/slots = CA.get_activatable_hardpoints()
@@ -436,7 +443,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		cdel(WF)
 	else if (istype(A, /obj/structure/window)) //This definitely is shitty. It is better to refactor this shitcode by making a new variable for "destroyable objects"
 		var/obj/structure/window/WN = A
-		new /obj/item/stack/sheet/glass(WN.loc, 2)
 		WN.visible_message("<span class='danger'>[root] crushes [WN]!</span>")
 		if(WN.not_damageable)
 			return
@@ -545,7 +551,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/obj/structure/ship_ammo/SA = A
 		SA.visible_message("<span class='danger'>[root] crushes [SA]!</span>")
 		cdel(SA)
-	else if (istype(A, /obj/structure/dropship_equipment))
+	else if (istype(A, /obj/structure/dropship_equipment) && !istype(A, /obj/structure/dropship_equipment/medevac_system))
 		var/obj/structure/dropship_equipment/DE = A
 		DE.visible_message("<span class='danger'>[root] crushes [DE]!</span>")
 		cdel(DE)
@@ -553,6 +559,10 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/obj/machinery/microwave/MW = A
 		MW.visible_message("<span class='danger'>[root] crushes [MW]!</span>")
 		cdel(MW)
+	else if (istype(A, /obj/machinery/processor))
+		var/obj/machinery/processor/PR = A
+		PR.visible_message("<span class='danger'>[root] crushes [PR]!</span>")
+		cdel(PR)
 	else if (istype(A, /obj/structure/ore_box))
 		var/obj/structure/ore_box/OB = A
 		OB.visible_message("<span class='danger'>[root] crushes [OB]!</span>")
