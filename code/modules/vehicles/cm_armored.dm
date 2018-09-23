@@ -374,13 +374,13 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		if (isXenoQueen(A) || isXenoCrusher (A))
 			return
 		var/mob/living/M = A
-		if(M.lying==0)
+		if(M.lying==0 && !isXenoLarva(M))
 			step_away(M,root,0,0)
 			M.KnockDown(10, 1)
 			M.apply_damage(7 + rand(0, 5), BRUTE)
 			return
 		M.KnockDown(10, 1)
-		if (!isXeno())
+		if (!isXeno(M))
 			M.apply_damage(5 + rand(0, 10), BRUTE)
 		M.apply_damage(10 + rand(0, 10), BRUTE)
 		M.visible_message("<span class='danger'>[src] runs over [M]!</span>", "<span class='danger'>[src] runs you over! Get out of the way!</span>")
