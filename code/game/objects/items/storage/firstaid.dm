@@ -330,12 +330,12 @@
 	pill_type_to_fill = /obj/item/reagent_container/pill/quickclot
 
 /obj/item/storage/pill_bottle/hypervene
-	name = "\improper Hypervene pill bottle"
+	name = "Hypervene pill bottle"
 	icon_state = "pill_canister7"
 	pill_type_to_fill = /obj/item/reagent_container/pill/hypervene
 
 /obj/item/storage/pill_bottle/tricordrazine
-	name = "\improper Tricordrazine pill bottle"
+	name = "Tricordrazine pill bottle"
 	icon_state = "pill_canister9"
 	pill_type_to_fill = /obj/item/reagent_container/pill/tricordrazine
 

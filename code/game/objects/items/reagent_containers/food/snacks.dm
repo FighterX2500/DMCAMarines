@@ -3084,7 +3084,7 @@
 			to_chat(user, "<span class='notice'>You pull open the package of the meal!</span>")
 			playsound(loc,'sound/effects/pageturn2.ogg', 15, 1)
 
-			name = "\improper" + flavor
+			name = flavor
 			desc = "The contents of a USCM Standard issue MRE. This one is " + flavor + "."
 			icon_state = flavor
 			package = 0

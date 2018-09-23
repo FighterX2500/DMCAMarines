@@ -383,13 +383,13 @@
 		if("set_primary")
 			var/input = stripped_input(usr, "What will be the squad's primary objective?", "Primary Objective")
 			if(input)
-				current_squad.primary_objective = fix_rus_nanoui(input) + " ([worldtime2text()])"
+				current_squad.primary_objective = fix_rus_stats(input) + " ([worldtime2text()])"
 				send_to_squad("Your primary objective has changed. See Status pane for details.")
 				visible_message("\icon[src] <span class='boldnotice'>Primary objective of squad '[current_squad]' set.</span>")
 		if("set_secondary")
 			var/input = stripped_input(usr, "What will be the squad's secondary objective?", "Secondary Objective")
 			if(input)
-				current_squad.secondary_objective = input + " ([worldtime2text()])"
+				current_squad.secondary_objective = fix_rus_stats(input) + " ([worldtime2text()])"
 				send_to_squad("Your secondary objective has changed. See Status pane for details.")
 				visible_message("\icon[src] <span class='boldnotice'>Secondary objective of squad '[current_squad]' set.</span>")
 		if("supply_x")

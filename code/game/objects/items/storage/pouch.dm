@@ -266,6 +266,18 @@
 	new /obj/item/explosive/plastique(src)
 	new /obj/item/explosive/plastique(src)
 
+/obj/item/storage/pouch/rpg
+	name = "rockets pouch"
+	desc = "This pouch can contain up to 3 rockets for M5 RPG launcher."
+	icon_state = "rpg"
+	storage_slots = 3
+	max_w_class = 3
+	can_hold = list(
+					"/obj/item/ammo_magazine/rocket",
+					"/obj/item/ammo_magazine/rocket/ap",
+					"/obj/item/ammo_magazine/rocket/wp"
+					)
+
 /obj/item/storage/pouch/medical
 	name = "medical pouch"
 	desc = "It can contain small medical supplies."

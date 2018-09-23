@@ -105,6 +105,9 @@ proc/do_surgery(mob/living/carbon/M, mob/living/user, obj/item/tool)
 		"<span class='notice'>You fumble around figuring out how to operate [M].</span>")
 		var/fumbling_time = SKILL_TASK_FORMIDABLE - ( SKILL_TASK_AVERAGE * user.mind.cm_skills.surgery ) // 20 secs non-trained, 15 amateur, 10 semi-prof
 		if(!do_after(user, fumbling_time, TRUE, 5, BUSY_ICON_BUILD)) return
+	if(isXeno(M))
+		xeno_do_surgery(M, user, tool)
+		return 1
 	var/datum/limb/affected = M.get_limb(user.zone_selected)
 	if(!affected)
 		return 0

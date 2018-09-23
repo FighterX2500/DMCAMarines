@@ -367,7 +367,7 @@ Currently only has the tank hardpoints
 	max_angle = 360
 
 	apply_buff()
-		owner.cooldowns["secondary"] = 5
+		owner.cooldowns["secondary"] = 2
 		owner.accuracies["secondary"] = 0.9
 
 	is_ready()
@@ -799,6 +799,7 @@ Currently only has the tank hardpoints
 	desc = "A primary armament minigun magazine"
 	caliber = "7.62x51mm" //Correlates to miniguns
 	icon_state = "painless"
+	w_class = 10
 	default_ammo = /datum/ammo/bullet/minigun
 	max_rounds = 300
 	point_cost = 25
