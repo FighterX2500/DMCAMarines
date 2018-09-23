@@ -226,7 +226,7 @@
 		if(user.get_inactive_hand()) //Failsafe; if there's somehow still something in the off-hand (undroppable), bail.
 			to_chat(user, "<span class='warning'>You need your other hand to be empty!</span>")
 			return
-			
+
 	if(ishuman(user))
 		var/check_hand = user.r_hand == src ? "l_hand" : "r_hand"
 		var/mob/living/carbon/human/wielder = user
@@ -778,7 +778,8 @@ and you're good to go.
 							cdel(projectile_to_fire)
 						reload_into_chamber(user) //Reload into the chamber if the gun supports it.
 						return TRUE
-
+					else
+						return FALSE
 	return ..() //Pistolwhippin'
 
 //----------------------------------------------------------
