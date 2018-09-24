@@ -20,15 +20,15 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 	adminhelped = 1 //Determines if they get the message to reply by clicking the name.
 
 	var/msg
-	var/list/type = list ("Suggestion / Bug Report", "Gameplay / Roleplay Issue")
-	var/selected_type = input("Pick a category.", "Admin Help", null, null) as null|anything in type
-	if(selected_type == "Gameplay / Roleplay Issue")
-		msg = input("Please enter your message:", "Admin Help", null, null) as message|null
+	var/list/type = list ("Предложение / Баги", "Геимплей / Ролеплей")
+	var/selected_type = input("Выберите категорию.", "Admin Help", null, null) as null|anything in type
+	if(selected_type == "Геимплей / Ролеплей")
+		msg = input("Опишите ситуацию:", "Admin Help", null, null) as message|null
 
-	if(selected_type == "Suggestion / Bug Report")
-		switch(alert("Adminhelps are not for suggestions or bug reports - they should be posted on our Gitlab.",,"Go to Gitlab","Cancel"))
-			if("Go to Gitlab")
-				src << link("https://gitlab.com/cmdevs/ColonialMarines/issues")
+	if(selected_type == "Предложение / Баги")
+		switch(alert(sanitize("Adminhelp не для предложений или сообщений о багах - для этого существует GitHub.",,"Go to GitHub","Cancel")))
+			if("Go to GitHub")
+				src << link("https://github.com/FighterX2500/DMCAMarines/issues")
 			else
 				return
 
@@ -125,7 +125,7 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 			if(X.is_afk())
 				admin_number_afk++
 
-	if("Gameplay/Roleplay Issue")
+	if("Геимплей / Ролеплей")
 		if(mentorholders.len)
 			for(var/client/X in mentorholders) // Mentors get a message without buttons and no character name
 				if(X.prefs.toggles_sound & SOUND_ADMINHELP)

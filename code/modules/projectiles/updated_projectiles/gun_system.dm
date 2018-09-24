@@ -13,7 +13,7 @@
 	force 		= 5
 	attack_verb = null
 	sprite_sheet_id = 1
-	flags_atom = FPRINT|CONDUCT
+	flags_atom = CONDUCT
 	flags_item = TWOHANDED
 
 	var/muzzle_flash 	= "muzzle_flash"
@@ -219,8 +219,6 @@
 
 	var/obj/item/offhand = user.get_inactive_hand()
 	if(offhand)
-		//if(!user.equip_to_appropriate_slot(offhand)) //Is there something still in the offhand after autoequip?
-		//	offhand = user.get_inactive_hand()
 		if(offhand == user.r_hand)
 			user.drop_r_hand()
 		else if(offhand == user.l_hand)
@@ -780,7 +778,8 @@ and you're good to go.
 							cdel(projectile_to_fire)
 						reload_into_chamber(user) //Reload into the chamber if the gun supports it.
 						return TRUE
-
+					else
+						return FALSE
 	return ..() //Pistolwhippin'
 
 //----------------------------------------------------------

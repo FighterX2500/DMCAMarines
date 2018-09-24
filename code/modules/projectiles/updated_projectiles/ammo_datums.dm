@@ -231,10 +231,11 @@
 
 /datum/ammo/bullet/pistol/tranq
 	name = "tranq bullet"
-	debilitate = list(0,2,0,0,5,3,20,0)
+	debilitate = list(0,0,0,0,5,3,30,0)
 
 /datum/ammo/bullet/pistol/hollow
 	name = "hollowpoint pistol bullet"
+
 
 /datum/ammo/bullet/pistol/hollow/New()
 	..()
@@ -885,6 +886,7 @@
 /datum/ammo/rocket/tow
 	name = "TOW rocket"
 	damage_falloff = 0
+	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET|AMMO_SKIP_BARRICADE
 
 /datum/ammo/rocket/tow/New()
 		..()

@@ -75,14 +75,11 @@
 		stat("Tank Pressure", internal.pressure)
 		stat("Distribution Pressure", internal.distribute_pressure)
 
-	var/PR = "Основная задача"
-	var/SE = "Второстепенная задача"
-
 	if(assigned_squad)
 		if(assigned_squad.primary_objective)
-			stat("[fix_rus_stats(PR)]: ", assigned_squad.primary_objective)
+			stat("Primary Objective: ", fix_rus_stats(assigned_squad.primary_objective))
 		if(assigned_squad.secondary_objective)
-			stat("[fix_rus_stats(SE)]: ", assigned_squad.secondary_objective)
+			stat("Secondary Objective: ", fix_rus_stats(assigned_squad.secondary_objective))
 
 	if(mobility_aura)
 		stat(null, "You are affected by a MOVE order.")
@@ -1471,8 +1468,8 @@
 			see_invisible = SEE_INVISIBLE_MINIMUM
 
 		if(artmod_use)
-			see_in_dark = 20
-			see_invisible = SEE_INVISIBLE_MINIMUM
+			sight |= SEE_TURFS
+			see_invisible = 20
 
 		if(glasses)
 			process_glasses(glasses)
