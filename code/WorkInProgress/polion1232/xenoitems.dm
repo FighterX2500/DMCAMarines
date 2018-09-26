@@ -36,6 +36,10 @@ Queen thingy - 40
 	desc = "Researchy thingy!"
 	icon = 'icons/Marine/Research/Marine_Research.dmi'
 	icon_state = "biomass"
+
+
+
+
 //Xenofauna
 /obj/item/marineResearch/xenomorp/weed
     name = "Xenoweed sample"
@@ -57,13 +61,13 @@ Queen thingy - 40
 /obj/item/marineResearch/xenomorp/muscle
 	name = "Xenomorph muscle tissue"
 	desc = "A common xenomorph muscle tissue"
-	id = list(0, 10)
+	id = list(0, 10, 13)
 
 /obj/item/marineResearch/xenomorp/chitin/crusher
 	name = "Crusher's chitin"
 	desc = "A chunk of extremely sturdy and durable Crusher's chitin"
 	icon_state = "chitin-armor"
-	id = list(0, 10, 12)
+	id = list(0, 10, 11, 12)
 
 /obj/item/marineResearch/xenomorp/acid_gland
 	name = "Xenomorph acid gland"
@@ -78,17 +82,17 @@ Queen thingy - 40
 /obj/item/marineResearch/xenomorp/secretor
 	name = "Secretory gland"
 	desc = "Strange gland, that secrete high variety of alien fauna"
-	id = list(0, 10, 30)
+	id = list(0, 10, 13, 30)
 
 /obj/item/marineResearch/xenomorp/secretor/hivelord
 	name = "Hivelord's bioplasma syntesate"
 	desc = "Bizzare tissue, that can be abudantly found in Hivelord body"
-	id = list(0, 10, 20, 30, 14)
+	id = list(0, 10, 13, 20, 30, 14)
 
 
 
 //Fun stuff from Queens
-/obj/item/marineResearch/xenomorp/transmitter
+/obj/item/marineResearch/xenomorp/core
 	name = "Queen's core"
 	desc = "Highly complex and advanced organ, that can be found inside Queen's head"
 	id = list(0, 10, 40)

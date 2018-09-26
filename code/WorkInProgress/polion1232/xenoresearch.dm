@@ -54,8 +54,8 @@ datum/marineResearch/proc/AvailToKnown(datum/marineTech/reserched)			//Haphazard
 /datum/marineTech
 	var/name = "name"					//Name of the technology.
 	var/desc = "description"			//General description of what it does and what it makes.
-	var/id = -1						//An easily referenced ID. Must be alphanumeric, lower-case, and no symbols.
-	var/time = 10						//What time takes to research. In seconds
+	var/id = -1						//An easily referenced ID. Must be numeric.
+	var/time = 30						//What time takes to research. In seconds
 	var/list/req_tech = list()			//List of required teches
 
 /*
@@ -116,7 +116,7 @@ Queen thingy - 40
 	name = "Hivelord metabolism"
 	desc = "Detailed analysis of Hivelords' metabolism shows, that their organism very energy-efficent"
 	id = 14
-	req_tech = list(10, 13)
+	req_tech = list(10, 13, 20, 30, 33)
 
 
 //Chemistry path
