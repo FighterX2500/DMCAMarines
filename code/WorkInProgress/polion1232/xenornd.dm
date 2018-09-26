@@ -16,10 +16,12 @@
 	build_path = /obj/machinery/r_n_d/modifyer
 	origin_tech = "programming=3" // juuuust a placehonder
 
+/*
 /obj/item/circuitboard/machine/biolathe
 	name = "Circuit board (Bio-Organic Autolathe)"
 	build_path = /obj/machinery/r_n_d/biolathe
 	origin_tech = 14
+*/
 
 /obj/machinery/computer/XenoRnD
 	name = "R&D Console"

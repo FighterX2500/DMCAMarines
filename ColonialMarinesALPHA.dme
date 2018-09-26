@@ -1472,7 +1472,6 @@
 #include "code\WorkInProgress\kilakk\fax.dm"
 #include "code\WorkInProgress\Mini\atmos_control.dm"
 #include "code\WorkInProgress\polion1232\autopsys.dm"
-#include "code\WorkInProgress\polion1232\biolathe.dm"
 #include "code\WorkInProgress\polion1232\dissector.dm"
 #include "code\WorkInProgress\polion1232\modifyer.dm"
 #include "code\WorkInProgress\polion1232\xenoitems.dm"
