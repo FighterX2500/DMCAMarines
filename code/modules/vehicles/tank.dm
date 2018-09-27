@@ -6,8 +6,8 @@
 
 
 /obj/vehicle/multitile/root/cm_armored/tank
-	name = "M34A2 Longstreet Light Tank"
-	desc = "A giant piece of armor with a big gun, you know what to do. Entrance in the back."
+	name = "M34A2 Longstreet Modular Multipurpose Tank"
+	desc = "A giant piece of armor, was made as a budget version of a tank specifically for USCM. Supports installing numerous modules and weapons, allowing technicians to refit tank for any type of operation. Entrance in the back."
 
 	icon = 'icons/obj/tank_NS.dmi'
 	icon_state = "tank_base"
@@ -16,6 +16,9 @@
 
 	var/mob/gunner
 	var/mob/driver
+	var/mob/swap_seat
+
+	var/obj/machinery/camera/camera = null
 
 	var/occupant_exiting = 0
 	var/next_sound_play = 0
@@ -49,6 +52,10 @@
 	R.load_entrance_marker(entr_mark)
 
 	R.update_icon()
+
+	R.camera = new /obj/machinery/camera(R)
+	R.camera.network = list("military")
+	R.camera.c_tag = "Armored Vehicle ([rand(0,10)])"
 
 	del(src)
 
@@ -86,6 +93,10 @@
 
 	R.healthcheck()
 
+	R.camera = new /obj/machinery/camera(R)
+	R.camera.network = list("military")
+	R.camera.c_tag = "Armored Vehicle ([rand(0,10)])"
+
 	del(src)
 
 //For the tank, start forcing people out if everything is broken
@@ -102,6 +113,7 @@
 		gunner.Move(entrance.loc)
 		gunner.unset_interaction()
 		gunner = null
+	swap_seat = null
 
 /obj/vehicle/multitile/root/cm_armored/tank/remove_all_players()
 	deactivate_all_hardpoints()
@@ -114,20 +126,39 @@
 
 	gunner = null
 	driver = null
+	swap_seat = null
 
 //Let's you switch into the other seat, doesn't work if it's occupied
 /obj/vehicle/multitile/root/cm_armored/tank/verb/switch_seats()
 	set name = "Swap Seats"
-	set category = "Object"
+	set category = "Vehicle"
 	set src in view(0)
+	var/answer = alert(driver, "Are you sure you want to swap seats?", , "Yes", "No")
+	if(answer == "No")
+		return
 
 	//A little icky, but functional
 	//Using a list of mobs for driver and gunner might make this code look better
 	//But all of the other code about those two would look like shit
 	if(usr == gunner)
 		if(driver)
-			to_chat(usr, "<span class='notice'>There's already someone in the other seat.</span>")
-			return
+			answer = alert(driver, "Your gunner offers you to swap seats.", , "Yes", "No")
+			if(answer == "No")
+				to_chat(usr, "<span class='notice'>Driver has refused to swap seats with you.</span>")
+			else
+				to_chat(usr, "<span class='notice'>You start getting into the other seat.</span>")
+				to_chat(driver, "<span class='notice'>You start getting into the other seat.</span>")
+				sleep(60)
+				to_chat(usr, "<span class='notice'>You switch seats.</span>")
+				to_chat(driver, "<span class='notice'>You switch seats.</span>")
+				deactivate_all_hardpoints()
+				swap_seat = gunner
+				gunner = driver
+				driver = swap_seat
+				return
+
+			//to_chat(usr, "<span class='notice'>There's already someone in the other seat.</span>")
+			//return
 
 		to_chat(usr, "<span class='notice'>You start getting into the other seat.</span>")
 
@@ -146,8 +177,23 @@
 
 	else if(usr == driver)
 		if(gunner)
-			to_chat(usr, "<span class='notice'>There's already someone in the other seat.</span>")
-			return
+			answer = alert(gunner, "Your driver offers you to swap seats.", , "Yes", "No")
+			if(answer == "No")
+				to_chat(usr, "<span class='notice'>Driver has refused to swap seats with you.</span>")
+			else
+				to_chat(usr, "<span class='notice'>You start getting into the other seat.</span>")
+				to_chat(gunner, "<span class='notice'>You start getting into the other seat.</span>")
+				sleep(60)
+				to_chat(usr, "<span class='notice'>You switch seats.</span>")
+				to_chat(driver, "<span class='notice'>You switch seats.</span>")
+				deactivate_all_hardpoints()
+				swap_seat = gunner
+				gunner = driver
+				driver = swap_seat
+				return
+
+			//to_chat(usr, "<span class='notice'>There's already someone in the other seat.</span>")
+			//return
 
 		to_chat(usr, "<span class='notice'>You start getting into the other seat.</span>")
 

@@ -159,7 +159,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //Only the active hardpoint module can be used
 /obj/vehicle/multitile/root/cm_armored/verb/switch_active_hp()
 	set name = "Change Active Weapon"
-	set category = "Object"
+	set category = "Vehicle"
 	set src in view(0)
 
 	if(!can_use_hp(usr))
@@ -183,9 +183,41 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/mob/living/M = usr
 		M.set_interaction(src)
 
+/obj/vehicle/multitile/root/cm_armored/verb/tank_status()
+	set name = "Check Vehicle Status"
+	set category = "Vehicle"
+	set src in view(0)
+	var/obj/item/hardpoint/HP1 = hardpoints[HDPT_ARMOR]
+	var/obj/item/hardpoint/HP2 = hardpoints[HDPT_TREADS]
+	var/obj/item/hardpoint/HP3 = hardpoints[HDPT_SUPPORT]
+	var/obj/item/hardpoint/HP4 = hardpoints[HDPT_SECDGUN]
+	var/obj/item/hardpoint/HP5 = hardpoints[HDPT_PRIMARY]
+	var tank_health = round((HP1.health + HP2.health + HP3.health + HP4.health +HP5.health) * 100 / (HP1.maxhealth + HP2.maxhealth + HP3.maxhealth + HP4.maxhealth +HP5.maxhealth))
+	if (tank_health <= 0)
+		to_chat(usr, "<span class='warning'>Warning! Overall vehicle integrity is critical, eject!</span><br>")
+		return
+	to_chat(usr, "<span class='warning'>Vehicle Status:</span><br>")
+	to_chat(usr, "<span class='warning'>Overall vehicle integrity: [tank_health] percents.</span>")
+	if(!can_use_hp(usr))
+		return
+	if(HP5 == null || HP5.health <= 0)
+		to_chat(usr, "<span class='warning'>Primary weapon: Unavailable.</span>")
+	else
+		if(HP5.clips.len <= 0)
+			to_chat(usr, "<span class='warning'>Primary weapon: [HP5.name]. Ammo: 0/0. 0/0 spare magazines available.</span>")
+		else
+			to_chat(usr, "<span class='warning'>Primary weapon: [HP5.name]. Ammo: [HP5.clips[1].current_rounds]/[HP5.clips[1].max_rounds]. [HP5.clips.len - 1]/[HP5.max_clips - 1] spare magazines available.</span>")
+	if(HP5 == null || HP5.health <= 0)
+		to_chat(usr, "<span class='warning'>Secondary weapon: Unavailable.</span>")
+	else
+		if(HP4.clips.len <= 0)
+			to_chat(usr, "<span class='warning'>Secondary weapon: [HP4.name]. Ammo: 0/0. 0/0 spare magazines available.</span>")
+		else
+			to_chat(usr, "<span class='warning'>Secondary weapon: [HP4.name]. Ammo: [HP4.clips[1].current_rounds]/[HP4.clips[1].max_rounds]. [HP4.clips.len - 1]/[HP4.max_clips - 1] spare magazines available.</span><br>")
+
 /obj/vehicle/multitile/root/cm_armored/verb/reload_hp()
 	set name = "Reload Active Weapon"
-	set category = "Object"
+	set category = "Vehicle"
 	set src in view(0)
 
 	if(!can_use_hp(usr)) return
@@ -200,26 +232,26 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	var/slot = input("Select a slot.") in slots
 
 	var/obj/item/hardpoint/HP = hardpoints[slot]
-	if(!HP.backup_clips.len)
-		to_chat(usr, "<span class='warning'>That module has no remaining backup clips.</span>")
+	if(HP.clips.len < 1)
+		to_chat(usr, "<span class='warning'>That module has no clips left in it!</span>")
 		return
 
-	var/obj/item/ammo_magazine/A = HP.backup_clips[1] //LISTS START AT 1 REEEEEEEEEEEE
+	var/obj/item/ammo_magazine/A = HP.clips[1] //LISTS START AT 1 REEEEEEEEEEEE
 	if(!A)
 		to_chat(usr, "<span class='danger'>Something went wrong! PM a staff member! Code: T_RHPN</span>")
 		return
 
-	to_chat(usr, "<span class='notice'>You begin reloading the [slot] module.</span>")
+	to_chat(usr, "<span class='notice'>You begin emptying [slot] module.</span>")
 
 	sleep(20)
 
-	HP.ammo.Move(entrance.loc)
-	HP.ammo.update_icon()
-	HP.ammo = A
-	HP.backup_clips.Remove(A)
-
-	to_chat(usr, "<span class='notice'>You reload the [slot] module.</span>")
-
+	A.Move(entrance.loc)
+	A.update_icon()
+	HP.clips.Remove(A)
+	if(HP.clips.len > 1)
+		to_chat(usr, "<span class='notice'>You reload the [slot] module.</span>")
+	else
+		to_chat(usr, "<span class='notice'>You empty the [slot] module.</span>")
 
 /obj/vehicle/multitile/root/cm_armored/proc/get_activatable_hardpoints()
 	var/list/slots = list()
@@ -279,19 +311,19 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		if(!HP)
 			to_chat(user, "There is nothing installed on the [i] hardpoint slot.")
 		else
-			if((user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
-				if(HP.health <= 0)
-					to_chat(user, "There is a broken [HP] installed on [i] hardpoint slot.")
-				if(HP.health > 0 && (HP.health < (HP.maxhealth / 3)))
-					to_chat(user, "There is a heavy damaged [HP] installed on [i] hardpoint slot.")
-				if((HP.health > (HP.maxhealth / 3)) && (HP.health < (HP.maxhealth * (2/3))))
-					to_chat(user, "There is a damaged [HP] installed on [i] hardpoint slot.")
-				if((HP.health > (HP.maxhealth * (2/3))) && (HP.health < HP.maxhealth))
-					to_chat(user, "There is a lightly damaged [HP] installed on [i] hardpoint slot.")
-				if(HP.health == HP.maxhealth)
-					to_chat(user, "There is a non-damaged [HP] installed on [i] hardpoint slot.")
-			else
-				to_chat(user, "There is a [HP.health <= 0 ? "broken" : "working"] [HP] installed on the [i] hardpoint slot.")
+			//if((user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
+			if(HP.health <= 0)
+				to_chat(user, "There is a broken [HP] installed on [i] hardpoint slot.")
+			if(HP.health > 0 && (HP.health < (HP.maxhealth / 3)))
+				to_chat(user, "There is a heavy damaged [HP] installed on [i] hardpoint slot.")
+			if((HP.health > (HP.maxhealth / 3)) && (HP.health < (HP.maxhealth * (2/3))))
+				to_chat(user, "There is a damaged [HP] installed on [i] hardpoint slot.")
+			if((HP.health > (HP.maxhealth * (2/3))) && (HP.health < HP.maxhealth))
+				to_chat(user, "There is a lightly damaged [HP] installed on [i] hardpoint slot.")
+			if(HP.health == HP.maxhealth)
+				to_chat(user, "There is a non-damaged [HP] installed on [i] hardpoint slot.")
+			//else
+			//	to_chat(user, "There is a [HP.health <= 0 ? "broken" : "working"] [HP] installed on the [i] hardpoint slot.")
 
 //Special armored vic healthcheck that mainly updates the hardpoint states
 /obj/vehicle/multitile/root/cm_armored/healthcheck()
@@ -540,7 +572,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		PA.visible_message("<span class='danger'>[root] crushes through[PA]!</span>")
 		new /obj/item/stack/sheet/metal(PA.loc, 3)
 		cdel(PA)
-	else if(istype(A, /obj/machinery/door/poddoor/shutters) && !istype(A, /obj/machinery/door/poddoor/shutters/transit))
+	else if(istype(A, /obj/machinery/door/poddoor/shutters) && !istype(A, /obj/machinery/door/poddoor/shutters/transit) && !istype(A, /obj/machinery/door/poddoor/shutters/almayer/pressure))
 		var/obj/machinery/door/poddoor/almayer/SH = A
 		var/obj/vehicle/multitile/root/cm_armored/CA = root
 		CA.take_damage_type(15, "blunt", SH)
@@ -976,9 +1008,23 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		if(HDPT_ARMOR) num_delays = 10
 		if(HDPT_TREADS) num_delays = 7
 
+
 	if(!do_after(user, 30*num_delays, TRUE, num_delays, BUSY_ICON_FRIENDLY))
 		user.visible_message("<span class='warning'>[user] stops removing \the [old] on [src].</span>", "<span class='warning'>You stop removing \the [old] on [src].</span>")
 		return
+
+/*	if((old == hardpoints[HDPT_PRIMARY] || old == hardpoints[HDPT_SECDGUN]) && !is_slot_damaged(old))
+		if(old.backup_clips.len > 0)
+			var i
+			for(i=0; i<old.backup_clips.len; i++)
+				var/obj/item/ammo_magazine/A = old.backup_clips[1]
+				old.ammo.Move(entrance.loc)
+				old.ammo.update_icon()
+				old.ammo = A
+				old.backup_clips.Remove(A)
+		old.ammo.Move(entrance.loc)
+		user.visible_message("<span class='notice'>[user] removes ammunition from \the [old].</span>", "<span class='notice'>You remove ammunition from \the [old].</span>")
+*/
 
 	user.visible_message("<span class='notice'>[user] removes \the [old] on [src].</span>", "<span class='notice'>You remove \the [old] on [src].</span>")
 
@@ -1004,6 +1050,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	else
 		old.loc = entrance.loc
 	old.remove_buff()
+
 	if(old.health <= 0)
 		cdel(old)
 
