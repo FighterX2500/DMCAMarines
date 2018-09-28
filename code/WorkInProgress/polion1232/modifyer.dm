@@ -15,7 +15,7 @@
 /obj/machinery/r_n_d/modifyer
 	name = "Equipment Modification Unit"
 	icon_state = "d_analyzer"
-	var/obj/item/clothing/loaded_item = null //
+	var/obj/item/clothing/loaded_item = null // Because armor and helmet too different
 
 	use_power = 1
 	idle_power_usage = 30

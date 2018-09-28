@@ -16,6 +16,13 @@
 	build_path = /obj/machinery/r_n_d/modifyer
 	origin_tech = "programming=3" // juuuust a placehonder
 
+/*
+/obj/item/circuitboard/machine/biolathe
+	name = "Circuit board (Bio-Organic Autolathe)"
+	build_path = /obj/machinery/r_n_d/biolathe
+	origin_tech = 14
+*/
+
 /obj/machinery/computer/XenoRnD
 	name = "R&D Console"
 	icon = 'icons/obj/mainframe.dmi'
@@ -185,6 +192,7 @@
 				switch(href_list["modify"])
 					if("hunter")
 						screen = 0.3
+						linked_modifyer.busy = 1
 						spawn(50)
 							linked_modifyer.loaded_item.armor["melee"] += 20
 							linked_modifyer.loaded_item.armor["bullet"] += 20
@@ -195,13 +203,15 @@
 							linked_modifyer.icon_state = "d_analyzer"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
+							linked_modifyer.busy = 0
 							updateUsrDialog()
 					if("juggernaut")
 						screen = 0.3
+						linked_modifyer.busy = 1
 						spawn(50)
 							linked_modifyer.loaded_item.armor["melee"] += 40
 							linked_modifyer.loaded_item.armor["bullet"] += 40
-							linked_modifyer.loaded_item.slowdown = SLOWDOWN_ARMOR_HEAVY
+							linked_modifyer.loaded_item.slowdown += SLOWDOWN_ARMOR_HEAVY
 							linked_modifyer.loaded_item.name += " 'Juggernaut'"
 							linked_modifyer.loaded_item.is_modifyed = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
@@ -209,9 +219,11 @@
 							linked_modifyer.icon_state = "d_analyzer"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
+							linked_modifyer.busy = 0
 							updateUsrDialog()
 					if("farsight")
 						screen = 0.3
+						linked_modifyer.busy = 1
 						spawn(50)
 							linked_modifyer.loaded_item.armor["melee"] -= 20
 							linked_modifyer.loaded_item.armor["bullet"] -= 20
@@ -223,9 +235,11 @@
 							linked_modifyer.icon_state = "d_analyzer"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
+							linked_modifyer.busy = 0
 							updateUsrDialog()
 					if("bughead")
 						screen = 0.3
+						linked_modifyer.busy = 1
 						spawn(50)
 							linked_modifyer.loaded_item.armor["melee"] += 10
 							linked_modifyer.loaded_item.armor["bullet"] += 10
@@ -236,9 +250,11 @@
 							linked_modifyer.icon_state = "d_analyzer"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
+							linked_modifyer.busy = 0
 							updateUsrDialog()
 					if("defender")
 						screen = 0.3
+						linked_modifyer.busy = 1
 						spawn(50)
 							linked_modifyer.loaded_item.armor["melee"] += 20
 							linked_modifyer.loaded_item.armor["bullet"] += 20
@@ -249,6 +265,7 @@
 							linked_modifyer.icon_state = "d_analyzer"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
+							linked_modifyer.busy = 0
 							updateUsrDialog()
 	updateUsrDialog()
 	return
@@ -322,8 +339,8 @@
 			dat += "Current Research Level:<BR><BR>"
 			for(var/datum/marineTech/known in files.known_tech)
 				dat += "Name: [known.name]<BR>"
-				dat += "Description: [known.desc]<BR>"
-			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A>"
+				dat += "Description: [known.desc]<BR><BR>"
+			dat += "<HR><A href='?src=\ref[src];menu=1.0'>Main Menu</A>"
 
 		if(1.3) //R&D console settings
 			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><HR>"
@@ -349,12 +366,12 @@
 
 		if(1.5) //Available designs
 			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><BR><HR>"
-			if(files.Check_tech(10))
+			if(files.Check_tech(11) == 1)
 				dat += "Name: 'Hunter'-class armor modification<BR>"
 				dat += "Description: Our first attempt to recreate molecular structure of xenomorphs' chitin. Using this structure as basis of armor layer results increaced durability.<BR><BR>"
 				dat += "Name: 'Bughead'-class helmet modification<BR>"
 				dat += "Description: Our first attempt to recreate molecular structure of xenomorphs' chitin. Using this structure as basis of armor layer results increaced durability.<BR><BR>"
-				if(files.Check_tech(12))
+				if(files.Check_tech(12) == 1)
 					dat += "Name: 'Juggernaut'-class armor modification<BR>"
 					dat += "Description: Using crushers' chitin molecular patterns makes our standart armor thicker and durable in exchange of movement speed due to increaced weight.<BR><BR>"
 					dat += "Name: 'Defender'-class helmet modification<BR>"
@@ -400,15 +417,16 @@
 			dat += "Name: [linked_modifyer.loaded_item.name]<BR>"
 			dat +="List Of Available Modifications:<BR>"
 			if(istype(linked_modifyer.loaded_item, /obj/item/clothing/suit/storage/marine))
-				if(files.Check_tech(10))
+				if(files.Check_tech(11) == 1)
 					dat += "Apply <A href='?src=\ref[src];modify=hunter'>'Hunter'</A> modification<BR>"
-					if(files.Check_tech(12))
+					if(files.Check_tech(12) == 1)
 						dat +="Apply <A href='?src=\ref[src];modify=juggernaut'>'Juggernaut'</A> modification<BR>"
-					dat += "Apply <A href='?src=\ref[src];modify=farsight'>'Farsight'</A> modification<BR>"
+					if(!istype(linked_modifyer.loaded_item, /obj/item/clothing/suit/storage/marine/specialist))
+						dat += "Apply <A href='?src=\ref[src];modify=farsight'>'Farsight'</A> modification<BR>"
 			if(istype(linked_modifyer.loaded_item, /obj/item/clothing/head/helmet/marine))
-				if(files.Check_tech(10))
+				if(files.Check_tech(11) == 1)
 					dat += "Apply <A href='?src=\ref[src];modify=bughead'>'Bughead'</A> modification<BR>"
-					if(files.Check_tech(12))
+					if(files.Check_tech(12) == 1)
 						dat += "Apply <A href='?src=\ref[src];modify=defender'>'Defender'</A> modification<BR>"
 			dat += "<HR><A href='?src=\ref[src];eject_item=modifyer'>Eject Item</A>"
 
