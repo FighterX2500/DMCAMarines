@@ -17,7 +17,7 @@ Currently only has the tank hardpoints
 	w_class = 15
 
 	//If we use ammo, put it here
-	var/obj/item/ammo_magazine/ammo_type = null
+	var/obj/item/ammo_magazine/ammo_type = null //weapon ammo type to check with the magazine type we are trying to add
 
 	//Strings, used to get the overlay for the armored vic
 	var/disp_icon //This also differentiates tank vs apc vs other
@@ -30,6 +30,9 @@ Currently only has the tank hardpoints
 
 	var/list/clips = list()
 	var/max_clips = 1 //1 so they can reload their backups and actually reload once
+
+//changed how ammo works. No more AMMO obj, we take what we need straight from first obj in CLIPS list (ex-backup_clips) and work with it.
+//Every ammo mag now has CURRENT_AMMO value, also it is possible now to unload ALL mags from the gun, not only backup clips.
 
 //Called on attaching, for weapons sets the actual cooldowns
 /obj/item/hardpoint/proc/apply_buff()
@@ -371,11 +374,11 @@ Currently only has the tank hardpoints
 
 	ammo_type = new /obj/item/ammo_magazine/tank/m56_cupola
 	max_clips = 2
-	max_angle = 75
+	max_angle = 90
 
 	apply_buff()
 		owner.cooldowns["secondary"] = 2
-		owner.accuracies["secondary"] = 0.9
+		owner.accuracies["secondary"] = 0.8
 
 	is_ready()
 		if(world.time < next_use)

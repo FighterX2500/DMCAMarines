@@ -118,11 +118,15 @@ Vehicles are placed on the map by a spawner or admin verb
 
 //How to get out, via verb
 /obj/vehicle/multitile/root/verb/exit_multitile()
-	set category = "Vehicle"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set name = "Exit Vehicle"
 	set src in view(0)
 
-	handle_player_exit(usr)
+	var/answer = alert(usr, "Are you sure you want to disembark?", , "Yes", "No")
+	if(answer == "Yes")
+		handle_player_exit(usr)
+	else
+		return
 
 /obj/vehicle/multitile/root/proc/handle_player_exit(var/mob/M)
 	return
@@ -135,7 +139,7 @@ Vehicles are placed on the map by a spawner or admin verb
 
 //Vebrs for rotations, set up a macro and get turnin
 /obj/vehicle/multitile/root/verb/clockwise_rotate_multitile()
-	set category = "Vehicle"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set name = "Rotate Vehicle Clockwise"
 	set src in view(0)
 
@@ -143,7 +147,7 @@ Vehicles are placed on the map by a spawner or admin verb
 	try_rotate(-90, M)
 
 /obj/vehicle/multitile/root/verb/counterclockwise_rotate_multitile()
-	set category = "Vehicle"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set name = "Rotate Vehicle Counterclockwise"
 	set src in view(0)
 

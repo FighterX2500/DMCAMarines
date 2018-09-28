@@ -6,7 +6,8 @@
 
 
 /obj/vehicle/multitile/root/cm_armored/tank
-	name = "M34A2 Longstreet Modular Multipurpose Tank"
+	//name = "M34A2 Longstreet Modular Multipurpose Tank"
+	name = "M34A2 Longstreet Light Tank"
 	desc = "A giant piece of armor, was made as a budget version of a tank specifically for USCM. Supports installing numerous modules and weapons, allowing technicians to refit tank for any type of operation. Entrance in the back."
 
 	icon = 'icons/obj/tank_NS.dmi'
@@ -16,9 +17,9 @@
 
 	var/mob/gunner
 	var/mob/driver
-	var/mob/swap_seat
+	var/mob/swap_seat	//this is a temp seat for switching seats when both TCs are in tank
 
-	var/obj/machinery/camera/camera = null
+	var/obj/machinery/camera/camera = null	//Yay! Working camera in the tank! IMPORTANT! If you give hostile faction tank, remove tank's camera in via VV.
 
 	var/occupant_exiting = 0
 	var/next_sound_play = 0
@@ -54,8 +55,8 @@
 	R.update_icon()
 
 	R.camera = new /obj/machinery/camera(R)
-	R.camera.network = list("military")
-	R.camera.c_tag = "Armored Vehicle ([rand(0,10)])"
+	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
+	R.camera.c_tag = "Armored Vehicle ¹[rand(1,10)]" //ARMORED VEHICLE to be at the start of cams list, numbers in case of events with multiple tanks and for APC
 
 	del(src)
 
@@ -89,13 +90,18 @@
 	R.add_hardpoint(new /obj/item/hardpoint/treads/standard, R.hardpoints[HDPT_TREADS])
 	R.update_damage_distribs()
 
-	R.take_damage_type(1e8, "abstract") //OOF.ogg
+	//R.take_damage_type(1e8, "abstract") //OOF.ogg
+	R.hardpoints[HDPT_PRIMARY].health =0
+	R.hardpoints[HDPT_SECDGUN].health =0
+	R.hardpoints[HDPT_SUPPORT].health =0
+	R.hardpoints[HDPT_ARMOR].health =0
+	R.hardpoints[HDPT_TREADS].health =0
 
 	R.healthcheck()
 
 	R.camera = new /obj/machinery/camera(R)
-	R.camera.network = list("military")
-	R.camera.c_tag = "Armored Vehicle ([rand(0,10)])"
+	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
+	R.camera.c_tag = "Armored Vehicle ¹[rand(1,10)]" //ARMORED VEHICLE to be at the start of cams list, numbers in case of events with multiple tanks and for APC
 
 	del(src)
 
@@ -131,15 +137,17 @@
 //Let's you switch into the other seat, doesn't work if it's occupied
 /obj/vehicle/multitile/root/cm_armored/tank/verb/switch_seats()
 	set name = "Swap Seats"
-	set category = "Vehicle"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set src in view(0)
-	var/answer = alert(driver, "Are you sure you want to swap seats?", , "Yes", "No")
+	var/answer = alert(driver, "Are you sure you want to swap seats?", , "Yes", "No") //added confirmation window
 	if(answer == "No")
 		return
 
 	//A little icky, but functional
 	//Using a list of mobs for driver and gunner might make this code look better
 	//But all of the other code about those two would look like shit
+
+	//Added mechanic for switching seats when both TCs are in the tank, that will take twice more time and will work only if another TC agrees.
 	if(usr == gunner)
 		if(driver)
 			answer = alert(driver, "Your gunner offers you to swap seats.", , "Yes", "No")
@@ -185,7 +193,7 @@
 				to_chat(gunner, "<span class='notice'>You start getting into the other seat.</span>")
 				sleep(60)
 				to_chat(usr, "<span class='notice'>You switch seats.</span>")
-				to_chat(driver, "<span class='notice'>You switch seats.</span>")
+				to_chat(gunner, "<span class='notice'>You switch seats.</span>")
 				deactivate_all_hardpoints()
 				swap_seat = gunner
 				gunner = driver
