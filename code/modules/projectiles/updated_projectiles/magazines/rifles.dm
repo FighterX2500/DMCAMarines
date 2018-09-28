@@ -25,6 +25,16 @@
 	desc = "A 10mm assault rifle magazine."
 	icon_state = "m41a_incendiary"
 	default_ammo = /datum/ammo/bullet/rifle/incendiary
+	
+/obj/item/ammo_magazine/rifle/IFF
+	name = "M41A IFF magazine (10x24mm)"
+	desc = "A 10mm assault rifle magazine."
+	caliber = "10x24mm"
+	icon_state = "m41a_IFF"
+	w_class = 3
+	default_ammo = /datum/ammo/bullet/rifle/iff
+	max_rounds = 40
+	gun_type = /obj/item/weapon/gun/rifle/m41a
 
 /obj/item/ammo_magazine/rifle/ap
 	name = "M41A AP magazine (10x24mm)"
