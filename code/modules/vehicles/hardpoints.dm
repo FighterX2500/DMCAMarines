@@ -17,7 +17,7 @@ Currently only has the tank hardpoints
 	w_class = 15
 
 	//If we use ammo, put it here
-	var/obj/item/ammo_magazine/ammo = null
+	var/obj/item/ammo_magazine/ammo_type = null //weapon ammo type to check with the magazine type we are trying to add
 
 	//Strings, used to get the overlay for the armored vic
 	var/disp_icon //This also differentiates tank vs apc vs other
@@ -28,8 +28,11 @@ Currently only has the tank hardpoints
 	var/max_angle = 180
 	var/point_cost = 0
 
-	var/list/backup_clips = list()
+	var/list/clips = list()
 	var/max_clips = 1 //1 so they can reload their backups and actually reload once
+
+//changed how ammo works. No more AMMO obj, we take what we need straight from first obj in CLIPS list (ex-backup_clips) and work with it.
+//Every ammo mag now has CURRENT_AMMO value, also it is possible now to unload ALL mags from the gun, not only backup clips.
 
 //Called on attaching, for weapons sets the actual cooldowns
 /obj/item/hardpoint/proc/apply_buff()
@@ -62,10 +65,10 @@ Currently only has the tank hardpoints
 	if(max_clips == 0)
 		to_chat(user, "<span class='warning'>This module does not have room for additional ammo.</span>")
 		return 0
-	else if(backup_clips.len >= max_clips)
+	else if(clips.len >= max_clips)
 		to_chat(user, "<span class='warning'>The reloader is full.</span>")
 		return 0
-	else if(!istype(A, ammo.type))
+	else if(!istype(A, ammo_type.type))
 		to_chat(user, "<span class='warning'>That is the wrong ammo type.</span>")
 		return 0
 
@@ -77,7 +80,9 @@ Currently only has the tank hardpoints
 
 	user.temp_drop_inv_item(A, 0)
 	to_chat(user, "<span class='notice'>You install \the [A] in \the [owner].</span>")
-	backup_clips += A
+	if (clips.len == 0)
+		to_chat(user, "<span class='notice'>You hear clanking as \the [A] is getting automatically loaded into the weapon.</span>")
+	clips += A
 	return 1
 
 //Returns the image object to overlay onto the root object
@@ -149,8 +154,9 @@ Currently only has the tank hardpoints
 	disp_icon = "tank"
 	disp_icon_state = "ltb_cannon"
 
-	ammo = new /obj/item/ammo_magazine/tank/ltb_cannon
-	max_clips = 3
+	ammo_type = new /obj/item/ammo_magazine/tank/ltb_cannon
+
+	max_clips = 4
 	max_angle = 45
 
 	apply_buff()
@@ -167,8 +173,8 @@ Currently only has the tank hardpoints
 		return 1
 
 	active_effect(var/turf/T)
-
-		if(ammo.current_rounds <= 0)
+		var /obj/item/ammo_magazine/tank/ltb_cannon/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
 			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
 			return
 
@@ -176,10 +182,10 @@ Currently only has the tank hardpoints
 		if(!prob(owner.accuracies["primary"] * 100 * owner.misc_ratios["prim_acc"]))
 			T = get_step(T, pick(cardinal))
 		var/obj/item/projectile/P = new
-		P.generate_bullet(new ammo.default_ammo)
+		P.generate_bullet(new A.default_ammo)
 		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
 		playsound(get_turf(src), pick('sound/weapons/tank_cannon_fire1.ogg', 'sound/weapons/tank_cannon_fire2.ogg'), 60, 1)
-		ammo.current_rounds--
+		A.current_rounds--
 
 /obj/item/hardpoint/primary/minigun
 	name = "LTAA-AP Minigun"
@@ -194,7 +200,8 @@ Currently only has the tank hardpoints
 	disp_icon = "tank"
 	disp_icon_state = "ltaaap_minigun"
 
-	ammo = new /obj/item/ammo_magazine/tank/ltaaap_minigun
+	ammo_type = new /obj/item/ammo_magazine/tank/ltaaap_minigun
+	max_clips = 2
 	max_angle = 45
 
 	//Miniguns don't use a conventional cooldown
@@ -227,8 +234,8 @@ Currently only has the tank hardpoints
 		return 1
 
 	active_effect(var/turf/T)
-
-		if(ammo.current_rounds <= 0)
+		var /obj/item/ammo_magazine/tank/ltaaap_minigun/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
 			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
 			return
 
@@ -247,11 +254,11 @@ Currently only has the tank hardpoints
 		if(!prob(owner.accuracies["primary"] * 100 * owner.misc_ratios["prim_acc"]))
 			T = get_step(T, pick(cardinal))
 		var/obj/item/projectile/P = new
-		P.generate_bullet(new ammo.default_ammo)
+		P.generate_bullet(new A.default_ammo)
 		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
 
 		playsound(get_turf(src), S, 60)
-		ammo.current_rounds--
+		A.current_rounds--
 
 ////////////////////
 // PRIMARY SLOTS // END
@@ -274,7 +281,8 @@ Currently only has the tank hardpoints
 	disp_icon = "tank"
 	disp_icon_state = "flamer"
 
-	ammo = new /obj/item/ammo_magazine/tank/flamer
+	ammo_type = new /obj/item/ammo_magazine/tank/flamer
+	max_clips = 2
 	max_angle = 90
 
 	apply_buff()
@@ -292,7 +300,8 @@ Currently only has the tank hardpoints
 
 	active_effect(var/turf/T)
 
-		if(ammo.current_rounds <= 0)
+		var /obj/item/ammo_magazine/tank/flamer/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
 			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
 			return
 
@@ -300,10 +309,10 @@ Currently only has the tank hardpoints
 		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"]))
 			T = get_step(T, pick(cardinal))
 		var/obj/item/projectile/P = new
-		P.generate_bullet(new ammo.default_ammo)
+		P.generate_bullet(new A.default_ammo)
 		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
 		playsound(get_turf(src), 'sound/weapons/tank_flamethrower.ogg', 60, 1)
-		ammo.current_rounds--
+		A.current_rounds--
 
 /obj/item/hardpoint/secondary/towlauncher
 	name = "TOW Launcher"
@@ -318,8 +327,8 @@ Currently only has the tank hardpoints
 	disp_icon = "tank"
 	disp_icon_state = "towlauncher"
 
-	ammo = new /obj/item/ammo_magazine/tank/towlauncher
-	max_clips = 1
+	ammo_type = new /obj/item/ammo_magazine/tank/towlauncher
+	max_clips = 2
 	max_angle = 90
 
 	apply_buff()
@@ -337,7 +346,8 @@ Currently only has the tank hardpoints
 
 	active_effect(var/turf/T)
 
-		if(ammo.current_rounds <= 0)
+		var obj/item/ammo_magazine/tank/towlauncher/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
 			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
 			return
 
@@ -345,9 +355,9 @@ Currently only has the tank hardpoints
 		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"]))
 			T = get_step(T, pick(cardinal))
 		var/obj/item/projectile/P = new
-		P.generate_bullet(new ammo.default_ammo)
+		P.generate_bullet(new A.default_ammo)
 		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
-		ammo.current_rounds--
+		A.current_rounds--
 
 /obj/item/hardpoint/secondary/m56cupola
 	name = "M56 Cupola"
@@ -362,13 +372,13 @@ Currently only has the tank hardpoints
 	disp_icon = "tank"
 	disp_icon_state = "m56cupola"
 
-	ammo = new /obj/item/ammo_magazine/tank/m56_cupola
-	max_clips = 1
-	max_angle = 360
+	ammo_type = new /obj/item/ammo_magazine/tank/m56_cupola
+	max_clips = 2
+	max_angle = 90
 
 	apply_buff()
 		owner.cooldowns["secondary"] = 2
-		owner.accuracies["secondary"] = 0.9
+		owner.accuracies["secondary"] = 0.8
 
 	is_ready()
 		if(world.time < next_use)
@@ -381,7 +391,8 @@ Currently only has the tank hardpoints
 
 	active_effect(var/turf/T)
 
-		if(ammo.current_rounds <= 0)
+		var /obj/item/ammo_magazine/tank/m56_cupola/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
 			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
 			return
 
@@ -389,10 +400,10 @@ Currently only has the tank hardpoints
 		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"]))
 			T = get_step(T, pick(cardinal))
 		var/obj/item/projectile/P = new
-		P.generate_bullet(new ammo.default_ammo)
+		P.generate_bullet(new A.default_ammo)
 		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
 		playsound(get_turf(src), pick(list('sound/weapons/gun_smartgun1.ogg', 'sound/weapons/gun_smartgun2.ogg', 'sound/weapons/gun_smartgun3.ogg')), 60, 1)
-		ammo.current_rounds--
+		A.current_rounds--
 
 /obj/item/hardpoint/secondary/grenade_launcher
 	name = "Grenade Launcher"
@@ -407,7 +418,7 @@ Currently only has the tank hardpoints
 	disp_icon = "tank"
 	disp_icon_state = "glauncher"
 
-	ammo = new /obj/item/ammo_magazine/tank/tank_glauncher
+	ammo_type = new /obj/item/ammo_magazine/tank/tank_glauncher
 	max_clips = 3
 	max_angle = 90
 
@@ -426,7 +437,8 @@ Currently only has the tank hardpoints
 
 	active_effect(var/turf/T)
 
-		if(ammo.current_rounds <= 0)
+		var /obj/item/ammo_magazine/tank/tank_glauncher/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
 			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
 			return
 
@@ -434,10 +446,10 @@ Currently only has the tank hardpoints
 		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"]))
 			T = get_step(T, pick(cardinal))
 		var/obj/item/projectile/P = new
-		P.generate_bullet(new ammo.default_ammo)
+		P.generate_bullet(new A.default_ammo)
 		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
 		playsound(get_turf(src), 'sound/weapons/gun_m92_attachable.ogg', 60, 1)
-		ammo.current_rounds--
+		A.current_rounds--
 /////////////////////
 // SECONDARY SLOTS // END
 /////////////////////
@@ -459,7 +471,7 @@ Currently only has the tank hardpoints
 	disp_icon = "tank"
 	disp_icon_state = "slauncher"
 
-	ammo = new /obj/item/ammo_magazine/tank/tank_slauncher
+	ammo_type = new /obj/item/ammo_magazine/tank/tank_slauncher
 	max_clips = 4
 	is_activatable = 1
 
@@ -478,7 +490,8 @@ Currently only has the tank hardpoints
 
 	active_effect(var/turf/T)
 
-		if(ammo.current_rounds <= 0)
+		var /obj/item/ammo_magazine/tank/tank_slauncher/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
 			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
 			return
 
@@ -486,10 +499,10 @@ Currently only has the tank hardpoints
 		if(!prob(owner.accuracies["support"] * 100 * owner.misc_ratios["supp_acc"]))
 			T = get_step(T, pick(cardinal))
 		var/obj/item/projectile/P = new
-		P.generate_bullet(new ammo.default_ammo)
+		P.generate_bullet(new A.default_ammo)
 		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
 		playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire.ogg', 60, 1)
-		ammo.current_rounds--
+		A.current_rounds--
 
 	get_icon_image(var/x_offset, var/y_offset, var/new_dir)
 
@@ -501,8 +514,9 @@ Currently only has the tank hardpoints
 		else if(new_dir in list(EAST, WEST))
 			icon_suffix = "EW"
 
+		var /obj/item/ammo_magazine/tank/tank_slauncher/A = clips[1]
 		if(health <= 0) icon_state_suffix = "1"
-		else if(ammo.current_rounds <= 0) icon_state_suffix = "2"
+		else if(A.current_rounds <= 0) icon_state_suffix = "2"
 
 		return image(icon = "[disp_icon]_[icon_suffix]", icon_state = "[disp_icon_state]_[icon_state_suffix]", pixel_x = x_offset, pixel_y = y_offset)
 
@@ -786,6 +800,7 @@ Currently only has the tank hardpoints
 	icon_state = "ltbcannon_4"
 	w_class = 15 //Heavy fucker
 	default_ammo = /datum/ammo/rocket/ltb
+	current_rounds = 4
 	max_rounds = 4
 	point_cost = 50
 	gun_type = /obj/item/hardpoint/primary/cannon
@@ -801,6 +816,7 @@ Currently only has the tank hardpoints
 	icon_state = "painless"
 	w_class = 10
 	default_ammo = /datum/ammo/bullet/minigun
+	current_rounds = 300
 	max_rounds = 300
 	point_cost = 25
 	gun_type = /obj/item/hardpoint/primary/minigun
@@ -813,6 +829,7 @@ Currently only has the tank hardpoints
 	icon_state = "flametank_large"
 	w_class = 12
 	default_ammo = /datum/ammo/flamethrower/tank_flamer
+	current_rounds = 120
 	max_rounds = 120
 	point_cost = 50
 	gun_type = /obj/item/hardpoint/secondary/flamer
@@ -825,6 +842,7 @@ Currently only has the tank hardpoints
 	icon_state = "quad_rocket"
 	w_class = 10
 	default_ammo = /datum/ammo/rocket/tow //Fun fact, AP rockets seem to be a straight downgrade from normal rockets. Maybe I'm missing something...
+	current_rounds = 2
 	max_rounds = 2
 	point_cost = 100
 	gun_type = /obj/item/hardpoint/secondary/towlauncher
@@ -837,6 +855,7 @@ Currently only has the tank hardpoints
 	icon_state = "big_ammo_box"
 	w_class = 12
 	default_ammo = /datum/ammo/bullet/smartgun
+	current_rounds = 500
 	max_rounds = 500
 	point_cost = 10
 	gun_type = /obj/item/hardpoint/secondary/m56cupola
@@ -849,6 +868,7 @@ Currently only has the tank hardpoints
 	icon_state = "glauncher_2"
 	w_class = 9
 	default_ammo = /datum/ammo/grenade_container
+	current_rounds = 10
 	max_rounds = 10
 	point_cost = 25
 	gun_type = /obj/item/hardpoint/secondary/grenade_launcher
@@ -869,6 +889,7 @@ Currently only has the tank hardpoints
 	icon_state = "slauncher_1"
 	w_class = 12
 	default_ammo = /datum/ammo/grenade_container/smoke
+	current_rounds = 6
 	max_rounds = 6
 	point_cost = 5
 	gun_type = /obj/item/hardpoint/support/smoke_launcher
