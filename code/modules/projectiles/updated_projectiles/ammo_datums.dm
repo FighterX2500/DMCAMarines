@@ -423,19 +423,6 @@
 	damage = config.lmed_hit_damage
 	penetration = config.mlow_armor_penetration
 	
-/datum/ammo/bullet/rifle/iff
-	name = "IFF rifle bullet"
-	icon_state = "redbullet" //marks new bullets
-	iff_signal = ACCESS_IFF_MARINE
-	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SKIPS_HUMANS
-
-/datum/ammo/bullet/rifle/iff/New()
-	..()
-	accuracy = -config.lmed_hit_accuracy
-	scatter = config.low_scatter_value
-	damage = config.low_hit_damage
-	damage_var_high = config.low_proj_variance
-
 /datum/ammo/bullet/rifle/ap
 	name = "armor-piercing rifle bullet"
 
