@@ -126,12 +126,19 @@ Queen thingy - 40
 	id = 20
 	req_tech = list(0)
 
+
 /datum/marineTech/SpitterChem
 	name = "Spitter's toxicity"
 	desc = "Potency of Spitter's chemisty was been proven highly effective against any target"
 	id = 21
 	req_tech = list(20)
-
+/*
+/datum/marineTech/Pheromones
+	name = "Xenomorph Pheromones"
+	desc = "Analysis of very powerful xenomorph pheromones"
+	id = 22
+	req_tech = list(20)
+*/
 
 //Xenoflora path//
 /datum/marineTech/XenoFlora
@@ -165,5 +172,16 @@ Queen thingy - 40
 	desc = "Analysis of telepathic connections between members of Xenohive"
 	id = 40
 	req_tech = list(0, 10, 20)
+/*
+/datum/marineTech/Disruptor			// Fun starting here
+	name = "Hivelink disruption"
+	desc = "Using Queen's core as a connection to the Hive, we can theoretically damage their ability to cooperate between members of the Hive by continiously sending echoes to all members"
+	id = 41
+	req_tech = list(40)
 
-
+/datum/marineTech/Simulator			// "- Absolute DISGUSTING!"- says xenomorph
+	name = "Hivemind simulation"
+	desc = "Hypothethis: if we use Queen's core as a center of another telepathic network, we potentialy can have our own, loyal Hive"
+	id = 42
+	req_tech = list(41)
+*/

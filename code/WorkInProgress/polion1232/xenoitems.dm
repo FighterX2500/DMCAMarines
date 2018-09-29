@@ -40,7 +40,7 @@ Queen thingy - 40
 
 
 
-//Xenofauna
+//Xenofauna, you will not find those thing during normal gameplay, see sampler
 /obj/item/marineResearch/xenomorp/weed
     name = "Xenoweed sample"
     desc = "Sample of strange plant"
@@ -96,3 +96,15 @@ Queen thingy - 40
 	name = "Queen's core"
 	desc = "Highly complex and advanced organ, that can be found inside Queen's head"
 	id = list(0, 10, 40)
+
+
+
+///// Useful researcher items /////
+
+/obj/item/marineResearch/sampler
+	name = "Sampler"
+	desc = "Syringe for taking samples"
+	icon = 'icons/obj/items/syringe.dmi'
+	icon_state = "0"
+	var/filled = 0
+	var/obj/item/marineResearch/xenomorp/weed/sample = null
