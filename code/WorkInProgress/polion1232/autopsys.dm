@@ -90,7 +90,7 @@
 	max_duration = 10
 	xeno_step = 2
 
-/datum/surgery_step/xeno/can_use(mob/living/user, mob/living/carbon/Xenomorph/target, target_zone, obj/item/tool, datum/limb/affected, only_checks)
+/datum/surgery_step/xeno/retract/can_use(mob/living/user, mob/living/carbon/Xenomorph/target, target_zone, obj/item/tool, datum/limb/affected, only_checks)
 	if(target.xeno_forbid_retract)
 		target.xeno_surgery_step = 0
 		return 0
