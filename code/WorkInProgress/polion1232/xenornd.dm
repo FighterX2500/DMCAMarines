@@ -101,9 +101,13 @@
 			if("dissector")
 				if(linked_dissector)
 					if(linked_dissector.busy)
-						to_chat(usr, "\red The destructive analyzer is busy at the moment.")
+						to_chat(usr, "\red The organic dissector is busy at the moment.")
 
 					else if(linked_dissector.loaded_item)
+						if(istype(linked_dissector, /obj/item/marineResearch/xenomorp/weed))
+							to_chat(usr, "\red You cannot eject that.")
+							screen = 2.2
+							return
 						linked_dissector.loaded_item.loc = linked_dissector.loc
 						linked_dissector.loaded_item = null
 						linked_dissector.icon_state = "d_analyzer"
@@ -111,7 +115,7 @@
 			if("modifyer")
 				if(linked_modifyer)
 					if(linked_modifyer.busy)
-						to_chat(usr, "\red The destructive analyzer is busy at the moment.")
+						to_chat(usr, "\red The EMU is busy at the moment.")
 
 					else if(linked_modifyer.loaded_item)
 						linked_modifyer.loaded_item.loc = linked_modifyer.loc
@@ -267,6 +271,18 @@
 							screen = 1.0
 							linked_modifyer.busy = 0
 							updateUsrDialog()
+					if("blackmarsh")
+						screen = 0.3
+						linked_modifyer.busy = 1
+						spawn(50)
+							linked_modifyer.loaded_item.is_modifyed = 1				//The most horrifying part of code, shows that there will be no more slowdown on weed
+							linked_modifyer.loaded_item.loc = linked_modifyer.loc
+							linked_modifyer.loaded_item = null
+							linked_modifyer.icon_state = "d_analyzer"
+							use_power(linked_modifyer.active_power_usage)
+							screen = 1.0
+							linked_modifyer.busy = 0
+							updateUsrDialog()
 	updateUsrDialog()
 	return
 
@@ -377,8 +393,12 @@
 					dat += "Name: 'Defender'-class helmet modification<BR>"
 					dat += "Description: Using crushers' chitin molecular patterns makes our standart armor thicker and durable.<BR>"
 					dat +=" It may not provide same protection as 'Juggernaut' mod, but still better than 'Bughead'<BR><BR>"
+			if(files.Check_tech(13) == 1)
 				dat += "Name: 'Farsight'-class armor modification<BR>"
 				dat += "Description: Including alien muscle tissues in-between layers results joints became more flexible in exchange of armor.<BR><BR>"
+			if(files.Check_tech(13) == 1)
+				dat += "Name: 'Blackmarsh'-class boots modification<BR>"
+				dat += "Description: Using thin layer of xenomorph muscle tissue on combat boots completely negates slowdown on xenoweed.<BR><BR>"
 
 
 		//////////////////////Dissector Screens//////////////////
@@ -421,6 +441,7 @@
 					dat += "Apply <A href='?src=\ref[src];modify=hunter'>'Hunter'</A> modification<BR>"
 					if(files.Check_tech(12) == 1)
 						dat +="Apply <A href='?src=\ref[src];modify=juggernaut'>'Juggernaut'</A> modification<BR>"
+				if(files.Check_tech(13) == 1)
 					if(!istype(linked_modifyer.loaded_item, /obj/item/clothing/suit/storage/marine/specialist))
 						dat += "Apply <A href='?src=\ref[src];modify=farsight'>'Farsight'</A> modification<BR>"
 			if(istype(linked_modifyer.loaded_item, /obj/item/clothing/head/helmet/marine))
@@ -428,6 +449,9 @@
 					dat += "Apply <A href='?src=\ref[src];modify=bughead'>'Bughead'</A> modification<BR>"
 					if(files.Check_tech(12) == 1)
 						dat += "Apply <A href='?src=\ref[src];modify=defender'>'Defender'</A> modification<BR>"
+			if(istype(linked_modifyer.loaded_item, /obj/item/clothing/shoes/marine))
+				if(files.Check_tech(11) == 1)
+					dat += "Apply <A href='?src=\ref[src];modify=blackmarsh'>'Blackmarsh'</A> modification<BR>"
 			dat += "<HR><A href='?src=\ref[src];eject_item=modifyer'>Eject Item</A>"
 
 
