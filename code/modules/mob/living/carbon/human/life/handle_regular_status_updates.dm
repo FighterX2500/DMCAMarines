@@ -154,7 +154,7 @@
 				if(command_aura == "focus" && command_aura_strength > H.marskman_new)
 					H.marskman_new = command_aura_strength
 
-		if(!isSynth(src)) //Synths can't be inspired and don't benefit from orders.
+		if(!isSynth(src)) //Sint is pedic and he cant stoyak iz za SLa or Commander
 			mobility_aura = mobility_new
 			protection_aura = protection_new
 			marskman_aura = marskman_new
