@@ -40,7 +40,8 @@
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
 		if(!has_species(H,"Yautja")) //predators are immune to weed slowdown effect
-			H.next_move_slowdown += 1
+			if(!H.shoes.is_modifyed) //"Blackmarsh" shoes provide immunity for slowdown
+				H.next_move_slowdown += 1
 
 
 /obj/effect/alien/weeds/proc/weed_expand(obj/effect/alien/weeds/node/node)
@@ -133,6 +134,18 @@
 /obj/effect/alien/weeds/attackby(obj/item/W, mob/living/user)
 	if(!W || !user || isnull(W) || (W.flags_item & NOBLUDGEON))
 		return 0
+
+	if(istype(W, /obj/item/marineResearch/sampler)) // Taking samples
+		to_chat(user, "You took sample from [src].")
+		var/obj/item/marineResearch/sampler/A = W
+		if(istype(src, /obj/effect/alien/weeds/node))
+			A.sample = /obj/item/marineResearch/xenomorp/weed/sack
+			A.icon_state = "50"
+		else
+			A.sample = /obj/item/marineResearch/xenomorp/weed
+			A.icon_state = "b15"
+		A.filled = 1
+		return TRUE //don't call afterattack
 
 	if(istype(src, /obj/effect/alien/weeds/node)) //The pain is real
 		to_chat(user, "<span class='warning'>You hit \the [src] with \the [W].</span>")

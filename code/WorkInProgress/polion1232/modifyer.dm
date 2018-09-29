@@ -12,10 +12,13 @@
 // "Bughead" helmet mod - overall more armor // Xeno Biology
 // "Defender" helmet mod - better version of "Bughead" // Xeno Biology, Crusher's chitin patterns
 
+// "Blackmarsh" boots mod - remove slowdown on weed
+
 /obj/machinery/r_n_d/modifyer
 	name = "Equipment Modification Unit"
 	icon_state = "d_analyzer"
 	var/obj/item/clothing/loaded_item = null // Because armor and helmet too different
+	// var/obj/item/marineResearch/xenomorp = null // In future, you will use alien pieces for modification
 
 	use_power = 1
 	idle_power_usage = 30

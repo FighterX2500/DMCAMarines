@@ -64,10 +64,24 @@
 	if (istype(O, /obj/item) && !loaded_item)
 		if(isrobot(user)) //Don't put your module items in there!
 			return
+		if(istype(O, /obj/item/marineResearch/sampler))
+			var/obj/item/marineResearch/sampler/A = O
+			if(!A.filled)
+				to_chat(user, "\red [O.name] is empty!")
+				return 1
+			A.filled = 0
+			loaded_item = A.sample
+			A.sample = null
+			A.icon_state = "0"
+			to_chat(user, "\blue You add the [loaded_item.name] to the machine!")
+			flick("d_analyzer_la", src)
+			spawn(10)
+				icon_state = "d_analyzer_l"
+				busy = 0
+			return 1
 		if(!istype(O, /obj/item/marineResearch/xenomorp))
 			to_chat(user, "\red Can't do anything with that, maybe something organic...!")
 			return
-		//var/list/temp_tech = ConvertReqString2List(O.origin_tech) //This warning might just be Byond being silly.
 		busy = 1
 		loaded_item = O
 		user.drop_held_item()
