@@ -523,7 +523,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		new /obj/item/stack/sheet/metal(CP.loc, 1)
 		cdel(CP)
 //from here goes list of newly added objects and machinery that tank should've drive over or through, but for some reason couldn't
-		else if (istype(A, /obj/machinery/autodoc))
+	else if (istype(A, /obj/machinery/autodoc))
 		var/obj/machinery/autodoc/AD = A
 		AD.visible_message("<span class='danger'>[root] crushes [AD]!</span>")
 		new /obj/item/stack/sheet/plasteel(AD.loc, 2)
