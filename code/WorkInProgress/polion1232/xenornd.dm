@@ -367,7 +367,7 @@
 
 		if(1.4) //R&D device linkage
 			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A> || "
-			dat += "<A href='?src=\ref[src];menu=1.6'>Settings Menu</A><HR> "
+			dat += "<A href='?src=\ref[src];menu=1.3'>Settings Menu</A><HR> "
 			dat += "R&D Console Device Linkage Menu:<BR><BR>"
 			dat += "<A href='?src=\ref[src];find_device=1'>Re-sync with Nearby Devices</A><BR>"
 			dat += "Linked Devices:<BR>"
