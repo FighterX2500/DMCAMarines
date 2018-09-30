@@ -15,6 +15,7 @@ Currently only has the tank hardpoints
 	var/maxhealth = 100
 	health = 100
 	w_class = 15
+	var/hp_weight = 1	//this is new variable for weight of every single module as a part of new weight system
 
 	//If we use ammo, put it here
 	var/obj/item/ammo_magazine/ammo_type = null //weapon ammo type to check with the magazine type we are trying to add
@@ -143,11 +144,12 @@ Currently only has the tank hardpoints
 
 /obj/item/hardpoint/primary/cannon
 	name = "LTB Cannon"
-	desc = "A primary cannon for tanks that shoots explosive rounds"
+	desc = "A primary cannon for tanks that shoots explosive rounds. "
 
 	maxhealth = 500
 	health = 500
 	point_cost = 100
+	hp_weight = 3
 
 	icon_state = "ltb_cannon"
 
@@ -194,6 +196,7 @@ Currently only has the tank hardpoints
 	maxhealth = 350
 	health = 350
 	point_cost = 100
+	hp_weight = 2
 
 	icon_state = "ltaaap_minigun"
 
@@ -275,6 +278,7 @@ Currently only has the tank hardpoints
 	maxhealth = 300
 	health = 300
 	point_cost = 100
+	hp_weight = 2
 
 	icon_state = "flamer"
 
@@ -321,6 +325,7 @@ Currently only has the tank hardpoints
 	maxhealth = 500
 	health = 500
 	point_cost = 100
+	hp_weight = 2
 
 	icon_state = "tow_launcher"
 
@@ -375,6 +380,7 @@ Currently only has the tank hardpoints
 	ammo_type = new /obj/item/ammo_magazine/tank/m56_cupola
 	max_clips = 2
 	max_angle = 90
+	hp_weight = 1
 
 	apply_buff()
 		owner.cooldowns["secondary"] = 2
@@ -412,6 +418,7 @@ Currently only has the tank hardpoints
 	maxhealth = 500
 	health = 500
 	point_cost = 25
+	hp_weight = 2
 
 	icon_state = "glauncher"
 
@@ -457,8 +464,8 @@ Currently only has the tank hardpoints
 ///////////////////
 // SUPPORT SLOTS // START
 ///////////////////
-
-/obj/item/hardpoint/support/smoke_launcher
+//Slauncher was built in tank.
+/*/obj/item/hardpoint/support/smoke_launcher
 	name = "Smoke Launcher"
 	desc = "Launches smoke forward to obscure vision"
 
@@ -474,6 +481,7 @@ Currently only has the tank hardpoints
 	ammo_type = new /obj/item/ammo_magazine/tank/tank_slauncher
 	max_clips = 4
 	is_activatable = 1
+	hp_weight = 1
 
 	apply_buff()
 		owner.cooldowns["support"] = 30
@@ -519,7 +527,7 @@ Currently only has the tank hardpoints
 		else if(A.current_rounds <= 0) icon_state_suffix = "2"
 
 		return image(icon = "[disp_icon]_[icon_suffix]", icon_state = "[disp_icon_state]_[icon_state_suffix]", pixel_x = x_offset, pixel_y = y_offset)
-
+*/
 /obj/item/hardpoint/support/weapons_sensor
 	name = "Integrated Weapons Sensor Array"
 	desc = "Improves the accuracy and fire rate of all onboard weapons"
@@ -527,6 +535,7 @@ Currently only has the tank hardpoints
 	maxhealth = 250
 	health = 250
 	point_cost = 100
+	hp_weight = 1
 
 	icon_state = "warray"
 
@@ -558,6 +567,7 @@ Currently only has the tank hardpoints
 	maxhealth = 250
 	health = 250
 	point_cost = 100
+	hp_weight = 1
 
 	icon_state = "odrive_enhancer"
 
@@ -579,6 +589,7 @@ Currently only has the tank hardpoints
 	point_cost = 100
 	is_activatable = 1
 	var/is_active = 0
+	hp_weight = 1
 
 	var/view_buff = 12 //This way you can VV for more or less fun
 	var/view_tile_offset = 5
@@ -649,6 +660,7 @@ Currently only has the tank hardpoints
 	maxhealth = 1000
 	health = 1000
 	point_cost = 100
+	hp_weight = 5
 
 	icon_state = "ballistic_armor"
 
@@ -672,6 +684,7 @@ Currently only has the tank hardpoints
 	maxhealth = 1000
 	health = 1000
 	point_cost = 100
+	hp_weight = 5
 
 	icon_state = "caustic_armor"
 
@@ -693,6 +706,7 @@ Currently only has the tank hardpoints
 	maxhealth = 1000
 	health = 1000
 	point_cost = 100
+	hp_weight = 4
 
 	icon_state = "concussive_armor"
 
@@ -714,6 +728,7 @@ Currently only has the tank hardpoints
 	maxhealth = 1000
 	health = 1000
 	point_cost = 100
+	hp_weight = 7
 
 	icon_state = "paladin_armor"
 
@@ -732,10 +747,11 @@ Currently only has the tank hardpoints
 	name = "Snowplow"
 	desc = "Clears a path in the snow for friendlies"
 
-	maxhealth = 300
-	health = 300
+	maxhealth = 500
+	health = 500
 	is_activatable = 1
 	point_cost = 20
+	hp_weight = 3
 
 	icon_state = "snowplow"
 
@@ -764,6 +780,7 @@ Currently only has the tank hardpoints
 	maxhealth = 500
 	health = 500
 	point_cost = 25
+	hp_weight = 1
 
 	icon_state = "treads"
 
@@ -884,15 +901,15 @@ Currently only has the tank hardpoints
 
 /obj/item/ammo_magazine/tank/tank_slauncher
 	name = "Smoke Launcher Magazine"
-	desc = "A support armament grenade magazine"
+	desc = "A smoke cover system grenade magazine"
 	caliber = "grenade"
 	icon_state = "slauncher_1"
 	w_class = 12
 	default_ammo = /datum/ammo/grenade_container/smoke
-	current_rounds = 6
-	max_rounds = 6
+	current_rounds = 10
+	max_rounds = 10
 	point_cost = 5
-	gun_type = /obj/item/hardpoint/support/smoke_launcher
+	//gun_type = /obj/item/hardpoint/support/smoke_launcher
 
 	update_icon()
 		icon_state = "slauncher_[current_rounds <= 0 ? "0" : "1"]"

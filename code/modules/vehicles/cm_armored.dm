@@ -50,7 +50,10 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	move_delay = 30 //default 3 seconds per tile
 
 	var/active_hp
-
+	var/t_weight = 1
+	var/smoke_ammo_max = 10
+	var/smoke_ammo_current = 0
+	var/smoke_next_use
 	var/list/dmg_distribs = list()
 
 	//Changes cooldowns and accuracies
@@ -182,6 +185,62 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	if(isliving(usr))
 		var/mob/living/M = usr
 		M.set_interaction(src)
+
+
+//proc to actually shoot grenades
+/obj/vehicle/multitile/root/cm_armored/proc/smoke_shot()
+
+
+	if(world.time < smoke_next_use)
+		to_chat(usr, "<span class='warning'>Smoke Cover system is not ready.</span>")
+		return 0
+
+	var/turf/F
+	var/turf/S
+	switch(src.dir)
+		if(EAST)
+			F = get_turf(locate(root.loc + 5, root.y + 2, root.z))
+			S = get_turf(locate(root.loc + 5, root.y - 2, root.z))
+		if(NORTH)
+			F = get_turf(locate(root.loc - 2, root.y + 5, root.z))
+			S = get_turf(locate(root.loc + 2, root.y + 5, root.z))
+		if(WEST)
+			F = get_turf(locate(root.loc - 5, root.y - 2, root.z))
+			S = get_turf(locate(root.loc - 5, root.y + 2, root.z))
+		if(SOUTH)
+			F = get_turf(locate(root.loc - 2, root.y - 5, root.z))
+			S = get_turf(locate(root.loc + 2, root.y - 5, root.z))
+
+	var/obj/item/ammo_magazine/tank/tank_slauncher/A
+	smoke_next_use = world.time + 150
+	var/obj/item/projectile/P = new
+	P.generate_bullet(new A.default_ammo)
+	P.fire_at(F, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+	P.generate_bullet(new A.default_ammo)
+	P.fire_at(S, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+	playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire.ogg', 60, 1)
+	smoke_ammo_current = smoke_ammo_current - 2
+
+	if(smoke_ammo_current <= 0)
+		to_chat(usr, "<span class='warning'>Ammo depleted. Ejecting empty magazine.</span>")
+		new/obj/item/ammo_magazine/tank/tank_slauncher(entrance.loc)
+
+//Built in smoke launcher system verb
+/obj/vehicle/multitile/root/cm_armored/verb/smoke_cover()
+	set name = "Activate Smoke Cover"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
+	set src in view(0)
+
+	//if(!can_use_hp(usr))
+	//	return
+	if(smoke_ammo_current)
+		to_chat(usr, "<span class='warning'>You activate Smoke Cover System!</span>")
+		visible_message("<span class='danger'>You notice two grenades flying in front of the tank!</span>")
+		smoke_shot()
+	else
+		to_chat(usr, "<span class='warning'>Out of ammo! Reload smoke grenades magazine!</span>")
+		return
+
 
 //verb shows only to TCs status update on their tank including: ammo and backup clips in weapons and combined health of all modules showed in %
 /obj/vehicle/multitile/root/cm_armored/verb/tank_status()
@@ -864,7 +923,15 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	if(istype(O, /obj/item/ammo_magazine)) //Are we trying to reload?
 		var/obj/item/ammo_magazine/AM = O
-		handle_ammomag_attackby(AM, user)
+		if(istype(O, /obj/item/ammo_magazine/tank/tank_slauncher))
+			if(smoke_ammo_current == 0)
+				smoke_ammo_current = 10
+				return
+			else
+				to_chat(user, "<span class='notice'>You can't load new magazine until smoke launcher system automatically unload emptied one.</span>")
+				return
+		else
+			handle_ammomag_attackby(AM, user)
 		return
 
 	if(iswelder(O) || iswrench(O)) //Are we trying to repair stuff?
