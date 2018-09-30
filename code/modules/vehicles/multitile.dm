@@ -108,6 +108,7 @@ Vehicles are placed on the map by a spawner or admin verb
 	var/list/idle_passengers = list()
 	var/max_idle_passengers = 0
 
+
 	//Another remnant of vehicle interiors
 	//var/list/interior_data = list()
 
@@ -117,11 +118,15 @@ Vehicles are placed on the map by a spawner or admin verb
 
 //How to get out, via verb
 /obj/vehicle/multitile/root/verb/exit_multitile()
-	set category = "Object"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set name = "Exit Vehicle"
 	set src in view(0)
 
-	handle_player_exit(usr)
+	var/answer = alert(usr, "Are you sure you want to disembark?", , "Yes", "No")
+	if(answer == "Yes")
+		handle_player_exit(usr)
+	else
+		return
 
 /obj/vehicle/multitile/root/proc/handle_player_exit(var/mob/M)
 	return
@@ -134,7 +139,7 @@ Vehicles are placed on the map by a spawner or admin verb
 
 //Vebrs for rotations, set up a macro and get turnin
 /obj/vehicle/multitile/root/verb/clockwise_rotate_multitile()
-	set category = "Object"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set name = "Rotate Vehicle Clockwise"
 	set src in view(0)
 
@@ -142,7 +147,7 @@ Vehicles are placed on the map by a spawner or admin verb
 	try_rotate(-90, M)
 
 /obj/vehicle/multitile/root/verb/counterclockwise_rotate_multitile()
-	set category = "Object"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set name = "Rotate Vehicle Counterclockwise"
 	set src in view(0)
 
@@ -192,6 +197,7 @@ Vehicles are placed on the map by a spawner or admin verb
 	C.y_pos = 0
 	C.y_pos = 0
 	linked_objs[C] = src
+
 
 /obj/vehicle/multitile/root/proc/load_hitboxes(var/datum/coords/dimensions, var/datum/coords/root_pos)
 	return

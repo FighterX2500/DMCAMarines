@@ -159,7 +159,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //Only the active hardpoint module can be used
 /obj/vehicle/multitile/root/cm_armored/verb/switch_active_hp()
 	set name = "Change Active Weapon"
-	set category = "Object"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set src in view(0)
 
 	if(!can_use_hp(usr))
@@ -183,9 +183,73 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/mob/living/M = usr
 		M.set_interaction(src)
 
+//verb shows only to TCs status update on their tank including: ammo and backup clips in weapons and combined health of all modules showed in %
+/obj/vehicle/multitile/root/cm_armored/verb/tank_status()
+	set name = "Check Vehicle Status"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
+	set src in view(0)
+	var/obj/item/hardpoint/HP1 = hardpoints[HDPT_ARMOR]
+	var/obj/item/hardpoint/HP2 = hardpoints[HDPT_TREADS]
+	var/obj/item/hardpoint/HP3 = hardpoints[HDPT_SUPPORT]
+	var/obj/item/hardpoint/HP4 = hardpoints[HDPT_SECDGUN]
+	var/obj/item/hardpoint/HP5 = hardpoints[HDPT_PRIMARY]
+	var divider = 0
+	var tank_health = 0
+	//if(HP1 != null && HP2 != null && HP3 != null && HP4 != null && HP5 != null))
+	//	tank_health = round((HP1.health + HP2.health + HP3.health + HP4.health + HP5.health) * 100 / (HP1.maxhealth + HP2.maxhealth + HP3.maxhealth + HP4.maxhealth + HP5.maxhealth))
+	//First version of formula. Doesn't work if any of modules is absent or took too much damage (admin magic)
+	if (HP1)
+		if(HP1.health > 0)
+			tank_health += HP1.health
+		divider += abs(HP1.maxhealth)
+	if (HP2)
+		if(HP2.health > 0)
+			tank_health += HP2.health
+		divider += abs(HP2.maxhealth)
+	if (HP3)
+		if(HP3.health > 0)
+			tank_health += HP3.health
+		divider += abs(HP3.maxhealth)
+	if (HP4)
+		if(HP4.health > 0)
+			tank_health += HP4.health
+		divider += abs(HP4.maxhealth)
+	if (HP5)
+		if(HP5.health > 0)
+			tank_health += HP5.health
+		divider += abs(HP5.maxhealth)
+
+	if(divider == 0)
+		tank_health = round(tank_health * 100 / (divider + 1))
+	else
+		tank_health = round(tank_health * 100 / (divider))
+
+	if(tank_health <= 5)
+		to_chat(usr, "<span class='warning'>Warning! Systems failure, eject!</span><br>")
+		return
+
+	to_chat(usr, "<span class='warning'>Vehicle Status:</span><br>")
+	to_chat(usr, "<span class='warning'>Overall vehicle integrity: [tank_health] percent.</span>")
+	if(!can_use_hp(usr))
+		return
+	if(HP5 == null || HP5.health <= 0)
+		to_chat(usr, "<span class='warning'>Primary weapon: Unavailable.</span>")
+	else
+		if(HP5.clips.len <= 0)
+			to_chat(usr, "<span class='warning'>Primary weapon: [HP5.name]. Ammo: 0/0. 0/0 spare magazines available.</span>")
+		else
+			to_chat(usr, "<span class='warning'>Primary weapon: [HP5.name]. Ammo: [HP5.clips[1].current_rounds]/[HP5.clips[1].max_rounds]. [HP5.clips.len - 1]/[HP5.max_clips - 1] spare magazines available.</span>")
+	if(HP4 == null || HP4.health <= 0)
+		to_chat(usr, "<span class='warning'>Secondary weapon: Unavailable.</span>")
+	else
+		if(HP4.clips.len <= 0)
+			to_chat(usr, "<span class='warning'>Secondary weapon: [HP4.name]. Ammo: 0/0. 0/0 spare magazines available.</span>")
+		else
+			to_chat(usr, "<span class='warning'>Secondary weapon: [HP4.name]. Ammo: [HP4.clips[1].current_rounds]/[HP4.clips[1].max_rounds]. [HP4.clips.len - 1]/[HP4.max_clips - 1] spare magazines available.</span><br>")
+
 /obj/vehicle/multitile/root/cm_armored/verb/reload_hp()
 	set name = "Reload Active Weapon"
-	set category = "Object"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set src in view(0)
 
 	if(!can_use_hp(usr)) return
@@ -197,29 +261,32 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		to_chat(usr, "<span class='warning'>All of the modules can't be reloaded or are broken.</span>")
 		return
 
+	var/answer = alert(usr, "Are you sure you want to reload?", , "Yes", "No") // added confirmation window, because you can't cancel reload once list of modules shows up
+	if(answer == "No")
+		return
+
 	var/slot = input("Select a slot.") in slots
 
 	var/obj/item/hardpoint/HP = hardpoints[slot]
-	if(!HP.backup_clips.len)
-		to_chat(usr, "<span class='warning'>That module has no remaining backup clips.</span>")
+	if(HP.clips.len < 1)
+		to_chat(usr, "<span class='warning'>That module has no clips left in it!</span>")
 		return
 
-	var/obj/item/ammo_magazine/A = HP.backup_clips[1] //LISTS START AT 1 REEEEEEEEEEEE
-	if(!A)
-		to_chat(usr, "<span class='danger'>Something went wrong! PM a staff member! Code: T_RHPN</span>")
-		return
+	//if(!A)
+	//	to_chat(usr, "<span class='danger'>Something went wrong! PM a staff member! Code: T_RHPN</span>")
+	//	return
 
-	to_chat(usr, "<span class='notice'>You begin reloading the [slot] module.</span>")
+	to_chat(usr, "<span class='notice'>You begin emptying [HP.name].</span>")
 
 	sleep(20)
-
-	HP.ammo.Move(entrance.loc)
-	HP.ammo.update_icon()
-	HP.ammo = A
-	HP.backup_clips.Remove(A)
-
-	to_chat(usr, "<span class='notice'>You reload the [slot] module.</span>")
-
+	var/obj/item/ammo_magazine/A = HP.clips[1]
+	HP.clips[1].Move(entrance.loc)	//LISTS START AT 1 REEEEEEEEEEEE
+	HP.clips[1].update_icon()
+	HP.clips.Remove(A)
+	if(HP.clips.len > 0)
+		to_chat(usr, "<span class='notice'>You reload the [HP.name].</span>")
+	else
+		to_chat(usr, "<span class='notice'>You empty the [HP.name].</span>")
 
 /obj/vehicle/multitile/root/cm_armored/proc/get_activatable_hardpoints()
 	var/list/slots = list()
@@ -279,19 +346,19 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		if(!HP)
 			to_chat(user, "There is nothing installed on the [i] hardpoint slot.")
 		else
-			if((user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
-				if(HP.health <= 0)
-					to_chat(user, "There is a broken [HP] installed on [i] hardpoint slot.")
-				if(HP.health > 0 && (HP.health < (HP.maxhealth / 3)))
-					to_chat(user, "There is a heavy damaged [HP] installed on [i] hardpoint slot.")
-				if((HP.health > (HP.maxhealth / 3)) && (HP.health < (HP.maxhealth * (2/3))))
-					to_chat(user, "There is a damaged [HP] installed on [i] hardpoint slot.")
-				if((HP.health > (HP.maxhealth * (2/3))) && (HP.health < HP.maxhealth))
-					to_chat(user, "There is a lightly damaged [HP] installed on [i] hardpoint slot.")
-				if(HP.health == HP.maxhealth)
-					to_chat(user, "There is a non-damaged [HP] installed on [i] hardpoint slot.")
-			else
-				to_chat(user, "There is a [HP.health <= 0 ? "broken" : "working"] [HP] installed on the [i] hardpoint slot.")
+			//if((user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
+			if(HP.health <= 0)
+				to_chat(user, "There is a broken [HP] installed on [i] hardpoint slot.")
+			if(HP.health > 0 && (HP.health < (HP.maxhealth / 3)))
+				to_chat(user, "There is a heavy damaged [HP] installed on [i] hardpoint slot.")
+			if((HP.health > (HP.maxhealth / 3)) && (HP.health < (HP.maxhealth * (2/3))))
+				to_chat(user, "There is a damaged [HP] installed on [i] hardpoint slot.")			//removed skills check, because any baldie PFC can tell if module is unscratched or will fall apart from touching it
+			if((HP.health > (HP.maxhealth * (2/3))) && (HP.health < HP.maxhealth))
+				to_chat(user, "There is a lightly damaged [HP] installed on [i] hardpoint slot.")
+			if(HP.health == HP.maxhealth)
+				to_chat(user, "There is a non-damaged [HP] installed on [i] hardpoint slot.")
+			//else
+			//	to_chat(user, "There is a [HP.health <= 0 ? "broken" : "working"] [HP] installed on the [i] hardpoint slot.")
 
 //Special armored vic healthcheck that mainly updates the hardpoint states
 /obj/vehicle/multitile/root/cm_armored/healthcheck()
@@ -376,10 +443,10 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/mob/living/M = A
 		if(M.lying==0 && !isXenoLarva(M))
 			step_away(M,root,0,0)
-			M.KnockDown(10, 1)
+			M.KnockDown(5)
 			M.apply_damage(7 + rand(0, 5), BRUTE)
 			return
-		M.KnockDown(10, 1)
+		M.KnockDown(5)
 		if (!isXeno(M))
 			M.apply_damage(5 + rand(0, 10), BRUTE)
 		M.apply_damage(10 + rand(0, 10), BRUTE)
@@ -443,7 +510,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		cdel(WF)
 	else if (istype(A, /obj/structure/window)) //This definitely is shitty. It is better to refactor this shitcode by making a new variable for "destroyable objects"
 		var/obj/structure/window/WN = A
-		WN.visible_message("<span class='danger'>[root] crushes [WN]!</span>")
+		WN.visible_message("<span class='danger'>[root] smashes through [WN]!</span>")
 		if(WN.not_damageable)
 			return
 		WN.health = 0
@@ -455,7 +522,58 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		CP.visible_message("<span class='danger'>[root] crushes [CP]!</span>")
 		new /obj/item/stack/sheet/metal(CP.loc, 1)
 		cdel(CP)
-
+//from here goes list of newly added objects and machinery that tank should've drive over or through, but for some reason couldn't
+	else if (istype(A, /obj/machinery/autodoc))
+		var/obj/machinery/autodoc/AD = A
+		AD.visible_message("<span class='danger'>[root] crushes [AD]!</span>")
+		new /obj/item/stack/sheet/plasteel(AD.loc, 2)
+		cdel(AD)
+	else if (istype(A, /obj/machinery/chem_dispenser))
+		var/obj/machinery/chem_dispenser/DS = A
+		DS.visible_message("<span class='danger'>[root] crushes [DS]!</span>")
+		new /obj/item/stack/sheet/metal(DS.loc, 2)
+		cdel(DS)
+	else if (istype(A,	/obj/machinery/smartfridge/chemistry))
+		var	/obj/machinery/smartfridge/chemistry/CH = A
+		CH.visible_message("<span class='danger'>[root] crushes [CH]!</span>")
+		new /obj/item/stack/sheet/metal(CH.loc, 2)
+		cdel(CH)
+	else if (istype(A, /obj/machinery/photocopier))
+		var/obj/machinery/photocopier/PC = A
+		PC.visible_message("<span class='danger'>[root] crushes [PC]!</span>")
+		new /obj/item/stack/sheet/metal(PC.loc, 1)
+		cdel(PC)
+	else if (istype(A, /obj/machinery/cryopod))
+		var/obj/machinery/cryopod/CD = A
+		CD.visible_message("<span class='danger'>[root] crushes [CD]!</span>")
+		new /obj/item/stack/sheet/plasteel(CD.loc, 2)
+		new /obj/item/stack/sheet/metal(CD.loc, 2)
+		cdel(CD)
+	else if (istype(A, /obj/machinery/optable))
+		var/obj/machinery/optable/OT = A
+		OT.visible_message("<span class='danger'>[root] crushes [OT]!</span>")
+		new /obj/item/stack/sheet/plasteel(OT.loc, 2)
+		cdel(OT)
+	else if (istype(A, /obj/machinery/marine_selector))
+		var/obj/machinery/marine_selector/MS = A
+		MS.visible_message("<span class='danger'>[root] crushes [MS]!</span>")
+		new /obj/item/stack/sheet/metal(MS.loc, 2)
+		cdel(MS)
+	else if (istype(A, /obj/machinery/vending))
+		var/obj/machinery/vending/VD = A
+		VD.visible_message("<span class='danger'>[root] crushes [VD]!</span>")
+		new /obj/item/stack/sheet/metal(VD.loc, 2)
+		cdel(VD)
+	else if (istype(A, /obj/machinery/bodyscanner))
+		var/obj/machinery/bodyscanner/BS = A
+		BS.visible_message("<span class='danger'>[root] crushes [BS]!</span>")
+		new /obj/item/stack/sheet/metal(BS.loc, 2)
+		cdel(BS)
+	else if (istype(A, /obj/machinery/sleeper))
+		var/obj/machinery/sleeper/SL = A
+		SL.visible_message("<span class='danger'>[root] crushes [SL]!</span>")
+		new /obj/item/stack/sheet/metal(SL.loc, 2)
+		cdel(SL)
 	else if (istype(A, /obj/structure/largecrate))
 		var/obj/structure/largecrate/LC = A
 		LC.visible_message("<span class='danger'>[root] crushes [LC]!</span>")
@@ -540,7 +658,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		PA.visible_message("<span class='danger'>[root] crushes through[PA]!</span>")
 		new /obj/item/stack/sheet/metal(PA.loc, 3)
 		cdel(PA)
-	else if(istype(A, /obj/machinery/door/poddoor/shutters) && !istype(A, /obj/machinery/door/poddoor/shutters/transit))
+	else if(istype(A, /obj/machinery/door/poddoor/shutters) && !istype(A, /obj/machinery/door/poddoor/shutters/transit) && !istype(A, /obj/machinery/door/poddoor/shutters/almayer/pressure))
 		var/obj/machinery/door/poddoor/almayer/SH = A
 		var/obj/vehicle/multitile/root/cm_armored/CA = root
 		CA.take_damage_type(15, "blunt", SH)
@@ -606,7 +724,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		TR.explode()
 	else if (istype(A, /obj/machinery/door/window))
 		var/obj/machinery/door/window/WD = A
-		WD.visible_message("<span class='danger'>[root] crushes through[WD]!</span>")
+		WD.visible_message("<span class='danger'>[root] smashes through[WD]!</span>")
 		WD.take_damage(350)
 
 /obj/vehicle/multitile/hitbox/cm_armored/Move(var/atom/A, var/direction)
@@ -976,9 +1094,22 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		if(HDPT_ARMOR) num_delays = 10
 		if(HDPT_TREADS) num_delays = 7
 
+
 	if(!do_after(user, 30*num_delays, TRUE, num_delays, BUSY_ICON_FRIENDLY))
 		user.visible_message("<span class='warning'>[user] stops removing \the [old] on [src].</span>", "<span class='warning'>You stop removing \the [old] on [src].</span>")
 		return
+
+	if((old == hardpoints[HDPT_PRIMARY] || old == hardpoints[HDPT_SECDGUN]) && old.health > 0)
+		if(old.clips.len > 0)
+			var i
+			var/obj/item/ammo_magazine/A
+			for(i = 0; i <= old.clips.len; i++)
+				A = old.clips[1]
+				old.clips[1].Move(entrance.loc)
+				old.clips[1].update_icon()
+				old.clips.Remove(A)
+			user.visible_message("<span class='notice'>[user] removes ammunition from \the [old].</span>", "<span class='notice'>You remove ammunition from \the [old].</span>")
+
 
 	user.visible_message("<span class='notice'>[user] removes \the [old] on [src].</span>", "<span class='notice'>You remove \the [old] on [src].</span>")
 
@@ -1004,6 +1135,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	else
 		old.loc = entrance.loc
 	old.remove_buff()
+
 	if(old.health <= 0)
 		cdel(old)
 
