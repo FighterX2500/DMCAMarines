@@ -582,6 +582,57 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		new /obj/item/stack/sheet/metal(CP.loc, 1)
 		cdel(CP)
 //from here goes list of newly added objects and machinery that tank should've drive over or through, but for some reason couldn't
+	else if (istype(A, /obj/machinery/autodoc))
+		var/obj/machinery/autodoc/AD = A
+		AD.visible_message("<span class='danger'>[root] crushes [AD]!</span>")
+		new /obj/item/stack/sheet/plasteel(AD.loc, 2)
+		cdel(AD)
+	else if (istype(A, /obj/machinery/chem_dispenser))
+		var/obj/machinery/chem_dispenser/DS = A
+		DS.visible_message("<span class='danger'>[root] crushes [DS]!</span>")
+		new /obj/item/stack/sheet/metal(DS.loc, 2)
+		cdel(DS)
+	else if (istype(A,	/obj/machinery/smartfridge/chemistry))
+		var	/obj/machinery/smartfridge/chemistry/CH = A
+		CH.visible_message("<span class='danger'>[root] crushes [CH]!</span>")
+		new /obj/item/stack/sheet/metal(CH.loc, 2)
+		cdel(CH)
+	else if (istype(A, /obj/machinery/photocopier))
+		var/obj/machinery/photocopier/PC = A
+		PC.visible_message("<span class='danger'>[root] crushes [PC]!</span>")
+		new /obj/item/stack/sheet/metal(PC.loc, 1)
+		cdel(PC)
+	else if (istype(A, /obj/machinery/cryopod))
+		var/obj/machinery/cryopod/CD = A
+		CD.visible_message("<span class='danger'>[root] crushes [CD]!</span>")
+		new /obj/item/stack/sheet/plasteel(CD.loc, 2)
+		new /obj/item/stack/sheet/metal(CD.loc, 2)
+		cdel(CD)
+	else if (istype(A, /obj/machinery/optable))
+		var/obj/machinery/optable/OT = A
+		OT.visible_message("<span class='danger'>[root] crushes [OT]!</span>")
+		new /obj/item/stack/sheet/plasteel(OT.loc, 2)
+		cdel(OT)
+	else if (istype(A, /obj/machinery/marine_selector))
+		var/obj/machinery/marine_selector/MS = A
+		MS.visible_message("<span class='danger'>[root] crushes [MS]!</span>")
+		new /obj/item/stack/sheet/metal(MS.loc, 2)
+		cdel(MS)
+	else if (istype(A, /obj/machinery/vending))
+		var/obj/machinery/vending/VD = A
+		VD.visible_message("<span class='danger'>[root] crushes [VD]!</span>")
+		new /obj/item/stack/sheet/metal(VD.loc, 2)
+		cdel(VD)
+	else if (istype(A, /obj/machinery/bodyscanner))
+		var/obj/machinery/bodyscanner/BS = A
+		BS.visible_message("<span class='danger'>[root] crushes [BS]!</span>")
+		new /obj/item/stack/sheet/metal(BS.loc, 2)
+		cdel(BS)
+	else if (istype(A, /obj/machinery/sleeper))
+		var/obj/machinery/sleeper/SL = A
+		SL.visible_message("<span class='danger'>[root] crushes [SL]!</span>")
+		new /obj/item/stack/sheet/metal(SL.loc, 2)
+		cdel(SL)
 	else if (istype(A, /obj/structure/largecrate))
 		var/obj/structure/largecrate/LC = A
 		LC.visible_message("<span class='danger'>[root] crushes [LC]!</span>")
