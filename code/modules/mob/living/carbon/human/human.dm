@@ -1469,7 +1469,7 @@
 
 		if(artmod_use)
 			sight |= SEE_TURFS
-			see_in_dark = 20
+			see_in_dark = 8
 			see_invisible = SEE_INVISIBLE_MINIMUM
 
 		if(glasses)
