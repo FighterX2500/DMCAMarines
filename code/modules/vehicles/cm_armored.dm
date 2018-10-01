@@ -511,7 +511,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	else if (istype(A, /obj/structure/window)) //This definitely is shitty. It is better to refactor this shitcode by making a new variable for "destroyable objects"
 		var/obj/structure/window/WN = A
 		WN.visible_message("<span class='danger'>[root] smashes through [WN]!</span>")
-		if(WN.not_damageable)
+		if(!WN.damageable)
 			return
 		WN.health = 0
 		WN.healthcheck(0, 1)
