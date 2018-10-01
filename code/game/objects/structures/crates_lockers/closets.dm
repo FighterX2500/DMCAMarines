@@ -116,6 +116,8 @@
 			continue
 		if(M.buckled)
 			continue
+		var/mob/living/L = M
+		L.smokecloak_off()
 
 		M.forceMove(src)
 		stored_units += mob_size
