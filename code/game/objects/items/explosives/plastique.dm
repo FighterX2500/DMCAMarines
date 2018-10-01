@@ -28,7 +28,8 @@
 	to_chat(user, "Timer set for [timer] seconds.")
 
 /obj/item/explosive/plastique/afterattack(atom/target, mob/user, flag)
-	if(!flag) return FALSE
+	if(!flag)
+		return FALSE
 	if(user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer < SKILL_ENGINEER_METAL)
 		to_chat(user, "<span class='warning'>You don't seem to know how to use [src]...</span>")
 		return
@@ -36,14 +37,15 @@
 		return FALSE
 	if(istype(target, /obj/effect) || istype(target, /obj/machinery))
 		var/obj/O = target
-		if(O.unacidable) return FALSE
+		if(O.unacidable)
+			return FALSE
 	if(istype(target, /turf/closed/wall))
 		var/turf/closed/wall/W = target
 		if(W.hull)
 			return FALSE
 	if(istype(target, /obj/structure/window))
 		var/obj/structure/window/W = target
-		if(W.not_damageable)
+		if(!W.damageable)
 			to_chat(user, "<span class='warning'>[W] is much too tough for you to do anything to it with [src]</span>.")
 			return FALSE
 
