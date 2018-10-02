@@ -191,9 +191,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //proc to actually shoot grenades
 /obj/vehicle/multitile/root/cm_armored/proc/smoke_shot()
 
-	to_chat(usr, "<span class='warning'>Debug: entered Smoke Shot proc</span>")
 	if(world.time < smoke_next_use)
-		to_chat(usr, "<span class='warning'>Smoke Cover system is not ready.</span>")
+		to_chat(usr, "<span class='warning'>M75 Smoke Deploy System is not ready!</span>")
 		return
 
 	var/turf/F
@@ -213,18 +212,18 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	F = get_step(F, right_dir)
 
 
-	to_chat(usr, "<span class='warning'>Debug: tiles counting complete. Direction - [src.dir] [left_dir] [right_dir]</span>")
-	var/obj/item/ammo_magazine/tank/tank_slauncher/A
+
+	var/obj/item/ammo_magazine/tank/tank_slauncher/A = new
 	smoke_next_use = world.time + 150
-	to_chat(usr, "<span class='warning'>Debug: world time: [world.time] Next use: [smoke_next_use]</span>")
 	var/obj/item/projectile/P = new
 	P.generate_bullet(new A.default_ammo)
-	P.fire_at(F, src, SML, P.ammo.max_range, P.ammo.shell_speed)
+	P.fire_at(F, src, SML, 6, P.ammo.shell_speed)
 	playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire.ogg', 60, 1)
 	smoke_ammo_current--
 	sleep (10)
-	P.generate_bullet(new A.default_ammo)
-	P.fire_at(S, src, SML, P.ammo.max_range, P.ammo.shell_speed)
+	var/obj/item/projectile/G = new
+	G.generate_bullet(new A.default_ammo)
+	G.fire_at(S, src, SML, 6, G.ammo.shell_speed)
 	playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire.ogg', 60, 1)
 	smoke_ammo_current--
 
@@ -232,16 +231,19 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	if(smoke_ammo_current <= 0)
 		to_chat(usr, "<span class='warning'>Ammo depleted. Ejecting empty magazine.</span>")
-		new/obj/item/ammo_magazine/tank/tank_slauncher(entrance.loc)
+		A.Move(entrance.loc)
+		A.current_rounds = 0
+		A.update_icon()
+
 
 //Built in smoke launcher system verb
 /obj/vehicle/multitile/root/cm_armored/verb/smoke_cover()
-	set name = "Activate Smoke Cover"
+	set name = "Activate M75 Smoke Deploy System"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set src in view(0)
 
 	if(smoke_ammo_current)
-		to_chat(usr, "<span class='warning'>You activate Smoke Cover System!</span>")
+		to_chat(usr, "<span class='warning'>You activate M75 Smoke Deploy System!</span>")
 		visible_message("<span class='danger'>You notice two grenades flying in front of the tank!</span>")
 		smoke_shot()
 	else
@@ -296,6 +298,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	to_chat(usr, "<span class='warning'>Vehicle Status:</span><br>")
 	to_chat(usr, "<span class='warning'>Overall vehicle integrity: [tank_health] percent.</span>")
+	to_chat(usr, "<span class='warning'>M75 Smoke Deploy System: [smoke_ammo_current / 2] uses left.</span>")
 	if(!can_use_hp(usr))
 		return
 	if(HP5 == null || HP5.health <= 0)

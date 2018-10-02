@@ -149,7 +149,7 @@ Currently only has the tank hardpoints
 	maxhealth = 500
 	health = 500
 	point_cost = 100
-	hp_weight = 3
+	hp_weight = 2
 
 	icon_state = "ltb_cannon"
 
@@ -196,7 +196,7 @@ Currently only has the tank hardpoints
 	maxhealth = 350
 	health = 350
 	point_cost = 100
-	hp_weight = 2
+	hp_weight = 3
 
 	icon_state = "ltaaap_minigun"
 
@@ -379,8 +379,8 @@ Currently only has the tank hardpoints
 
 	ammo_type = new /obj/item/ammo_magazine/tank/m56_cupola
 	max_clips = 2
-	max_angle = 90
-	hp_weight = 1
+	max_angle = 75
+	hp_weight = 2
 
 	apply_buff()
 		owner.cooldowns["secondary"] = 2
@@ -660,7 +660,7 @@ Currently only has the tank hardpoints
 	maxhealth = 1000
 	health = 1000
 	point_cost = 100
-	hp_weight = 5
+	hp_weight = 7
 
 	icon_state = "ballistic_armor"
 
@@ -728,7 +728,7 @@ Currently only has the tank hardpoints
 	maxhealth = 1000
 	health = 1000
 	point_cost = 100
-	hp_weight = 7
+	hp_weight = 10
 
 	icon_state = "paladin_armor"
 
