@@ -227,8 +227,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire.ogg', 60, 1)
 	smoke_ammo_current--
 
-	to_chat(usr, "<span class='warning'>Debug: shoot sequence complete. [smoke_ammo_current]</span>")
-
 	if(smoke_ammo_current <= 0)
 		to_chat(usr, "<span class='warning'>Ammo depleted. Ejecting empty magazine.</span>")
 		A.Move(entrance.loc)
