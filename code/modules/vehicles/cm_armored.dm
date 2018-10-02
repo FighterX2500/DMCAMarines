@@ -50,10 +50,11 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	move_delay = 30 //default 3 seconds per tile
 
 	var/active_hp
-	var/t_weight = 1
+	//var/t_weight = 1
 	var/smoke_ammo_max = 10
 	var/smoke_ammo_current = 0
 	var/smoke_next_use
+	var/obj/item/hardpoint/support/smoke_launcher/SML
 	var/list/dmg_distribs = list()
 
 	//Changes cooldowns and accuracies
@@ -190,36 +191,44 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //proc to actually shoot grenades
 /obj/vehicle/multitile/root/cm_armored/proc/smoke_shot()
 
-
+	to_chat(usr, "<span class='warning'>Debug: entered Smoke Shot proc</span>")
 	if(world.time < smoke_next_use)
 		to_chat(usr, "<span class='warning'>Smoke Cover system is not ready.</span>")
-		return 0
+		return
 
 	var/turf/F
 	var/turf/S
-	switch(src.dir)
-		if(EAST)
-			F = get_turf(locate(root.loc + 5, root.y + 2, root.z))
-			S = get_turf(locate(root.loc + 5, root.y - 2, root.z))
-		if(NORTH)
-			F = get_turf(locate(root.loc - 2, root.y + 5, root.z))
-			S = get_turf(locate(root.loc + 2, root.y + 5, root.z))
-		if(WEST)
-			F = get_turf(locate(root.loc - 5, root.y - 2, root.z))
-			S = get_turf(locate(root.loc - 5, root.y + 2, root.z))
-		if(SOUTH)
-			F = get_turf(locate(root.loc - 2, root.y - 5, root.z))
-			S = get_turf(locate(root.loc + 2, root.y - 5, root.z))
+	var/right_dir
+	var/left_dir
+	F = get_step(src.loc, src.dir)
+	F = get_step(F, src.dir)
+	F = get_step(F, src.dir)
+	F = get_step(F, src.dir)
+	F = get_step(F, src.dir)
+	left_dir = turn(src.dir, -90)
+	S = get_step(F, left_dir)
+	S = get_step(S, left_dir)
+	right_dir = turn(src.dir, 90)
+	F = get_step(F, right_dir)
+	F = get_step(F, right_dir)
 
+
+	to_chat(usr, "<span class='warning'>Debug: tiles counting complete. Direction - [src.dir] [left_dir] [right_dir]</span>")
 	var/obj/item/ammo_magazine/tank/tank_slauncher/A
 	smoke_next_use = world.time + 150
+	to_chat(usr, "<span class='warning'>Debug: world time: [world.time] Next use: [smoke_next_use]</span>")
 	var/obj/item/projectile/P = new
 	P.generate_bullet(new A.default_ammo)
-	P.fire_at(F, owner, src, P.ammo.max_range, P.ammo.shell_speed)
-	P.generate_bullet(new A.default_ammo)
-	P.fire_at(S, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+	P.fire_at(F, src, SML, P.ammo.max_range, P.ammo.shell_speed)
 	playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire.ogg', 60, 1)
-	smoke_ammo_current = smoke_ammo_current - 2
+	smoke_ammo_current--
+	sleep (10)
+	P.generate_bullet(new A.default_ammo)
+	P.fire_at(S, src, SML, P.ammo.max_range, P.ammo.shell_speed)
+	playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire.ogg', 60, 1)
+	smoke_ammo_current--
+
+	to_chat(usr, "<span class='warning'>Debug: shoot sequence complete. [smoke_ammo_current]</span>")
 
 	if(smoke_ammo_current <= 0)
 		to_chat(usr, "<span class='warning'>Ammo depleted. Ejecting empty magazine.</span>")
@@ -231,8 +240,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set src in view(0)
 
-	//if(!can_use_hp(usr))
-	//	return
 	if(smoke_ammo_current)
 		to_chat(usr, "<span class='warning'>You activate Smoke Cover System!</span>")
 		visible_message("<span class='danger'>You notice two grenades flying in front of the tank!</span>")
@@ -977,6 +984,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		if(istype(O, /obj/item/ammo_magazine/tank/tank_slauncher))
 			if(smoke_ammo_current == 0)
 				smoke_ammo_current = 10
+				user.temp_drop_inv_item(O, 0)
+				to_chat(user, "<span class='notice'>You load smoke system magazine into [src].</span>")
 				return
 			else
 				to_chat(user, "<span class='notice'>You can't load new magazine until smoke launcher system automatically unload emptied one.</span>")

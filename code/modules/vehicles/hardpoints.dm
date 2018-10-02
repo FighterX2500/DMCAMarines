@@ -465,7 +465,7 @@ Currently only has the tank hardpoints
 // SUPPORT SLOTS // START
 ///////////////////
 //Slauncher was built in tank.
-/*/obj/item/hardpoint/support/smoke_launcher
+/obj/item/hardpoint/support/smoke_launcher
 	name = "Smoke Launcher"
 	desc = "Launches smoke forward to obscure vision"
 
@@ -527,7 +527,7 @@ Currently only has the tank hardpoints
 		else if(A.current_rounds <= 0) icon_state_suffix = "2"
 
 		return image(icon = "[disp_icon]_[icon_suffix]", icon_state = "[disp_icon_state]_[icon_state_suffix]", pixel_x = x_offset, pixel_y = y_offset)
-*/
+
 /obj/item/hardpoint/support/weapons_sensor
 	name = "Integrated Weapons Sensor Array"
 	desc = "Improves the accuracy and fire rate of all onboard weapons"
