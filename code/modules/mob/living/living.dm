@@ -417,7 +417,7 @@
 
 /mob/living/proc/smokecloak_off()
 
-  if(!smokecloaked)
+	if(!smokecloaked)
 		return
 
 	alpha = initial(alpha)
