@@ -138,13 +138,23 @@ Currently only has the tank hardpoints
 /obj/item/hardpoint/treads
 	slot = HDPT_TREADS
 
+//Normal examine() but tells the player what is installed and if it's broken
+/obj/item/hardpoint/examine(var/mob/user)
+	..()
+	var/cond = round(health * 100 / maxhealth)
+	if((user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
+		if (cond >= 0)
+			to_chat(user, "Integrity: [cond]%.")
+		else
+			to_chat(user, "Integrity: 0%.")
+
 ////////////////////
 // PRIMARY SLOTS // START
 ////////////////////
 
 /obj/item/hardpoint/primary/cannon
 	name = "LTB Cannon"
-	desc = "A primary cannon for tanks that shoots explosive rounds. "
+	desc = "A primary 86mm cannon for tank that shoots explosive rounds."
 
 	maxhealth = 500
 	health = 500
@@ -167,7 +177,8 @@ Currently only has the tank hardpoints
 
 	is_ready()
 		if(world.time < next_use)
-			to_chat(usr, "<span class='warning'>This module is not ready to be used yet.</span>")
+			var/CD = round(next_use - world.time) / 10
+			to_chat(usr, "<span class='warning'>[src] will be ready to fire in [CD] seconds.</span>")
 			return 0
 		if(health <= 0)
 			to_chat(usr, "<span class='warning'>This module is too broken to be used.</span>")
@@ -181,7 +192,7 @@ Currently only has the tank hardpoints
 			return
 
 		next_use = world.time + owner.cooldowns["primary"] * owner.misc_ratios["prim_cool"]
-		if(!prob(owner.accuracies["primary"] * 100 * owner.misc_ratios["prim_acc"]))
+		if(!prob(owner.accuracies["primary"] * 100 * owner.misc_ratios["prim_acc"] * owner.w_ratios("w_prim_acc"))
 			T = get_step(T, pick(cardinal))
 		var/obj/item/projectile/P = new
 		P.generate_bullet(new A.default_ammo)
@@ -191,7 +202,7 @@ Currently only has the tank hardpoints
 
 /obj/item/hardpoint/primary/minigun
 	name = "LTAA-AP Minigun"
-	desc = "A primary weapon for tanks that spews bullets"
+	desc = "It's a minigun, what is not clear, you derp? Just go pew-pew-pew."
 
 	maxhealth = 350
 	health = 350
@@ -273,7 +284,7 @@ Currently only has the tank hardpoints
 
 /obj/item/hardpoint/secondary/flamer
 	name = "Secondary Flamer Unit"
-	desc = "A secondary weapon for tanks that shoots flames"
+	desc = "A secondary weapon for tanks. Don't let it fool you, it shoots not like common flamer, it shoot literally fireballs. Not kidding."
 
 	maxhealth = 300
 	health = 300
@@ -295,7 +306,8 @@ Currently only has the tank hardpoints
 
 	is_ready()
 		if(world.time < next_use)
-			to_chat(usr, "<span class='warning'>This module is not ready to be used yet.</span>")
+			var/CD = round(next_use - world.time) / 10
+			to_chat(usr, "<span class='warning'>[src] will be ready to fire in [CD] seconds.</span>")
 			return 0
 		if(health <= 0)
 			to_chat(usr, "<span class='warning'>This module is too broken to be used.</span>")
@@ -320,7 +332,7 @@ Currently only has the tank hardpoints
 
 /obj/item/hardpoint/secondary/towlauncher
 	name = "TOW Launcher"
-	desc = "A secondary weapon for tanks that shoots rockets"
+	desc = "A secondary weapon for tanks that shoots powerful AP rockets. Deals heavy damage, but only on direct hit."
 
 	maxhealth = 500
 	health = 500
@@ -342,7 +354,8 @@ Currently only has the tank hardpoints
 
 	is_ready()
 		if(world.time < next_use)
-			to_chat(usr, "<span class='warning'>This module is not ready to be used yet.</span>")
+			var/CD = round(next_use - world.time) / 10
+			to_chat(usr, "<span class='warning'>[src] will be ready to fire in [CD] seconds.</span>")
 			return 0
 		if(health <= 0)
 			to_chat(usr, "<span class='warning'>This module is too broken to be used.</span>")
@@ -366,7 +379,7 @@ Currently only has the tank hardpoints
 
 /obj/item/hardpoint/secondary/m56cupola
 	name = "M56 Cupola"
-	desc = "A secondary weapon for tanks that shoots bullets"
+	desc = "A secondary weapon for tanks. Refitted M56 has higher accuracy and rate of fire. Supports IFF system."
 
 	maxhealth = 350
 	health = 350
@@ -384,11 +397,12 @@ Currently only has the tank hardpoints
 
 	apply_buff()
 		owner.cooldowns["secondary"] = 2
-		owner.accuracies["secondary"] = 0.8
+		owner.accuracies["secondary"] = 0.7
 
 	is_ready()
 		if(world.time < next_use)
-			to_chat(usr, "<span class='warning'>This module is not ready to be used yet.</span>")
+			var/CD = round(next_use - world.time) / 10
+			to_chat(usr, "<span class='warning'>[src] will be ready to fire in [CD] seconds.</span>")
 			return 0
 		if(health <= 0)
 			to_chat(usr, "<span class='warning'>This module is too broken to be used.</span>")
@@ -413,7 +427,7 @@ Currently only has the tank hardpoints
 
 /obj/item/hardpoint/secondary/grenade_launcher
 	name = "Grenade Launcher"
-	desc = "A secondary weapon for tanks that shoots grenades"
+	desc = "A secondary weapon for tanks that shoots HEDP grenades further than you see. No, seriously, that's how it works."
 
 	maxhealth = 500
 	health = 500
@@ -435,7 +449,8 @@ Currently only has the tank hardpoints
 
 	is_ready()
 		if(world.time < next_use)
-			to_chat(usr, "<span class='warning'>This module is not ready to be used yet.</span>")
+			var/CD = round(next_use - world.time) / 10
+			to_chat(usr, "<span class='warning'>[src] will be ready to fire in [CD] seconds.</span>")
 			return 0
 		if(health <= 0)
 			to_chat(usr, "<span class='warning'>This module is too broken to be used.</span>")
@@ -467,7 +482,7 @@ Currently only has the tank hardpoints
 //Slauncher was built in tank.
 /obj/item/hardpoint/support/smoke_launcher
 	name = "Smoke Launcher"
-	desc = "Launches smoke forward to obscure vision"
+	desc = "Launches smoke forward to obscure vision."
 
 	maxhealth = 300
 	health = 300
@@ -489,7 +504,8 @@ Currently only has the tank hardpoints
 
 	is_ready()
 		if(world.time < next_use)
-			to_chat(usr, "<span class='warning'>This module is not ready to be used yet.</span>")
+			var/CD = round(next_use - world.time) / 10
+			to_chat(usr, "<span class='warning'>[src] will be ready to fire in [CD] seconds.</span>")
 			return 0
 		if(health <= 0)
 			to_chat(usr, "<span class='warning'>This module is too broken to be used.</span>")
@@ -530,7 +546,7 @@ Currently only has the tank hardpoints
 
 /obj/item/hardpoint/support/weapons_sensor
 	name = "Integrated Weapons Sensor Array"
-	desc = "Improves the accuracy and fire rate of all onboard weapons"
+	desc = "Improves the accuracy and fire rate of all installed weapons. Actually more useful than you may think."
 
 	maxhealth = 250
 	health = 250
@@ -562,7 +578,7 @@ Currently only has the tank hardpoints
 
 /obj/item/hardpoint/support/overdrive_enhancer
 	name = "Overdrive Enhancer"
-	desc = "Increases the movement speed of the vehicle it's atached to"
+	desc = "Increases the movement and turn speed of the vehicle it's attached to."
 
 	maxhealth = 250
 	health = 250
@@ -575,14 +591,14 @@ Currently only has the tank hardpoints
 	disp_icon_state = "odrive_enhancer"
 
 	apply_buff()
-		owner.misc_ratios["move"] = 0.6
+		owner.misc_ratios.("OD_buff") = 0.8
 
 	remove_buff()
-		owner.misc_ratios["move"] = 1.0
+		owner.misc_ratios.("OD_buff") = 1.0
 
 /obj/item/hardpoint/support/artillery_module
 	name = "Artillery Module"
-	desc = "Allows the gunner to look far into the distance."
+	desc = "Greatly increases visibility of gunner. Also adds structures visibility even in complete darkness."
 
 	maxhealth = 250
 	health = 250
@@ -654,8 +670,8 @@ Currently only has the tank hardpoints
 /////////////////
 
 /obj/item/hardpoint/armor/ballistic
-	name = "Ballistic Armor"
-	desc = "Protects the vehicle from high-penetration weapons"
+	name = "MT65 Armor"
+	desc = "Standard tank armor. Middle ground in everything, from damage resistance to weight."
 
 	maxhealth = 1000
 	health = 1000
@@ -668,7 +684,7 @@ Currently only has the tank hardpoints
 	disp_icon_state = "ballistic_armor"
 
 	apply_buff()
-		owner.dmg_multipliers["bullet"] = 0.67
+		owner.dmg_multipliers["bullet"] = 0.2
 		owner.dmg_multipliers["slash"] = 0.67
 		owner.dmg_multipliers["all"] = 0.9
 
@@ -678,8 +694,8 @@ Currently only has the tank hardpoints
 		owner.dmg_multipliers["all"] = 1.0
 
 /obj/item/hardpoint/armor/caustic
-	name = "Caustic Armor"
-	desc = "Protects vehicles from most types of acid"
+	name = "MT70 \"Caustic\" Armor"
+	desc = "Special set of tank armor. Purpose: reduce vehicle parts degradation in hostile surroundings on planets with unstable and highly corrosive atmosphere."
 
 	maxhealth = 1000
 	health = 1000
@@ -700,11 +716,12 @@ Currently only has the tank hardpoints
 		owner.dmg_multipliers["all"] = 1.0
 
 /obj/item/hardpoint/armor/concussive
-	name = "Concussive Armor"
-	desc = "Protects the vehicle from high-impact weapons"
+	name = "MT66 LC Armor"
+	desc = "Light armor, designed for recon type of tank loadouts. Offers less protection in exchange for better maneuverability. After initial tests resistance to blunt damage was increased due to drivers driving into walls."
 
 	maxhealth = 1000
 	health = 1000
+
 	point_cost = 100
 	hp_weight = 4
 
@@ -722,8 +739,8 @@ Currently only has the tank hardpoints
 		owner.dmg_multipliers["all"] = 1.0
 
 /obj/item/hardpoint/armor/paladin
-	name = "Paladin Armor"
-	desc = "Protects the vehicle from large incoming explosive projectiles"
+	name = "MT90 \"Paladin\" Armor"
+	desc = "Heavy armor for heavy tank. Converts your tank in essentially a slowly moving bunker. High resistance to almost all types of damage."
 
 	maxhealth = 1000
 	health = 1000
@@ -744,13 +761,13 @@ Currently only has the tank hardpoints
 		owner.dmg_multipliers["all"] = 1.0
 
 /obj/item/hardpoint/armor/snowplow
-	name = "Snowplow"
-	desc = "Clears a path in the snow for friendlies"
+	name = "MT37 \"Snowplow\" armor"
+	desc = "Special set of tank armor, equipped with multipurpose front \"snowplow\". Designed to remove snow and demine minefields. As a result armor has high explosion damage resistance in front, while offering low protection from other types of damage."
 
 	maxhealth = 500
 	health = 500
 	is_activatable = 1
-	point_cost = 20
+	point_cost = 1
 	hp_weight = 3
 
 	icon_state = "snowplow"
@@ -774,8 +791,8 @@ Currently only has the tank hardpoints
 /////////////////
 
 /obj/item/hardpoint/treads/standard
-	name = "Treads"
-	desc = "Integral to the movement of the vehicle"
+	name = "M2 Tank Treads"
+	desc = "Standard tank treads. Suprisingly, greatly improves vehicle moving speed."
 
 	maxhealth = 500
 	health = 500
@@ -790,11 +807,38 @@ Currently only has the tank hardpoints
 	get_icon_image(var/x_offset, var/y_offset, var/new_dir)
 		return null //Handled in update_icon()
 
-	apply_buff()
-		owner.move_delay = 7
 
-	remove_buff()
-		owner.move_delay = 30
+/obj/item/hardpoint/treads/attackby(var/obj/item/O, var/mob/user)
+
+	//Need to the what the hell you're doing
+	if(user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer < SKILL_ENGINEER_MT)
+		to_chat(user, "<span class='warning'>You don't know what to do with [O] on [src].</span>")
+		return
+	if(!iswelder(O))
+		to_chat(user, "<span class='warning'>That's the wrong tool. Use a welder.</span>")
+		return
+	var/obj/item/tool/weldingtool/WT = O
+	if(!WT.isOn())
+		to_chat(user, "<span class='warning'>You need to light your [WT] first.</span>")
+		return
+	var/q_health = round(src.maxhealth * 0.25)
+	if(health >= q_health)
+		to_chat(user, "<span class='warning'>You can't repair treads more than that in the field.</span>")
+		return
+	user.visible_message("<span class='notice'>[user] starts field repair on the [src].</span>", "<span class='notice'>You start field repair on the [src].</span>")
+
+	if(!do_after(user, 150, TRUE, 5, BUSY_ICON_FRIENDLY))
+		user.visible_message("<span class='notice'>[user] stops repairing the [src].</span>", "<span class='notice'>You stop repairing the [src].</span>")
+		return
+	if(!Adjacent(user))
+		user.visible_message("<span class='notice'>[user] stops repairing the [src].</span>", "<span class='notice'>You stop repairing the [src].</span>")
+		return
+	WT.remove_fuel(15, user)
+	user.visible_message("<span class='notice'>[user] repairs the [src] as best as possible in field conditions.</span>", "<span class='notice'>You repair the [src] as best as possible in field conditions.</span>")
+
+	src.health = q_health //We repaired it to 25%, good job
+
+	. = ..()
 
 /////////////////
 // TREAD SLOTS // END

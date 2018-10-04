@@ -6,6 +6,9 @@
 #define HDPT_SUPPORT "support"
 #define HDPT_ARMOR "armor"
 #define HDPT_TREADS "treads"
+#define T_LIGHT "light"
+#define T_MEDIUM "medium"
+#define T_HEAVY "heavy"
 
 //Percentages of what hardpoints take what damage, e.g. armor takes 37.5% of the damage
 var/list/armorvic_dmg_distributions = list(
@@ -48,24 +51,38 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	//Below are vars that can be affected by hardpoints, generally used as ratios or decisecond timers
 
 	move_delay = 30 //default 3 seconds per tile
+	speed
 
 	var/active_hp
-	//var/t_weight = 1
+	var/t_weight = 0
+	var/t_class
 	var/smoke_ammo_max = 10
 	var/smoke_ammo_current = 0
 	var/smoke_next_use
 	var/obj/item/hardpoint/support/smoke_launcher/SML
 	var/list/dmg_distribs = list()
 
+	//weight buffs/debuffs
+	/var/list/w_ratios = list(
+		"w_prim_acc" = 1.0,
+		"w_secd_acc" = 1.0,
+		"w_supp_acc" = 1.0)
+
 	//Changes cooldowns and accuracies
-	var/list/misc_ratios = list(
-		"move" = 1.0,
+	/var/list/misc_ratios = list(
+		"OD_buff" = 1.0,
 		"prim_acc" = 1.0,
 		"secd_acc" = 1.0,
 		"supp_acc" = 1.0,
 		"prim_cool" = 1.0,
 		"secd_cool" = 1.0,
 		"supp_cool" = 1.0)
+
+	//Percentage accuracies for slot
+	var/list/accuracies = list(
+		"primary" = 0.97,
+		"secondary" = 0.67,
+		"support" = 0.5)
 
 	//Changes how much damage the tank takes
 	var/list/dmg_multipliers = list(
@@ -82,12 +99,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		"primary" = 300,
 		"secondary" = 200,
 		"support" = 150)
-
-	//Percentage accuracies for slot
-	var/list/accuracies = list(
-		"primary" = 0.97,
-		"secondary" = 0.67,
-		"support" = 0.5)
 
 	//Which hardpoints need to be repaired before the module can be replaced
 	var/list/damaged_hps = list()
@@ -118,17 +129,107 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/root/cm_armored/proc/remove_all_players()
 	return
 
+/obj/vehicle/multitile/root/cm_armored/proc/t_speed_update()	//proc to calculate new speed depending on current weight and OD present/absence
+	//speed_min = 3 - only treads installed
+	//speed_max = 20 - heaviest possible build
+	//speed_delay = 30 - broken treads (OD won't affect speed with broken speed anymore)
+	switch (t_class)
+		if(T_LIGHT)
+			switch(t_weight)
+				if(8)
+					speed = 3.5
+				if(9)
+					speed = 4.2
+				if(10)
+					speed = 5
+				else
+					speed = 3
+		if(T_MEDIUM)
+			switch(t_weight)
+				if(11)
+					speed = 6
+				if(12)
+					speed = 7
+				if(13)
+					speed = 7.5
+				if(14)
+					speed = 8
+				if(15)
+					speed = 9
+		if(T_HEAVY)
+			switch(t_weight)
+				if(16)
+					speed = 14
+				if(17)
+					speed = 16
+				if(18)
+					speed = 17
+				else
+					speed = 20
+
+/obj/vehicle/multitile/root/cm_armored/proc/t_accuracy_update()
+		switch (t_class)
+		if(T_LIGHT)
+			switch(t_weight)
+				if(8)
+					w_ratios["w_prim_acc"] = 0.90
+					w_ratios["w_secd_acc"] = 0.92
+					//w_ratios["w_supp_acc"] = 0.92
+				if(9)
+					w_ratios["w_prim_acc"] = 0.92
+					w_ratios["w_secd_acc"] = 0.95
+					//w_ratios["w_supp_acc"] = 0.95
+				if(10)
+					w_ratios["w_prim_acc"] = 0.95
+					w_ratios["w_secd_acc"] = 0.98
+					//w_ratios["w_supp_acc"] = 0.97
+				else
+					w_ratios["w_prim_acc"] = 0.85
+					w_ratios["w_secd_acc"] = 0.85
+					//w_ratios["w_supp_acc"] = 0.90
+		if(T_MEDIUM)
+			w_ratios["w_prim_acc"] = 1.0
+			w_ratios["w_secd_acc"] = 1.0
+			//w_ratios["w_supp_acc"] = 1.0
+		if(T_HEAVY)
+			switch(t_weight)
+				if(16)
+					w_ratios["w_prim_acc"] = 1.02
+					w_ratios["w_secd_acc"] = 1.01
+					//w_ratios["w_supp_acc"] = 1.01
+				if(17)
+					w_ratios["w_prim_acc"] = 1.03
+					w_ratios["w_secd_acc"] = 1.02
+					//w_ratios["w_supp_acc"] = 1.02
+				if(18)
+					w_ratios["w_prim_acc"] = 1.04
+					w_ratios["w_secd_acc"] = 1.03
+					//w_ratios["w_supp_acc"] = 1.03
+				else
+					w_ratios["w_prim_acc"] = 1.05
+					w_ratios["w_secd_acc"] = 1.04
+					//w_ratios["w_supp_acc"] = 1.04
+
 //The basic vehicle code that moves the tank, with movement delay implemented
 /obj/vehicle/multitile/root/cm_armored/relaymove(var/mob/user, var/direction)
 	if(world.time < next_move) return
-	next_move = world.time + move_delay * misc_ratios["move"]
+	if(hardpoints[HDPT_TREADS] && hardpoints[HDPT_TREADS].health > 0)
+		next_move = world.time + speed * misc_ratios.("OD_buff")
+	else
+		next_move = world.time + move_delay
+
 
 	return ..()
 
 //Same thing but for rotations
 /obj/vehicle/multitile/root/cm_armored/try_rotate(var/deg, var/mob/user, var/force = 0)
 	if(world.time < next_move && !force) return
-	next_move = world.time + move_delay * (misc_ratios["move"] - 0.1) * (force ? 2 : 3) //3 for a 3 point turn, idk
+
+	if(hardpoints[HDPT_TREADS] && hardpoints[HDPT_TREADS].health > 0)
+		next_move = world.time + speed * misc_ratios.("OD_buff") * (force ? 2 : 3) //3 for a 3 point turn, idk
+	else
+		next_move = world.time + move_delay * (force ? 2 : 3)
+
 	return ..()
 
 /obj/vehicle/multitile/root/cm_armored/proc/can_use_hp(var/mob/M)
@@ -417,7 +518,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 			if(HP.health <= 0)
 				to_chat(user, "There is a broken [HP] installed on [i] hardpoint slot.")
 			if(HP.health > 0 && (HP.health < (HP.maxhealth / 3)))
-				to_chat(user, "There is a heavy damaged [HP] installed on [i] hardpoint slot.")
+				to_chat(user, "There is a heavily damaged [HP] installed on [i] hardpoint slot.")
 			if((HP.health > (HP.maxhealth / 3)) && (HP.health < (HP.maxhealth * (2/3))))
 				to_chat(user, "There is a damaged [HP] installed on [i] hardpoint slot.")			//removed skills check, because any baldie PFC can tell if module is unscratched or will fall apart from touching it
 			if((HP.health > (HP.maxhealth * (2/3))) && (HP.health < HP.maxhealth))
@@ -444,6 +545,17 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		handle_all_modules_broken()
 
 	update_icon()
+
+/obj/vehicle/multitile/root/cm_armored/proc/t_class_update()
+	if(t_weight < 11)
+		t_class = T_LIGHT
+		return
+	if(t_weight > 10 && t_weight < 21)
+		t_class = T_MEDIUM
+		return
+	if(t_weight > 20)
+		t_class = T_HEAVY
+		return
 
 //Since the vics are 3x4 we need to swap between the two files with different dimensions
 //Also need to offset to center the tank about the root object
@@ -794,6 +906,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		WD.visible_message("<span class='danger'>[root] smashes through[WD]!</span>")
 		WD.take_damage(350)
 
+		health_check()
 /obj/vehicle/multitile/hitbox/cm_armored/Move(var/atom/A, var/direction)
 
 	for(var/mob/living/M in get_turf(src))
@@ -1199,6 +1312,10 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	HP.owner = src
 	HP.apply_buff()
 	HP.loc = src
+	src.t_weight += HP.hp_weight
+	src.t_class_update()
+	src.t_speed_update()
+	src.t_accuracy_update()
 
 	hardpoints[HP.slot] = HP
 
@@ -1213,8 +1330,13 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		old.loc = entrance.loc
 	old.remove_buff()
 
-	if(old.health <= 0)
-		cdel(old)
+	src.t_weight -= old.hp_weight
+	src.t_class_update()
+	src.t_speed_update()
+	src.t_accuracy_update()
+
+	//if(old.health <= 0)
+	//	cdel(old)
 
 	hardpoints[old.slot] = null
 	update_icon()

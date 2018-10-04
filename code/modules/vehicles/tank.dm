@@ -6,9 +6,8 @@
 
 
 /obj/vehicle/multitile/root/cm_armored/tank
-	//name = "M34A2 Longstreet Modular Multipurpose Tank"
-	name = "M34A2 Longstreet Light Tank"
-	desc = "A giant piece of armor, was made as a budget version of a tank specifically for USCM. Supports installing numerous modules and weapons, allowing technicians to refit tank for any type of operation. Entrance in the back."
+	name = "M34A2 Longstreet Modular Multipurpose Tank"
+	desc = "A giant piece of armor, was made as a budget version of a tank specifically for USCM. Supports installing different types of modules and weapons, allowing technicians to refit tank for any type of operation. Has inbuilt M75 Smoke Deploy System. Entrance in the back."
 
 	icon = 'icons/obj/tank_NS.dmi'
 	icon_state = "tank_base"
@@ -51,7 +50,6 @@
 
 	R.load_hitboxes(dimensions, root_pos)
 	R.load_entrance_marker(entr_mark)
-
 	R.update_icon()
 
 	R.camera = new /obj/machinery/camera(R)
@@ -110,12 +108,12 @@
 	deactivate_all_hardpoints()
 
 	if(driver)
-		to_chat(driver, "<span class='danger'>You dismount to as the smoke and flames start to choke you!</span>")
+		to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle and dismount!</span>")
 		driver.Move(entrance.loc)
 		driver.unset_interaction()
 		driver = null
 	else if(gunner)
-		to_chat(gunner, "<span class='danger'>You dismount to as the smoke and flames start to choke you!</span>")
+		to_chat(gunner, "<span class='danger'>Flame and smoke near you force you to dismount!</span>")
 		gunner.Move(entrance.loc)
 		gunner.unset_interaction()
 		gunner = null
