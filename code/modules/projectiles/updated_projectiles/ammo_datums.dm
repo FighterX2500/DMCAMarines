@@ -740,7 +740,7 @@
 /datum/ammo/bullet/smartgun/New()
 	..()
 	accurate_range = config.short_shell_range
-	damage = config.lmed_hit_damage
+	damage = config.low_hit_damage
 	penetration= config.low_armor_penetration
 
 /datum/ammo/bullet/smartgun/lethal
