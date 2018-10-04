@@ -199,8 +199,6 @@
 	if(!isliving(AM))
 		return FALSE
 	var/mob/living/L = AM
-	if(isSynth(L) && L.stat == DEAD) //no meta hiding synthetic bodies
-		return FALSE
 	if(L.buckled)
 		return FALSE //to stop xeno from pulling marines on roller beds.
 	/*if(ishuman(L) && L.stat == DEAD)
