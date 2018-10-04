@@ -135,8 +135,8 @@
 	if(caste == "Queen")
 		switch(upgrade)
 			if(0) name = "[name_prefix]Queen"			 //Young
-			if(1) name = "[name_prefix]Elite Queen"	 //Mature
-			if(2) name = "[name_prefix]Elite Empress"	 //Elite
+			if(1) name = "[name_prefix]Elder Queen"	 //Mature
+			if(2) name = "[name_prefix]Elder Empress"	 //Elite=Elder
 			if(3) name = "[name_prefix]Ancient Empress" //Ancient
 	else if(caste == "Predalien") name = "[name_prefix][name] ([nicknumber])"
 	else name = "[name_prefix][upgrade_name] [caste] ([nicknumber])"
