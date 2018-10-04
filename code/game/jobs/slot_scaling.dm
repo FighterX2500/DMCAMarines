@@ -9,7 +9,7 @@
 // https://docs.google.com/spreadsheets/d/1PlnIwKhq-bVWWFPoBrzWYh1mWK04pyBSQUtUMEw3qSw/edit#gid=1290768907
 
 /proc/job_slot_formula(var/marine_count,var/factor,var/c,var/min,var/max)
-	return round(Clamp((marine_count/factor)+c, min, max))
+	return round(CLAMP((marine_count/factor)+c, min, max))
 
 /proc/mp_slot_formula(var/playercount)
 	return job_slot_formula(playercount,25,2,4,8)
