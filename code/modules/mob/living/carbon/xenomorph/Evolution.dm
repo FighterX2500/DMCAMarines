@@ -204,7 +204,7 @@
 
 	visible_message("<span class='xenonotice'>\The [src] begins to twist and contort.</span>", \
 	"<span class='xenonotice'>You begin to twist and contort.</span>")
-	do_jitter_animation(1000)
+	xeno_jitter(25)
 	if(do_after(src, 25, FALSE, 5, BUSY_ICON_HOSTILE))
 		if(!isturf(loc)) //cdel'd or moved into something
 			return
@@ -268,7 +268,6 @@
 		if(hive.living_xeno_queen && hive.living_xeno_queen.observed_xeno == src)
 			hive.living_xeno_queen.set_queen_overwatch(new_xeno)
 		cdel(src)
-		spawn(0)
-			new_xeno.do_jitter_animation(1000)
+		new_xeno.xeno_jitter(25)
 	else
 		to_chat(src, "<span class='warning'>You quiver, but nothing happens. Hold still while evolving.</span>")
