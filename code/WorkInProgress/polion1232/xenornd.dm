@@ -184,6 +184,7 @@
 					res_in_prog = 0
 					screen = 1.0
 					errored = 0
+					files.CheckAvail()
 					updateUsrDialog()
 				break
 	else if(href_list["modify"])
@@ -352,10 +353,10 @@
 				dat += "Description: [avail.desc]<BR><BR>"
 
 		if(1.2)
-			dat += "Current Research Level:<BR><BR>"
+			dat += "Current Research Level:<HR><HR>"
 			for(var/datum/marineTech/known in files.known_tech)
 				dat += "Name: [known.name]<BR>"
-				dat += "Description: [known.desc]<BR><BR>"
+				dat += "Description: [known.resdesc]<BR><HR>"
 			dat += "<HR><A href='?src=\ref[src];menu=1.0'>Main Menu</A>"
 
 		if(1.3) //R&D console settings
