@@ -74,8 +74,9 @@
 			return
 		if(!istype(O, /obj/item/clothing/suit/storage/marine))
 			if(!istype(O, /obj/item/clothing/head/helmet/marine))
-				to_chat(user, "\red Can't do anything with that!")
-				return
+				if(!istype(O, /obj/item/clothing/shoes/marine))
+					to_chat(user, "\red Can't do anything with that!")
+					return
 		busy = 1
 		loaded_item = O
 		user.drop_held_item()
