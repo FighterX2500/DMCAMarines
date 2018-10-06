@@ -553,7 +553,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		G.dismantle()
 		var/obj/vehicle/multitile/root/cm_armored/CA = root
 		CA.take_damage_type(10, "blunt", G)
-		playsound(G, 'sound/effects/metal_crash.ogg', 35)
+		if(world.time > lastsound + 10)
+			playsound(G, 'sound/effects/metal_crash.ogg', 35)
+			lastsound = world.time
 	else if (istype(A, /obj/structure/reagent_dispensers/watertank))
 		var/obj/structure/reagent_dispensers/watertank/WT = A
 		WT.visible_message("<span class='danger'>[root] crushes [WT]!</span>")
@@ -574,7 +576,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		WF.visible_message("<span class='danger'>[root] crushes through [WF]!</span>")
 		var/obj/vehicle/multitile/root/cm_armored/CA = root
 		CA.take_damage_type(10, "blunt", WF)
-		playsound(WF, 'sound/effects/metal_crash.ogg', 35)
+		if(world.time > lastsound + 10)
+			playsound(WF, 'sound/effects/metal_crash.ogg', 35)
+			lastsound = world.time
 		cdel(WF)
 	else if (istype(A, /obj/structure/window)) //This definitely is shitty. It is better to refactor this shitcode by making a new variable for "destroyable objects"
 		var/obj/structure/window/WN = A
@@ -714,7 +718,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/obj/machinery/door/airlock/AR = A
 		var/obj/vehicle/multitile/root/cm_armored/CA = root
 		CA.take_damage_type(30, "blunt", AR)
-		playsound(AR, 'sound/effects/metal_crash.ogg', 35)
+		if(world.time > lastsound + 10)
+			playsound(AR, 'sound/effects/metal_crash.ogg', 35)
+			lastsound = world.time
 		AR.visible_message("<span class='danger'>[root] crushes through[AR]!</span>")
 		new /obj/item/stack/sheet/metal(AR.loc, 2)
 		cdel(AR)
@@ -722,7 +728,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/obj/machinery/door/poddoor/almayer/PA = A
 		var/obj/vehicle/multitile/root/cm_armored/CA = root
 		CA.take_damage_type(40, "blunt", PA)
-		playsound(PA, 'sound/effects/metal_crash.ogg', 35)
+		if(world.time > lastsound + 10)
+			playsound(PA, 'sound/effects/metal_crash.ogg', 35)
+			lastsound = world.time
 		PA.visible_message("<span class='danger'>[root] crushes through[PA]!</span>")
 		new /obj/item/stack/sheet/metal(PA.loc, 3)
 		cdel(PA)
@@ -730,7 +738,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/obj/machinery/door/poddoor/almayer/SH = A
 		var/obj/vehicle/multitile/root/cm_armored/CA = root
 		CA.take_damage_type(15, "blunt", SH)
-		playsound(SH, 'sound/effects/metal_crash.ogg', 35)
+		if(world.time > lastsound + 10)
+			playsound(SH, 'sound/effects/metal_crash.ogg', 35)
+			lastsound = world.time
 		SH.visible_message("<span class='danger'>[root] crushes through[SH]!</span>")
 		cdel(SH)
 	else if (istype(A, /obj/structure/ship_ammo))
@@ -795,9 +805,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		WD.visible_message("<span class='danger'>[root] smashes through[WD]!</span>")
 		WD.take_damage(350)
 
-		if(world.time > lastsound + 10)
-			playsound(G, 'sound/effects/metal_crash.ogg', 35)
-			lastsound = world.time
 /obj/vehicle/multitile/hitbox/cm_armored/Move(var/atom/A, var/direction)
 
 	for(var/mob/living/M in get_turf(src))
