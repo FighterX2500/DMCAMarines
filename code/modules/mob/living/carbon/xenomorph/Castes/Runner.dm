@@ -22,6 +22,8 @@
 	flags_pass = PASSTABLE
 	attack_delay = -4
 	tier = 1
+	t_squishy = 1
+	t_fortified = 0
 	upgrade = 0
 	pixel_x = -16  //Needed for 2x2
 	old_x = -16

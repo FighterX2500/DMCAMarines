@@ -16,6 +16,8 @@
 	upgrade_threshold = 250
 	plasma_gain = 18
 	tier = 1
+	t_squishy = 1
+	t_fortified = 0
 	upgrade = 0
 	speed = -0.8
 	pixel_x = -12

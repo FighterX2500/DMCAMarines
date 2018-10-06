@@ -50,8 +50,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	//Below are vars that can be affected by hardpoints, generally used as ratios or decisecond timers
 
-	move_delay = 30 //default 3 seconds per tile
-	speed
+	move_delay = 70 //treads-less tank barely moves. Fix those damn treads, marine!
+	var/speed
 
 	var/active_hp
 	var/t_weight = 0
@@ -63,13 +63,13 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	var/list/dmg_distribs = list()
 
 	//weight buffs/debuffs
-	/var/list/w_ratios = list(
+	var/list/w_ratios = list(
 		"w_prim_acc" = 1.0,
 		"w_secd_acc" = 1.0,
 		"w_supp_acc" = 1.0)
 
 	//Changes cooldowns and accuracies
-	/var/list/misc_ratios = list(
+	var/list/misc_ratios = list(
 		"OD_buff" = 1.0,
 		"prim_acc" = 1.0,
 		"secd_acc" = 1.0,
@@ -87,11 +87,11 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	//Changes how much damage the tank takes
 	var/list/dmg_multipliers = list(
 		"all" = 1.0, //for when you want to make it invincible
-		"acid" = 1.0,
+		"acid" = 1.1,
 		"slash" = 1.0,
-		"bullet" = 1.0,
+		"bullet" = 0.67,
 		"explosive" = 1.0,
-		"blunt" = 1.0,
+		"blunt" = 0.9,
 		"abstract" = 1.0) //abstract for when you just want to hurt it
 
 	//Decisecond cooldowns for the slots
@@ -129,7 +129,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/root/cm_armored/proc/remove_all_players()
 	return
 
-/obj/vehicle/multitile/root/cm_armored/proc/t_speed_update()	//proc to calculate new speed depending on current weight and OD present/absence
+/obj/vehicle/multitile/root/cm_armored/proc/t_speed_update()	//proc to calculate new speed depending on current weight and OD presence/absence
 	//speed_min = 3 - only treads installed
 	//speed_max = 20 - heaviest possible build
 	//speed_delay = 30 - broken treads (OD won't affect speed with broken speed anymore)
@@ -139,36 +139,36 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 				if(8)
 					speed = 3.5
 				if(9)
-					speed = 4.2
+					src.speed = 4.2
 				if(10)
-					speed = 5
+					src.speed = 5
 				else
-					speed = 3
+					src.speed = 3
 		if(T_MEDIUM)
 			switch(t_weight)
 				if(11)
-					speed = 6
+					src.speed = 6
 				if(12)
-					speed = 7
+					src.speed = 7
 				if(13)
-					speed = 7.5
+					src.speed = 7.5
 				if(14)
-					speed = 8
+					src.speed = 8
 				if(15)
-					speed = 9
+					src.speed = 9
 		if(T_HEAVY)
 			switch(t_weight)
 				if(16)
-					speed = 14
+					src.speed = 14
 				if(17)
-					speed = 16
+					src.speed = 16
 				if(18)
-					speed = 17
+					src.speed = 17
 				else
-					speed = 20
+					src.speed = 20
 
 /obj/vehicle/multitile/root/cm_armored/proc/t_accuracy_update()
-		switch (t_class)
+	switch(t_class)
 		if(T_LIGHT)
 			switch(t_weight)
 				if(8)
@@ -214,7 +214,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/root/cm_armored/relaymove(var/mob/user, var/direction)
 	if(world.time < next_move) return
 	if(hardpoints[HDPT_TREADS] && hardpoints[HDPT_TREADS].health > 0)
-		next_move = world.time + speed * misc_ratios.("OD_buff")
+		next_move = world.time + src.speed * misc_ratios.["OD_buff"]
 	else
 		next_move = world.time + move_delay
 
@@ -226,7 +226,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	if(world.time < next_move && !force) return
 
 	if(hardpoints[HDPT_TREADS] && hardpoints[HDPT_TREADS].health > 0)
-		next_move = world.time + speed * misc_ratios.("OD_buff") * (force ? 2 : 3) //3 for a 3 point turn, idk
+		next_move = world.time + src.speed * misc_ratios.["OD_buff"] * (force ? 2 : 3) //3 for a 3 point turn, idk
 	else
 		next_move = world.time + move_delay * (force ? 2 : 3)
 
@@ -312,20 +312,18 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	F = get_step(F, right_dir)
 	F = get_step(F, right_dir)
 
-
-
 	var/obj/item/ammo_magazine/tank/tank_slauncher/A = new
 	smoke_next_use = world.time + 150
 	var/obj/item/projectile/P = new
 	P.generate_bullet(new A.default_ammo)
 	P.fire_at(F, src, SML, 6, P.ammo.shell_speed)
-	playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire.ogg', 60, 1)
+	playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire2.ogg', 60, 1)
 	smoke_ammo_current--
 	sleep (10)
 	var/obj/item/projectile/G = new
 	G.generate_bullet(new A.default_ammo)
 	G.fire_at(S, src, SML, 6, G.ammo.shell_speed)
-	playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire.ogg', 60, 1)
+	playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire2.ogg', 60, 1)
 	smoke_ammo_current--
 
 	if(smoke_ammo_current <= 0)
@@ -544,6 +542,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	if(remove_person)
 		handle_all_modules_broken()
 
+	t_speed_update()
+	t_accuracy_update()
 	update_icon()
 
 /obj/vehicle/multitile/root/cm_armored/proc/t_class_update()
@@ -612,25 +612,41 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //Tramplin' time, but other than that identical
 /obj/vehicle/multitile/hitbox/cm_armored/Bump(var/atom/A)
 	. = ..()
+	var/obj/vehicle/multitile/root/cm_armored/CA = root
 	if(isliving(A))
-		if (isXenoDefender(A))
-			var/mob/living/carbon/Xenomorph/X = A
-			if (X.fortify)
-				return
-		if (isXenoQueen(A) || isXenoCrusher (A))
-			return
 		var/mob/living/M = A
-		if(M.lying==0 && !isXenoLarva(M))
+		if(isXeno(M)) && !isXenoLarva(M))
+			switch(t_class)
+				if(T_LIGHT)
+					if(M.t_squishy)
+						step_away(M,root,1,0)
+						M.KnockDown(5)
+						M.apply_damage(7 + rand(0, 5), BRUTE)
+						return
+					if(M.t_fortified)
+						return
+					step_away(M,root,1,0)
+				if(T_MEDIUM)
+					if(M.t_fortified)
+						return
+					step_away(M,root,0,0)
+					M.KnockDown(5)
+					M.apply_damage(7 + rand(0, 5), BRUTE)
+					return
+				if(T_HEAVY)
+					if(M.t_squishy)
+
+
+
+
 			step_away(M,root,0,0)
 			M.KnockDown(5)
 			M.apply_damage(7 + rand(0, 5), BRUTE)
 			return
-		M.KnockDown(5)
 		if (!isXeno(M))
 			M.apply_damage(5 + rand(0, 10), BRUTE)
 		M.apply_damage(10 + rand(0, 10), BRUTE)
 		M.visible_message("<span class='danger'>[src] runs over [M]!</span>", "<span class='danger'>[src] runs you over! Get out of the way!</span>")
-		var/obj/vehicle/multitile/root/cm_armored/CA = root
 		var/list/slots = CA.get_activatable_hardpoints()
 		for(var/slot in slots)
 			var/obj/item/hardpoint/H = CA.hardpoints[slot]
@@ -641,12 +657,24 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		F.visible_message("<span class='danger'>[root] smashes through [F]!</span>")
 		F.health = 0
 		F.healthcheck()
-	else if(istype(A, /turf/closed/wall))
+	else if(istype(A, /turf/closed/wall) && !istype(A, /turf/closed/wall/resin))
 		var/turf/closed/wall/W = A
 		W.take_damage(30)
-		var/obj/vehicle/multitile/root/cm_armored/CA = root
-		CA.take_damage_type(10, "blunt", W)
+		CA.take_damage_type(15, "blunt", W)
 		playsound(W, 'sound/effects/metal_crash.ogg', 35)
+		W.visible_message("<span class='danger'>[root] crushes into [W]!</span>")
+	else if(istype(A, /turf/closed/wall/resin) && !istype(A, /turf/closed/wall/resin/thick))
+		var/turf/closed/wall/RW = A
+		RW.take_damage(250)
+		CA.take_damage_type(10, "blunt", RW)
+		playsound(RW, 'sound/effects/alien_resin_break1.ogg', 35)
+		RW.visible_message("<span class='danger'>[root] crushes through [RW]!</span>")
+	else if(istype(A, /turf/closed/wall/resin/thick))
+		var/turf/closed/wall/RT = A
+		RT.take_damage(500)
+		CA.take_damage_type(20, "blunt", RT)
+		playsound(RT, 'sound/effects/alien_resin_break2.ogg', 20)
+		RT.visible_message("<span class='danger'>[root] crushes through [RT]!</span>")
 	else if(istype(A, /obj/structure/mineral_door/resin))
 		var/obj/structure/mineral_door/resin/R = A
 		R.health = 0
@@ -662,8 +690,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	else if(istype(A, /obj/structure/girder))
 		var/obj/structure/girder/G = A
 		G.dismantle()
-		var/obj/vehicle/multitile/root/cm_armored/CA = root
-		CA.take_damage_type(10, "blunt", G)
+		CA.take_damage_type(15, "blunt", G)
 		playsound(G, 'sound/effects/metal_crash.ogg', 35)
 	else if (istype(A, /obj/structure/reagent_dispensers/watertank))
 		var/obj/structure/reagent_dispensers/watertank/WT = A
@@ -683,7 +710,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		new /obj/item/stack/sheet/metal(WF.loc, 2)
 		new /obj/item/stack/sheet/glass(WF.loc, 2)
 		WF.visible_message("<span class='danger'>[root] crushes through [WF]!</span>")
-		var/obj/vehicle/multitile/root/cm_armored/CA = root
 		CA.take_damage_type(10, "blunt", WF)
 		playsound(WF, 'sound/effects/metal_crash.ogg', 35)
 		cdel(WF)
@@ -707,16 +733,26 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		AD.visible_message("<span class='danger'>[root] crushes [AD]!</span>")
 		new /obj/item/stack/sheet/plasteel(AD.loc, 2)
 		cdel(AD)
+	else if (istype(A, /obj/machinery/biogenerator))
+		var/obj/machinery/biogenerator/BI = A
+		BI.visible_message("<span class='danger'>[root] crushes [BI]!</span>")
+		new /obj/item/stack/sheet/metal(BI.loc, 2)
+		cdel(BI)
+	else if (istype(A, /obj/machinery/seed_extractor))
+		var/obj/machinery/seed_extractor/SE = A
+		SE.visible_message("<span class='danger'>[root] crushes [SE]!</span>")
+		new /obj/item/stack/sheet/metal(SE.loc, 2)
+		cdel(SE)
 	else if (istype(A, /obj/machinery/chem_dispenser))
 		var/obj/machinery/chem_dispenser/DS = A
 		DS.visible_message("<span class='danger'>[root] crushes [DS]!</span>")
 		new /obj/item/stack/sheet/metal(DS.loc, 2)
 		cdel(DS)
-	else if (istype(A,	/obj/machinery/smartfridge/chemistry))
-		var	/obj/machinery/smartfridge/chemistry/CH = A
-		CH.visible_message("<span class='danger'>[root] crushes [CH]!</span>")
-		new /obj/item/stack/sheet/metal(CH.loc, 2)
-		cdel(CH)
+	else if (istype(A,	/obj/machinery/smartfridge))
+		var	/obj/machinery/smartfridge/chemistry/SF = A
+		SF.visible_message("<span class='danger'>[root] crushes [SF]!</span>")
+		new /obj/item/stack/sheet/metal(SF.loc, 2)
+		cdel(SF)
 	else if (istype(A, /obj/machinery/photocopier))
 		var/obj/machinery/photocopier/PC = A
 		PC.visible_message("<span class='danger'>[root] crushes [PC]!</span>")
@@ -810,12 +846,18 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/obj/machinery/m56d_post/MD = A
 		new /obj/item/device/m56d_post(MD.loc)
 		cdel(MD)
-	else if (istype(A, /obj/machinery/m56d_hmg) && !istype(A, /obj/machinery/m56d_hmg/mg_turret))
+	else if (istype(A, /obj/machinery/m56d_hmg))
 		var/obj/machinery/m56d_hmg/MG = A
 		var/obj/item/device/m56d_gun/HMG = new(MG.loc) //Here we generate our disassembled mg.
 		new /obj/item/device/m56d_post(MG.loc)
 		HMG.rounds = MG.rounds //Inherent the amount of ammo we had.
 		cdel(MG)
+	else if (istype(A, obj/structure/dropship_equipment/mg_holder))
+		obj/structure/dropship_equipment/mg_holder/MGH = A
+		var/obj/item/device/m56d_gun/HMG = new(MGH.loc) //Here we generate our disassembled mg.
+		new /obj/item/device/m56d_post(MGH.loc)
+		HMG.rounds = MGH.rounds //Inherent the amount of ammo we had.
+		cdel(MGH)
 	else if (istype(A, /obj/structure/mortar))
 		var/obj/structure/mortar/MR = A
 		var/turf/T = get_turf(MR)
@@ -823,24 +865,21 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		cdel(MR)
 	else if(istype(A, /obj/machinery/door/airlock))
 		var/obj/machinery/door/airlock/AR = A
-		var/obj/vehicle/multitile/root/cm_armored/CA = root
-		CA.take_damage_type(30, "blunt", AR)
+		CA.take_damage_type(50, "blunt", AR)
 		playsound(AR, 'sound/effects/metal_crash.ogg', 35)
 		AR.visible_message("<span class='danger'>[root] crushes through[AR]!</span>")
 		new /obj/item/stack/sheet/metal(AR.loc, 2)
 		cdel(AR)
 	else if(istype(A, /obj/machinery/door/poddoor/almayer))
 		var/obj/machinery/door/poddoor/almayer/PA = A
-		var/obj/vehicle/multitile/root/cm_armored/CA = root
-		CA.take_damage_type(40, "blunt", PA)
+		CA.take_damage_type(60, "blunt", PA)
 		playsound(PA, 'sound/effects/metal_crash.ogg', 35)
 		PA.visible_message("<span class='danger'>[root] crushes through[PA]!</span>")
 		new /obj/item/stack/sheet/metal(PA.loc, 3)
 		cdel(PA)
 	else if(istype(A, /obj/machinery/door/poddoor/shutters) && !istype(A, /obj/machinery/door/poddoor/shutters/transit) && !istype(A, /obj/machinery/door/poddoor/shutters/almayer/pressure))
 		var/obj/machinery/door/poddoor/almayer/SH = A
-		var/obj/vehicle/multitile/root/cm_armored/CA = root
-		CA.take_damage_type(15, "blunt", SH)
+		CA.take_damage_type(30, "blunt", SH)
 		playsound(SH, 'sound/effects/metal_crash.ogg', 35)
 		SH.visible_message("<span class='danger'>[root] crushes through[SH]!</span>")
 		cdel(SH)
@@ -906,11 +945,21 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		WD.visible_message("<span class='danger'>[root] smashes through[WD]!</span>")
 		WD.take_damage(350)
 
-		health_check()
 /obj/vehicle/multitile/hitbox/cm_armored/Move(var/atom/A, var/direction)
 
 	for(var/mob/living/M in get_turf(src))
 		M.sleeping = 5 //Not 0, they just got driven over by a giant ass whatever and that hurts
+	for(var/obj/effect/alien/egg/Eg in get_turf(src))
+		Eg.Burst(1)
+	for(var/obj/item/clothing/mask/facehugger/FG in get_turf(src))
+		FG.Die()
+	var/obj/vehicle/multitile/root/cm_armored/CA = root
+	for(var/obj/effect/xenomorph/spray/SR in get_turf(src))
+		if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/standard) && CA.hardpoints[HDPT_TREADS].health >= 0)
+			CA.hardpoints[HDPT_TREADS].health -= 45
+		else
+			if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/heavy) && CA.hardpoints[HDPT_TREADS].health >= 0)
+				CA.hardpoints[HDPT_TREADS].health -= 40
 
 	. = ..()
 
@@ -918,6 +967,16 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		for(var/mob/living/M in get_turf(A))
 			//I don't call Bump() otherwise that would encourage trampling for infinite unpunishable damage
 			M.sleeping = 5 //Maintain their lying-down-ness
+		for(var/obj/effect/alien/egg/Eg in get_turf(src))
+			Eg.Burst(1)
+		for(var/obj/item/clothing/mask/facehugger/FG in get_turf(src))
+			FG.Die()
+		for(var/obj/effect/xenomorph/spray/SR in get_turf(src))
+			if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/standard) && CA.hardpoints[HDPT_TREADS].health >= 0)
+				CA.hardpoints[HDPT_TREADS].health -= 45
+			else
+				if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/heavy) && CA.hardpoints[HDPT_TREADS].health >= 0)
+					CA.hardpoints[HDPT_TREADS].health -= 40
 
 /obj/vehicle/multitile/hitbox/cm_armored/Uncrossed(var/atom/movable/A)
 	if(isliving(A))
@@ -986,7 +1045,31 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	var/dam_type = "bullet"
 
-	if(P.ammo.flags_ammo_behavior & AMMO_XENO_ACID) dam_type = "acid"
+	if(P.ammo.flags_ammo_behavior & AMMO_XENO_ACID)
+		dam_type = "acid"
+		take_damage_type(P.damage * (0.75 + P.ammo.penetration/100), dam_type, P.firer)
+		healthcheck()
+		return
+	if(P.ammo.name == "glob of acid")
+		dam_type = "acid"
+		take_damage_type(P.damage * (5 + P.ammo.penetration/100), dam_type, P.firer)
+		healthcheck()
+		return
+	if(P.ammo.name == "anti-armor rocket")
+		dam_type = "explosive"
+		take_damage_type(P.damage * (1.5 + P.ammo.penetration/100), dam_type, P.firer)
+		healthcheck()
+		return
+	if(P.ammo.name == "TOW rocket")
+		dam_type = "explosive"
+		take_damage_type(P.damage * (1.5 + P.ammo.penetration/100), dam_type, P.firer)
+		healthcheck()
+		return
+	if(P.ammo.name == "cannon round")
+		dam_type = "explosive"
+		take_damage_type(P.damage * (2 + P.ammo.penetration/100), dam_type, P.firer)
+		healthcheck()
+		return
 
 	take_damage_type(P.damage * (0.75 + P.ammo.penetration/100), dam_type, P.firer)
 

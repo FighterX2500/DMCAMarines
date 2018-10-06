@@ -33,6 +33,8 @@
 	xeno_explosion_resistance = 2 //no stuns from explosions
 	attack_delay = -2
 	tier = 3
+	t_squishy = 0
+	t_fortified = 0
 	upgrade = 0
 	pixel_x = -16
 	old_x = -16

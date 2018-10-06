@@ -365,13 +365,30 @@
 		if(SP.health > 0)
 			for(var/datum/coords/C in linked_objs)
 				var/turf/T = locate(src.x + C.x_pos, src.y + C.y_pos, src.z + C.z_pos)
-				if(!istype(T, /turf/open/snow)) continue
-				var/turf/open/snow/ST = T
-				if(!ST || !ST.slayer)
-					continue
-				new /obj/item/stack/snow(ST, ST.slayer)
-				ST.slayer = 0
-				ST.update_icon(1, 0)
+				if(istype(T, /turf/open/snow))
+					var/turf/open/snow/ST = T
+					if(ST || !ST.slayer)
+						new /obj/item/stack/snow(ST, ST.slayer)
+						ST.slayer = 0
+						ST.update_icon(1, 0)
+				var/obj/effect/alien/weeds/WE
+				if(locate(/obj/effect/alien/weeds) in T)
+					for(WE in T)
+						WE.Dispose()
+				var/obj/effect/alien/weeds/node/ND
+				if(locate(/obj/effect/alien/weeds/node) in T)
+					for(ND in T)
+						ND.Dispose()
+				var/obj/item/explosive/mine/MN
+				if(locate(/obj/item/explosive/mine) in T)
+					for(MN in T)
+						MN.trigger_explosion()
+				var/obj/effect/alien/resin/trap/TR
+				if(locate(/obj/effect/alien/resin/trap) in T)
+					for(TR in T)
+						TR.Dispose()
+
+
 
 	if(next_sound_play < world.time)
 		playsound(src, 'sound/ambience/tank_driving.ogg', vol = 20, sound_range = 30)

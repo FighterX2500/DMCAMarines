@@ -23,6 +23,8 @@
 	drag_delay = 6 //pulling a big dead xeno is hard
 	var/speed_activated = 0
 	tier = 2
+	t_squishy = 0
+	t_fortified = 0
 	upgrade = 0
 	aura_strength = 1 //Hivelord's aura is not extremely strong, but better than Drones. At the top, it's just a bit above a young Queen. Climbs by 0.5 to 2.5
 	actions = list(

@@ -28,6 +28,8 @@
 	mob_size = MOB_SIZE_BIG
 	drag_delay = 6 //pulling a big dead xeno is hard
 	tier = 3
+	t_squishy = 0
+	t_fortified = 0
 	upgrade = 0
 	aura_strength = 1.5 //Praetorian's aura starts strong. They are the Queen's right hand. Climbs by 1 to 4.5
 	var/sticky_cooldown = 0
