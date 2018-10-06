@@ -421,7 +421,7 @@ WEAPONS
 					/obj/item/explosive/grenade/frag,
 					/obj/item/explosive/grenade/frag
 					)
-	cost = RO_VERY_CHEAP
+	cost = RO_PRICE_VERY_CHEAP
 	containertype = /obj/structure/closet/crate/explosives
 	containername = "explosive M40 HEDP grenades crate (WARNING)"
 	group = "Weapons"
