@@ -775,7 +775,7 @@
 	name = "autocannon bullet"
 	icon_state 	= "redbullet" //Red bullets to indicate friendly fire restriction
 	iff_signal = ACCESS_IFF_MARINE
-	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SKIPS_HUMANS|AMMO_SKIP_BARRICADE
+	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SKIPS_HUMANS
 
 /datum/ammo/bullet/turret/New()
 	..()
@@ -783,18 +783,16 @@
 	accuracy_var_low = config.low_proj_variance
 	accuracy_var_high = config.low_proj_variance
 	max_range = config.short_shell_range
-	damage = config.hlow_hit_damage
-	penetration= config.low_armor_penetration
-	accuracy = -config.min_hit_accuracy
+	damage = config.low_hit_damage
+	penetration= config.mlow_armor_penetration
+	accuracy = -config.low_hit_accuracy
 
 /datum/ammo/bullet/turret/dumb
 	icon_state 	= "bullet"
-	flags_ammo_behavior = AMMO_SKIP_BARRICADE
 	iff_signal = 0
 
 /datum/ammo/bullet/machinegun //Adding this for the MG Nests (~Art)
 	name = "machinegun bullet"
-	flags_ammo_behavior = AMMO_SKIP_BARRICADE
 	icon_state 	= "bullet" // Keeping it bog standard with the turret but allows it to be changed. Had to remove IFF so you have to watch out.
 
 /datum/ammo/bullet/machinegun/New()
@@ -937,7 +935,7 @@
 /datum/ammo/rocket/ltb
 	name = "cannon round"
 	icon_state = "ltb"
-	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET|AMMO_SKIP_BARRICADE
+	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET
 
 /datum/ammo/rocket/ltb/New()
 	..()
@@ -1398,7 +1396,7 @@
 	name = "flame"
 	icon_state = "pulse0"
 	damage_type = BURN
-	flags_ammo_behavior = AMMO_INCENDIARY|AMMO_IGNORE_ARMOR|AMMO_SKIP_BARRICADE
+	flags_ammo_behavior = AMMO_INCENDIARY|AMMO_IGNORE_ARMOR
 
 /datum/ammo/flamethrower/New()
 	..()
