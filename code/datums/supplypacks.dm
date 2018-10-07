@@ -463,14 +463,14 @@ HARDPOINT MODULES (and their ammo)
 	containername = "hardpoint module assembly crate"
 	group = "Hardpoint Modules"
 
-/datum/supply_packs/tank_slauncher
+/*/datum/supply_packs/tank_slauncher
 	name = "Smoke Launcher Assembly (x1)"
 	contains = list(/obj/item/hardpoint/support/smoke_launcher)
 	cost = RO_PRICE_PRICY
 	containertype = /obj/structure/closet/crate/weapon
 	containername = "hardpoint module assembly crate"
 	group = "Hardpoint Modules"
-
+*/
 /datum/supply_packs/weapons_sensor
 	name = "Weapons Sensor Array (x1)"
 	contains = list(/obj/item/hardpoint/support/weapons_sensor)

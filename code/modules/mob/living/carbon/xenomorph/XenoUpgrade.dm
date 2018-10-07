@@ -264,7 +264,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 
 		//SECOND UPGRADE
 		if(2)
-			upgrade_name = "Elite"
+			upgrade_name = "Elder"
 			to_chat(src, "<span class='xenodanger'>You feel a whole lot stronger.</span>")
 			switch(caste)
 				if("Runner")

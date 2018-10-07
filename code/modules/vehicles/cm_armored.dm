@@ -50,7 +50,11 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	move_delay = 30 //default 3 seconds per tile
 
 	var/active_hp
-
+	//var/t_weight = 1
+	var/smoke_ammo_max = 10
+	var/smoke_ammo_current = 0
+	var/smoke_next_use
+	var/obj/item/hardpoint/support/smoke_launcher/SML
 	var/list/dmg_distribs = list()
 
 	//Changes cooldowns and accuracies
@@ -183,6 +187,68 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/mob/living/M = usr
 		M.set_interaction(src)
 
+
+//proc to actually shoot grenades
+/obj/vehicle/multitile/root/cm_armored/proc/smoke_shot()
+
+	if(world.time < smoke_next_use)
+		to_chat(usr, "<span class='warning'>M75 Smoke Deploy System is not ready!</span>")
+		return
+
+	var/turf/F
+	var/turf/S
+	var/right_dir
+	var/left_dir
+	F = get_step(src.loc, src.dir)
+	F = get_step(F, src.dir)
+	F = get_step(F, src.dir)
+	F = get_step(F, src.dir)
+	F = get_step(F, src.dir)
+	left_dir = turn(src.dir, -90)
+	S = get_step(F, left_dir)
+	S = get_step(S, left_dir)
+	right_dir = turn(src.dir, 90)
+	F = get_step(F, right_dir)
+	F = get_step(F, right_dir)
+
+
+
+	var/obj/item/ammo_magazine/tank/tank_slauncher/A = new
+	smoke_next_use = world.time + 150
+	var/obj/item/projectile/P = new
+	P.generate_bullet(new A.default_ammo)
+	P.fire_at(F, src, SML, 6, P.ammo.shell_speed)
+	playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire.ogg', 60, 1)
+	smoke_ammo_current--
+	sleep (10)
+	var/obj/item/projectile/G = new
+	G.generate_bullet(new A.default_ammo)
+	G.fire_at(S, src, SML, 6, G.ammo.shell_speed)
+	playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire.ogg', 60, 1)
+	smoke_ammo_current--
+
+	if(smoke_ammo_current <= 0)
+		to_chat(usr, "<span class='warning'>Ammo depleted. Ejecting empty magazine.</span>")
+		A.Move(entrance.loc)
+		A.current_rounds = 0
+		A.update_icon()
+
+
+//Built in smoke launcher system verb
+/obj/vehicle/multitile/root/cm_armored/verb/smoke_cover()
+	set name = "Activate M75 Smoke Deploy System"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
+	set src in view(0)
+
+	if(smoke_ammo_current)
+		to_chat(usr, "<span class='warning'>You activate M75 Smoke Deploy System!</span>")
+		visible_message("<span class='danger'>You notice two grenades flying in front of the tank!</span>")
+		smoke_shot()
+	else
+		to_chat(usr, "<span class='warning'>Out of ammo! Reload smoke grenades magazine!</span>")
+		return
+
+
 //verb shows only to TCs status update on their tank including: ammo and backup clips in weapons and combined health of all modules showed in %
 /obj/vehicle/multitile/root/cm_armored/verb/tank_status()
 	set name = "Check Vehicle Status"
@@ -230,6 +296,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	to_chat(usr, "<span class='warning'>Vehicle Status:</span><br>")
 	to_chat(usr, "<span class='warning'>Overall vehicle integrity: [tank_health] percent.</span>")
+	to_chat(usr, "<span class='warning'>M75 Smoke Deploy System: [smoke_ammo_current / 2] uses left.</span>")
 	if(!can_use_hp(usr))
 		return
 	if(HP5 == null || HP5.health <= 0)
@@ -511,7 +578,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	else if (istype(A, /obj/structure/window)) //This definitely is shitty. It is better to refactor this shitcode by making a new variable for "destroyable objects"
 		var/obj/structure/window/WN = A
 		WN.visible_message("<span class='danger'>[root] smashes through [WN]!</span>")
-		if(WN.not_damageable)
+		if(!WN.damageable)
 			return
 		WN.health = 0
 		WN.healthcheck(0, 1)
@@ -915,7 +982,17 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	if(istype(O, /obj/item/ammo_magazine)) //Are we trying to reload?
 		var/obj/item/ammo_magazine/AM = O
-		handle_ammomag_attackby(AM, user)
+		if(istype(O, /obj/item/ammo_magazine/tank/tank_slauncher))
+			if(smoke_ammo_current == 0)
+				smoke_ammo_current = 10
+				user.temp_drop_inv_item(O, 0)
+				to_chat(user, "<span class='notice'>You load smoke system magazine into [src].</span>")
+				return
+			else
+				to_chat(user, "<span class='notice'>You can't load new magazine until smoke launcher system automatically unload emptied one.</span>")
+				return
+		else
+			handle_ammomag_attackby(AM, user)
 		return
 
 	if(iswelder(O) || iswrench(O)) //Are we trying to repair stuff?
