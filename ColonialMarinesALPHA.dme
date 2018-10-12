@@ -1471,6 +1471,7 @@
 #include "code\WorkInProgress\computer3\computers\welcome.dm"
 #include "code\WorkInProgress\kilakk\fax.dm"
 #include "code\WorkInProgress\Mini\atmos_control.dm"
+#include "code\WorkInProgress\polion1232\aliencontainment.dm"
 #include "code\WorkInProgress\polion1232\autopsys.dm"
 #include "code\WorkInProgress\polion1232\dissector.dm"
 #include "code\WorkInProgress\polion1232\modifyer.dm"
