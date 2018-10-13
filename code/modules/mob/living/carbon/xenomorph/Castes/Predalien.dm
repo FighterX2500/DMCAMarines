@@ -17,8 +17,6 @@
 	tacklemin = 6
 	tacklemax = 10
 	tackle_chance = 80
-	t_squishy = 0
-	t_fortified = 0
 
 	wall_smash = TRUE
 	is_intelligent = TRUE

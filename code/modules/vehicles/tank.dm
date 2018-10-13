@@ -6,7 +6,7 @@
 
 
 /obj/vehicle/multitile/root/cm_armored/tank
-	name = "M34A2 Longstreet Modular Multipurpose Tank"
+	name = "M34A2 \"Longstreet\" Modular Multipurpose Tank"
 	desc = "A giant piece of armor, was made as a budget version of a tank specifically for USCM. Supports installing different types of modules and weapons, allowing technicians to refit tank for any type of operation. Has inbuilt M75 Smoke Deploy System. Entrance in the back."
 
 	icon = 'icons/obj/tank_NS.dmi'
@@ -18,7 +18,7 @@
 	var/mob/driver
 	var/mob/swap_seat	//this is a temp seat for switching seats when both TCs are in tank
 
-	var/obj/machinery/camera/camera = null	//Yay! Working camera in the tank! IMPORTANT! If you give hostile faction tank, remove tank's camera in via VV.
+	var/obj/machinery/camera/camera = null	//Yay! Working camera in the tank!
 
 	var/occupant_exiting = 0
 	var/next_sound_play = 0
@@ -103,20 +103,76 @@
 
 	del(src)
 
+
+/obj/effect/multitile_spawner/cm_armored/tank/upp/New()
+
+	var/obj/vehicle/multitile/root/cm_armored/tank/R = new(src.loc)
+	R.dir = EAST
+
+	R.name = "Type 91 \"Wolverine\" Main Battle Tank"
+	R.desc = "Watch out! It's UPP main battle tank! Has inbuilt Type 21 \"Zavesa\" smoke cover system. Entrance in the back."
+
+	var/datum/coords/dimensions = new
+	dimensions.x_pos = width
+	dimensions.y_pos = height
+	var/datum/coords/root_pos = new
+	root_pos.x_pos = 1
+	root_pos.y_pos = 1
+
+	var/datum/coords/entr_mark = new
+	entr_mark.x_pos = -2
+	entr_mark.y_pos = 0
+
+	R.load_hitboxes(dimensions, root_pos)
+	R.load_entrance_marker(entr_mark)
+
+	//Manually adding those hardpoints
+	R.add_hardpoint(new /obj/item/hardpoint/primary/cannon/upp, R.hardpoints[HDPT_PRIMARY])
+	R.add_hardpoint(new /obj/item/hardpoint/secondary/m56cupola/upp, R.hardpoints[HDPT_SECDGUN])
+	R.add_hardpoint(new /obj/item/hardpoint/support/artillery_module/upp, R.hardpoints[HDPT_SUPPORT])
+	R.add_hardpoint(new /obj/item/hardpoint/armor/ballistic/upp, R.hardpoints[HDPT_ARMOR])
+	R.add_hardpoint(new /obj/item/hardpoint/treads/standard/upp, R.hardpoints[HDPT_TREADS])
+	R.update_damage_distribs()
+
+	R.color = "#c2b678"
+	R.healthcheck()
+
+	del(src)
+
 //For the tank, start forcing people out if everything is broken
 /obj/vehicle/multitile/root/cm_armored/tank/handle_all_modules_broken()
 	deactivate_all_hardpoints()
 
-	if(driver)
-		to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle and dismount!</span>")
-		driver.Move(entrance.loc)
-		driver.unset_interaction()
-		driver = null
-	else if(gunner)
-		to_chat(gunner, "<span class='danger'>Flame and smoke near you force you to dismount!</span>")
+	var/turf/closed/T
+	T in entrance.loc
+	to_chat(global, "<span class='danger'>entrance turf check: [T.name]</span>")
+	if(istype(T))
+		T = get_new_exit_point()
+		to_chat(global, "<span class='danger'>entrance turf check: [T.name]</span>")
+		if(!istype(T))
+			to_chat(global, "<span class='danger'>New Exits turf is not closed type, [T.name]</span>")
+			if(gunner)
+				gunner.Move(T.loc)
+				to_chat(gunner, "<span class='danger'>You cannot breath in all the smoke inside the vehicle and back hatch is blocked, so you get out through an auxiliary top hatch and jump off the tank!</span>")
+			if(driver)
+				driver.Move(T.loc)
+				to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle and back hatch is blocked, so you get out through an auxiliary top hatch and jump off the tank!</span>")
+		else
+			to_chat(global, "<span class='danger'>New Exit's turf is closed type, [T.name]</span>")
+			to_chat(gunner, "<span class='danger'>You cannot breath in all the smoke inside the vehicle, but the back hatch is blocked!</span>")
+			to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle, but the back hatch is blocked!</span>")
+			return
+	else
+		to_chat(global, "<span class='danger'>Turf at entrance is not closed type, [T.name]</span>")
+		to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle so you dismount!</span>")
 		gunner.Move(entrance.loc)
-		gunner.unset_interaction()
-		gunner = null
+		to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle so you dismount!</span>")
+		driver.Move(entrance.loc)
+
+	gunner.unset_interaction()
+	gunner = null
+	driver.unset_interaction()
+	driver = null
 	swap_seat = null
 
 /obj/vehicle/multitile/root/cm_armored/tank/remove_all_players()
@@ -197,10 +253,6 @@
 				gunner = driver
 				driver = swap_seat
 				return
-
-			//to_chat(usr, "<span class='notice'>There's already someone in the other seat.</span>")
-			//return
-
 		to_chat(usr, "<span class='notice'>You start getting into the other seat.</span>")
 
 		sleep(30)
@@ -256,7 +308,7 @@
 //Two seats, gunner and driver
 //Must have the skills to do so
 /obj/vehicle/multitile/root/cm_armored/tank/handle_player_entrance(var/mob/M)
-
+	var/loc_check = M.loc
 	var/slot = input("Select a seat") in list("Driver", "Gunner")
 
 	if(!M || M.client == null) return
@@ -280,7 +332,7 @@
 				to_chat(M, "<span class='notice'>Something interrupted you while getting in.</span>")
 				return
 
-			if(M.loc != entrance.loc)
+			if(M.loc != loc_check)
 				to_chat(M, "<span class='notice'>You stop getting in.</span>")
 				return
 
@@ -292,7 +344,10 @@
 					I.zoom() // cancel zoom.
 			driver = M
 			M.loc = src
-			to_chat(M, "<span class='notice'>You enter the driver's seat.</span>")
+			if(loc_check == entrance.loc)
+				to_chat(M, "<span class='notice'>You enter the driver's seat.</span>")
+			else
+				to_chat(M, "<span class='notice'>You climb onto the tank and enter the driver's seat through an auxiliary top hatchet.</span>")
 			M.set_interaction(src)
 			return
 
@@ -306,7 +361,7 @@
 				to_chat(M, "<span class='notice'>Something interrupted you while getting in.</span>")
 				return
 
-			if(M.loc != entrance.loc)
+			if(M.loc != loc_check)
 				to_chat(M, "<span class='notice'>You stop getting in.</span>")
 				return
 
@@ -320,7 +375,10 @@
 					I.zoom() // cancel zoom.
 			gunner = M
 			M.loc = src
-			to_chat(M, "<span class='notice'>You enter the gunner's seat.</span>")
+			if(loc_check == entrance.loc)
+				to_chat(M, "<span class='notice'>You enter the gunner's seat.</span>")
+			else
+				to_chat(M, "<span class='notice'>You climb onto the tank and enter the gunner's seat through an auxiliary top hatchet.</span>")
 			M.set_interaction(src)
 
 			return
@@ -342,13 +400,19 @@
 	sleep(50)
 	occupant_exiting = 0
 
-	if(!M.Move(entrance.loc))
+	//if(!M.Move(entrance.loc))
+	var/turf/closed/T = entrance.loc
+	if(istype(T))
 		to_chat(M, "<span class='notice'>Something is blocking you from exiting.</span>")
 	else
 		if(M == gunner)
 			deactivate_all_hardpoints()
+			M.Move(entrance.loc)
 			gunner = null
-		else if(M == driver) driver = null
+		else
+			if(M == driver)
+				M.Move(entrance.loc)
+				driver = null
 		M.unset_interaction()
 		to_chat(M, "<span class='notice'>You climb out of [src].</span>")
 
@@ -375,10 +439,10 @@
 				if(locate(/obj/effect/alien/weeds) in T)
 					for(WE in T)
 						WE.Dispose()
-				var/obj/effect/alien/weeds/node/ND
-				if(locate(/obj/effect/alien/weeds/node) in T)
-					for(ND in T)
-						ND.Dispose()
+				//var/obj/effect/alien/weeds/node/ND
+				//if(locate(/obj/effect/alien/weeds/node) in T)
+				//	for(ND in T)
+				//		ND.Dispose()
 				var/obj/item/explosive/mine/MN
 				if(locate(/obj/item/explosive/mine) in T)
 					for(MN in T)

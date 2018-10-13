@@ -25,8 +25,6 @@
 	caste_desc = "Gross!"
 	mob_size = MOB_SIZE_BIG
 	tier = 3
-	t_squishy = 0
-	t_fortified = 0
 	upgrade = 0
 	gib_chance = 100
 	drag_delay = 6 //pulling a big dead xeno is hard

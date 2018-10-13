@@ -48,7 +48,6 @@
 	drag_delay = 6 //pulling a big dead xeno is hard
 	armor_deflection = 45
 	tier = 0 //Queen doesn't count towards population limit.
-	t_squishy = 0
 	t_fortified = 1
 	upgrade = 0
 	aura_strength = 2 //The Queen's aura is strong and stays so, and gets devastating late game. Climbs by 1 to 5

@@ -1278,3 +1278,168 @@
 			</html>
 			"}
 
+/obj/item/book/manual/tank_manual
+
+	name = "USCM Tank Guide For Dummies: How To Tank"
+	icon_state = "bookTank"
+	author = "USCM Tech Division"
+	title = "USCM M34A2 \"Longstreet\" Modular Multipurpose Tank Manual"
+
+	dat = {"<html>
+				<head>
+				<style>
+				h1 {font-size: 18px; margin: 15px 0px 5px;}
+				h2 {font-size: 15px; margin: 15px 0px 5px;}
+				li {margin: 2px 0px 2px 15px;}
+				ul {margin: 5px; padding: 0px;}
+				ol {margin: 5px; padding: 0px 15px;}
+				body {font-size: 13px; font-family: Verdana;}
+				</style>
+				</head>
+				<body>
+
+				<h1><a name="Contents">Contents</a></h1>
+				<ol>
+					<li><a href="#Foreword">Author's Foreword</a></li>
+					<li><a href="#General">General Information</a></li>
+					<li><a href="#Primary">Primary Weaponry</a></li>
+					<li><a href="#Secondary">Secondary Weaponry</a></li>
+					<li><a href="#Support">Support Modules</a></li>
+					<li><a href="#Armor">Tank Armor</a></li>
+					<li><a href="#Treads">Treads</a></li>
+					<li><a href="#General_ru">ОбщаЯ ИнформациЯ</a></li>
+					<li><a href="#Primary_ru">Основные Оружейные Модули</a></li>
+					<li><a href="#Secondary_ru">Дополнительные Оружейные Модули</a></li>
+					<li><a href="#Support_ru">Вспомогательные Модули</a></li>
+					<li><a href="#Armor_ru">ТанковаЯ БронЯ</a></li>
+					<li><a href="#Treads_ru">Траки</a></li>
+				</ol><br>
+
+				<h1><a name="Foreword"><U><B>HOW TO BE A GOOD TANK CREW</B></U></a></h1><BR>
+				<I>Or: What All These "M"'s mean?</I><BR><BR>
+
+				This Technical Manual supposed to help rookie Tank Crew members (TC from here) to get the basics of M34A2
+				"Longstreet" Modular Multipurpose Tank. In USCM Armor School you were trained on training M29 "Junior"
+				with standard equipment loadouts that instructors chose for you. That's not how it works during actual sector patrolling
+				and combat operations. You must decide what will you install on your combat vehicle before each operation, considering
+				mission type, intel on possible hostiles and environment conditions in AO. This manual will help you to make a choice
+				of equipment for your first mission (hopefully, not last, we believe in you).<BR><BR>
+
+				Это Техническое Руководство послужит помощником новеньким танкистам (далее - ТС) в постигании азов работы на
+				М34А2 "Longstreet" Модульном Многоцелевом Танке. Во времЯ учебы в Бронетанковом Училище USCM вы тренировались на
+				учебном М29 "Junior" со стандартными наборами оборудованиЯ, которые определЯлись вашими инструкторами. В реальных
+				условиЯх ведениЯ патрульной службы в секторе и боевых операциЯх все обстоит несколко иначе. Именно вы должны выбирать
+				оборудование длЯ установки на боевую технику перед каждой операцией, учитываЯ тип операции, данные о возможном противнике
+				и условиЯх окружающей среды в зоне операции. Это техническое руководство поможет вам с выбором оборудованиЯ длЯ вашей
+				первой миссии (надеемсЯ, не последней).<BR><BR>
+
+
+				<h1><a name="General"><B>General Information</B></a></h1>
+				<I>Important things you need to know.</I><BR><BR>
+				<li>First of all, you need to know that M34A2 has MT45 "Roadhog" engine. It's powerful enough to get tank itself to desired location quite quickly
+				(provided you installed treads). That's about it. As soon as you start installing modules on hardpoints, you will soon notice decrease in speed.
+				Which means, you will have to choose between speed, armor and firepower. Depending on tank weight, you can loosely assign tank to Light, Medium or
+				Heavy class. Heavy class would be slowest, obviously, while Light class tank is still quite fast going. However, weight of the tank affects not only speed,
+				it also affects accuracy of installed weapons a small bit. Heavy class tank, due it's weight, will provide better stability while shooting, which, theoretically,
+				will result in slightly more accurate shooting. So you better keep that in mind too, when you make your choice. To get rid of big numbers, we introduce to you
+				"Relative Weight" system. Each module has "Relative Weight" (RW) which you will use to calculate your tank's loadout weight. Tank classes division goes: up to 10 RW
+				is Light class, 11 RW to 15 RW is Medium class and 16+ RW is Heavy class.</li>
+				<li>M34A2 has improved weapon loading system, which lacks constructional defect of previous versions that led to inability to unload last magazine. Also new system
+				will automatically unload all loaded in it magazines, including the one in the weapon, while you will uninstall weaponry.</li>
+				<li>"Longstreet" also has inbuilt M75 Smoke Deploy System. Upon activation it shoots two smoke grenades in front of tank, effectively covering tank from enemy sight in
+				direction tank looks toward to. Both TCs have access to M75.</li>
+				<li>Engineers managed to slightly increase interior space, which allowed to swap seats even with both TCs in tank.</li>
+				<li>Also they installed sensors and new interface, that shows tank status on demand, including: all modules overall integrity in per cents, ammo counts in primary and
+				secondary weapons, backup magazines and amount of M75 uses left.</li>
+				<li>Auxiliary top hatch was added to tank, allowing to enter vehicle even if back hatchet is blocked.</li>
+				<li>Special camera was mounted on the tank, allowing Command Staff in CIC to actually view the tank.</li>
+				<li>Remember that anyone who has squad engineer level of training is capable of, uninstalling, field repairing and installing back your broken treads.</li>
+
+				<h1><a name="Primary"><B>Primary Weaponry</B></a></h1>
+				<li><I>M21 Autocannon.</I> 1RW. A primary light autocannon for tank. Designed for light scout tank. Shoots 30mm light HE rounds. Fire rate was reduced with adding IFF support.</li>
+				<li><I>M5 LTB Cannon.</I> 2RW. A primary 86mm cannon for tank that shoots explosive rounds.</li>
+				<li><I>M74 LTAA-AP Minigun.</I> 3RW. It's a minigun, what is not clear? Just go pew-pew-pew.</li>
+
+				<h1><a name="Secondary"><B>Secondary Weaponry</B></a></h1>
+				<li><I>M56 "Cupola".</I> 2RW. Refitted M56 has higher accuracy and rate of fire. Compatible with IFF system.</li>
+				<li><I>M8-2 TOW Launcher.</I> 2RW. Shoots powerful AP rockets. Deals heavy damage, but only on direct hits.</li>
+				<li><I>M7 "Dragon" Flamethrower Unit.</I> 2RW. Don't let it fool you, it's not your ordinary flamer, this thing literally shoots fireballs. No kidding.</li>
+				<li><I>M92 Grenade Launcher.</I> 2RW. Shoots HEDP grenades further than you see. No, seriously, that's how it works.</li><BR><BR>
+
+				<h1><a name="Support"><B>Support Modules</B></a></h1>
+				<li><I>M40 Integrated Weapons Sensor Array.</I> 1RW. Improves the accuracy and fire rate of all installed weapons. Actually more useful than you may think.</li>
+				<li><I>M103 Overdrive Enhancer.</I> 1RW. Improvement for your engine. Increases the movement and turn speed of the vehicle it's attached to.</li>
+				<li><I>M6 Artillery Module.</I> 1RW. A bunch of enhanced optics and targeting computers. Greatly increases range of view of a gunner. Also adds structures visibility even in complete darkness.</li>
+
+				<h1><a name="Armor"><B>Tank Armor</B></a></h1>
+				<li><I>M65-B.</I> 7RW. Standard tank armor. Middle ground in everything, from damage resistance to weight.</li>
+				<li><I>M70 "Caustic".</I> 5RW. Special set of tank armor. Purpose: reduce vehicle parts degradation in hostile surroundings on planets with unstable and highly corrosive atmosphere.</li>
+				<li><I>M66-LC.</I> 4RW. Light armor, designed for recon type of tank loadouts. Offers less protection in exchange for better maneuverability. After initial tests resistance to blunt damage was increased due to drivers driving into walls.</li>
+				<li><I>M90 "Paladin".</I> 10RW. Heavy armor for heavy tank. Converts your tank into what an essentially is a slowly moving bunker. High resistance to almost all types of damage.</li>
+				<li><I>M37 "Snowplow".</I> 3RW. Special set of tank armor, equipped with multipurpose front \"snowplow\". Designed to remove snow and demine minefields. As a result armor has high explosion damage resistance in front, while offering low protection from other types of damage.</li>
+
+				<h1><a name="Treads"><B>Treads</B></a></h1>
+				<li><I>M2 Tank Treads.</I> 1RW. Standard tank treads. Suprisingly, greatly improves vehicle moving speed.</li>
+				<li><I>M2-R Tank Treads.</I> 3RW. Heavily reinforced tank treads. Three times heavier but can endure more damage. Has special protective layer akin to M70 armor.</li><BR><BR>
+				We hope this Technial Manual helped you to understand how you can make the tank to fit with your experience and mission intel.<BR>
+				Good luck, marine. Hoorah!
+
+
+				<h1><a name="General_ru"><B>ОбщаЯ ИнформациЯ</B></a></h1>
+				<I>Важные вещи, которые необходимо знать и помнить.</I><BR><BR>
+
+				<li>В первую очередь, вам необходимо знать, что на М34А2 установлен двигатель МТ45 "RoadHog". Это достаточно мощный двигатель, который в состоЯнии
+				довольно быстро доставить танк на нужную позицию (при условии, что вы установили траки). На этом его плюсы заканчиваютсЯ. Как только вы начнете
+				устанавливать различные модули, вы сразу заметите падение скорости танка. Это значит, что вам прдетсЯ выбирать межд скоростью, защищенностью и
+				огневой мощью танка. Вес танка можно условить поделить на Легкий, Средний и ТЯжелый класс танка. Очевидно, что ТЯжелый класс будет самым медленным,
+				в то времЯ как Легкий класс будет все еще относительно быстрым. Однако вес танка влиЯет не только на скорость его передвижениЯ, он также немного
+				влиЯет на точность стрельбы. ТЯжелый танк имеет лучшую устойчивость, что, в теории, положительно скажетсЯ на точности стрельбы. Это так же стоит
+				учитывать вам при выборе модулей. ДлЯ того, чтобы не запоминать кучу больших цифр, мы ввели систему "Относительного Веса". Каждый модуль имеет
+				"Относительный Вес" (RW) который вы и будете учитывать при подсчете веса танка с вашеими модулЯми. Классы танка делЯтсЯ по весу следующим образом:
+				Легкий танк - до 10 RW, Средний танк - от 11 RW до 15 RW и ТЯжелый танк - от 16 RW и выше.<BR>
+				<li>М34А2 имеет усовершенствованную систему боеприпасов, в которой устранен конструктивный недостаток, не позволЯвший разрЯжать оружие полностью, включаЯ
+				зарЯженный в оружие магазин. Так же новаЯ система автоматически разрЯжает все магазины оружиЯ пока вы его демонтируете, включаЯ магазин в самом оружии.<BR>
+				<li>"Longstreet" также имеет встроенную Систему Дымовой Завесы М75. При активации она выстреливает две дымовые гранаты в направлении, куда в этот момент
+				развернут танк, эффективно скрываЯ танк от противника с данного направлениЯ. В магазин входЯт 10 дымовых гранат, что дает 5 использований.
+				Оба ТСа имеют доступ к этой системе. Оба ТСа имеют возможность активировать М75</li>
+				<li>Инженеры смогли немного расширить внутреннее пространство, что позволило менЯтьсЯ местами даже когда оба ТСа находЯтсЯ в танке.</li>
+				<li>Также они установили новые сенсоры и монитор, отображающий по запросу состоЯние танка, включаЯ: общее состоЯние всех модулей в процентах, количество
+				боеприпасов и запасных магазинов, а так же количество оставшихсЯ использований системы М75.</li>
+				<li>Был установлен вспомогательный люк в верхней части танка, который позволяет попасть в танк, даже если задний люк заблокирован.</li>
+				<li>В танк была встроена специальная камера, позволяющая командованию видеть танк на их консолях камер.</li>
+				<li>Помните, что любой с инженерными навыками уровня боевого инженера может демонтировать, произвести полевой ремонт и установить обратно ваши траки.</li>
+
+				<h1><a name="Primary_ru"><B>Основные Оружейные Модули</B></a></h1>
+				<li><I>M21 Autocannon.</I> 1RW. ОснованЯ легкаЯ танковаЯ автопушка. Спроектирована длЯ легких разведовательных танков. СтрелЯет 30мм легкими взрывающимисЯ зарЯдами. Скорость стрельбы была снижена длЯ введениЯ поддержки IFF системы.</li>
+				<li><I>M5 LTB Cannon.</I> 2RW. Основное 86мм танковое орудие, стрелЯющее мощными взрывчатыми снарЯдами.</li>
+				<li><I>M74 LTAA-AP Minigun.</I> 3RW. Ну, это миниган. Что еще добавить. Жмите на гашетку и не пробуйте считать пули, голова заболит.</li>
+
+				<h1><a name="Secondary_ru"><B>Дополнительные Оружейные Модули</B></a></h1>
+				<li><I>M56 "Cupola".</I> 2RW. Модернизированный М56, точнее и скорострельней. Поддерживает IFF систему.</li>
+				<li><I>M8-2 TOW Launcher.</I> 2RW. ПТУР, хорошо пробивает бронированные и не очень цели. Но только в случае прЯмоого попаданиЯ, в противном случае толку немного.</li>
+				<li><I>M7 "Dragon" Flamethrower Unit.</I> 2RW. Не дайте себЯ обмануть, это не нормальный огнемет. Эта штука испускает огненные шары. Буквально.</li>
+				<li><I>M92 Grenade Launcher.</I> 2RW. ОтправлЯет в полет HEDP гранаты дальше видимости стрелка. Серьезно, оно так и работает.</li><BR><BR>
+
+				<h1><a name="Support_ru"><B>Вспомогательные Модули</B></a></h1>
+				<li><I>M40 Integrated Weapons Sensor Array.</I> 1RW. Улучшает точность и скорость стрельбы оружиЯ. Гораздо полезнее, чем кажетсЯ.</li>
+				<li><I>M103 Overdrive Enhancer.</I> 1RW. Улучшение двигателЯ. Улучшает как скорость передвижениЯ, так и скорость поворота танка.</li>
+				<li><I>M6 Artillery Module.</I> 1RW. Внушительного размера коробок с кучей плат, датчиков и линз. Значительно увеличивает дальность видимости стрелка, попутно добавлЯЯ карту ближайшей местности в визор, что позволЯет видеть землю даже в темноте.</li>
+
+				<h1><a name="Armor_ru"><B>ТанковаЯ БронЯ</B></a></h1>
+				<li><I>M65-B.</I> 7RW. СтандартнаЯ бронЯ. ЗолотаЯ середина между защищенностью и весом.</li>
+				<li><I>M70 "Caustic".</I> 5RW. СпециальнаЯ бронЯ. Назначение: защищать танк от коррозивных свойств среды на планетах с нестабильной атмосферой.</li>
+				<li><I>M66-LC.</I> 4RW. ЛегаЯ бронЯ, предназначеннаЯ длЯ легкого разведовательного танка. Защищенность была пожертвована в угоду легкости и, следовательно, скорости. После первых тестов прототипа была улучшена защита от врезаний в стены./li>
+				<li><I>M90 "Paladin".</I> 10RW. ТЯжелаЯ бронЯ длЯ тЯжелого танка. Превращает танк в медленно движущийсЯ бункер. ВысокаЯ защищенность от почти всех видов повреждений.</li>
+				<li><I>M37 "Snowplow".</I> 3RW. СпециализированнаЯ бронЯ, оснащеннаЯ многоцелевым тралом-очистителем. Сконструирован длЯ расчистки снега, мин и тому подобного. Имеет высокую защищенность от взрывов, однако в целом защищенность оставлЯет желать лучшего.</li>
+
+				<h1><a name="Treads_ru"><B>Траки</B></a></h1>
+				<li><I>M2 Tank Treads.</I> 1RW. Стандартные траки. Удивительным образом благоприЯтно сказываютсЯ на скорости танкаю.</li>
+				<li><I>M2-R Tank Treads.</I> 3RW. Укрепленные траки. В три раза тЯжеле стандартных, однако значительно крепче. Присутствует слой схожего с покрытием брони М70.</li><BR><BR>
+
+
+				Мы надеемсЯ, что данной Техническое Руководство помогло вам понЯть как именно снарЯдить свой танк с учетом вашего опыта и данных по операции.<BR>
+				Удачи, морпехи. Ура и к черту!
+
+				</body>
+			</html>
+			"}

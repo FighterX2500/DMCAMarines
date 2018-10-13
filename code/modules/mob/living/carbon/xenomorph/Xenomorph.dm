@@ -44,6 +44,8 @@
 	universal_speak = 0
 	health = 5
 	maxHealth = 5
+	var/t_squishy = 0
+	var/t_fortified = 0
 	mob_size = MOB_SIZE_XENO
 	hand = 1 //Make right hand active by default. 0 is left hand, mob defines it as null normally
 	see_in_dark = 8

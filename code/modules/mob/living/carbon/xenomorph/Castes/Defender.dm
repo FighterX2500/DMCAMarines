@@ -23,7 +23,6 @@
 	armor_deflection = 40
 	tier = 1
 	t_squishy = 1
-	t_fortified = 0
 	upgrade = 0
 	actions = list(
 		/datum/action/xeno_action/xeno_resting,
