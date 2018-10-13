@@ -430,6 +430,9 @@
 	F.loc = user.loc
 	F.throw_range = 20
 	F.throw_at(target, 20, 2, user)
+	if(get_dist(F,user) <= 2)
+		to_chat(user, "<span class='warning'>The grenade beeps a warning noise. You are too close!</span>")
+		return
 	if(F && F.loc) //Apparently it can get deleted before the next thing takes place, so it runtimes.
 		message_admins("[key_name_admin(user)] fired a grenade ([F.name]) from \a ([name]).")
 		log_game("[key_name_admin(user)] used a grenade ([name]).")
@@ -552,6 +555,9 @@
 	F.loc = user.loc
 	F.throw_range = 20
 	F.throw_at(target, 20, 2, user)
+	if(get_dist(F,user) <= 2)
+		to_chat(user, "<span class='warning'>The grenade beeps a warning noise. You are too close!</span>")
+		return
 	if(F && F.loc) //Apparently it can get deleted before the next thing takes place, so it runtimes.
 		message_admins("[key_name_admin(user)] fired a grenade ([F.name]) from \a ([name]).")
 		log_game("[key_name_admin(user)] used a grenade ([name]).")

@@ -791,11 +791,13 @@ obj/item/attachable/attack_hand(var/mob/user as mob)
 	log_game("[key_name_admin(user)] used an underslung grenade launcher.")
 	G.det_time = 15
 	G.throw_range = max_range
-	G.activate()
 	G.throw_at(target, max_range, 2, user)
 	current_rounds--
 	loaded_grenades.Cut(1,2)
-
+	if(get_dist(G,user) <= 2)
+		to_chat(user, "<span class='warning'>The grenade beeps a warning noise. You are too close!</span>")
+		return
+	G.activate()
 
 //"ammo/flamethrower" is a bullet, but the actual process is handled through fire_attachment, linked through Fire().
 /obj/item/attachable/attached_gun/flamer
