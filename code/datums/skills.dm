@@ -50,11 +50,12 @@
 /datum/skills/civilian/survivor/doctor
 	name = "Survivor Doctor"
 	medical = SKILL_MEDICAL_DOCTOR
-	surgery = SKILL_SURGERY_TRAINED
+	surgery = SKILL_SURGERY_EXPERT
 
 /datum/skills/civilian/survivor/scientist
 	name = "Survivor Scientist"
 	medical = SKILL_MEDICAL_MEDIC
+	surgery = SKILL_SURGERY_PROFESSIONAL
 
 /datum/skills/civilian/survivor/chef
 	name = "Survivor Chef"
@@ -111,7 +112,7 @@
 	firearms = SKILL_FIREARMS_UNTRAINED
 	medical = SKILL_MEDICAL_DOCTOR
 	melee_weapons = SKILL_MELEE_WEAK
-	surgery = SKILL_SURGERY_TRAINED
+	surgery = SKILL_SURGERY_EXPERT
 
 
 
@@ -157,7 +158,7 @@
 	smartgun = SKILL_SMART_TRAINED
 	spec_weapons = SKILL_SPEC_TRAINED
 	medical = SKILL_MEDICAL_DOCTOR
-	surgery = SKILL_SURGERY_TRAINED
+	surgery = SKILL_SURGERY_PROFESSIONAL
 	melee_weapons = SKILL_MELEE_SUPER
 	pilot = SKILL_PILOT_TRAINED
 	police = SKILL_POLICE_MP
@@ -171,6 +172,7 @@
 	smartgun = SKILL_SMART_TRAINED
 	leadership = SKILL_LEAD_MASTER
 	medical = SKILL_MEDICAL_MEDIC
+	surgery = SKILL_SURGERY_AMATEUR
 	police = SKILL_POLICE_FLASH
 	powerloader = SKILL_POWERLOADER_TRAINED
 
@@ -180,6 +182,7 @@
 	construction = SKILL_CONSTRUCTION_PLASTEEL
 	leadership = SKILL_LEAD_MASTER
 	medical = SKILL_MEDICAL_MEDIC
+	surgery = SKILL_SURGERY_AMATEUR
 	police = SKILL_POLICE_FLASH
 	powerloader = SKILL_POWERLOADER_TRAINED
 
@@ -189,6 +192,7 @@
 	construction = SKILL_CONSTRUCTION_PLASTEEL
 	leadership = SKILL_LEAD_EXPERT
 	medical = SKILL_MEDICAL_MEDIC
+	surgery = SKILL_SURGERY_AMATEUR
 
 
 /datum/skills/pilot
@@ -259,6 +263,7 @@
 	engineer = SKILL_ENGINEER_PLASTEEL
 	leadership = SKILL_LEAD_TRAINED
 	medical = SKILL_MEDICAL_CHEM
+	surgery = SKILL_SURGERY_AMATEUR
 
 
 
@@ -266,6 +271,7 @@
 	name = "UPP Leader"
 	firearms = SKILL_FIREARMS_TRAINED
 	medical = SKILL_MEDICAL_MEDIC
+	surgery = SKILL_SURGERY_AMATEUR
 	pistols = SKILL_PISTOLS_TRAINED
 	smgs = SKILL_SMGS_TRAINED
 	rifles = SKILL_RIFLES_TRAINED
@@ -342,6 +348,7 @@
 	firearms = SKILL_FIREARMS_TRAINED
 	leadership = SKILL_LEAD_BEGINNER
 	medical = SKILL_MEDICAL_CHEM
+	surgery = SKILL_SURGERY_AMATEUR
 	melee_weapons = SKILL_MELEE_TRAINED
 	pistols = SKILL_PISTOLS_TRAINED
 	smgs = SKILL_SMGS_TRAINED
@@ -353,6 +360,7 @@
 /datum/skills/commando/medic
 	name = "Commando Medic"
 	medical = SKILL_MEDICAL_MEDIC
+	surgery = SKILL_SURGERY_TRAINED
 
 /datum/skills/commando/leader
 	name ="Commando Leader"
@@ -364,6 +372,7 @@
 	smartgun = SKILL_SMART_TRAINED
 	spec_weapons = SKILL_SPEC_TRAINED
 	medical = SKILL_MEDICAL_MEDIC
+	surgery = SKILL_SURGERY_TRAINED
 
 
 
@@ -375,6 +384,7 @@
 	firearms = SKILL_FIREARMS_TRAINED
 	leadership = SKILL_LEAD_BEGINNER
 	medical = SKILL_MEDICAL_CHEM
+	surgery = SKILL_SURGERY_AMATEUR
 	melee_weapons = SKILL_MELEE_TRAINED
 	pistols = SKILL_PISTOLS_TRAINED
 	smgs = SKILL_SMGS_TRAINED
@@ -396,6 +406,7 @@
 	construction = SKILL_CONSTRUCTION_ADVANCED
 	leadership = SKILL_LEAD_BEGINNER
 	medical = SKILL_MEDICAL_CHEM
+	surgery = SKILL_SURGERY_AMATEUR
 	powerloader = SKILL_POWERLOADER_TRAINED
 
 
@@ -404,6 +415,7 @@
 	construction = SKILL_CONSTRUCTION_PLASTEEL
 	leadership = SKILL_LEAD_MASTER
 	medical = SKILL_MEDICAL_MEDIC
+	surgery = SKILL_SURGERY_AMATEUR
 	police = SKILL_POLICE_FLASH
 	powerloader = SKILL_POWERLOADER_TRAINED
 
@@ -414,6 +426,7 @@
 	construction = SKILL_CONSTRUCTION_METAL
 	leadership = SKILL_LEAD_BEGINNER
 	medical = SKILL_MEDICAL_CHEM
+	surgery = SKILL_SURGERY_AMATEUR
 	melee_weapons = SKILL_MELEE_SUPER
 
 /datum/skills/tank_crew
