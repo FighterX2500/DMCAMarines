@@ -19,6 +19,7 @@
 	var/mob/swap_seat	//this is a temp seat for switching seats when both TCs are in tank
 
 	var/obj/machinery/camera/camera = null	//Yay! Working camera in the tank!
+	var/obj/item/device/megaphone/Mega
 
 	var/occupant_exiting = 0
 	var/next_sound_play = 0
@@ -51,6 +52,8 @@
 	R.load_hitboxes(dimensions, root_pos)
 	R.load_entrance_marker(entr_mark)
 	R.update_icon()
+
+	R.Mega = new/obj/item/device/megaphone(R)
 
 	R.camera = new /obj/machinery/camera(R)
 	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
@@ -188,12 +191,19 @@
 	driver = null
 	swap_seat = null
 
+//little QoL won't be bad, aight?
+/obj/vehicle/multitile/root/cm_armored/tank/verb/megaphone()
+	set name = "Use Megaphone"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
+	set src in view(0)
+	Mega.attack_self(usr)
+
 //Let's you switch into the other seat, doesn't work if it's occupied
 /obj/vehicle/multitile/root/cm_armored/tank/verb/switch_seats()
 	set name = "Swap Seats"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set src in view(0)
-	var/answer = alert(driver, "Are you sure you want to swap seats?", , "Yes", "No") //added confirmation window
+	var/answer = alert(usr, "Are you sure you want to swap seats?", , "Yes", "No") //added confirmation window
 	if(answer == "No")
 		return
 

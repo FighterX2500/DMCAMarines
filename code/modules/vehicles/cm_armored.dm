@@ -239,6 +239,14 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //And other checks to make sure you aren't breaking the law
 /obj/vehicle/multitile/root/cm_armored/tank/handle_click(var/mob/living/user, var/atom/A, var/list/mods)
 
+	if (mods["shift"] && mods["middle"])
+		user.point_to(A)
+		return
+
+	if (mods["shift"])
+		user.examine()
+		return
+
 	if(!can_use_hp(user)) return
 
 	if(!hardpoints.Find(active_hp))
@@ -536,6 +544,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 					to_chat(user, "There is a non-damaged [HP] installed on [i] hardpoint slot.")
 			//else
 			//	to_chat(user, "There is a [HP.health <= 0 ? "broken" : "working"] [HP] installed on the [i] hardpoint slot.")
+
 
 //Special armored vic healthcheck that mainly updates the hardpoint states
 /obj/vehicle/multitile/root/cm_armored/healthcheck()

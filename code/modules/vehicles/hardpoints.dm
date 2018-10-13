@@ -336,9 +336,39 @@ Currently only has the tank hardpoints
 
 	ammo_type = new /obj/item/ammo_magazine/tank/ltb_cannon/upp
 
+	active_effect(var/turf/T)
+		var /obj/item/ammo_magazine/tank/ltb_cannon/upp/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
+			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
+			return
+
+		next_use = world.time + owner.cooldowns["primary"] * owner.misc_ratios["prim_cool"]
+		if(!prob(owner.accuracies["primary"] * 100 * owner.misc_ratios["prim_acc"] * owner.w_ratios["w_prim_acc"]))
+			T = get_step(T, pick(cardinal))
+		var/obj/item/projectile/P = new
+		P.generate_bullet(new A.default_ammo)
+		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+		playsound(get_turf(src), pick('sound/weapons/tank_cannon_fire1.ogg', 'sound/weapons/tank_cannon_fire2.ogg'), 60, 1)
+		A.current_rounds--
+
 /obj/item/hardpoint/primary/autocannon/upp
 	name = "Type 41 Autocannon"
 	desc = "A primary light autocannon for tank. Designed for light scout tank. Shoots 30mm HE rounds."
+
+	active_effect(var/turf/T)
+		var /obj/item/ammo_magazine/tank/autocannon/upp/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
+			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
+			return
+
+		next_use = world.time + owner.cooldowns["primary"] * owner.misc_ratios["prim_cool"]
+		if(!prob(owner.accuracies["primary"] * 100 * owner.misc_ratios["prim_acc"] * owner.w_ratios["w_prim_acc"]))
+			T = get_step(T, pick(cardinal))
+		var/obj/item/projectile/P = new
+		P.generate_bullet(new A.default_ammo)
+		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+		playsound(get_turf(src), 'sound/weapons/tank_autocannon_fire1.ogg', 60, 1)
+		A.current_rounds--
 
 	ammo_type = new /obj/item/ammo_magazine/tank/autocannon/upp
 ////////////////////
@@ -549,10 +579,42 @@ Currently only has the tank hardpoints
 /obj/item/hardpoint/secondary/flamer/upp
 	name = "Type 04 Flamethrower"
 	desc = "A secondary weapon for tank. Don't let it fool you, it's not your ordinary flamer, this thing literally shoots fireballs. Not kidding."
+	ammo_type = new /obj/item/ammo_magazine/tank/flamer/upp
+
+	active_effect(var/turf/T)
+
+		var /obj/item/ammo_magazine/tank/flamer/upp/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
+			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
+			return
+
+		next_use = world.time + owner.cooldowns["secondary"] * owner.misc_ratios["secd_cool"]
+		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"] * owner.w_ratios["w_secd_acc"]))
+			T = get_step(T, pick(cardinal))
+		var/obj/item/projectile/P = new
+		P.generate_bullet(new A.default_ammo)
+		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+		playsound(get_turf(src), 'sound/weapons/tank_flamethrower.ogg', 60, 1)
+		A.current_rounds--
 
 /obj/item/hardpoint/secondary/towlauncher/upp
 	name = "Type 05 PTRK"
 	desc = "A secondary weapon for tank that shoots powerful AP rockets. Deals heavy damage, but only on direct hits."
+	ammo_type = new /obj/item/ammo_magazine/tank/towlauncher/upp
+	active_effect(var/turf/T)
+
+		var obj/item/ammo_magazine/tank/towlauncher/upp/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
+			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
+			return
+
+		next_use = world.time + owner.cooldowns["secondary"] * owner.misc_ratios["secd_cool"]
+		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"] * owner.w_ratios["w_secd_acc"]))
+			T = get_step(T, pick(cardinal))
+		var/obj/item/projectile/P = new
+		P.generate_bullet(new A.default_ammo)
+		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+		A.current_rounds--
 
 /obj/item/hardpoint/secondary/m56cupola/upp
 	name = "Type 01 PKT"
@@ -560,9 +622,42 @@ Currently only has the tank hardpoints
 
 	ammo_type = new /obj/item/ammo_magazine/tank/m56_cupola/upp
 
+	active_effect(var/turf/T)
+
+		var /obj/item/ammo_magazine/tank/m56_cupola/upp/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
+			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
+			return
+
+		next_use = world.time + owner.cooldowns["secondary"] * owner.misc_ratios["secd_cool"]
+		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"] * owner.w_ratios["w_secd_acc"]))
+			T = get_step(T, pick(cardinal))
+		var/obj/item/projectile/P = new
+		P.generate_bullet(new A.default_ammo)
+		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+		playsound(get_turf(src), pick(list('sound/weapons/gun_smartgun1.ogg', 'sound/weapons/gun_smartgun2.ogg', 'sound/weapons/gun_smartgun3.ogg')), 60, 1)
+		A.current_rounds--
+
 /obj/item/hardpoint/secondary/grenade_launcher/upp
 	name = "Type 02 AGS"
-	desc = "A secondary weapon for tank that shoots HEDP grenades further than you see. No, seriously, that's how it works."
+	ammo_type = new /obj/item/ammo_magazine/tank/tank_glauncher/upp
+
+	active_effect(var/turf/T)
+
+		var /obj/item/ammo_magazine/tank/tank_glauncher/upp/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
+			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
+			return
+
+		next_use = world.time + owner.cooldowns["secondary"] * owner.misc_ratios["secd_cool"]
+		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"] * owner.w_ratios["w_secd_acc"]))
+			T = get_step(T, pick(cardinal))
+		var/obj/item/projectile/P = new
+		P.generate_bullet(new A.default_ammo)
+		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+		playsound(get_turf(src), 'sound/weapons/gun_m92_attachable.ogg', 60, 1)
+		A.current_rounds--
+
 /////////////////////
 // SECONDARY SLOTS // END
 /////////////////////
@@ -1178,10 +1273,21 @@ Currently only has the tank hardpoints
 	gun_type = /obj/item/hardpoint/primary/autocannon/upp
 
 /obj/item/ammo_magazine/tank/m56_cupola/upp
-	name = "Type 01 PKT"
+	name = "Type 01 PKT Magazine"
 	default_ammo = /datum/ammo/bullet/smartgun/lethal
 	gun_type = /obj/item/hardpoint/secondary/m56cupola/upp
 
+/obj/item/ammo_magazine/tank/flamer/upp
+	name = "Type 04 Flamethrower Tank"
+	gun_type = /obj/item/hardpoint/secondary/flamer/upp
+
+/obj/item/ammo_magazine/tank/towlauncher/upp
+	name = "Type 05 PTRK Magazine"
+	gun_type = /obj/item/hardpoint/secondary/towlauncher/upp
+
+/obj/item/ammo_magazine/tank/tank_glauncher/upp
+	name = "Type 02 AGS Magazine"
+	gun_type = /obj/item/hardpoint/secondary/grenade_launcher/upp
 ///////////////
 // AMMO MAGS // END
 ///////////////
