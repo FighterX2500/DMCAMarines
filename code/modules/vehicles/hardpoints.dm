@@ -1134,8 +1134,8 @@ Currently only has the tank hardpoints
 	icon_state = "glauncher_2"
 	w_class = 9
 	default_ammo = /datum/ammo/grenade_container
-	current_rounds = 15
-	max_rounds = 15
+	current_rounds = 20
+	max_rounds = 20
 	point_cost = 25
 	gun_type = /obj/item/hardpoint/secondary/grenade_launcher
 

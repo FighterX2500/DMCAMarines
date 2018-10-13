@@ -6,7 +6,7 @@
 
 
 /obj/vehicle/multitile/root/cm_armored/tank
-	name = "M34A2 \"Longstreet\" Modular Multipurpose Tank"
+	name = "M34A2 \"Stingray\" Modular Multipurpose Tank"
 	desc = "A giant piece of armor, was made as a budget version of a tank specifically for USCM. Supports installing different types of modules and weapons, allowing technicians to refit tank for any type of operation. Has inbuilt M75 Smoke Deploy System. Entrance in the back."
 
 	icon = 'icons/obj/tank_NS.dmi'

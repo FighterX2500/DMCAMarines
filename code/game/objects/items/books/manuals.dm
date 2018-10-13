@@ -1283,7 +1283,7 @@
 	name = "USCM Tank Guide For Dummies: How To Tank"
 	icon_state = "bookTank"
 	author = "USCM Tech Division"
-	title = "USCM M34A2 \"Longstreet\" Modular Multipurpose Tank Manual"
+	title = "USCM M46 \"Stingray\" Modular Multipurpose Tank Manual"
 
 	dat = {"<html>
 				<head>
@@ -1318,15 +1318,15 @@
 				<h1><a name="Foreword"><U><B>HOW TO BE A GOOD TANK CREW</B></U></a></h1><BR>
 				<I>Or: What All These "M"'s mean?</I><BR><BR>
 
-				This Technical Manual supposed to help rookie Tank Crew members (TC from here) to get the basics of M34A2
-				"Longstreet" Modular Multipurpose Tank. In USCM Armor School you were trained on training M29 "Junior"
+				This Technical Manual supposed to help rookie Tank Crew members (TC from here) to get the basics of M46
+				"Stingray" Modular Multipurpose Tank. In USCM Armor School you were trained on training M29 "Junior"
 				with standard equipment loadouts that instructors chose for you. That's not how it works during actual sector patrolling
 				and combat operations. You must decide what will you install on your combat vehicle before each operation, considering
 				mission type, intel on possible hostiles and environment conditions in AO. This manual will help you to make a choice
 				of equipment for your first mission (hopefully, not last, we believe in you).<BR><BR>
 
 				Это Техническое Руководство послужит помощником новеньким танкистам (далее - ТС) в постигании азов работы на
-				М34А2 "Longstreet" Модульном Многоцелевом Танке. Во времЯ учебы в Бронетанковом Училище USCM вы тренировались на
+				М46 "Скат" Модульном Многоцелевом Танке. Во времЯ учебы в Бронетанковом Училище USCM вы тренировались на
 				учебном М29 "Junior" со стандартными наборами оборудованиЯ, которые определЯлись вашими инструкторами. В реальных
 				условиЯх ведениЯ патрульной службы в секторе и боевых операциЯх все обстоит несколко иначе. Именно вы должны выбирать
 				оборудование длЯ установки на боевую технику перед каждой операцией, учитываЯ тип операции, данные о возможном противнике
@@ -1336,7 +1336,7 @@
 
 				<h1><a name="General"><B>General Information</B></a></h1>
 				<I>Important things you need to know.</I><BR><BR>
-				<li>First of all, you need to know that M34A2 has MT45 "Roadhog" engine. It's powerful enough to get tank itself to desired location quite quickly
+				<li>First of all, you need to know that M46 has MT45 "Roadhog" engine. It's powerful enough to get tank itself to desired location quite quickly
 				(provided you installed treads). That's about it. As soon as you start installing modules on hardpoints, you will soon notice decrease in speed.
 				Which means, you will have to choose between speed, armor and firepower. Depending on tank weight, you can loosely assign tank to Light, Medium or
 				Heavy class. Heavy class would be slowest, obviously, while Light class tank is still quite fast going. However, weight of the tank affects not only speed,
@@ -1344,9 +1344,9 @@
 				will result in slightly more accurate shooting. So you better keep that in mind too, when you make your choice. To get rid of big numbers, we introduce to you
 				"Relative Weight" system. Each module has "Relative Weight" (RW) which you will use to calculate your tank's loadout weight. Tank classes division goes: up to 10 RW
 				is Light class, 11 RW to 15 RW is Medium class and 16+ RW is Heavy class.</li>
-				<li>M34A2 has improved weapon loading system, which lacks constructional defect of previous versions that led to inability to unload last magazine. Also new system
+				<li>M46 has improved weapon loading system, which lacks constructional defect of previous versions that led to inability to unload last magazine. Also new system
 				will automatically unload all loaded in it magazines, including the one in the weapon, while you will uninstall weaponry.</li>
-				<li>"Longstreet" also has inbuilt M75 Smoke Deploy System. Upon activation it shoots two smoke grenades in front of tank, effectively covering tank from enemy sight in
+				<li>"Stingray" also has inbuilt M75 Smoke Deploy System. Upon activation it shoots two smoke grenades in front of tank, effectively covering tank from enemy sight in
 				direction tank looks toward to. Both TCs have access to M75.</li>
 				<li>Engineers managed to slightly increase interior space, which allowed to swap seats even with both TCs in tank.</li>
 				<li>Also they installed sensors and new interface, that shows tank status on demand, including: all modules overall integrity in per cents, ammo counts in primary and
@@ -1388,7 +1388,7 @@
 				<h1><a name="General_ru"><B>ОбщаЯ ИнформациЯ</B></a></h1>
 				<I>Важные вещи, которые необходимо знать и помнить.</I><BR><BR>
 
-				<li>В первую очередь, вам необходимо знать, что на М34А2 установлен двигатель МТ45 "RoadHog". Это достаточно мощный двигатель, который в состоЯнии
+				<li>В первую очередь, вам необходимо знать, что на М46 установлен двигатель МТ45 "RoadHog". Это достаточно мощный двигатель, который в состоЯнии
 				довольно быстро доставить танк на нужную позицию (при условии, что вы установили траки). На этом его плюсы заканчиваютсЯ. Как только вы начнете
 				устанавливать различные модули, вы сразу заметите падение скорости танка. Это значит, что вам прдетсЯ выбирать межд скоростью, защищенностью и
 				огневой мощью танка. Вес танка можно условить поделить на Легкий, Средний и ТЯжелый класс танка. Очевидно, что ТЯжелый класс будет самым медленным,
@@ -1397,9 +1397,9 @@
 				учитывать вам при выборе модулей. ДлЯ того, чтобы не запоминать кучу больших цифр, мы ввели систему "Относительного Веса". Каждый модуль имеет
 				"Относительный Вес" (RW) который вы и будете учитывать при подсчете веса танка с вашеими модулЯми. Классы танка делЯтсЯ по весу следующим образом:
 				Легкий танк - до 10 RW, Средний танк - от 11 RW до 15 RW и ТЯжелый танк - от 16 RW и выше.<BR>
-				<li>М34А2 имеет усовершенствованную систему боеприпасов, в которой устранен конструктивный недостаток, не позволЯвший разрЯжать оружие полностью, включаЯ
+				<li>М46 имеет усовершенствованную систему боеприпасов, в которой устранен конструктивный недостаток, не позволЯвший разрЯжать оружие полностью, включаЯ
 				зарЯженный в оружие магазин. Так же новаЯ система автоматически разрЯжает все магазины оружиЯ пока вы его демонтируете, включаЯ магазин в самом оружии.<BR>
-				<li>"Longstreet" также имеет встроенную Систему Дымовой Завесы М75. При активации она выстреливает две дымовые гранаты в направлении, куда в этот момент
+				<li>"Скат" также имеет встроенную Систему Дымовой Завесы М75. При активации она выстреливает две дымовые гранаты в направлении, куда в этот момент
 				развернут танк, эффективно скрываЯ танк от противника с данного направлениЯ. В магазин входЯт 10 дымовых гранат, что дает 5 использований.
 				Оба ТСа имеют доступ к этой системе. Оба ТСа имеют возможность активировать М75</li>
 				<li>Инженеры смогли немного расширить внутреннее пространство, что позволило менЯтьсЯ местами даже когда оба ТСа находЯтсЯ в танке.</li>

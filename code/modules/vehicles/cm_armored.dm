@@ -512,17 +512,28 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		if(!HP)
 			to_chat(user, "There is nothing installed on the [i] hardpoint slot.")
 		else
-			//if((user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
-			if(HP.health <= 0)
-				to_chat(user, "There is a broken [HP] installed on [i] hardpoint slot.")
-			if(HP.health > 0 && (HP.health < (HP.maxhealth / 3)))
-				to_chat(user, "There is a heavily damaged [HP] installed on [i] hardpoint slot.")
-			if((HP.health > (HP.maxhealth / 3)) && (HP.health < (HP.maxhealth * (2/3))))
-				to_chat(user, "There is a damaged [HP] installed on [i] hardpoint slot.")			//removed skills check, because any baldie PFC can tell if module is unscratched or will fall apart from touching it
-			if((HP.health > (HP.maxhealth * (2/3))) && (HP.health < HP.maxhealth))
-				to_chat(user, "There is a lightly damaged [HP] installed on [i] hardpoint slot.")
-			if(HP.health == HP.maxhealth)
-				to_chat(user, "There is a non-damaged [HP] installed on [i] hardpoint slot.")
+			if(isXeno(user))
+				if(HP.health <= 0)
+					to_chat(user, "There is a broken module installed on [i] hardpoint slot.")
+				if(HP.health > 0 && (HP.health < (HP.maxhealth / 3)))
+					to_chat(user, "There is a heavily damaged module installed on [i] hardpoint slot.")
+				if((HP.health > (HP.maxhealth / 3)) && (HP.health < (HP.maxhealth * (2/3))))
+					to_chat(user, "There is a damaged module installed on [i] hardpoint slot.")			//removed modules' names for aliens.
+				if((HP.health > (HP.maxhealth * (2/3))) && (HP.health < HP.maxhealth))
+					to_chat(user, "There is a lightly damaged module installed on [i] hardpoint slot.")
+				if(HP.health == HP.maxhealth)
+					to_chat(user, "There is a non-damaged module installed on [i] hardpoint slot.")
+			else
+				if(HP.health <= 0)
+					to_chat(user, "There is a broken [HP] installed on [i] hardpoint slot.")
+				if(HP.health > 0 && (HP.health < (HP.maxhealth / 3)))
+					to_chat(user, "There is a heavily damaged [HP] installed on [i] hardpoint slot.")
+				if((HP.health > (HP.maxhealth / 3)) && (HP.health < (HP.maxhealth * (2/3))))
+					to_chat(user, "There is a damaged [HP] installed on [i] hardpoint slot.")			//removed skills check, because any baldie PFC can tell if module is unscratched or will fall apart from touching it
+				if((HP.health > (HP.maxhealth * (2/3))) && (HP.health < HP.maxhealth))
+					to_chat(user, "There is a lightly damaged [HP] installed on [i] hardpoint slot.")
+				if(HP.health == HP.maxhealth)
+					to_chat(user, "There is a non-damaged [HP] installed on [i] hardpoint slot.")
 			//else
 			//	to_chat(user, "There is a [HP.health <= 0 ? "broken" : "working"] [HP] installed on the [i] hardpoint slot.")
 
