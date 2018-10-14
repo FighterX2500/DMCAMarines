@@ -51,6 +51,9 @@ Currently only has the tank hardpoints
 	return
 
 /obj/item/hardpoint/proc/deactivate()
+	var/obj/vehicle/multitile/root/cm_armored/tank/C = owner
+	if(C.gunner.client)
+		C.gunner.client.mouse_pointer_icon = initial(C.gunner.client.mouse_pointer_icon)
 	return
 
 /obj/item/hardpoint/proc/livingmob_interact(var/mob/living/M)
@@ -843,6 +846,8 @@ Currently only has the tank hardpoints
 		M.client.pixel_x = 0
 		M.client.pixel_y = 0
 		M.artmod_use = 0
+		if(M.client)
+			M.client.mouse_pointer_icon = initial(M.client.mouse_pointer_icon)
 
 	remove_buff()
 		deactivate()

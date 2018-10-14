@@ -6,7 +6,7 @@
 
 
 /obj/vehicle/multitile/root/cm_armored/tank
-	name = "M34A2 \"Stingray\" Modular Multipurpose Tank"
+	name = "M46 \"Stingray\" Modular Multipurpose Tank"
 	desc = "A giant piece of armor, was made as a budget version of a tank specifically for USCM. Supports installing different types of modules and weapons, allowing technicians to refit tank for any type of operation. Has inbuilt M75 Smoke Deploy System. Entrance in the back."
 
 	icon = 'icons/obj/tank_NS.dmi'
@@ -14,6 +14,7 @@
 	pixel_x = -32
 	pixel_y = -32
 
+	var/named = FALSE
 	var/mob/gunner
 	var/mob/driver
 	var/mob/swap_seat	//this is a temp seat for switching seats when both TCs are in tank
@@ -100,6 +101,8 @@
 
 	R.healthcheck()
 
+	R.Mega = new/obj/item/device/megaphone(R)
+
 	R.camera = new /obj/machinery/camera(R)
 	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
 	R.camera.c_tag = "Armored Vehicle ¹[rand(1,10)]" //ARMORED VEHICLE to be at the start of cams list, numbers in case of events with multiple tanks and for APC
@@ -137,6 +140,8 @@
 	R.add_hardpoint(new /obj/item/hardpoint/treads/standard/upp, R.hardpoints[HDPT_TREADS])
 	R.update_damage_distribs()
 
+	R.Mega = new/obj/item/device/megaphone(R)
+
 	R.color = "#c2b678"
 	R.healthcheck()
 
@@ -148,12 +153,10 @@
 
 	var/turf/closed/T
 	T in entrance.loc
-	to_chat(global, "<span class='danger'>entrance turf check: [T.name]</span>")
 	if(istype(T))
 		T = get_new_exit_point()
 		to_chat(global, "<span class='danger'>entrance turf check: [T.name]</span>")
 		if(!istype(T))
-			to_chat(global, "<span class='danger'>New Exits turf is not closed type, [T.name]</span>")
 			if(gunner)
 				gunner.Move(T.loc)
 				to_chat(gunner, "<span class='danger'>You cannot breath in all the smoke inside the vehicle and back hatch is blocked, so you get out through an auxiliary top hatch and jump off the tank!</span>")
@@ -161,17 +164,17 @@
 				driver.Move(T.loc)
 				to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle and back hatch is blocked, so you get out through an auxiliary top hatch and jump off the tank!</span>")
 		else
-			to_chat(global, "<span class='danger'>New Exit's turf is closed type, [T.name]</span>")
 			to_chat(gunner, "<span class='danger'>You cannot breath in all the smoke inside the vehicle, but the back hatch is blocked!</span>")
 			to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle, but the back hatch is blocked!</span>")
 			return
 	else
-		to_chat(global, "<span class='danger'>Turf at entrance is not closed type, [T.name]</span>")
 		to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle so you dismount!</span>")
 		gunner.Move(entrance.loc)
 		to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle so you dismount!</span>")
 		driver.Move(entrance.loc)
 
+	if(gunner.client)
+		gunner.client.mouse_pointer_icon = initial(gunner.client.mouse_pointer_icon)
 	gunner.unset_interaction()
 	gunner = null
 	driver.unset_interaction()
@@ -187,6 +190,8 @@
 		if(gunner) gunner.forceMove(entrance.loc)
 		if(driver) driver.forceMove(entrance.loc)
 
+	if(gunner.client)
+		gunner.client.mouse_pointer_icon = initial(gunner.client.mouse_pointer_icon)
 	gunner = null
 	driver = null
 	swap_seat = null
@@ -197,6 +202,21 @@
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set src in view(0)
 	Mega.attack_self(usr)
+
+//Naming done right
+/obj/vehicle/multitile/root/cm_armored/tank/verb/name_tank()
+	set name = "Name The Tank (Single Use)"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
+	set src in view(0)
+	if(named)
+		to_chat(usr, "<span class='warning'>Tank was already named!</span>")
+		return
+	var/nickname = copytext(sanitize(input(usr, "Name your tank (20 symbols, without \"\", they will be added)", "Naming", null) as text),1,20)
+	if(!nickname)
+		to_chat(usr, "<span class='warning'>No text entered!</span>")
+		return
+	src.name += " \"[nickname]\""
+	named = TRUE
 
 //Let's you switch into the other seat, doesn't work if it's occupied
 /obj/vehicle/multitile/root/cm_armored/tank/verb/switch_seats()
@@ -224,9 +244,15 @@
 				to_chat(usr, "<span class='notice'>You switch seats.</span>")
 				to_chat(driver, "<span class='notice'>You switch seats.</span>")
 				deactivate_all_hardpoints()
+
 				swap_seat = gunner
 				gunner = driver
+				if(gunner.client)
+					gunner.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
 				driver = swap_seat
+				if(driver.client)
+					driver.client.mouse_pointer_icon = initial(driver.client.mouse_pointer_icon)
+				swap_seat = null
 				return
 
 			//to_chat(usr, "<span class='notice'>There's already someone in the other seat.</span>")
@@ -247,6 +273,8 @@
 		driver = gunner
 		gunner = null
 
+		if(driver.client)
+			driver.client.mouse_pointer_icon = initial(driver.client.mouse_pointer_icon)
 	else if(usr == driver)
 		if(gunner)
 			answer = alert(gunner, "Your driver offers you to swap seats.", , "Yes", "No")
@@ -261,7 +289,12 @@
 				deactivate_all_hardpoints()
 				swap_seat = gunner
 				gunner = driver
+				if(gunner.client)
+					gunner.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
 				driver = swap_seat
+				if(driver.client)
+					driver.client.mouse_pointer_icon = initial(driver.client.mouse_pointer_icon)
+				swap_seat = null
 				return
 		to_chat(usr, "<span class='notice'>You start getting into the other seat.</span>")
 
@@ -275,6 +308,8 @@
 
 		gunner = driver
 		driver = null
+		if(gunner.client)
+			gunner.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
 
 /obj/vehicle/multitile/root/cm_armored/tank/can_use_hp(var/mob/M)
 	return (M == gunner)
@@ -307,6 +342,8 @@
 		targ = driver
 		driver = null
 	else
+		if(gunner.client)
+			gunner.client.mouse_pointer_icon = initial(gunner.client.mouse_pointer_icon)
 		targ = gunner
 		gunner = null
 	to_chat(targ, "<span class='danger'>[M] forcibly drags you out of your seat and dumps you on the ground!</span>")
@@ -390,6 +427,9 @@
 			else
 				to_chat(M, "<span class='notice'>You climb onto the tank and enter the gunner's seat through an auxiliary top hatchet.</span>")
 			M.set_interaction(src)
+			if(M.client)
+				M.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
+
 
 			return
 
@@ -417,7 +457,10 @@
 	else
 		if(M == gunner)
 			deactivate_all_hardpoints()
+			if(M.client)
+				M.client.mouse_pointer_icon = initial(M.client.mouse_pointer_icon)
 			M.Move(entrance.loc)
+
 			gunner = null
 		else
 			if(M == driver)

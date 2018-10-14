@@ -69,7 +69,7 @@
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 
 	if (!ui)
-		ui = new(user, src, ui_key, "marine_selector.tmpl", name , 600, 700)
+		ui = new(user, src, ui_key, "tank_vendor.tmpl", name , 600, 700)
 		ui.set_initial_data(data)
 		ui.open()
 		ui.set_auto_update(1)

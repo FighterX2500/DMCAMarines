@@ -1353,6 +1353,7 @@
 				secondary weapons, backup magazines and amount of M75 uses left.</li>
 				<li>Auxiliary top hatch was added to tank, allowing to enter vehicle even if back hatchet is blocked.</li>
 				<li>Special camera was mounted on the tank, allowing Command Staff in CIC to actually view the tank.</li>
+				<li>External Megaphone was installed and tested. However, you yourself won't hear what you are saying in it.</li>
 				<li>Remember that anyone who has squad engineer level of training is capable of, uninstalling, field repairing and installing back your broken treads.</li>
 
 				<h1><a name="Primary"><B>Primary Weaponry</B></a></h1>
@@ -1407,6 +1408,7 @@
 				боеприпасов и запасных магазинов, а так же количество оставшихся использований системы ћ75.</li>
 				<li>Ѕыл установлен вспомогательный люк в верхней части танка, который позвол€ет попасть в танк, даже если задний люк заблокирован.</li>
 				<li>¬ танк была встроена специальна€ камера, позвол€юща€ командованию видеть танк на их консол€х камер.</li>
+				<li>¬нешний громкоговоритель был починен и теперь исправно работает. ѕравда, вы сами не сможете услышать, что вы говорите в него.</li>
 				<li>ѕомните, что любой с инженерными навыками уровн€ боевого инженера может демонтировать, произвести полевой ремонт и установить обратно ваши траки.</li>
 
 				<h1><a name="Primary_ru"><B>ќсновные ќружейные ћодули</B></a></h1>

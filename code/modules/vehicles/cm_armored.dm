@@ -239,9 +239,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //And other checks to make sure you aren't breaking the law
 /obj/vehicle/multitile/root/cm_armored/tank/handle_click(var/mob/living/user, var/atom/A, var/list/mods)
 
-	if (mods["shift"] && mods["middle"])
-		user.point_to(A)
-		return
+//	if (mods["shift"] && mods["middle"])
+//		user.point_to(A)
+//		return
 
 	if (mods["shift"])
 		user.examine()
@@ -295,7 +295,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	if(isliving(usr))
 		var/mob/living/M = usr
 		M.set_interaction(src)
-
 
 //proc to actually shoot grenades
 /obj/vehicle/multitile/root/cm_armored/proc/smoke_shot()
@@ -639,34 +638,35 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 			var/mob/living/carbon/Xenomorph/XEN = M
 			switch(CA.t_class)
 				if(T_LIGHT)
+					if(XEN.t_fortified == 1)
+						return
 					if(XEN.t_squishy == 1)
 						step_away(M,root,1,0)
-						M.KnockDown(5)
+						M.KnockDown(3)
 						M.apply_damage(5 + rand(5, 10), BRUTE)
-						return
-					if(XEN.t_fortified == 1)
 						return
 					step_away(M,root,1,0)
 				if(T_MEDIUM)
 					if(XEN.t_fortified == 1)
 						return
 					step_away(XEN,root,0,0)
-					M.KnockDown(5)
+					M.KnockDown(3)
 					M.apply_damage(10 + rand(5, 10), BRUTE)
 				if(T_HEAVY)
-					if(XEN.t_squishy == 1)
-						M.KnockDown(5)
-						M.apply_damage(10 + rand(10, 15), BRUTE)
 					if(XEN.t_fortified)
 						step_away(M,root,0,0)
 						M.visible_message("<span class='danger'>[src] slowly pushes [M] further!</span>", "<span class='danger'>[src] is heavier, you can't hold it in place!</span>")
-						return
+					if(XEN.t_squishy == 1)
+						M.KnockDown(3)
+						M.apply_damage(10 + rand(10, 15), BRUTE)
 					step_away(M,root,0,0)
-					M.KnockDown(5)
+					M.KnockDown(3)
 					M.apply_damage(10 + rand(5, 10), BRUTE)
+		if (isXenoLarva(M))
+			M.KnockDown(5)
 		if (!isXeno(M))
 			step_away(M,root,0,0)
-			M.KnockDown(5)
+			M.KnockDown(3)
 			M.apply_damage(15 + rand(0, 15), BRUTE)
 		M.visible_message("<span class='danger'>[src] runs over [M]!</span>", "<span class='danger'>[src] runs you over! Get out of the way!</span>")
 		var/list/slots = CA.get_activatable_hardpoints()
