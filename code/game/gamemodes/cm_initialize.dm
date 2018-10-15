@@ -350,15 +350,6 @@ datum/game_mode/proc/initialize_special_clamps()
 			return
 
 		if(!xeno_bypass_timer)
-			var/deathtime = world.time - xeno_candidate.timeofdeath
-			if(istype(xeno_candidate, /mob/new_player))
-				deathtime = 3000 //so new players don't have to wait to latejoin as xeno in the round's first 5 mins.
-			var/deathtimeminutes = round(deathtime / 600)
-			var/deathtimeseconds = round((deathtime - deathtimeminutes * 600) / 10,1)
-			if(deathtime < 3000 && ( !xeno_candidate.client.holder || !(xeno_candidate.client.holder.rights & R_ADMIN)) )
-				to_chat(xeno_candidate, "<span class='warning'>You have been dead for [deathtimeminutes >= 1 ? "[deathtimeminutes] minute\s and " : ""][deathtimeseconds] second\s.</span>")
-				to_chat(xeno_candidate, "<span class='warning'>You must wait 5 minutes before rejoining the game!</span>")
-				return
 			if(new_xeno.away_timer < 300) //We do not want to occupy them if they've only been gone for a little bit.
 				to_chat(xeno_candidate, "<span class='warning'>That player hasn't been away long enough. Please wait [300 - new_xeno.away_timer] second\s longer.</span>")
 				return

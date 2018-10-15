@@ -299,8 +299,7 @@ proc/isInSight(var/atom/A, var/atom/B)
 			continue
 
 		// copied from join as xeno
-		var/deathtime = world.time - O.timeofdeath
-		if(deathtime < 3000 && ( !O.client.holder || !(O.client.holder.rights & R_ADMIN)) )
+		if(( !O.client.holder || !(O.client.holder.rights & R_ADMIN)) )
 			continue
 
 		// Admins and AFK players cannot be drafted
