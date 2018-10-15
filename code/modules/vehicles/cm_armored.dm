@@ -295,6 +295,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	if(isliving(usr))
 		var/mob/living/M = usr
 		M.set_interaction(src)
+		for(var/obj/item/device/binoculars/BN in M.contents)
+			if(BN.zoom)
+				BN.zoom()
 
 //proc to actually shoot grenades
 /obj/vehicle/multitile/root/cm_armored/proc/smoke_shot()
@@ -669,6 +672,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 			M.KnockDown(3)
 			M.apply_damage(15 + rand(0, 15), BRUTE)
 		M.visible_message("<span class='danger'>[src] runs over [M]!</span>", "<span class='danger'>[src] runs you over! Get out of the way!</span>")
+		log_attack("[src] drove over/bumped into [M]([M.client ? M.client.ckey : "disconnected"]).")
 		var/list/slots = CA.get_activatable_hardpoints()
 		for(var/slot in slots)
 			var/obj/item/hardpoint/H = CA.hardpoints[slot]

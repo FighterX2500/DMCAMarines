@@ -85,19 +85,13 @@
 	R.load_entrance_marker(entr_mark)
 
 	//Manually adding those hardpoints
-	R.add_hardpoint(new /obj/item/hardpoint/primary/cannon, R.hardpoints[HDPT_PRIMARY])
-	R.add_hardpoint(new /obj/item/hardpoint/secondary/m56cupola, R.hardpoints[HDPT_SECDGUN])
-	R.add_hardpoint(new /obj/item/hardpoint/support/artillery_module, R.hardpoints[HDPT_SUPPORT])
-	R.add_hardpoint(new /obj/item/hardpoint/armor/ballistic, R.hardpoints[HDPT_ARMOR])
-	R.add_hardpoint(new /obj/item/hardpoint/treads/standard, R.hardpoints[HDPT_TREADS])
-	R.update_damage_distribs()
+	R.damaged_hps = list(
+		"primary",
+		"secondary",
+		"support",
+		"armor")
 
-	//R.take_damage_type(1e8, "abstract") //OOF.ogg
-	R.hardpoints[HDPT_PRIMARY].health =0
-	R.hardpoints[HDPT_SECDGUN].health =0
-	R.hardpoints[HDPT_SUPPORT].health =0
-	R.hardpoints[HDPT_ARMOR].health =0
-	R.hardpoints[HDPT_TREADS].health =0
+	R.update_damage_distribs()
 
 	R.healthcheck()
 
@@ -295,6 +289,9 @@
 				if(driver.client)
 					driver.client.mouse_pointer_icon = initial(driver.client.mouse_pointer_icon)
 				swap_seat = null
+				for(var/obj/item/device/binoculars/BN in gunner.contents)
+					if(BN.zoom)
+						BN.zoom()
 				return
 		to_chat(usr, "<span class='notice'>You start getting into the other seat.</span>")
 
@@ -365,9 +362,7 @@
 		return
 
 	to_chat(M, "<span class='notice'>You start climbing into [src].</span>")
-	for(var/obj/item/I in M.contents)
-		if(I.zoom)
-			I.zoom() // cancel zoom.
+
 	switch(slot)
 		if("Driver")
 
@@ -386,9 +381,6 @@
 			if(driver != null)
 				to_chat(M, "<span class='notice'>Someone got into that seat before you could.</span>")
 				return
-			for(var/obj/item/I in M.contents)
-				if(I.zoom)
-					I.zoom() // cancel zoom.
 			driver = M
 			M.loc = src
 			if(loc_check == entrance.loc)
@@ -417,9 +409,6 @@
 				return
 
 			if(!M.client) return //Disconnected while getting in
-			for(var/obj/item/I in M.contents)
-				if(I.zoom)
-					I.zoom() // cancel zoom.
 			gunner = M
 			M.loc = src
 			if(loc_check == entrance.loc)
@@ -429,7 +418,9 @@
 			M.set_interaction(src)
 			if(M.client)
 				M.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
-
+			for(var/obj/item/device/binoculars/BN in M.contents)
+				if(BN.zoom)
+					BN.zoom()
 
 			return
 

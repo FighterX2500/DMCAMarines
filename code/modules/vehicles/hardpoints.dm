@@ -337,6 +337,7 @@ Currently only has the tank hardpoints
 	name = "Type 43 Cannon"
 	desc = "A primary 86mm cannon for tank that shoots explosive rounds."
 
+	point_cost = 0
 	ammo_type = new /obj/item/ammo_magazine/tank/ltb_cannon/upp
 
 	active_effect(var/turf/T)
@@ -357,6 +358,9 @@ Currently only has the tank hardpoints
 /obj/item/hardpoint/primary/autocannon/upp
 	name = "Type 41 Autocannon"
 	desc = "A primary light autocannon for tank. Designed for light scout tank. Shoots 30mm HE rounds."
+	point_cost = 0
+
+	ammo_type = new /obj/item/ammo_magazine/tank/autocannon/upp
 
 	active_effect(var/turf/T)
 		var /obj/item/ammo_magazine/tank/autocannon/upp/A = clips[1]
@@ -373,7 +377,7 @@ Currently only has the tank hardpoints
 		playsound(get_turf(src), 'sound/weapons/tank_autocannon_fire1.ogg', 60, 1)
 		A.current_rounds--
 
-	ammo_type = new /obj/item/ammo_magazine/tank/autocannon/upp
+
 ////////////////////
 // PRIMARY SLOTS // END
 ////////////////////
@@ -484,7 +488,7 @@ Currently only has the tank hardpoints
 
 	maxhealth = 350
 	health = 350
-	point_cost = 50
+	point_cost = 100
 	hp_weight = 2
 
 	icon_state = "m56_cupola"
@@ -499,7 +503,7 @@ Currently only has the tank hardpoints
 
 	apply_buff()
 		owner.cooldowns["secondary"] = 2
-		owner.accuracies["secondary"] = 0.7
+		owner.accuracies["secondary"] = 0.8
 
 	is_ready()
 		if(world.time < next_use)
@@ -532,7 +536,7 @@ Currently only has the tank hardpoints
 
 	maxhealth = 500
 	health = 500
-	point_cost = 25
+	point_cost = 100
 	hp_weight = 2
 
 	icon_state = "glauncher"
@@ -582,6 +586,8 @@ Currently only has the tank hardpoints
 /obj/item/hardpoint/secondary/flamer/upp
 	name = "Type 04 Flamethrower"
 	desc = "A secondary weapon for tank. Don't let it fool you, it's not your ordinary flamer, this thing literally shoots fireballs. Not kidding."
+	point_cost = 0
+
 	ammo_type = new /obj/item/ammo_magazine/tank/flamer/upp
 
 	active_effect(var/turf/T)
@@ -604,6 +610,8 @@ Currently only has the tank hardpoints
 	name = "Type 05 PTRK"
 	desc = "A secondary weapon for tank that shoots powerful AP rockets. Deals heavy damage, but only on direct hits."
 	ammo_type = new /obj/item/ammo_magazine/tank/towlauncher/upp
+	point_cost = 0
+
 	active_effect(var/turf/T)
 
 		var obj/item/ammo_magazine/tank/towlauncher/upp/A = clips[1]
@@ -622,6 +630,7 @@ Currently only has the tank hardpoints
 /obj/item/hardpoint/secondary/m56cupola/upp
 	name = "Type 01 PKT"
 	desc = "A secondary weapon for tank. Heavy-hitting machine gun."
+	point_cost = 0
 
 	ammo_type = new /obj/item/ammo_magazine/tank/m56_cupola/upp
 
@@ -643,6 +652,8 @@ Currently only has the tank hardpoints
 
 /obj/item/hardpoint/secondary/grenade_launcher/upp
 	name = "Type 02 AGS"
+	point_cost = 0
+
 	ammo_type = new /obj/item/ammo_magazine/tank/tank_glauncher/upp
 
 	active_effect(var/turf/T)
@@ -677,7 +688,7 @@ Currently only has the tank hardpoints
 
 	maxhealth = 300
 	health = 300
-	point_cost = 10
+	point_cost = 0
 	hp_weight = 1
 
 	icon_state = "slauncher_0"
@@ -863,9 +874,11 @@ Currently only has the tank hardpoints
 
 /obj/item/hardpoint/support/weapons_sensor/upp
 	name = "Type 31 Weapons Modernisation Kit"
+	point_cost = 0
 
 /obj/item/hardpoint/support/artillery_module/upp
 	name = "Type 33 Artillery Module"
+	point_cost = 0
 
 ///////////////////
 // SUPPORT SLOTS // END
@@ -993,7 +1006,7 @@ Currently only has the tank hardpoints
 	maxhealth = 700
 	health = 700
 	is_activatable = 1
-	point_cost = 1
+	point_cost = 100
 	hp_weight = 3
 
 	icon_state = "snowplow"
@@ -1031,6 +1044,7 @@ Currently only has the tank hardpoints
 /obj/item/hardpoint/armor/ballistic/upp
 	name = "Type 50 MBT Armor"
 	desc = "Standard UPP tank armor. Offers some decent explosion protection."
+	point_cost = 0
 
 	maxhealth = 900
 	health = 900
@@ -1128,6 +1142,7 @@ Currently only has the tank hardpoints
 /obj/item/hardpoint/treads/standard/upp
 	name = "Type 07 Tank Treads"
 	desc = "Standard UPP tank treads. They look quite tough."
+	point_cost = 0
 
 	maxhealth = 650
 	health = 650
@@ -1249,7 +1264,7 @@ Currently only has the tank hardpoints
 
 
 /obj/item/ammo_magazine/tank/tank_slauncher
-	name = "M75 Smoke Deploy System Magazine"
+	name = "Smoke Deploy System Magazine"
 	desc = "A smoke cover system grenade magazine"
 	caliber = "grenade"
 	icon_state = "slauncher_1"
@@ -1271,28 +1286,34 @@ Currently only has the tank hardpoints
 /obj/item/ammo_magazine/tank/ltb_cannon/upp
 	name = "Type 43 Cannon Magazine"
 	gun_type = /obj/item/hardpoint/primary/cannon/upp
+	point_cost = 0
 
 /obj/item/ammo_magazine/tank/autocannon/upp
 	name = "Type 41 Autocannon Magazine"
 	default_ammo = /datum/ammo/rocket/autocannon/upp
 	gun_type = /obj/item/hardpoint/primary/autocannon/upp
+	point_cost = 0
 
 /obj/item/ammo_magazine/tank/m56_cupola/upp
 	name = "Type 01 PKT Magazine"
 	default_ammo = /datum/ammo/bullet/smartgun/lethal
 	gun_type = /obj/item/hardpoint/secondary/m56cupola/upp
+	point_cost = 0
 
 /obj/item/ammo_magazine/tank/flamer/upp
 	name = "Type 04 Flamethrower Tank"
 	gun_type = /obj/item/hardpoint/secondary/flamer/upp
+	point_cost = 0
 
 /obj/item/ammo_magazine/tank/towlauncher/upp
 	name = "Type 05 PTRK Magazine"
 	gun_type = /obj/item/hardpoint/secondary/towlauncher/upp
+	point_cost = 0
 
 /obj/item/ammo_magazine/tank/tank_glauncher/upp
 	name = "Type 02 AGS Magazine"
 	gun_type = /obj/item/hardpoint/secondary/grenade_launcher/upp
+	point_cost = 0
 ///////////////
 // AMMO MAGS // END
 ///////////////

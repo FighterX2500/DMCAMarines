@@ -1355,6 +1355,7 @@
 				<li>Special camera was mounted on the tank, allowing Command Staff in CIC to actually view the tank.</li>
 				<li>External Megaphone was installed and tested. However, you yourself won't hear what you are saying in it.</li>
 				<li>Remember that anyone who has squad engineer level of training is capable of, uninstalling, field repairing and installing back your broken treads.</li>
+				<li>All modules can be fixed in special Module Repair Station in the Garage next to Tank Vendor.</li>
 
 				<h1><a name="Primary"><B>Primary Weaponry</B></a></h1>
 				<li><I>M21 Autocannon.</I> 1RW. A primary light autocannon for tank. Designed for light scout tank. Shoots 30mm light HE rounds. Fire rate was reduced with adding IFF support.</li>
@@ -1410,6 +1411,7 @@
 				<li>¬ танк была встроена специальна€ камера, позвол€юща€ командованию видеть танк на их консол€х камер.</li>
 				<li>¬нешний громкоговоритель был починен и теперь исправно работает. ѕравда, вы сами не сможете услышать, что вы говорите в него.</li>
 				<li>ѕомните, что любой с инженерными навыками уровн€ боевого инженера может демонтировать, произвести полевой ремонт и установить обратно ваши траки.</li>
+				<li>¬се модули могут быть починены в —танции –емонта ћодулей в √араже возле “акнового ¬ендора.</li>
 
 				<h1><a name="Primary_ru"><B>ќсновные ќружейные ћодули</B></a></h1>
 				<li><I>M21 Autocannon.</I> 1RW. ќснованя легкая танковая автопушка. —проектирована для легких разведовательных танков. —треляет 30мм легкими взрывающимися зарядами. —корость стрельбы была снижена для введения поддержки IFF системы.</li>
