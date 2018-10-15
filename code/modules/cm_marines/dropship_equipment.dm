@@ -333,10 +333,6 @@
 		deployed_turret.on = 0
 		icon_state = "sentry_system_installed"
 
-
-
-
-
 /obj/structure/dropship_equipment/mg_holder
 	name = "machinegun deployment system"
 	desc = "A box that deploys a modified M56D crewserved machine gun. Fits on the crewserved weapon attach points of dropships. You need a powerloader to lift it."

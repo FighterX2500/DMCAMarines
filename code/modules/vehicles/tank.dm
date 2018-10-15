@@ -6,20 +6,21 @@
 
 
 /obj/vehicle/multitile/root/cm_armored/tank
-	//name = "M34A2 Longstreet Modular Multipurpose Tank"
-	name = "M34A2 Longstreet Light Tank"
-	desc = "A giant piece of armor, was made as a budget version of a tank specifically for USCM. Supports installing numerous modules and weapons, allowing technicians to refit tank for any type of operation. Entrance in the back."
+	name = "M46 \"Stingray\" Modular Multipurpose Tank"
+	desc = "A giant piece of armor, was made as a budget version of a tank specifically for USCM. Supports installing different types of modules and weapons, allowing technicians to refit tank for any type of operation. Has inbuilt M75 Smoke Deploy System. Entrance in the back."
 
 	icon = 'icons/obj/tank_NS.dmi'
 	icon_state = "tank_base"
 	pixel_x = -32
 	pixel_y = -32
 
+	var/named = FALSE
 	var/mob/gunner
 	var/mob/driver
 	var/mob/swap_seat	//this is a temp seat for switching seats when both TCs are in tank
 
-	var/obj/machinery/camera/camera = null	//Yay! Working camera in the tank! IMPORTANT! If you give hostile faction tank, remove tank's camera in via VV.
+	var/obj/machinery/camera/camera = null	//Yay! Working camera in the tank!
+	var/obj/item/device/megaphone/Mega
 
 	var/occupant_exiting = 0
 	var/next_sound_play = 0
@@ -51,8 +52,9 @@
 
 	R.load_hitboxes(dimensions, root_pos)
 	R.load_entrance_marker(entr_mark)
-
 	R.update_icon()
+
+	R.Mega = new/obj/item/device/megaphone(R)
 
 	R.camera = new /obj/machinery/camera(R)
 	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
@@ -83,21 +85,17 @@
 	R.load_entrance_marker(entr_mark)
 
 	//Manually adding those hardpoints
-	R.add_hardpoint(new /obj/item/hardpoint/primary/cannon, R.hardpoints[HDPT_PRIMARY])
-	R.add_hardpoint(new /obj/item/hardpoint/secondary/m56cupola, R.hardpoints[HDPT_SECDGUN])
-	R.add_hardpoint(new /obj/item/hardpoint/support/artillery_module, R.hardpoints[HDPT_SUPPORT])
-	R.add_hardpoint(new /obj/item/hardpoint/armor/ballistic, R.hardpoints[HDPT_ARMOR])
-	R.add_hardpoint(new /obj/item/hardpoint/treads/standard, R.hardpoints[HDPT_TREADS])
+	R.damaged_hps = list(
+		"primary",
+		"secondary",
+		"support",
+		"armor")
+
 	R.update_damage_distribs()
 
-	//R.take_damage_type(1e8, "abstract") //OOF.ogg
-	R.hardpoints[HDPT_PRIMARY].health =0
-	R.hardpoints[HDPT_SECDGUN].health =0
-	R.hardpoints[HDPT_SUPPORT].health =0
-	R.hardpoints[HDPT_ARMOR].health =0
-	R.hardpoints[HDPT_TREADS].health =0
-
 	R.healthcheck()
+
+	R.Mega = new/obj/item/device/megaphone(R)
 
 	R.camera = new /obj/machinery/camera(R)
 	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
@@ -105,20 +103,76 @@
 
 	del(src)
 
+
+/obj/effect/multitile_spawner/cm_armored/tank/upp/New()
+
+	var/obj/vehicle/multitile/root/cm_armored/tank/R = new(src.loc)
+	R.dir = EAST
+
+	R.name = "Type 91 \"Wolverine\" Main Battle Tank"
+	R.desc = "Watch out! It's UPP main battle tank! Has inbuilt Type 21 \"Zavesa\" smoke cover system. Entrance in the back."
+
+	var/datum/coords/dimensions = new
+	dimensions.x_pos = width
+	dimensions.y_pos = height
+	var/datum/coords/root_pos = new
+	root_pos.x_pos = 1
+	root_pos.y_pos = 1
+
+	var/datum/coords/entr_mark = new
+	entr_mark.x_pos = -2
+	entr_mark.y_pos = 0
+
+	R.load_hitboxes(dimensions, root_pos)
+	R.load_entrance_marker(entr_mark)
+
+	//Manually adding those hardpoints
+	R.add_hardpoint(new /obj/item/hardpoint/primary/cannon/upp, R.hardpoints[HDPT_PRIMARY])
+	R.add_hardpoint(new /obj/item/hardpoint/secondary/m56cupola/upp, R.hardpoints[HDPT_SECDGUN])
+	R.add_hardpoint(new /obj/item/hardpoint/support/artillery_module/upp, R.hardpoints[HDPT_SUPPORT])
+	R.add_hardpoint(new /obj/item/hardpoint/armor/ballistic/upp, R.hardpoints[HDPT_ARMOR])
+	R.add_hardpoint(new /obj/item/hardpoint/treads/standard/upp, R.hardpoints[HDPT_TREADS])
+	R.update_damage_distribs()
+
+	R.Mega = new/obj/item/device/megaphone(R)
+
+	R.color = "#c2b678"
+	R.healthcheck()
+
+	del(src)
+
 //For the tank, start forcing people out if everything is broken
 /obj/vehicle/multitile/root/cm_armored/tank/handle_all_modules_broken()
 	deactivate_all_hardpoints()
 
-	if(driver)
-		to_chat(driver, "<span class='danger'>You dismount to as the smoke and flames start to choke you!</span>")
-		driver.Move(entrance.loc)
-		driver.unset_interaction()
-		driver = null
-	else if(gunner)
-		to_chat(gunner, "<span class='danger'>You dismount to as the smoke and flames start to choke you!</span>")
+	var/turf/closed/T
+	T in entrance.loc
+	if(istype(T))
+		T = get_new_exit_point()
+		to_chat(global, "<span class='danger'>entrance turf check: [T.name]</span>")
+		if(!istype(T))
+			if(gunner)
+				gunner.Move(T.loc)
+				to_chat(gunner, "<span class='danger'>You cannot breath in all the smoke inside the vehicle and back hatch is blocked, so you get out through an auxiliary top hatch and jump off the tank!</span>")
+			if(driver)
+				driver.Move(T.loc)
+				to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle and back hatch is blocked, so you get out through an auxiliary top hatch and jump off the tank!</span>")
+		else
+			to_chat(gunner, "<span class='danger'>You cannot breath in all the smoke inside the vehicle, but the back hatch is blocked!</span>")
+			to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle, but the back hatch is blocked!</span>")
+			return
+	else
+		to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle so you dismount!</span>")
 		gunner.Move(entrance.loc)
-		gunner.unset_interaction()
-		gunner = null
+		to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle so you dismount!</span>")
+		driver.Move(entrance.loc)
+
+	if(gunner.client)
+		gunner.client.mouse_pointer_icon = initial(gunner.client.mouse_pointer_icon)
+	gunner.unset_interaction()
+	gunner = null
+	driver.unset_interaction()
+	driver = null
 	swap_seat = null
 
 /obj/vehicle/multitile/root/cm_armored/tank/remove_all_players()
@@ -130,16 +184,40 @@
 		if(gunner) gunner.forceMove(entrance.loc)
 		if(driver) driver.forceMove(entrance.loc)
 
+	if(gunner.client)
+		gunner.client.mouse_pointer_icon = initial(gunner.client.mouse_pointer_icon)
 	gunner = null
 	driver = null
 	swap_seat = null
+
+//little QoL won't be bad, aight?
+/obj/vehicle/multitile/root/cm_armored/tank/verb/megaphone()
+	set name = "Use Megaphone"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
+	set src in view(0)
+	Mega.attack_self(usr)
+
+//Naming done right
+/obj/vehicle/multitile/root/cm_armored/tank/verb/name_tank()
+	set name = "Name The Tank (Single Use)"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
+	set src in view(0)
+	if(named)
+		to_chat(usr, "<span class='warning'>Tank was already named!</span>")
+		return
+	var/nickname = copytext(sanitize(input(usr, "Name your tank (20 symbols, without \"\", they will be added)", "Naming", null) as text),1,20)
+	if(!nickname)
+		to_chat(usr, "<span class='warning'>No text entered!</span>")
+		return
+	src.name += " \"[nickname]\""
+	named = TRUE
 
 //Let's you switch into the other seat, doesn't work if it's occupied
 /obj/vehicle/multitile/root/cm_armored/tank/verb/switch_seats()
 	set name = "Swap Seats"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set src in view(0)
-	var/answer = alert(driver, "Are you sure you want to swap seats?", , "Yes", "No") //added confirmation window
+	var/answer = alert(usr, "Are you sure you want to swap seats?", , "Yes", "No") //added confirmation window
 	if(answer == "No")
 		return
 
@@ -160,9 +238,15 @@
 				to_chat(usr, "<span class='notice'>You switch seats.</span>")
 				to_chat(driver, "<span class='notice'>You switch seats.</span>")
 				deactivate_all_hardpoints()
+
 				swap_seat = gunner
 				gunner = driver
+				if(gunner.client)
+					gunner.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
 				driver = swap_seat
+				if(driver.client)
+					driver.client.mouse_pointer_icon = initial(driver.client.mouse_pointer_icon)
+				swap_seat = null
 				return
 
 			//to_chat(usr, "<span class='notice'>There's already someone in the other seat.</span>")
@@ -183,6 +267,8 @@
 		driver = gunner
 		gunner = null
 
+		if(driver.client)
+			driver.client.mouse_pointer_icon = initial(driver.client.mouse_pointer_icon)
 	else if(usr == driver)
 		if(gunner)
 			answer = alert(gunner, "Your driver offers you to swap seats.", , "Yes", "No")
@@ -197,12 +283,16 @@
 				deactivate_all_hardpoints()
 				swap_seat = gunner
 				gunner = driver
+				if(gunner.client)
+					gunner.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
 				driver = swap_seat
+				if(driver.client)
+					driver.client.mouse_pointer_icon = initial(driver.client.mouse_pointer_icon)
+				swap_seat = null
+				for(var/obj/item/device/binoculars/BN in gunner.contents)
+					if(BN.zoom)
+						BN.zoom()
 				return
-
-			//to_chat(usr, "<span class='notice'>There's already someone in the other seat.</span>")
-			//return
-
 		to_chat(usr, "<span class='notice'>You start getting into the other seat.</span>")
 
 		sleep(30)
@@ -215,6 +305,8 @@
 
 		gunner = driver
 		driver = null
+		if(gunner.client)
+			gunner.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
 
 /obj/vehicle/multitile/root/cm_armored/tank/can_use_hp(var/mob/M)
 	return (M == gunner)
@@ -247,6 +339,8 @@
 		targ = driver
 		driver = null
 	else
+		if(gunner.client)
+			gunner.client.mouse_pointer_icon = initial(gunner.client.mouse_pointer_icon)
 		targ = gunner
 		gunner = null
 	to_chat(targ, "<span class='danger'>[M] forcibly drags you out of your seat and dumps you on the ground!</span>")
@@ -258,7 +352,7 @@
 //Two seats, gunner and driver
 //Must have the skills to do so
 /obj/vehicle/multitile/root/cm_armored/tank/handle_player_entrance(var/mob/M)
-
+	var/loc_check = M.loc
 	var/slot = input("Select a seat") in list("Driver", "Gunner")
 
 	if(!M || M.client == null) return
@@ -268,9 +362,7 @@
 		return
 
 	to_chat(M, "<span class='notice'>You start climbing into [src].</span>")
-	for(var/obj/item/I in M.contents)
-		if(I.zoom)
-			I.zoom() // cancel zoom.
+
 	switch(slot)
 		if("Driver")
 
@@ -282,19 +374,19 @@
 				to_chat(M, "<span class='notice'>Something interrupted you while getting in.</span>")
 				return
 
-			if(M.loc != entrance.loc)
+			if(M.loc != loc_check)
 				to_chat(M, "<span class='notice'>You stop getting in.</span>")
 				return
 
 			if(driver != null)
 				to_chat(M, "<span class='notice'>Someone got into that seat before you could.</span>")
 				return
-			for(var/obj/item/I in M.contents)
-				if(I.zoom)
-					I.zoom() // cancel zoom.
 			driver = M
 			M.loc = src
-			to_chat(M, "<span class='notice'>You enter the driver's seat.</span>")
+			if(loc_check == entrance.loc)
+				to_chat(M, "<span class='notice'>You enter the driver's seat.</span>")
+			else
+				to_chat(M, "<span class='notice'>You climb onto the tank and enter the driver's seat through an auxiliary top hatchet.</span>")
 			M.set_interaction(src)
 			return
 
@@ -308,7 +400,7 @@
 				to_chat(M, "<span class='notice'>Something interrupted you while getting in.</span>")
 				return
 
-			if(M.loc != entrance.loc)
+			if(M.loc != loc_check)
 				to_chat(M, "<span class='notice'>You stop getting in.</span>")
 				return
 
@@ -317,13 +409,18 @@
 				return
 
 			if(!M.client) return //Disconnected while getting in
-			for(var/obj/item/I in M.contents)
-				if(I.zoom)
-					I.zoom() // cancel zoom.
 			gunner = M
 			M.loc = src
-			to_chat(M, "<span class='notice'>You enter the gunner's seat.</span>")
+			if(loc_check == entrance.loc)
+				to_chat(M, "<span class='notice'>You enter the gunner's seat.</span>")
+			else
+				to_chat(M, "<span class='notice'>You climb onto the tank and enter the gunner's seat through an auxiliary top hatchet.</span>")
 			M.set_interaction(src)
+			if(M.client)
+				M.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
+			for(var/obj/item/device/binoculars/BN in M.contents)
+				if(BN.zoom)
+					BN.zoom()
 
 			return
 
@@ -344,13 +441,22 @@
 	sleep(50)
 	occupant_exiting = 0
 
-	if(!M.Move(entrance.loc))
+	//if(!M.Move(entrance.loc))
+	var/turf/closed/T = entrance.loc
+	if(istype(T))
 		to_chat(M, "<span class='notice'>Something is blocking you from exiting.</span>")
 	else
 		if(M == gunner)
 			deactivate_all_hardpoints()
+			if(M.client)
+				M.client.mouse_pointer_icon = initial(M.client.mouse_pointer_icon)
+			M.Move(entrance.loc)
+
 			gunner = null
-		else if(M == driver) driver = null
+		else
+			if(M == driver)
+				M.Move(entrance.loc)
+				driver = null
 		M.unset_interaction()
 		to_chat(M, "<span class='notice'>You climb out of [src].</span>")
 
@@ -367,13 +473,30 @@
 		if(SP.health > 0)
 			for(var/datum/coords/C in linked_objs)
 				var/turf/T = locate(src.x + C.x_pos, src.y + C.y_pos, src.z + C.z_pos)
-				if(!istype(T, /turf/open/snow)) continue
-				var/turf/open/snow/ST = T
-				if(!ST || !ST.slayer)
-					continue
-				new /obj/item/stack/snow(ST, ST.slayer)
-				ST.slayer = 0
-				ST.update_icon(1, 0)
+				if(istype(T, /turf/open/snow))
+					var/turf/open/snow/ST = T
+					if(ST || !ST.slayer)
+						new /obj/item/stack/snow(ST, ST.slayer)
+						ST.slayer = 0
+						ST.update_icon(1, 0)
+				var/obj/effect/alien/weeds/WE
+				if(locate(/obj/effect/alien/weeds) in T)
+					for(WE in T)
+						WE.Dispose()
+				//var/obj/effect/alien/weeds/node/ND
+				//if(locate(/obj/effect/alien/weeds/node) in T)
+				//	for(ND in T)
+				//		ND.Dispose()
+				var/obj/item/explosive/mine/MN
+				if(locate(/obj/item/explosive/mine) in T)
+					for(MN in T)
+						MN.trigger_explosion()
+				var/obj/effect/alien/resin/trap/TR
+				if(locate(/obj/effect/alien/resin/trap) in T)
+					for(TR in T)
+						TR.Dispose()
+
+
 
 	if(next_sound_play < world.time)
 		playsound(src, 'sound/ambience/tank_driving.ogg', vol = 20, sound_range = 30)

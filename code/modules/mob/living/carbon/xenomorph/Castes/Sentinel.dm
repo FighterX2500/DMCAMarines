@@ -23,6 +23,7 @@
 	evolves_to = list("Spitter")
 	armor_deflection = 15
 	tier = 1
+	t_squishy = 1
 	upgrade = 0
 	speed = -0.8
 	pull_speed = -1
