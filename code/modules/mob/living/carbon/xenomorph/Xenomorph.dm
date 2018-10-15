@@ -137,8 +137,8 @@
 	if(caste == "Queen")
 		switch(upgrade)
 			if(0) name = "[name_prefix]Queen"			 //Young
-			if(1) name = "[name_prefix]Elite Queen"	 //Mature
-			if(2) name = "[name_prefix]Elite Empress"	 //Elite
+			if(1) name = "[name_prefix]Elder Queen"	 //Mature
+			if(2) name = "[name_prefix]Elder Empress"	 //Elite
 			if(3) name = "[name_prefix]Ancient Empress" //Ancient
 	else if(caste == "Predalien") name = "[name_prefix][name] ([nicknumber])"
 	else name = "[name_prefix][upgrade_name] [caste] ([nicknumber])"
@@ -201,8 +201,6 @@
 	if(!isliving(AM))
 		return FALSE
 	var/mob/living/L = AM
-	if(isSynth(L) && L.stat == DEAD) //no meta hiding synthetic bodies
-		return FALSE
 	if(L.buckled)
 		return FALSE //to stop xeno from pulling marines on roller beds.
 	/*if(ishuman(L) && L.stat == DEAD)

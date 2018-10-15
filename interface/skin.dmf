@@ -724,17 +724,6 @@ window "rpane"
 		text = "Submit Bug"
 		command = "submit-bug"
 		group = "rpanemode"
-	elem "donate"
-		type = BUTTON
-		pos = 682,0
-		size = 106x20
-		anchor1 = 79,0
-		anchor2 = 92,0
-		background-color = #8cffa4
-		saved-params = "is-checked"
-		text = "Donate"
-		command = "donate"
-		group = "rpanemode"
 	elem "rulesb"
 		type = BUTTON
 		pos = 258,0
@@ -763,10 +752,10 @@ window "rpane"
 		size = 106x20
 		anchor1 = 55,0
 		anchor2 = 67,0
-		background-color = none
+		background-color = #ff8080
 		saved-params = "is-checked"
-		text = "Forum"
-		command = "forum"
+		text = "Discord"
+		command = "https://discordapp.com/invite/e9HhcVP"
 		group = "rpanemode"
 	elem "wikib"
 		type = BUTTON

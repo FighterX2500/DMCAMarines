@@ -105,11 +105,6 @@
 	if(!istype(distress) || !distress.mob_max)
 		to_chat(usr, "<span class='warning'>The emergency response team is already full!</span>")
 		return
-	var/deathtime = world.time - usr.timeofdeath
-
-	if(deathtime < 600) //Nice try, ghosting right after the announcement
-		to_chat(usr, "<span class='warning'>You ghosted too recently.</span>")
-		return
 
 	if(!ticker.mode.waiting_for_candidates)
 		to_chat(usr, "<span class='warning'>The emergency response team has already been selected.</span>")

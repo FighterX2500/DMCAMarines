@@ -65,6 +65,7 @@
 	desc = "THIS SHOULDN'T BE VISIBLE, AHELP 'ART-P01' IF SEEN IN ROUND WITH LOCATION"
 
 /obj/machinery/prop/almayer/hangar/dropship_part_fabricator
+
 /obj/machinery/prop/almayer/computer/PC
 	name = "personal desktop"
 	desc = "A small computer hooked up into the ship's computer network."
@@ -193,7 +194,6 @@
 	var/list/fallen_list
 
 
-
 /obj/structure/prop/almayer/ship_memorial/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/dogtag))
 		var/obj/item/dogtag/D = I
@@ -217,6 +217,7 @@
 			else
 				faltext += fallen_list[i]
 		to_chat(user, "<span class='notice'>To our fallen soldiers:</span> <b>[faltext]</b>.")
+
 
 /obj/structure/prop/almayer/particle_cannon
 	name = "75cm/140 Mark 74 General Atomics railgun"
@@ -296,13 +297,6 @@
 /obj/structure/prop/almayer/cannon_cable_connector/bullet_act()
 	return
 
-
-
-
-
-
-
-
 //------- Cryobag Recycler -------//
 // Wanted to put this in, but since we still have extra time until tomorrow and this is really simple thing. It just recycles opened cryobags to make it nice-r for medics.
 // Also the lack of sleep makes me keep typing cyro instead of cryo. FFS ~Art
@@ -330,18 +324,3 @@
 			user.put_in_hands(R)
 			return TRUE
 	..()
-
-/obj/structure/closet/basketball
-	name = "athletic wardrobe"
-	desc = "It's a storage unit for athletic wear."
-	icon_state = "mixed"
-	icon_closed = "mixed"
-
-/obj/structure/closet/basketball/New()
-	..()
-	sleep(2)
-	new /obj/item/clothing/under/shorts/grey(src)
-	new /obj/item/clothing/under/shorts/black(src)
-	new /obj/item/clothing/under/shorts/red(src)
-	new /obj/item/clothing/under/shorts/blue(src)
-	new /obj/item/clothing/under/shorts/green(src)

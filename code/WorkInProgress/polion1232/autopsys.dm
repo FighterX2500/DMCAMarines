@@ -8,21 +8,48 @@
 	blood_level = 0
 	var/xeno_step = 0
 
-/datum/surgery_step/xeno/internal
-	min_duration = 10
-	max_duration = 20
-	xeno_step = 3
-
 /datum/surgery_step/xeno/is_valid_target(mob/living/carbon/target)
 	if(isXeno(target))
 		return 1
 	return 0
 
 /datum/surgery_step/xeno/can_use(mob/living/user, mob/living/carbon/Xenomorph/target, target_zone, obj/item/tool, datum/limb/affected, only_checks)
+	if(target.xeno_forbid_retract == 1)
+		target.xeno_surgery_step = 0
+		return 0
 	return target.xeno_surgery_step == xeno_step // checking steps
 
 /datum/surgery_step/xeno/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected)
 	return null //placeholder
+
+
+/datum/surgery_step/xeno/internal
+	priority = 2
+	allowed_tools = list(
+	/obj/item/tool/surgery/scalpel = 100,           \
+	/obj/item/tool/wirecutters = 75
+	)
+	min_duration = 10
+	max_duration = 20
+	xeno_step = 3
+
+/datum/surgery_step/xeno/internal/can_use(mob/living/user, mob/living/carbon/Xenomorph/target, target_zone, obj/item/tool, datum/limb/affected, only_checks)//Because fuck it, that's why
+	return 0
+
+/datum/surgery_step/xeno/queen
+	priority = 1
+	allowed_tools = list(
+	/obj/item/tool/surgery/scalpel = 100,           \
+	/obj/item/tool/wirecutters = 75
+	)
+	xeno_step = 3
+	min_duration = 100
+	max_duration = 150
+
+/datum/surgery_step/xeno/queen/can_use(mob/living/user, mob/living/carbon/Xenomorph/target, target_zone, obj/item/tool, datum/limb/affected, only_checks)
+	if(!isXenoQueen(target))
+		return 0
+	return target.xeno_surgery_step == xeno_step // checking steps
 
 
 
@@ -38,8 +65,8 @@
 	)
 
 	xeno_step = 0
-	min_duration = 10
-	max_duration = 20
+	min_duration = 50
+	max_duration = 100
 
 /datum/surgery_step/xeno/chitin/begin_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
 	user.visible_message("<span class='notice'>[user] start cuttung chunk of chitin out of [target]'s body with the [tool]</span>")
@@ -63,8 +90,8 @@
 	/obj/item/tool/wirecutters = 75
 	)
 
-	min_duration = 10
-	max_duration = 20
+	min_duration = 50
+	max_duration = 100
 	xeno_step = 1
 
 /datum/surgery_step/xeno/muscle/begin_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
@@ -86,12 +113,17 @@
 	/obj/item/tool/wrench = 75
 	)
 
-	min_duration = 5
-	max_duration = 10
+	min_duration = 30
+	max_duration = 40
 	xeno_step = 2
 
 /datum/surgery_step/xeno/retract/can_use(mob/living/user, mob/living/carbon/Xenomorph/target, target_zone, obj/item/tool, datum/limb/affected, only_checks)
-	if(target.xeno_forbid_retract)
+	if(target.xeno_forbid_retract == 1)
+		target.xeno_surgery_step = 0
+		return 0
+	if(!(isXenoSentinel(target) || isXenoSpitter(target) || isXenoDrone(target) || isXenoHivelord(target) || isXenoQueen(target)))
+		user.visible_message("<span class='notice'>Seem's like [target] have no more use for our research needs</span>")
+		target.xeno_forbid_retract = 1 // Poor xeno butchered
 		target.xeno_surgery_step = 0
 		return 0
 	return target.xeno_surgery_step == xeno_step // checking steps
@@ -114,15 +146,16 @@
 	/obj/item/tool/wirecutters = 75
 	)
 
-	min_duration = 10
-	max_duration = 20
+	min_duration = 50
+	max_duration = 100
 	xeno_step = 3
 
 /datum/surgery_step/xeno/internal/acid/can_use(mob/living/user, mob/living/carbon/Xenomorph/target, target_zone, obj/item/tool, datum/limb/affected, only_checks)
 	if(isXenoSentinel(target) || isXenoSpitter(target)) // Because spitting is their league
 		return target.xeno_surgery_step == xeno_step // checking steps
-	else
+	if(!isXenoDrone(target) || !isXenoHivelord(target) || !isXenoQueen(target))
 		target.xeno_forbid_retract = 1 // Poor xeno butchered
+		target.xeno_surgery_step = 0
 	return 0
 
 /datum/surgery_step/xeno/internal/acid/begin_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
@@ -149,15 +182,16 @@
 	/obj/item/tool/wirecutters = 75
 	)
 
-	min_duration = 10
-	max_duration = 20
+	min_duration = 50
+	max_duration = 100
 	xeno_step = 3
 
 /datum/surgery_step/xeno/internal/secretor/can_use(mob/living/user, mob/living/carbon/Xenomorph/target, target_zone, obj/item/tool, datum/limb/affected, only_checks)
 	if(isXenoDrone(target) || isXenoHivelord(target)) // Because spitting is their league
 		return target.xeno_surgery_step == xeno_step // checking steps
-	else
+	if(!isXenoSentinel(target) || !isXenoSpitter(target) || !isXenoQueen(target))
 		target.xeno_forbid_retract = 1 // Poor xeno butchered
+		target.xeno_surgery_step = 0
 	return 0
 
 /datum/surgery_step/xeno/internal/secretor/begin_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
@@ -182,8 +216,8 @@
 	/obj/item/tool/wirecutters = 75
 	)
 
-	min_duration = 10
-	max_duration = 20
+	min_duration = 50
+	max_duration = 100
 	xeno_step = 4
 
 
@@ -193,18 +227,66 @@
 	return 0
 
 /datum/surgery_step/xeno/internal/secretor/hivelord/begin_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
-	user.visible_message("<span class='notice'>[user] start cuttung bioplasma syntesate out of [target]'s body with the [tool]</span>")
+	user.visible_message("<span class='notice'>[user] start cuttung strange tissue out of [target]'s body with the [tool]</span>")
 	return
 
 /datum/surgery_step/xeno/internal/secretor/hivelord/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
-	user.visible_message("<span class='notice'>[user] cut bioplasma syntesate out of [target]'s body</span>")
+	user.visible_message("<span class='notice'>[user] cut strange tissue out of [target]'s body</span>")
 	new /obj/item/marineResearch/xenomorp/secretor/hivelord(target.loc)
 	target.xeno_surgery_step = 0
 	target.xeno_forbid_retract = 1 // Poor xeno butchered
 	return
 
 
+//Queen autopsy
+/datum/surgery_step/xeno/queen/acid
 
+/datum/surgery_step/xeno/queen/secretor
+	xeno_step = 4
+
+/datum/surgery_step/xeno/queen/secretor/hivelord
+	xeno_step = 5
+
+/datum/surgery_step/xeno/queen/core
+	xeno_step = 6
+
+/datum/surgery_step/xeno/queen/acid/begin_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
+	user.visible_message("<span class='notice'>[user] start cuttung acid gland out of [target]'s body with the [tool]</span>")
+	return
+
+/datum/surgery_step/xeno/queen/acid/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
+	user.visible_message("<span class='notice'>[user] cut acid gland out of [target]'s body</span>")
+	new /obj/item/marineResearch/xenomorp/acid_gland/spitter(target.loc)
+	target.xeno_surgery_step = 4
+
+/datum/surgery_step/xeno/queen/secretor/begin_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
+	user.visible_message("<span class='notice'>[user] start cuttung secretor gland out of [target]'s body with the [tool]</span>")
+	return
+
+/datum/surgery_step/xeno/queen/secretor/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
+	user.visible_message("<span class='notice'>[user] cut secretor gland out of [target]'s body</span>")
+	new /obj/item/marineResearch/xenomorp/secretor(target.loc)
+	target.xeno_surgery_step = 5
+
+/datum/surgery_step/xeno/queen/secretor/hivelord/begin_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
+	user.visible_message("<span class='notice'>[user] start cuttung strange tissue out of [target]'s body with the [tool]</span>")
+	return
+
+/datum/surgery_step/xeno/queen/secretor/hivelord/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
+	user.visible_message("<span class='notice'>[user] cut strange tissue out of [target]'s body</span>")
+	new /obj/item/marineResearch/xenomorp/secretor/hivelord(target.loc)
+	target.xeno_surgery_step = 6
+
+/datum/surgery_step/xeno/queen/core/begin_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
+	user.visible_message("<span class='notice'>[user] start cuttung strange core out of [target]'s body with the [tool]</span>")
+	return
+
+/datum/surgery_step/xeno/queen/core/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
+	user.visible_message("<span class='notice'>[user] cut strange core out of [target]'s body</span>")
+	new /obj/item/marineResearch/xenomorp/core(target.loc)
+	target.xeno_surgery_step = 0
+	target.xeno_forbid_retract = 1
+	return
 
 
 

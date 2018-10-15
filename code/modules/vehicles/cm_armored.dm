@@ -106,7 +106,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	//Placeholders
 	icon = 'icons/obj/vehicles.dmi'
 	icon_state = "cargo_engine"
-
 /obj/vehicle/multitile/root/cm_armored/Dispose()
 	for(var/i in linked_objs)
 		var/obj/O = linked_objs[i]
@@ -621,9 +620,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/hitbox/cm_armored
 	name = "Armored Vehicle"
 	desc = "Get inside to operate the vehicle."
-
 	luminosity = 7
 	throwpass = 1 //You can lob nades over tanks, and there's some dumb check somewhere that requires this
+	var/lastsound = 0
 
 //If something want to delete this, it's probably either an admin or the shuttle
 //If it's an admin, they want to disable this
@@ -690,7 +689,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/turf/closed/wall/W = A
 		W.take_damage(30)
 		CA.take_damage_type(15, "blunt", W)
-		playsound(W, 'sound/effects/metal_crash.ogg', 35)
+		if(world.time > lastsound + 10)
+			playsound(W, 'sound/effects/metal_crash.ogg', 35)
+			lastsound = world.time
 		W.visible_message("<span class='danger'>[root] crushes into [W]!</span>")
 	else if(istype(A, /turf/closed/wall/resin) && !istype(A, /turf/closed/wall/resin/thick))
 		var/turf/closed/wall/RW = A
@@ -720,7 +721,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/obj/structure/girder/G = A
 		G.dismantle()
 		CA.take_damage_type(15, "blunt", G)
-		playsound(G, 'sound/effects/metal_crash.ogg', 35)
+		if(world.time > lastsound + 10)
+			playsound(G, 'sound/effects/metal_crash.ogg', 35)
+			lastsound = world.time
 	else if (istype(A, /obj/structure/reagent_dispensers/watertank))
 		var/obj/structure/reagent_dispensers/watertank/WT = A
 		WT.visible_message("<span class='danger'>[root] crushes [WT]!</span>")
@@ -740,7 +743,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		new /obj/item/stack/sheet/glass(WF.loc, 2)
 		WF.visible_message("<span class='danger'>[root] crushes through [WF]!</span>")
 		CA.take_damage_type(10, "blunt", WF)
-		playsound(WF, 'sound/effects/metal_crash.ogg', 35)
+		if(world.time > lastsound + 10)
+			playsound(WF, 'sound/effects/metal_crash.ogg', 35)
+			lastsound = world.time
 		cdel(WF)
 	else if (istype(A, /obj/structure/window)) //This definitely is shitty. It is better to refactor this shitcode by making a new variable for "destroyable objects"
 		var/obj/structure/window/WN = A
@@ -906,7 +911,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	else if(istype(A, /obj/machinery/door/airlock))
 		var/obj/machinery/door/airlock/AR = A
 		CA.take_damage_type(50, "blunt", AR)
-		playsound(AR, 'sound/effects/metal_crash.ogg', 35)
+		if(world.time > lastsound + 10)
+			playsound(AR, 'sound/effects/metal_crash.ogg', 35)
+			lastsound = world.time
 		AR.visible_message("<span class='danger'>[root] crushes through[AR]!</span>")
 		new /obj/item/stack/sheet/metal(AR.loc, 2)
 		cdel(AR)
@@ -925,7 +932,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	else if(istype(A, /obj/machinery/door/poddoor/almayer))
 		var/obj/machinery/door/poddoor/almayer/PA = A
 		CA.take_damage_type(60, "blunt", PA)
-		playsound(PA, 'sound/effects/metal_crash.ogg', 35)
+		if(world.time > lastsound + 10)
+			playsound(PA, 'sound/effects/metal_crash.ogg', 35)
+			lastsound = world.time
 		PA.visible_message("<span class='danger'>[root] crushes through[PA]!</span>")
 		new /obj/item/stack/sheet/metal(PA.loc, 3)
 		cdel(PA)
