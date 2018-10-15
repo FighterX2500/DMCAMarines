@@ -969,7 +969,7 @@
 	name = "autocannon round"
 	icon_state = "redbullet"
 	iff_signal = ACCESS_IFF_MARINE
-	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET|AMMO_SKIP_BARRICADE|AMMO_SKIPS_HUMANS
+	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET|AMMO_SKIPS_HUMANS
 
 /datum/ammo/rocket/autocannon/New()
 	..()
@@ -995,7 +995,7 @@
 //no IFF for communistic cunts!
 /datum/ammo/rocket/autocannon/upp
 	icon_state = "bullet"
-	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET|AMMO_SKIP_BARRICADE
+	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET
 
 /datum/ammo/rocket/autocannon/New()
 	..()
