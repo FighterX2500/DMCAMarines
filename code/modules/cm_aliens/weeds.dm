@@ -136,8 +136,10 @@
 		return 0
 
 	if(istype(W, /obj/item/marineResearch/sampler)) // Taking samples
-		to_chat(user, "You took sample from [src].")
 		var/obj/item/marineResearch/sampler/A = W
+		if(A.filled)
+			return TRUE
+		to_chat(user, "You took sample from [src].")
 		if(istype(src, /obj/effect/alien/weeds/node))
 			A.sample = /obj/item/marineResearch/xenomorp/weed/sack
 			A.icon_state = "50"

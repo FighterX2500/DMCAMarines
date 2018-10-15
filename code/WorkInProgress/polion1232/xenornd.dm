@@ -2,7 +2,7 @@
 
 //Circuits
 /obj/item/circuitboard/computer/XenoRnD
-	name = "Circuit board (R&D Alameyer)"
+	name = "Circuit board (R&D Almeyer)"
 	build_path = /obj/machinery/computer/XenoRnD
 	origin_tech = "programming=3" // juuuust a placehonder
 
@@ -12,8 +12,13 @@
 	origin_tech = "programming=3" // juuuust a placehonder
 
 /obj/item/circuitboard/machine/modifyer
-	name = "Circuit board (Equipment Modofication Unit)"
+	name = "Circuit board (Equipment Modification Unit)"
 	build_path = /obj/machinery/r_n_d/modifyer
+	origin_tech = "programming=3" // juuuust a placehonder
+
+/obj/item/circuitboard/machine/analyze_console
+	name = "Circuit board (Speciemen Analyze Console)"
+	build_path = /obj/machinery/computer/analyze_console
 	origin_tech = "programming=3" // juuuust a placehonder
 
 /*
@@ -184,6 +189,7 @@
 					res_in_prog = 0
 					screen = 1.0
 					errored = 0
+					files.CheckAvail()
 					updateUsrDialog()
 				break
 	else if(href_list["modify"])
@@ -275,6 +281,7 @@
 						screen = 0.3
 						linked_modifyer.busy = 1
 						spawn(50)
+							linked_modifyer.loaded_item.name += " 'Blackmarsh'"
 							linked_modifyer.loaded_item.is_modifyed = 1				//The most horrifying part of code, shows that there will be no more slowdown on weed
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
@@ -352,10 +359,10 @@
 				dat += "Description: [avail.desc]<BR><BR>"
 
 		if(1.2)
-			dat += "Current Research Level:<BR><BR>"
+			dat += "Current Research Level:<HR><HR>"
 			for(var/datum/marineTech/known in files.known_tech)
 				dat += "Name: [known.name]<BR>"
-				dat += "Description: [known.desc]<BR><BR>"
+				dat += "Description: [known.resdesc]<BR><HR>"
 			dat += "<HR><A href='?src=\ref[src];menu=1.0'>Main Menu</A>"
 
 		if(1.3) //R&D console settings

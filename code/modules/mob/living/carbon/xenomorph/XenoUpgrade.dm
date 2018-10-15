@@ -4,7 +4,8 @@
 	upgrade_stored = 0
 	visible_message("<span class='xenonotice'>\The [src] begins to twist and contort.</span>", \
 	"<span class='xenonotice'>You begin to twist and contort.</span>")
-	do_jitter_animation(1000)
+	xeno_jitter(25)
+	sleep(25)
 
 /*
 *1 is indicative of the base speed/armor
@@ -263,7 +264,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 
 		//SECOND UPGRADE
 		if(2)
-			upgrade_name = "Elite"
+			upgrade_name = "Elder"
 			to_chat(src, "<span class='xenodanger'>You feel a whole lot stronger.</span>")
 			switch(caste)
 				if("Runner")
@@ -693,6 +694,9 @@ Queen		 0.0	 0.1	 0.2	 0.3
 	generate_name() //Give them a new name now
 
 	hud_set_queen_overwatch() //update the upgrade level insignia on our xeno hud.
+
+	//One last shake for the sake of it
+	xeno_jitter(25)
 
 
 //Tiered spawns.

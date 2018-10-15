@@ -350,15 +350,6 @@ datum/game_mode/proc/initialize_special_clamps()
 			return
 
 		if(!xeno_bypass_timer)
-			var/deathtime = world.time - xeno_candidate.timeofdeath
-			if(istype(xeno_candidate, /mob/new_player))
-				deathtime = 3000 //so new players don't have to wait to latejoin as xeno in the round's first 5 mins.
-			var/deathtimeminutes = round(deathtime / 600)
-			var/deathtimeseconds = round((deathtime - deathtimeminutes * 600) / 10,1)
-			if(deathtime < 3000 && ( !xeno_candidate.client.holder || !(xeno_candidate.client.holder.rights & R_ADMIN)) )
-				to_chat(xeno_candidate, "<span class='warning'>You have been dead for [deathtimeminutes >= 1 ? "[deathtimeminutes] minute\s and " : ""][deathtimeseconds] second\s.</span>")
-				to_chat(xeno_candidate, "<span class='warning'>You must wait 5 minutes before rejoining the game!</span>")
-				return
 			if(new_xeno.away_timer < 300) //We do not want to occupy them if they've only been gone for a little bit.
 				to_chat(xeno_candidate, "<span class='warning'>That player hasn't been away long enough. Please wait [300 - new_xeno.away_timer] second\s longer.</span>")
 				return
@@ -645,7 +636,6 @@ datum/game_mode/proc/initialize_special_clamps()
 			else
 				to_chat(H, "\blue You are a survivor of the attack on the colony. You worked or lived in the archaeology colony, and managed to avoid the alien attacks...until now.")
 		to_chat(H, "\blue You are fully aware of the xenomorph threat and are able to use this knowledge as you see fit.")
-		to_chat(H, "\blue You are NOT aware of the marines or their intentions, and lingering around arrival zones will get you survivor-banned.")
 	return 1
 
 /datum/game_mode/proc/tell_survivor_story()
@@ -782,33 +772,55 @@ datum/game_mode/proc/initialize_special_clamps()
 		CA.product_records = list()
 
 		CA.products = list(
-						///obj/item/weapon/claymore/mercsword/machete = 5,
 						/obj/item/storage/large_holster/machete/full = round(scale * 10),
 						/obj/item/ammo_magazine/pistol = round(scale * 20),
-						/obj/item/ammo_magazine/pistol/hp = 0,
 						/obj/item/ammo_magazine/pistol/ap = round(scale * 5),
 						/obj/item/ammo_magazine/pistol/incendiary = round(scale * 2),
 						/obj/item/ammo_magazine/pistol/extended = round(scale * 10),
 						/obj/item/ammo_magazine/pistol/m1911 = round(scale * 10),
 						/obj/item/ammo_magazine/revolver = round(scale * 20),
 						/obj/item/ammo_magazine/revolver/marksman = round(scale * 5),
-						/obj/item/ammo_magazine/smg/m39 = round(scale * 20),
+						/obj/item/ammobox/m39 = round(scale * 3),
+						/obj/item/ammo_magazine/smg/m39 = round(scale * 15),
+						/obj/item/ammobox/m39ap = round(scale * 1),
 						/obj/item/ammo_magazine/smg/m39/ap = round(scale * 5),
-						/obj/item/ammo_magazine/smg/m39/extended = round(scale * 10),
-						/obj/item/ammo_magazine/rifle = round(scale * 30),
-						/obj/item/ammo_magazine/rifle/extended = round(scale * 10),
-						/obj/item/ammo_magazine/rifle/incendiary = 0,
-						/obj/item/ammo_magazine/rifle/ap = round(scale * 10),
-						/obj/item/ammo_magazine/rifle/m4ra = 0,
-						/obj/item/ammo_magazine/rifle/m41aMK1 = 0,
-						/obj/item/ammo_magazine/rifle/lmg = 0,
-						/obj/item/ammo_magazine/shotgun = round(scale * 15),
+						/obj/item/ammobox/m39ext = round(scale * 1),
+						/obj/item/ammo_magazine/smg/m39/extended = round(scale * 5),
+						/obj/item/ammobox = round(scale * 3),
+						/obj/item/ammo_magazine/rifle = round(scale * 15),
+						/obj/item/ammobox/ext = round(scale * 1),
+						/obj/item/ammo_magazine/rifle/extended = round(scale * 5),
+						/obj/item/ammobox/ap = round (scale * 1),
+						/obj/item/ammo_magazine/rifle/ap = round(scale * 5),
+						/obj/item/ammo_magazine/shotgunbox = round(scale * 3),
+						/obj/item/ammo_magazine/shotgun = round(scale * 10),
+						/obj/item/ammo_magazine/shotgunbox/buckshot = round(scale * 3),
 						/obj/item/ammo_magazine/shotgun/buckshot = round(scale * 10),
-						/obj/item/ammo_magazine/shotgun/flechette = round(scale * 10),
+						/obj/item/ammo_magazine/shotgun/flechette = round(scale * 15),
+						/obj/item/smartgun_powerpack = round(scale * 2)
+						)
+
+		CA.contraband = list(
+						/obj/item/ammo_magazine/smg/ppsh/ = round(scale * 20),
+						/obj/item/ammo_magazine/smg/ppsh/extended = round(scale * 4),
 						/obj/item/ammo_magazine/sniper = 0,
 						/obj/item/ammo_magazine/sniper/incendiary = 0,
 						/obj/item/ammo_magazine/sniper/flak = 0,
-						/obj/item/smartgun_powerpack = round(scale * 2)
+						/obj/item/ammo_magazine/rifle/m4ra = 0,
+						/obj/item/ammo_magazine/rifle/incendiary = 0,
+						/obj/item/ammo_magazine/rifle/m41aMK1 = 0,
+						/obj/item/ammo_magazine/rifle/lmg = 0,
+						/obj/item/ammo_magazine/pistol/hp = 0,
+						/obj/item/ammo_magazine/pistol/heavy = 0,
+						/obj/item/ammo_magazine/pistol/holdout = 0,
+						/obj/item/ammo_magazine/pistol/highpower = 0,
+						/obj/item/ammo_magazine/pistol/vp70 = 0,
+						/obj/item/ammo_magazine/revolver/small = 0,
+						/obj/item/ammo_magazine/revolver/cmb = 0,
+						/obj/item/ammo_magazine/smg/mp7 = 0,
+						/obj/item/ammo_magazine/smg/skorpion = 0,
+						/obj/item/ammo_magazine/smg/uzi = 0,
+						/obj/item/ammo_magazine/smg/p90 = 0
 						)
 
 		CA.build_inventory(CA.products)
@@ -824,9 +836,9 @@ datum/game_mode/proc/initialize_special_clamps()
 						/obj/item/storage/backpack/marine = round(scale * 15),
 						/obj/item/storage/belt/marine = round(scale * 15),
 						/obj/item/storage/belt/shotgun = round(scale * 10),
-						/obj/item/clothing/tie/storage/webbing = round(scale * 5),
-						/obj/item/clothing/tie/storage/brown_vest = 0,
-						/obj/item/clothing/tie/holster = 0,
+						/obj/item/clothing/tie/storage/webbing = round(scale * 3),
+						/obj/item/clothing/tie/storage/brown_vest = round(scale * 1),
+						/obj/item/clothing/tie/holster = round(scale * 1),
 						/obj/item/storage/belt/gun/m4a3 = round(scale * 10),
 						/obj/item/storage/belt/gun/m44 = round(scale * 5),
 						/obj/item/storage/large_holster/m39 = round(scale * 5),
@@ -840,29 +852,47 @@ datum/game_mode/proc/initialize_special_clamps()
 						/obj/item/storage/pouch/magazine = round(scale * 5),
 						/obj/item/storage/pouch/flare/full = round(scale * 5),
 						/obj/item/storage/pouch/firstaid/full = round(scale * 5),
-						/obj/item/storage/pouch/pistol = round(scale * 15),
+						/obj/item/storage/pouch/pistol = round(scale * 10),
 						/obj/item/storage/pouch/magazine/pistol/large = round(scale * 5),
 						/obj/item/weapon/gun/pistol/m4a3 = round(scale * 20),
 						/obj/item/weapon/gun/pistol/m1911 = round(scale * 2),
 						/obj/item/weapon/gun/revolver/m44 = round(scale * 10),
 						/obj/item/weapon/gun/smg/m39 = round(scale * 15),
-						/obj/item/weapon/gun/smg/m39/elite = 0,
-						/obj/item/weapon/gun/rifle/m41aMK1 = 0,
 						/obj/item/weapon/gun/rifle/m41a = round(scale * 20),
-						/obj/item/weapon/gun/rifle/m41a/elite = 0,
-						/obj/item/weapon/gun/rifle/lmg = 0,
 						/obj/item/weapon/gun/shotgun/pump = round(scale * 10),
-						/obj/item/weapon/gun/shotgun/combat = 0,
+						// /obj/item/weapon/gun/shotgun/combat = round(scale * 1),
 						/obj/item/explosive/mine = round(scale * 2),
 						/obj/item/storage/box/nade_box = round(scale * 2),
-						/obj/item/explosive/grenade/frag = 0,
 						/obj/item/explosive/grenade/frag/m15 = round(scale * 2),
-						/obj/item/explosive/grenade/incendiary = round(scale * 2),
+						/obj/item/explosive/grenade/incendiary = round(scale * 4),
 						/obj/item/explosive/grenade/smokebomb = round(scale * 5),
-						/obj/item/explosive/grenade/phosphorus = 0,
+						/obj/item/explosive/grenade/cloakbomb = round(scale * 3),
 						/obj/item/storage/box/m94 = round(scale * 30),
 						/obj/item/device/flashlight/combat = round(scale * 5),
 						/obj/item/clothing/mask/gas = round(scale * 10)
+						)
+
+		CG.contraband = list(
+						/obj/item/weapon/gun/smg/ppsh = round(scale * 4),
+						/obj/item/weapon/gun/shotgun/double = round(scale * 2),
+						/obj/item/weapon/gun/smg/m39/elite = 0,
+						/obj/item/weapon/gun/rifle/m41aMK1 = 0,
+						/obj/item/weapon/gun/rifle/m41a/elite = 0,
+						/obj/item/weapon/gun/rifle/lmg = 0,
+						/obj/item/explosive/grenade/frag = 0,
+						/obj/item/explosive/grenade/phosphorus = 0,
+						/obj/item/weapon/gun/pistol/holdout = 0,
+						/obj/item/weapon/gun/pistol/heavy = 0,
+						/obj/item/weapon/gun/pistol/highpower = 0,
+						/obj/item/weapon/gun/pistol/vp70 = 0,
+						/obj/item/weapon/gun/revolver/small = 0,
+						/obj/item/weapon/gun/revolver/cmb = 0,
+						/obj/item/weapon/gun/shotgun/merc = 0,
+						/obj/item/weapon/gun/shotgun/pump/cmb = 0,
+						/obj/item/weapon/gun/smg/mp7 = 0,
+						/obj/item/weapon/gun/smg/skorpion = 0,
+						/obj/item/weapon/gun/smg/uzi = 0,
+						/obj/item/weapon/gun/smg/p90 = 0
 						)
 
 		CG.build_inventory(CG.products)
