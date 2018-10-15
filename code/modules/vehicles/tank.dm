@@ -289,9 +289,7 @@
 				if(driver.client)
 					driver.client.mouse_pointer_icon = initial(driver.client.mouse_pointer_icon)
 				swap_seat = null
-				for(var/obj/item/device/binoculars/BN in gunner.contents)
-					if(BN.zoom)
-						BN.zoom()
+				deactivate_binos(gunner)
 				return
 		to_chat(usr, "<span class='notice'>You start getting into the other seat.</span>")
 
@@ -307,6 +305,7 @@
 		driver = null
 		if(gunner.client)
 			gunner.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
+		deactivate_binos(gunner)
 
 /obj/vehicle/multitile/root/cm_armored/tank/can_use_hp(var/mob/M)
 	return (M == gunner)
@@ -411,6 +410,7 @@
 			if(!M.client) return //Disconnected while getting in
 			gunner = M
 			M.loc = src
+			deactivate_binos(gunner)
 			if(loc_check == entrance.loc)
 				to_chat(M, "<span class='notice'>You enter the gunner's seat.</span>")
 			else
@@ -418,9 +418,7 @@
 			M.set_interaction(src)
 			if(M.client)
 				M.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
-			for(var/obj/item/device/binoculars/BN in M.contents)
-				if(BN.zoom)
-					BN.zoom()
+
 
 			return
 
@@ -483,10 +481,6 @@
 				if(locate(/obj/effect/alien/weeds) in T)
 					for(WE in T)
 						WE.Dispose()
-				//var/obj/effect/alien/weeds/node/ND
-				//if(locate(/obj/effect/alien/weeds/node) in T)
-				//	for(ND in T)
-				//		ND.Dispose()
 				var/obj/item/explosive/mine/MN
 				if(locate(/obj/item/explosive/mine) in T)
 					for(MN in T)

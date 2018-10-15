@@ -129,86 +129,95 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/root/cm_armored/proc/remove_all_players()
 	return
 
-/obj/vehicle/multitile/root/cm_armored/proc/t_speed_update()	//proc to calculate new speed depending on current weight and OD presence/absence
+
+	//proc to calculate new speed, class and accuracy modificators depending on current weight
 	//speed_min = 3 - only treads installed
 	//speed_max = 20 - heaviest possible build
 	//speed_delay = 30 - broken treads (OD won't affect speed with broken speed anymore)
-	switch (t_class)
-		if(T_LIGHT)
-			switch(t_weight)
-				if(8)
-					speed = 3.5
-				if(9)
-					src.speed = 4.2
-				if(10)
-					src.speed = 5
-				else
-					src.speed = 3
-		if(T_MEDIUM)
-			switch(t_weight)
-				if(11)
-					src.speed = 6
-				if(12)
-					src.speed = 7
-				if(13)
-					src.speed = 7.5
-				if(14)
-					src.speed = 8
-				if(15)
-					src.speed = 9
-		if(T_HEAVY)
-			switch(t_weight)
-				if(16)
-					src.speed = 14
-				if(17)
-					src.speed = 16
-				if(18)
-					src.speed = 17
-				else
-					src.speed = 20
+	//numbers in t_weight represent relative weight of tank - summary of tank modules weight
+/obj/vehicle/multitile/root/cm_armored/proc/t_class_update()
 
-/obj/vehicle/multitile/root/cm_armored/proc/t_accuracy_update()
-	switch(t_class)
-		if(T_LIGHT)
-			switch(t_weight)
-				if(8)
-					w_ratios["w_prim_acc"] = 0.90
-					w_ratios["w_secd_acc"] = 0.92
-					//w_ratios["w_supp_acc"] = 0.92
-				if(9)
-					w_ratios["w_prim_acc"] = 0.92
-					w_ratios["w_secd_acc"] = 0.95
-					//w_ratios["w_supp_acc"] = 0.95
-				if(10)
-					w_ratios["w_prim_acc"] = 0.95
-					w_ratios["w_secd_acc"] = 0.98
-					//w_ratios["w_supp_acc"] = 0.97
-				else
-					w_ratios["w_prim_acc"] = 0.85
-					w_ratios["w_secd_acc"] = 0.85
-					//w_ratios["w_supp_acc"] = 0.90
-		if(T_MEDIUM)
+	switch (t_weight)
+		if(8)
+			speed = 3.5
+			t_class = T_LIGHT
+			w_ratios["w_prim_acc"] = 0.90
+			w_ratios["w_secd_acc"] = 0.92
+			//w_ratios["w_supp_acc"] = 0.92
+		if(9)
+			speed = 4.2
+			t_class = T_LIGHT
+			w_ratios["w_prim_acc"] = 0.92
+			w_ratios["w_secd_acc"] = 0.95
+			//w_ratios["w_supp_acc"] = 0.95
+		if(10)
+			speed = 5
+			t_class = T_LIGHT
+			w_ratios["w_prim_acc"] = 0.95
+			w_ratios["w_secd_acc"] = 0.98
+			//w_ratios["w_supp_acc"] = 0.97
+		if(11)
+			speed = 6
+			t_class = T_MEDIUM
 			w_ratios["w_prim_acc"] = 1.0
 			w_ratios["w_secd_acc"] = 1.0
 			//w_ratios["w_supp_acc"] = 1.0
-		if(T_HEAVY)
-			switch(t_weight)
-				if(16)
-					w_ratios["w_prim_acc"] = 1.02
-					w_ratios["w_secd_acc"] = 1.01
-					//w_ratios["w_supp_acc"] = 1.01
-				if(17)
-					w_ratios["w_prim_acc"] = 1.03
-					w_ratios["w_secd_acc"] = 1.02
-					//w_ratios["w_supp_acc"] = 1.02
-				if(18)
-					w_ratios["w_prim_acc"] = 1.04
-					w_ratios["w_secd_acc"] = 1.03
-					//w_ratios["w_supp_acc"] = 1.03
-				else
-					w_ratios["w_prim_acc"] = 1.05
-					w_ratios["w_secd_acc"] = 1.04
-					//w_ratios["w_supp_acc"] = 1.04
+		if(12)
+			speed = 7
+			t_class = T_MEDIUM
+			w_ratios["w_prim_acc"] = 1.0
+			w_ratios["w_secd_acc"] = 1.0
+			//w_ratios["w_supp_acc"] = 1.0
+		if(13)
+			speed = 7.5
+			t_class = T_MEDIUM
+			w_ratios["w_prim_acc"] = 1.0
+			w_ratios["w_secd_acc"] = 1.0
+			//w_ratios["w_supp_acc"] = 1.0
+		if(14)
+			speed = 8
+			t_class = T_MEDIUM
+			w_ratios["w_prim_acc"] = 1.0
+			w_ratios["w_secd_acc"] = 1.0
+			//w_ratios["w_supp_acc"] = 1.0
+		if(15)
+			speed = 9
+			t_class = T_MEDIUM
+			w_ratios["w_prim_acc"] = 1.0
+			w_ratios["w_secd_acc"] = 1.0
+			//w_ratios["w_supp_acc"] = 1.0
+		if(16)
+			speed = 14
+			t_class = T_HEAVY
+			w_ratios["w_prim_acc"] = 1.02
+			w_ratios["w_secd_acc"] = 1.01
+			//w_ratios["w_supp_acc"] = 1.01
+		if(17)
+			speed = 15.5
+			t_class = T_HEAVY
+			w_ratios["w_prim_acc"] = 1.03
+			w_ratios["w_secd_acc"] = 1.02
+			//w_ratios["w_supp_acc"] = 1.02
+		if(18)
+			speed = 17
+			t_class = T_HEAVY
+			w_ratios["w_prim_acc"] = 1.04
+			w_ratios["w_secd_acc"] = 1.03
+			//w_ratios["w_supp_acc"] = 1.03
+		if(19)
+			speed = 18.5
+			t_class = T_HEAVY
+			w_ratios["w_prim_acc"] = 1.05
+			w_ratios["w_secd_acc"] = 1.04
+			//w_ratios["w_supp_acc"] = 1.04
+
+		else
+			speed = 3.0
+			t_class = T_LIGHT
+			w_ratios["w_prim_acc"] = 0.85
+			w_ratios["w_secd_acc"] = 0.85
+			//w_ratios["w_supp_acc"] = 0.90
+
 
 //The basic vehicle code that moves the tank, with movement delay implemented
 /obj/vehicle/multitile/root/cm_armored/relaymove(var/mob/user, var/direction)
@@ -295,9 +304,15 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	if(isliving(usr))
 		var/mob/living/M = usr
 		M.set_interaction(src)
-		for(var/obj/item/device/binoculars/BN in M.contents)
-			if(BN.zoom)
-				BN.zoom()
+	deactivate_binos(usr)
+
+
+//anti-binoculars exploit fix
+/obj/vehicle/multitile/root/cm_armored/proc/deactivate_binos(var/mob/user)
+	for(var/obj/item/device/binoculars/BN in user.contents)
+		if(BN.zoom)
+			BN.zoom()
+	to_chat(usr, "<span class='notice'>You realize using binoculars and operating tank weapons at the same time is impossible.</span>")
 
 //proc to actually shoot grenades
 /obj/vehicle/multitile/root/cm_armored/proc/smoke_shot()
@@ -564,20 +579,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	if(remove_person)
 		handle_all_modules_broken()
 
-	t_speed_update()
-	t_accuracy_update()
 	update_icon()
 
-/obj/vehicle/multitile/root/cm_armored/proc/t_class_update()
-	if(t_weight < 11)
-		t_class = T_LIGHT
-		return
-	if(t_weight > 10 && t_weight < 21)
-		t_class = T_MEDIUM
-		return
-	if(t_weight > 20)
-		t_class = T_HEAVY
-		return
 
 //Since the vics are 3x4 we need to swap between the two files with different dimensions
 //Also need to offset to center the tank about the root object
@@ -1475,8 +1478,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	HP.loc = src
 	src.t_weight += HP.hp_weight
 	src.t_class_update()
-	src.t_speed_update()
-	src.t_accuracy_update()
 
 	hardpoints[HP.slot] = HP
 
@@ -1493,8 +1494,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	src.t_weight -= old.hp_weight
 	src.t_class_update()
-	src.t_speed_update()
-	src.t_accuracy_update()
 
 	//if(old.health <= 0)
 	//	cdel(old)
