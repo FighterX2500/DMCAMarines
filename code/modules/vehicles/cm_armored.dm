@@ -1,4 +1,7 @@
-
+//ATTENTION
+//Due numerous changes related only to tank, some of which are, apparently, cannot be moved to tank.dm
+//this file will be only for tank
+//I will make cm_transport for APC, coping content of this file and editing it. A lot.
 
 //NOT bitflags, just global constant values
 #define HDPT_PRIMARY "primary"
@@ -54,12 +57,13 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	var/speed
 
 	var/active_hp
-	var/t_weight = 0
-	var/t_class = 0
-	var/smoke_ammo_max = 10
+	var/t_weight = 0		//tank mass = summarized mass of all installed hardpoints, very important for new weight system
+	var/t_class = 0			//tank class. Depends on t_weight. Xenos behaviour after tank bumps into them depends on tank class
+	var/smoke_ammo_max = 10		//one use consumes 2 smoke nades, so always put even number
 	var/smoke_ammo_current = 0
 	var/smoke_next_use
-	var/obj/item/hardpoint/support/smoke_launcher/SML
+	var/obj/item/hardpoint/support/smoke_launcher/SML	//literally inbuilt smoke launcher.
+		//needed to be referenced in firing proc as gun we fire from, that's why it's here
 	var/list/dmg_distribs = list()
 
 	//weight buffs/debuffs
@@ -134,6 +138,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	//speed_max = 20 - heaviest possible build
 	//speed_delay = 30 - broken treads (OD won't affect speed with broken speed anymore)
 	//numbers in t_weight represent relative weight of tank - summary of tank modules weight
+	//less than 8 t_weight means tank lacks modules. To discourage going commando on the tank
+	//AND to prevent serious debuff on already not fully functioning tank, below 8 has the same stats
 /obj/vehicle/multitile/root/cm_armored/proc/t_class_update()
 
 	switch (t_weight)
@@ -221,7 +227,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //The basic vehicle code that moves the tank, with movement delay implemented
 /obj/vehicle/multitile/root/cm_armored/relaymove(var/mob/user, var/direction)
 	if(world.time < next_move) return
-	if(hardpoints[HDPT_TREADS] && hardpoints[HDPT_TREADS].health > 0)
+	if(hardpoints[HDPT_TREADS] && hardpoints[HDPT_TREADS].health > 0)	//OD doesn't affect moving without treads anymore
 		next_move = world.time + src.speed * misc_ratios.["OD_buff"]
 	else
 		next_move = world.time + move_delay
@@ -233,7 +239,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/root/cm_armored/try_rotate(var/deg, var/mob/user, var/force = 0)
 	if(world.time < next_move && !force) return
 
-	if(hardpoints[HDPT_TREADS] && hardpoints[HDPT_TREADS].health > 0)
+	if(hardpoints[HDPT_TREADS] && hardpoints[HDPT_TREADS].health > 0)	//same goes for turning
 		next_move = world.time + src.speed * misc_ratios.["OD_buff"] * (force ? 2 : 3) //3 for a 3 point turn, idk
 	else
 		next_move = world.time + move_delay * (force ? 2 : 3)
@@ -247,11 +253,12 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //And other checks to make sure you aren't breaking the law
 /obj/vehicle/multitile/root/cm_armored/tank/handle_click(var/mob/living/user, var/atom/A, var/list/mods)
 
+//sadly, point-to requires mob to give message in chat and probably is the reason why it doesn't work from inside of a tank
 //	if (mods["shift"] && mods["middle"])
 //		user.point_to(A)
 //		return
 
-	if (mods["shift"])
+	if (mods["shift"])		//finally fixed shift-clicking in tank.
 		user.examine()
 		return
 
@@ -313,13 +320,14 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 			BN.zoom()
 	to_chat(usr, "<span class='notice'>You realize using binoculars and operating tank weapons at the same time is impossible.</span>")
 
-//proc to actually shoot grenades
+//proc to actually shoot smoke grenades
 /obj/vehicle/multitile/root/cm_armored/proc/smoke_shot()
 
 	if(world.time < smoke_next_use)
-		to_chat(usr, "<span class='warning'>M75 Smoke Deploy System is not ready!</span>")
+		to_chat(usr, "<span class='warning'>Smoke Deploy System is not ready!</span>")
 		return
 
+	//need to figure out better way to locate needed turfs to fire at
 	var/turf/F
 	var/turf/S
 	var/right_dir
@@ -336,6 +344,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	F = get_step(F, right_dir)
 	F = get_step(F, right_dir)
 
+	//this is basically a copypasta from Hardpoints shooting proc with a modifcations
 	var/obj/item/ammo_magazine/tank/tank_slauncher/A = new
 	smoke_next_use = world.time + 150
 	var/obj/item/projectile/P = new
@@ -1270,7 +1279,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/obj/item/ammo_magazine/AM = O
 		if(istype(O, /obj/item/ammo_magazine/tank/tank_slauncher))
 			if(smoke_ammo_current == 0)
-				smoke_ammo_current = 10
+				smoke_ammo_current = smoke_ammo_max
 				user.temp_drop_inv_item(O, 0)
 				to_chat(user, "<span class='notice'>You load smoke system magazine into [src].</span>")
 				return

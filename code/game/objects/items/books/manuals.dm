@@ -1352,7 +1352,7 @@
 				<li>Also they installed sensors and new interface, that shows tank status on demand, including: all modules overall integrity in per cents, ammo counts in primary and
 				secondary weapons, backup magazines and amount of M75 uses left.</li>
 				<li>Auxiliary top hatch was added to tank, allowing to enter vehicle even if back hatchet is blocked.</li>
-				<li>Special camera was mounted on the tank, allowing Command Staff in CIC to actually view the tank.</li>
+				<li>Special camera was mounted on the tank, allowing Command Staff in CIC to actually view the tank (Armored Vehicle in cameras list).</li>
 				<li>External Megaphone was installed and tested. However, you yourself won't hear what you are saying in it.</li>
 				<li>Remember that anyone who has squad engineer level of training is capable of, uninstalling, field repairing and installing back your broken treads.</li>
 				<li>All modules can be fixed in special Module Repair Station in the Garage next to Tank Vendor.</li>
@@ -1408,7 +1408,7 @@
 				<li>Также они установили новые сенсоры и монитор, отображающий по запросу состоЯние танка, включаЯ: общее состоЯние всех модулей в процентах, количество
 				боеприпасов и запасных магазинов, а так же количество оставшихсЯ использований системы М75.</li>
 				<li>Был установлен вспомогательный люк в верхней части танка, который позволяет попасть в танк, даже если задний люк заблокирован.</li>
-				<li>В танк была встроена специальная камера, позволяющая командованию видеть танк на их консолях камер.</li>
+				<li>В танк была встроена специальная камера, позволяющая командованию видеть танк на их консолях камер (Armored Vehicle в списке камер).</li>
 				<li>Внешний громкоговоритель был починен и теперь исправно работает. Правда, вы сами не сможете услышать, что вы говорите в него.</li>
 				<li>Помните, что любой с инженерными навыками уровня боевого инженера может демонтировать, произвести полевой ремонт и установить обратно ваши траки.</li>
 				<li>Все модули могут быть починены в Станции Ремонта Модулей в Гараже возле Такнового Вендора.</li>

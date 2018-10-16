@@ -913,13 +913,6 @@ var/list/available_specialist_sets = list("Scout Set", "Sniper Set", "Demolition
 
 
 
-
-
-
-
-
-
-
 /obj/effect/essentials_set
 	var/list/spawned_gear_list
 

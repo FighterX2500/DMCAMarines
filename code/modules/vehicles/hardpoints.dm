@@ -12,8 +12,8 @@ Currently only has the tank hardpoints
 	icon = 'icons/obj/hardpoint_modules.dmi'
 	icon_state = "tires" //Placeholder
 
-	var/maxhealth = 100
-	health = 100
+	var/maxhealth = 0
+	health = 0
 	w_class = 15
 	var/hp_weight = 1	//this is new variable for weight of every single module as a part of new weight system
 	var/secondhand = 0	//flag to show if module new or was already broken and fixed in repair machinery

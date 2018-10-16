@@ -1,0 +1,28 @@
+
+
+
+<div itemLabel>
+	<h2>Module status:</h2>
+</div>
+
+<div style="font-weight: bold ; float: left ; clear : both ; width: 50% ; color: black">
+		
+</div>
+
+<div itemLabel>
+	{{for data.displayed_records}}
+		{{if value.hp_available}}
+			<div style="padding-top: 5px ; font-weight: bold ; float: left ; clear : both ; width: 50% ; color: black">
+				{{:value.hp_name}} Integrity: {{value.hp_health}} %%
+			</div>
+				{{:helper.link(Fix {'repair' : value.hp_index}, value.prod_available ? null : 'disabled')}}
+			
+		{{else}}
+			<div style="padding-top: 5px ; font-weight: bold ; float: left ; clear : both ; width: 50%">
+				<span class="white">No modules inserted</span>
+			</div>
+		{{/if}}
+
+
+	{{/for}}
+</div>
