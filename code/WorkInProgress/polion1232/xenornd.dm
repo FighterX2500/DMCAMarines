@@ -30,8 +30,8 @@
 
 /obj/machinery/computer/XenoRnD
 	name = "R&D Console"
-	icon = 'icons/obj/mainframe.dmi'
-	icon_state = "aimainframe"
+	icon = 'code/WorkInProgress/polion1232/polionresearch.dmi'
+	icon_state = "r_on"
 	//icon_state = "rdcomp"  //Temp till i figure out what the shit is going on with the icon file.
 	circuit = /obj/item/circuitboard/computer/XenoRnD
 
@@ -47,6 +47,11 @@
 
 	req_access = list(ACCESS_MARINE_RESEARCH)
 
+/obj/machinery/computer/XenoRnD/update_icon()
+	if(stat & NOPOWER || stat & BROKEN)
+		icon_state = "r_off"
+	else
+		icon_state = "r_on"
 
 /obj/machinery/computer/XenoRnD/proc/CallTechName(var/ID) // //A simple helper proc to find the name of a tech with a given ID.
 	var/datum/marineTech/tech
@@ -66,6 +71,7 @@
 /obj/machinery/computer/XenoRnD/New()
 	..()
 	files = new /datum/marineResearch(src)
+	SyncRDevices()
 
 /obj/machinery/computer/XenoRnD/proc/SyncRDevices() //Makes sure it is properly sync'ed up with the devices attached to it (if any). Derived from rdconsole.dm
 	for(var/obj/machinery/r_n_d/D in oview(3,src))
@@ -192,6 +198,16 @@
 					files.CheckAvail()
 					updateUsrDialog()
 				break
+
+	else if(href_list["print"])
+		var/topic = text2num(href_list["print"])
+		for(var/datum/marineTech/known in files.known_tech)
+			if(known.id == topic)
+				var/obj/item/paper/printed = new /obj/item/paper()
+				printed.name = "Research report: " + known.name
+				printed.info = "<B><center>USCM Almayer Medical and Research Division</B><BR>Topic: "+ known.name + "</center><HR><BR>" + known.resdesc + "<HR>Signature: "
+				printed.loc = src.loc
+
 	else if(href_list["modify"])
 		if(linked_modifyer)
 			if(linked_modifyer.busy)
@@ -210,7 +226,7 @@
 							linked_modifyer.loaded_item.is_modifyed = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
-							linked_modifyer.icon_state = "d_analyzer"
+							linked_modifyer.icon_state = "bronya_pusta"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
 							linked_modifyer.busy = 0
@@ -226,7 +242,7 @@
 							linked_modifyer.loaded_item.is_modifyed = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
-							linked_modifyer.icon_state = "d_analyzer"
+							linked_modifyer.icon_state = "bronya_pusta"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
 							linked_modifyer.busy = 0
@@ -242,7 +258,7 @@
 							linked_modifyer.loaded_item.is_modifyed = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
-							linked_modifyer.icon_state = "d_analyzer"
+							linked_modifyer.icon_state = "bronya_pusta"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
 							linked_modifyer.busy = 0
@@ -257,7 +273,7 @@
 							linked_modifyer.loaded_item.is_modifyed = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
-							linked_modifyer.icon_state = "d_analyzer"
+							linked_modifyer.icon_state = "bronya_pusta"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
 							linked_modifyer.busy = 0
@@ -272,7 +288,7 @@
 							linked_modifyer.loaded_item.is_modifyed = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
-							linked_modifyer.icon_state = "d_analyzer"
+							linked_modifyer.icon_state = "bronya_pusta"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
 							linked_modifyer.busy = 0
@@ -285,7 +301,7 @@
 							linked_modifyer.loaded_item.is_modifyed = 1				//The most horrifying part of code, shows that there will be no more slowdown on weed
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
-							linked_modifyer.icon_state = "d_analyzer"
+							linked_modifyer.icon_state = "bronya_pusta"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
 							linked_modifyer.busy = 0
@@ -362,7 +378,8 @@
 			dat += "Current Research Level:<HR><HR>"
 			for(var/datum/marineTech/known in files.known_tech)
 				dat += "Name: [known.name]<BR>"
-				dat += "Description: [known.resdesc]<BR><HR>"
+				dat += "Description: [known.resdesc]<BR>"
+				dat += "<A href='?src=\ref[src];print=[num2text(known.id)]'>PRINT</A><HR>"
 			dat += "<HR><A href='?src=\ref[src];menu=1.0'>Main Menu</A>"
 
 		if(1.3) //R&D console settings

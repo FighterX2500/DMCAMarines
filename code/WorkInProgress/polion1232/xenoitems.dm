@@ -27,14 +27,14 @@ Queen thingy - 40
 /obj/item/marineResearch
 	name = "An unidentified Alien Thingy"
 	desc = "Researchy thingy!"
-	icon = 'icons/Marine/Research/Marine_Research.dmi'
+	icon = 'code/WorkInProgress/polion1232/polionresearch.dmi'
 	icon_state = "biomass"
 	var/list/id = list()
 
 /obj/item/marineResearch/xenomorp
 	name = "An unidentified Alien Thingy"
 	desc = "Researchy thingy!"
-	icon = 'icons/Marine/Research/Marine_Research.dmi'
+	icon = 'code/WorkInProgress/polion1232/polionresearch.dmi'
 	icon_state = "biomass"
 
 
@@ -61,32 +61,37 @@ Queen thingy - 40
 /obj/item/marineResearch/xenomorp/muscle
 	name = "Xenomorph muscle tissue"
 	desc = "A common xenomorph muscle tissue"
+	icon_state = "muscle"
 	id = list(0, 10, 13)
 
 /obj/item/marineResearch/xenomorp/chitin/crusher
 	name = "Crusher's chitin"
 	desc = "A chunk of extremely sturdy and durable Crusher's chitin"
-	icon_state = "chitin-armor"
+	icon_state = "chitin-crusher"
 	id = list(0, 10, 11, 12)
 
 /obj/item/marineResearch/xenomorp/acid_gland
 	name = "Xenomorph acid gland"
 	desc = "Strange internal organ of some alien species"
+	icon_state = "sentinel"
 	id = list(0, 20)
 
 /obj/item/marineResearch/xenomorp/acid_gland/spitter
 	name = "Spitter's gland"
 	desc = "A more advanced acid gland, that produces strange toxins"
+	icon_state = "spitter"
 	id = list(0, 20, 21)
 
 /obj/item/marineResearch/xenomorp/secretor
 	name = "Secretory gland"
 	desc = "Strange gland, that secrete high variety of alien fauna"
+	icon_state = "drone"
 	id = list(0, 10, 13, 30)
 
 /obj/item/marineResearch/xenomorp/secretor/hivelord
 	name = "Hivelord's bioplasma syntesate"
 	desc = "Bizzare tissue, that can be abudantly found in Hivelord body"
+	icon_state = "hivelord"
 	id = list(0, 10, 13, 20, 30, 14)
 
 
@@ -95,6 +100,7 @@ Queen thingy - 40
 /obj/item/marineResearch/xenomorp/core
 	name = "Queen's core"
 	desc = "Highly complex and advanced organ, that can be found inside Queen's head"
+	icon_state = "core"
 	id = list(0, 10, 40)
 
 
@@ -104,7 +110,11 @@ Queen thingy - 40
 /obj/item/marineResearch/sampler
 	name = "Sampler"
 	desc = "Syringe for taking samples"
-	icon = 'icons/obj/items/syringe.dmi'
-	icon_state = "0"
+	icon_state = "1"
 	var/filled = 0
 	var/obj/item/marineResearch/xenomorp/weed/sample = null
+
+
+
+
+///// ZZZZZZAP! Lets find some test subjects /////
