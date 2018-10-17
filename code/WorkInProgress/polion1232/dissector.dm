@@ -72,7 +72,7 @@
 			A.filled = 0
 			loaded_item = A.sample
 			A.sample = null
-			A.icon_state = "0"
+			A.icon_state = "1"
 			to_chat(user, "\blue You add the [loaded_item.name] to the machine!")
 			flick("d_analyzer_la", src)
 			spawn(10)
