@@ -802,12 +802,28 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		new /obj/item/stack/sheet/metal(CP.loc, 1)
 		cdel(CP)
 //from here goes list of newly added objects and machinery that tank should've drive over or through, but for some reason couldn't
-
+	else if(istype(A, /obj/structure/bed) && !istype(A, /obj/structure/bed/chair/dropship) && !istype(A, /obj/structure/bed/medevac_stretcher) && !istype(A, /obj/structure/bed/roller) && !istype(A, /obj/structure/bed/chair/janicart))
+		var/obj/structure/bed/BE = A
+		BE.visible_message("<span class='danger'>[root] crushes [BE]!</span>")
+		BE.unbuckle()
+		new /obj/item/stack/sheet/metal(BE.loc, 1)
+		cdel(BE)
+	else if(istype(A, /obj/structure/bed/chair/janicart))
+		var/obj/structure/bed/JC = A
+		JC.visible_message("<span class='danger'>[root] crushes [JC]!</span>")
+		cdel(JC)
 	else if (istype(A, /obj/structure/filingcabinet))
 		var/obj/structure/filingcabinet/FC = A
 		FC.visible_message("<span class='danger'>[root] crushes [FC]!</span>")
 		new /obj/item/stack/sheet/metal(FC.loc, 1)
 		cdel(FC)
+	else if (istype(A, /obj/machinery/autolathe))
+		var/obj/machinery/autolathe/AL = A
+		AL.visible_message("<span class='danger'>[root] crushes [AL]!</span>")
+		new /obj/item/stack/sheet/metal(AL.loc, 2)
+		new /obj/item/stack/sheet/metal(AL.loc, stored_material["metal"])
+		new /obj/item/stack/sheet/glass(AL.loc, stored_material["glass"])
+		cdel(AL)
 	else if (istype(A, /obj/machinery/autodoc))
 		var/obj/machinery/autodoc/AD = A
 		AD.visible_message("<span class='danger'>[root] crushes [AD]!</span>")
@@ -1240,7 +1256,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	T = get_turf(new_exit)
 	return T
 
-/obj/vehicle/multitile/root/cm_armored/tank/proc/check_entrance()
+/obj/vehicle/multitile/root/cm_armored/tank/proc/check_()
 
 //Special case for entering the vehicle without using the verb
 /obj/vehicle/multitile/root/cm_armored/attack_hand(var/mob/user)
