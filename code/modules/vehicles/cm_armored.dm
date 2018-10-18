@@ -31,7 +31,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	HDPT_TREADS = "0,0")*/
 
 /client/proc/remove_players_from_vic()
-	set name = "Remove All From Tank"
+	set name = "Eject TCs from tank (emergency only)"
 	set category = "Admin"
 
 	for(var/obj/vehicle/multitile/root/cm_armored/CA in view())
@@ -51,19 +51,24 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	//The next world.time when the tank can move
 	var/next_move = 0
 
-	//Below are vars that can be affected by hardpoints, generally used as ratios or decisecond timers
-
-	move_delay = 70 //treads-less tank barely moves. Fix those damn treads, marine!
-	var/speed
-
-	var/active_hp
-	var/t_weight = 0		//tank mass = summarized mass of all installed hardpoints, very important for new weight system
-	var/t_class = 0			//tank class. Depends on t_weight. Xenos behaviour after tank bumps into them depends on tank class
+	//smoke deploy system
 	var/smoke_ammo_max = 10		//one use consumes 2 smoke nades, so always put even number
 	var/smoke_ammo_current = 0
 	var/smoke_next_use
 	var/obj/item/hardpoint/support/smoke_launcher/SML	//literally inbuilt smoke launcher.
-		//needed to be referenced in firing proc as gun we fire from, that's why it's here
+	//needed to be referenced in firing proc as gun we fire from(for some reason, I couldn't use tank itself), that's why it's here
+
+
+	//Below are vars that can be affected by hardpoints, generally used as ratios or decisecond timers
+
+	move_delay = 70 //treads-less tank barely moves. Fix those damn treads, marine!
+	var/speed
+	unacidable = 1
+	var/active_hp
+	var/t_weight = 0		//tank mass = summarized mass of all installed hardpoints, very important for new weight system
+	var/t_class = 0			//tank class. Depends on t_weight. Xenos behaviour after tank bumps into them depends on tank class
+
+	//list of damag distribution among all installed AND not broken hardpoint modules
 	var/list/dmg_distribs = list()
 
 	//weight buffs/debuffs
@@ -90,10 +95,10 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	//Changes how much damage the tank takes
 	var/list/dmg_multipliers = list(
-		"all" = 1.0, //for when you want to make it invincible
-		"acid" = 1.5,
-		"slash" = 1.0,
-		"bullet" = 0.67,
+		"all" = 1.0,	//for when you want to make it invincible
+		"acid" = 1.5,	//tank without armor will be quite fast, so it needs some serious weak spot, the most obvious thing is acid resistance.
+		"slash" = 1.0,	//full slash damage without armor seems fair
+		"bullet" = 0.67,	//it's a huge metal box, it has basic bullet protection
 		"explosive" = 1.0,
 		"blunt" = 0.9,
 		"abstract" = 1.0) //abstract for when you just want to hurt it
@@ -305,20 +310,21 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	if(!HP)
 		to_chat(usr, "<span class='warning'>There's nothing installed on that hardpoint.</span>")
 
+	deactivate_binos(usr)
 	active_hp = slot
 	to_chat(usr, "<span class='notice'>You select the [HP.name].</span>")
 	if(isliving(usr))
 		var/mob/living/M = usr
 		M.set_interaction(src)
-	deactivate_binos(usr)
+
 
 
 //anti-binoculars exploit fix
 /obj/vehicle/multitile/root/cm_armored/proc/deactivate_binos(var/mob/user)
 	for(var/obj/item/device/binoculars/BN in user.contents)
 		if(BN.zoom)
-			BN.zoom()
-	to_chat(usr, "<span class='notice'>You realize using binoculars and operating tank weapons at the same time is impossible.</span>")
+			to_chat(usr, "<span class='warning'>You realize using [BN.name] and operating tank weapons at the same time is impossible!</span>")
+			BN.zoom(user)
 
 //proc to actually shoot smoke grenades
 /obj/vehicle/multitile/root/cm_armored/proc/smoke_shot()
@@ -648,36 +654,61 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	var/obj/vehicle/multitile/root/cm_armored/CA = root
 	if(isliving(A))
 		var/mob/living/M = A
-		if(isXeno(M) && !isXenoLarva(M))
+		if(isXeno(M))
 			var/mob/living/carbon/Xenomorph/XEN = M
 			switch(CA.t_class)
 				if(T_LIGHT)
-					if(XEN.t_fortified == 1)
-						return
-					if(XEN.t_squishy == 1)
-						step_away(M,root,1,0)
-						M.KnockDown(3)
-						M.apply_damage(5 + rand(5, 10), BRUTE)
-						return
-					step_away(M,root,1,0)
+					switch(XEN.t_squish_level)
+						if(0)
+							M.KnockDown(5)
+							return
+						if(1)
+							step_away(M,root,1)
+							M.KnockDown(1)
+							M.apply_damage(5 + rand(5, 10), BRUTE)
+							return
+						if(2)
+							step_away(M,root,0)
+							return
+						if(3)
+							M.visible_message("<span class='danger'>[M] pushes against the [src], holding it in place with ease!</span>", "<span class='xenodanger'>You stopped [src]! It's no match to you!</span>")
+							return
 				if(T_MEDIUM)
-					if(XEN.t_fortified == 1)
-						return
-					step_away(XEN,root,0,0)
-					M.KnockDown(3)
-					M.apply_damage(10 + rand(5, 10), BRUTE)
+					switch(XEN.t_squish_level)
+						if(0)
+							M.KnockDown(5)
+							return
+						if(1)
+							step_away(M,root,0)
+							M.KnockDown(2)
+							M.apply_damage(5 + rand(5, 10), BRUTE)
+							return
+						if(2)
+							step_away(M,root,0)
+							M.KnockDown(1)
+							M.apply_damage(5 + rand(5, 10), BRUTE)
+							return
+						if(3)
+							M.visible_message("<span class='danger'>[M] pushes against the [src], holding it in place with effort!</span>", "<span class='xenodanger'>You stopped [src]!</span>")
+							return
 				if(T_HEAVY)
-					if(XEN.t_fortified)
-						step_away(M,root,0,0)
-						M.visible_message("<span class='danger'>[src] slowly pushes [M] further!</span>", "<span class='danger'>[src] is heavier, you can't hold it in place!</span>")
-					if(XEN.t_squishy == 1)
-						M.KnockDown(3)
-						M.apply_damage(10 + rand(10, 15), BRUTE)
-					step_away(M,root,0,0)
-					M.KnockDown(3)
-					M.apply_damage(10 + rand(5, 10), BRUTE)
-		if (isXenoLarva(M))
-			M.KnockDown(5)
+					switch(XEN.t_squish_level)
+						if(0)
+							M.KnockDown(5)
+							return
+						if(1)
+							M.KnockDown(2)
+							M.apply_damage(5 + rand(5, 10), BRUTE)
+							return
+						if(2)
+							step_away(M,root,0)
+							M.KnockDown(2)
+							M.apply_damage(5 + rand(5, 10), BRUTE)
+							return
+						if(3)
+							step_away(M,root,0)
+							M.visible_message("<span class='danger'>[M] pushes against the [src], trying to hold it in place, but fails!</span>", "<span class='danger'>[src] is much heavier, you can't hold it in place!</span>")
+							return
 		if (!isXeno(M))
 			step_away(M,root,0,0)
 			M.KnockDown(3)
@@ -1124,29 +1155,30 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	var/dam_type = "bullet"
 
+
+	if(istype(P, /datum/ammo/xeno/boiler_gas/corrosive))
+		dam_type = "acid"
+		take_damage_type((P.damage * 4), dam_type, P.firer)
+		healthcheck()
+		return
 	if(P.ammo.flags_ammo_behavior & AMMO_XENO_ACID)
 		dam_type = "acid"
 		take_damage_type(P.damage * (0.75 + P.ammo.penetration/100), dam_type, P.firer)
 		healthcheck()
 		return
-	if(P.ammo.name == "glob of acid")
-		dam_type = "acid"
-		take_damage_type(P.damage * (2 + P.ammo.penetration/100), dam_type, P.firer)
-		healthcheck()
-		return
 	if(istype(P, /datum/ammo/rocket/ap))
 		dam_type = "explosive"
-		take_damage_type(P.damage * (1.5 + P.ammo.penetration/100), dam_type, P.firer)
+		take_damage_type(P.damage * (1.2 + P.ammo.penetration/100), dam_type, P.firer)
 		healthcheck()
 		return
-	if(P.ammo.name == "TOW rocket")
+	if(istype(P, /datum/ammo/rocket/tow))
 		dam_type = "explosive"
 		take_damage_type(P.damage * (1.5 + P.ammo.penetration/100), dam_type, P.firer)
 		healthcheck()
 		return
-	if(P.ammo.name == "cannon round")
+	if(istype(P, /datum/ammo/rocket/ltb))
 		dam_type = "explosive"
-		take_damage_type(P.damage * (2 + P.ammo.penetration/100), dam_type, P.firer)
+		take_damage_type(P.damage * (3 + P.ammo.penetration/100), dam_type, P.firer)
 		healthcheck()
 		return
 
@@ -1200,13 +1232,15 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //used when entrance is blocked by something awful
 /obj/vehicle/multitile/root/cm_armored/tank/proc/get_new_exit_point()
 	var dir = rand(1, 8)
-	var/turf/closed/T
+	var/turf/T
 	var/new_exit
 	new_exit = get_step(src, dir)
 	T = get_turf(new_exit)
 	new_exit = get_step(T, dir)
 	T = get_turf(new_exit)
 	return T
+
+/obj/vehicle/multitile/root/cm_armored/tank/proc/check_entrance()
 
 //Special case for entering the vehicle without using the verb
 /obj/vehicle/multitile/root/cm_armored/attack_hand(var/mob/user)
@@ -1221,7 +1255,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	var/blocked = 0
 	var/turf/closed/T = entrance.loc
-	if(istype(T))
+	var/obj/O = entrance.loc
+	if(istype(T) || O.density)
 		blocked = 1
 
 	if(blocked == 1)		//vehicle entrance cannot be blocked to prevent TCs getting in

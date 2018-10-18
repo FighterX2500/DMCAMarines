@@ -143,12 +143,12 @@ Currently only has the tank hardpoints
 /obj/item/hardpoint/treads
 	slot = HDPT_TREADS
 
-//Normal examine() but tells the player what is installed and if it's broken
+//examine() that tells the player condition of the module
 /obj/item/hardpoint/examine(var/mob/user)
 	..()
 	var/cond = round(health * 100 / maxhealth)
 	if((user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
-		if (cond >= 0)
+		if (cond > 0)
 			to_chat(user, "Integrity: [cond]%.")
 		else
 			to_chat(user, "Integrity: 0%.")
@@ -1099,7 +1099,7 @@ Currently only has the tank hardpoints
 	get_icon_image(var/x_offset, var/y_offset, var/new_dir)
 		return null //Handled in update_icon()
 
-
+//repairing treads in field
 /obj/item/hardpoint/treads/attackby(var/obj/item/O, var/mob/user)
 
 	//Need to the what the hell you're doing
@@ -1113,6 +1113,9 @@ Currently only has the tank hardpoints
 	if(!WT.isOn())
 		to_chat(user, "<span class='warning'>You need to light your [WT] first.</span>")
 		return
+	if(WT.get_fuel() < 8)
+		to_chat(user, "<span class='warning'>You don't have enough fuel in your [WT].</span>")
+		return
 	var/q_health = round(src.maxhealth * 0.25)
 	if(health >= q_health)
 		to_chat(user, "<span class='warning'>You can't repair treads more than that in the field.</span>")
@@ -1125,7 +1128,7 @@ Currently only has the tank hardpoints
 	if(!Adjacent(user))
 		user.visible_message("<span class='notice'>[user] stops repairing the [src].</span>", "<span class='notice'>You stop repairing the [src].</span>")
 		return
-	WT.remove_fuel(15, user)
+	WT.remove_fuel(8, user)
 	user.visible_message("<span class='notice'>[user] repairs the [src] as best as possible in field conditions.</span>", "<span class='notice'>You repair the [src] as best as possible in field conditions.</span>")
 
 	src.health = q_health //We repaired it to 25%, good job

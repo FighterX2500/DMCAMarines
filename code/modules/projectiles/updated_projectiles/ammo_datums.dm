@@ -85,8 +85,8 @@
 			return
 		for(var/mob/living/carbon/M in range(1,Center))
 			M.visible_message("<span class='danger'>[M] got a concussion from \a [P.name]!</span>","[isXeno(M)?"<span class='xenodanger'>":"<span class='highdanger'>"]You are concussed from \a </b>[P.name] explosion</b>!</span>")
-			M.apply_damage(rand(15,P.damage), "brute")
-			staggerstun(M, P, config.max_shell_range, 0, 1, 4, 4, 0, 1, 3, 2)
+			M.apply_damage(rand(10,P.damage), "brute")
+			staggerstun(M, P, config.max_shell_range, 0, 0, 2, 2, 0, 1, 3, 2)
 
 	proc/knockback(mob/M, obj/item/projectile/P, var/max_range = 2)
 		if(!M || M == P.firer)
@@ -151,6 +151,8 @@
 			#if DEBUG_STAGGER_SLOWDOWN
 			to_chat(world, "<span class='debuginfo'>Damage: Initial slowdown is: <b>[target.slowdown]</b></span>")
 			#endif
+			if(X.slowdown) //No slowdown stacking
+				X.slowdown = 0
 			X.add_slowdown(slowdown)
 			#if DEBUG_STAGGER_SLOWDOWN
 			to_chat(world, "<span class='debuginfo'>Damage: Final slowdown is: <b>[target.slowdown]</b></span>")
@@ -976,7 +978,7 @@
 	accuracy = config.med_hit_accuracy
 	accurate_range = config.long_shell_range
 	max_range = config.max_shell_range
-	damage = config.low_hit_damage
+	damage = config.llow_hit_damage
 	penetration= config.low_armor_penetration
 	shell_speed = config.fast_shell_speed
 

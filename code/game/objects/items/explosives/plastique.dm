@@ -35,7 +35,7 @@
 		return
 	if(istype(target, /obj/structure/ladder) || istype(target, /obj/item) || istype(target, /turf/open))
 		return FALSE
-	if(istype(target, /obj/effect) || istype(target, /obj/machinery))
+	if(istype(target, /obj/effect) || istype(target, /obj/machinery) || istype(target, /obj/vehicle))
 		var/obj/O = target
 		if(O.unacidable)
 			return FALSE

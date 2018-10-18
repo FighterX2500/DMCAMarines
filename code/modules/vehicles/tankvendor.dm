@@ -9,7 +9,7 @@
 	use_power = 1
 	idle_power_usage = 20
 
-	var/vendor_role = "Tank Crewman" //everyone else, fuck off
+	var/list/vendor_role = list()
 
 	var/list/listed_products
 
@@ -19,6 +19,8 @@
 	desc = "This vendor is connected to main ship storage, allows to fetch one hardpoint module per category for free."
 	icon = 'icons/obj/machines/vending.dmi'
 	icon_state = "engi"
+
+	vendor_role = list("Tank Crewman") //everyone else, mind your business
 
 	var/list/aval_tank_mod = list("manual", "primary", "secondary", "support", "armor", "treads")
 
@@ -89,7 +91,7 @@
 		to_chat(H, "<span class='warning'>Wrong ID card owner detected.</span>")
 		return
 
-	if(I.rank != vendor_role)
+	if(!vendor_role.Find(I.rank))
 		to_chat(H, "<span class='warning'>This machine isn't for you.</span>")
 		return
 
@@ -155,7 +157,7 @@
 				to_chat(H, "<span class='warning'>Wrong ID card owner detected.</span>")
 				return
 
-			if(I.rank != vendor_role)
+			if(!vendor_role.Find(I.rank))
 				to_chat(H, "<span class='warning'>This machine isn't for you.</span>")
 				return
 
@@ -184,6 +186,7 @@
 	idle_power_usage = 20
 	icon = 'icons/obj/machines/drone_fab.dmi'
 	icon_state = "drone_fab_idle"
+	vendor_role = list ("Tank Crewman", "Synthetic", "Maintenance Technician")	//Having MTs and Synthetic to have access to repair machinery seems logical thing.
 	var/busy
 	var/obj/item/hardpoint/HP = null
 
@@ -253,9 +256,12 @@
 	visible_message("<span class='notice'>[src] starts clanking and humming as it begins repairing process.</span>")
 	icon_state = "drone_fab_active"
 	busy = TRUE
-	var/timer = 100 - health_per	//here we check the amount of missing hp in %
-	var/multiplier = 4										//here we adjust that number by multiplier to get we need to fix module
-	sleep(timer * multiplier)
+	var/timer = (100 - health_per) * 30	//here we check the amount of missing hp in % and then multiply by 30, so competely broken module requires 5min (300s) to fix
+	var/adjustment = rand(0, 1800)		//here we adjust that number by random amount of deciseconds. Adjustment will be from 0 to 3 mins.
+	timer += adjustment
+	to_chat(user, "<span class='notice'>On [src] screen you see that estimated time till module is repaired: [timer / 10] seconds.</span>")
+
+	sleep(timer)
 	HP.health = HP.maxhealth
 	busy = FALSE
 	playsound(src, pick('sound/machines/hydraulics_1.ogg', 'sound/machines/hydraulics_2.ogg'), 40, 1)

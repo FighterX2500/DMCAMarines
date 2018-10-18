@@ -20,7 +20,6 @@
 	var/mob/swap_seat	//this is a temp seat for switching seats when both TCs are in tank
 
 	var/obj/machinery/camera/camera = null	//Yay! Working camera in the tank!
-	var/obj/item/device/megaphone/Mega
 
 	var/occupant_exiting = 0
 	var/next_sound_play = 0
@@ -53,8 +52,6 @@
 	R.load_hitboxes(dimensions, root_pos)
 	R.load_entrance_marker(entr_mark)
 	R.update_icon()
-
-	R.Mega = new/obj/item/device/megaphone(R)
 
 	R.camera = new /obj/machinery/camera(R)
 	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
@@ -95,8 +92,6 @@
 
 	R.healthcheck()
 
-	R.Mega = new/obj/item/device/megaphone(R)
-
 	R.camera = new /obj/machinery/camera(R)
 	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
 	R.camera.c_tag = "Armored Vehicle ¹[rand(1,10)]" //ARMORED VEHICLE to be at the start of cams list, numbers in case of events with multiple tanks and for APC
@@ -134,8 +129,6 @@
 	R.add_hardpoint(new /obj/item/hardpoint/treads/standard/upp, R.hardpoints[HDPT_TREADS])
 	R.update_damage_distribs()
 
-	R.Mega = new/obj/item/device/megaphone(R)
-
 	R.color = "#c2b678"
 	R.healthcheck()
 
@@ -145,9 +138,9 @@
 /obj/vehicle/multitile/root/cm_armored/tank/handle_all_modules_broken()
 	deactivate_all_hardpoints()
 
-	var/turf/closed/T
-	T in entrance.loc
-	if(istype(T))
+	var/turf/T
+	//T in entrance.loc
+	if(!gunner.Move)
 		T = get_new_exit_point()
 		to_chat(global, "<span class='danger'>entrance turf check: [T.name]</span>")
 		if(!istype(T))
@@ -190,12 +183,43 @@
 	driver = null
 	swap_seat = null
 
+//megaphone proc. Simply adding megaphone to tank and activate it doesn't work, so writing new Megaphone code for tank
+/obj/vehicle/multitile/root/cm_armored/tank/proc/use_megaphone(mob/living/user)
+	var/spamcheck = 0
+	if (user.client)
+		if(user.client.prefs.muted & MUTE_IC)
+			to_chat(user, "\red You cannot speak in IC (muted).")
+			return
+	if(user.silent)
+		return
+
+	if(spamcheck)
+		to_chat(user, "\red \The megaphone needs to recharge!")
+		return
+
+	var/message = copytext(sanitize(input(user, "Shout a message?", "Megaphone", null)  as text),1,MAX_MESSAGE_LEN)
+	if(!message)
+		return
+	message = capitalize(message)
+	log_admin("[key_name(user)] used a tank megaphone to say: >[message]<")
+	if ((src.loc == user && usr.stat == 0))
+		for(var/mob/living/carbon/human/O in (viewers(src)))
+			if(O.species && O.species.name == "Yautja") //NOPE
+				O.show_message("Some loud speech heard from [src], but you can't understand it.")
+				continue
+			O.show_message("<B>[src]</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2) // 2 stands for hearable message
+
+		spamcheck = 1
+		spawn(20)
+			spamcheck = 0
+		return
+
 //little QoL won't be bad, aight?
 /obj/vehicle/multitile/root/cm_armored/tank/verb/megaphone()
 	set name = "Use Megaphone"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set src in view(0)
-	Mega.attack_self(usr)
+	use_megaphone(usr)
 
 //Naming done right
 /obj/vehicle/multitile/root/cm_armored/tank/verb/name_tank()
@@ -281,15 +305,16 @@
 				to_chat(usr, "<span class='notice'>You switch seats.</span>")
 				to_chat(gunner, "<span class='notice'>You switch seats.</span>")
 				deactivate_all_hardpoints()
+
 				swap_seat = gunner
 				gunner = driver
+				deactivate_binos(gunner)
 				if(gunner.client)
 					gunner.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
 				driver = swap_seat
 				if(driver.client)
 					driver.client.mouse_pointer_icon = initial(driver.client.mouse_pointer_icon)
 				swap_seat = null
-				deactivate_binos(gunner)
 				return
 		to_chat(usr, "<span class='notice'>You start getting into the other seat.</span>")
 
@@ -303,9 +328,9 @@
 
 		gunner = driver
 		driver = null
+		deactivate_binos(gunner)
 		if(gunner.client)
 			gunner.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
-		deactivate_binos(gunner)
 
 /obj/vehicle/multitile/root/cm_armored/tank/can_use_hp(var/mob/M)
 	return (M == gunner)
@@ -381,7 +406,8 @@
 				to_chat(M, "<span class='notice'>Someone got into that seat before you could.</span>")
 				return
 			driver = M
-			M.loc = src
+			//M.loc = src testing
+			M.Move(src)
 			if(loc_check == entrance.loc)
 				to_chat(M, "<span class='notice'>You enter the driver's seat.</span>")
 			else
@@ -409,7 +435,8 @@
 
 			if(!M.client) return //Disconnected while getting in
 			gunner = M
-			M.loc = src
+			//M.loc = src
+			M.Move(src)
 			deactivate_binos(gunner)
 			if(loc_check == entrance.loc)
 				to_chat(M, "<span class='notice'>You enter the gunner's seat.</span>")
@@ -440,8 +467,10 @@
 	occupant_exiting = 0
 
 	//if(!M.Move(entrance.loc))
-	var/turf/closed/T = entrance.loc
-	if(istype(T))
+	//var/turf/closed/T = entrance.loc
+	//var/obj/O = entrance.loc
+	//if(istype(T) || O.density)
+	if(!M.Move(entrance.loc))
 		to_chat(M, "<span class='notice'>Something is blocking you from exiting.</span>")
 	else
 		if(M == gunner)
