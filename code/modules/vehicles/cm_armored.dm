@@ -821,8 +821,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/obj/machinery/autolathe/AL = A
 		AL.visible_message("<span class='danger'>[root] crushes [AL]!</span>")
 		new /obj/item/stack/sheet/metal(AL.loc, 2)
-		new /obj/item/stack/sheet/metal(AL.loc, stored_material["metal"])
-		new /obj/item/stack/sheet/glass(AL.loc, stored_material["glass"])
+		new /obj/item/stack/sheet/metal(AL.loc, AL.stored_material["metal"])
+		new /obj/item/stack/sheet/glass(AL.loc, AL.stored_material["glass"])
 		cdel(AL)
 	else if (istype(A, /obj/machinery/autodoc))
 		var/obj/machinery/autodoc/AD = A
