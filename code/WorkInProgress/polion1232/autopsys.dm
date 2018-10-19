@@ -14,6 +14,8 @@
 	return 0
 
 /datum/surgery_step/xeno/can_use(mob/living/user, mob/living/carbon/Xenomorph/target, target_zone, obj/item/tool, datum/limb/affected, only_checks)
+	if(!isXeno(target))
+		return 0
 	if(target.xeno_forbid_retract == 1)
 		target.xeno_surgery_step = 0
 		return 0
@@ -48,6 +50,8 @@
 
 /datum/surgery_step/xeno/queen/can_use(mob/living/user, mob/living/carbon/Xenomorph/target, target_zone, obj/item/tool, datum/limb/affected, only_checks)
 	if(!isXenoQueen(target))
+		return 0
+	if(target.xeno_forbid_retract)
 		return 0
 	return target.xeno_surgery_step == xeno_step // checking steps
 
@@ -118,10 +122,12 @@
 	xeno_step = 2
 
 /datum/surgery_step/xeno/retract/can_use(mob/living/user, mob/living/carbon/Xenomorph/target, target_zone, obj/item/tool, datum/limb/affected, only_checks)
+	if(!isXeno(target))
+		return 0
 	if(target.xeno_forbid_retract == 1)
 		target.xeno_surgery_step = 0
 		return 0
-	if(!(isXenoSentinel(target) || isXenoSpitter(target) || isXenoDrone(target) || isXenoHivelord(target) || isXenoQueen(target)))
+	if(!(isXenoSentinel(target) || isXenoSpitter(target) || isXenoDrone(target) || isXenoHivelord(target) || isXenoQueen(target)) && target.xeno_surgery_step == 2)
 		user.visible_message("<span class='notice'>Seem's like [target] have no more use for our research needs</span>")
 		target.xeno_forbid_retract = 1 // Poor xeno butchered
 		target.xeno_surgery_step = 0
@@ -153,9 +159,6 @@
 /datum/surgery_step/xeno/internal/acid/can_use(mob/living/user, mob/living/carbon/Xenomorph/target, target_zone, obj/item/tool, datum/limb/affected, only_checks)
 	if(isXenoSentinel(target) || isXenoSpitter(target)) // Because spitting is their league
 		return target.xeno_surgery_step == xeno_step // checking steps
-	if(!isXenoDrone(target) || !isXenoHivelord(target) || !isXenoQueen(target))
-		target.xeno_forbid_retract = 1 // Poor xeno butchered
-		target.xeno_surgery_step = 0
 	return 0
 
 /datum/surgery_step/xeno/internal/acid/begin_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
@@ -189,9 +192,6 @@
 /datum/surgery_step/xeno/internal/secretor/can_use(mob/living/user, mob/living/carbon/Xenomorph/target, target_zone, obj/item/tool, datum/limb/affected, only_checks)
 	if(isXenoDrone(target) || isXenoHivelord(target)) // Because spitting is their league
 		return target.xeno_surgery_step == xeno_step // checking steps
-	if(!isXenoSentinel(target) || !isXenoSpitter(target) || !isXenoQueen(target))
-		target.xeno_forbid_retract = 1 // Poor xeno butchered
-		target.xeno_surgery_step = 0
 	return 0
 
 /datum/surgery_step/xeno/internal/secretor/begin_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
@@ -239,7 +239,18 @@
 
 
 //Queen autopsy
+/datum/surgery_step/xeno/queen/retract
+	allowed_tools = list(
+	/obj/item/tool/surgery/retractor = 100,           \
+	/obj/item/tool/wrench = 75
+	)
+
+	min_duration = 30
+	max_duration = 40
+	xeno_step = 2
+
 /datum/surgery_step/xeno/queen/acid
+	xeno_step = 3
 
 /datum/surgery_step/xeno/queen/secretor
 	xeno_step = 4
@@ -249,6 +260,20 @@
 
 /datum/surgery_step/xeno/queen/core
 	xeno_step = 6
+
+/datum/surgery_step/xeno/retract/can_use(mob/living/user, mob/living/carbon/Xenomorph/target, target_zone, obj/item/tool, datum/limb/affected, only_checks)
+	if(!isXenoQueen(target))
+		return 0
+	return target.xeno_surgery_step == xeno_step // checking steps
+
+/datum/surgery_step/xeno/retract/begin_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
+	user.visible_message("<span class='notice'>[user] start's retracting open flesh inside [target]'s body with the [tool]</span>")
+	return
+
+/datum/surgery_step/xeno/retract/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
+	user.visible_message("<span class='notice'>[user] retracted open flesh inside [target]'s body</span>")
+	target.xeno_surgery_step = 3
+	return
 
 /datum/surgery_step/xeno/queen/acid/begin_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
 	user.visible_message("<span class='notice'>[user] start cuttung acid gland out of [target]'s body with the [tool]</span>")
