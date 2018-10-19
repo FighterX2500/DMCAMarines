@@ -1256,8 +1256,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	T = get_turf(new_exit)
 	return T
 
-/obj/vehicle/multitile/root/cm_armored/tank/proc/check_()
-
 //Special case for entering the vehicle without using the verb
 /obj/vehicle/multitile/root/cm_armored/attack_hand(var/mob/user)
 
