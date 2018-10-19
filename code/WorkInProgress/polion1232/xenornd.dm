@@ -71,7 +71,6 @@
 /obj/machinery/computer/XenoRnD/New()
 	..()
 	files = new /datum/marineResearch(src)
-	SyncRDevices()
 
 /obj/machinery/computer/XenoRnD/proc/SyncRDevices() //Makes sure it is properly sync'ed up with the devices attached to it (if any). Derived from rdconsole.dm
 	for(var/obj/machinery/r_n_d/D in oview(3,src))
@@ -131,7 +130,7 @@
 					else if(linked_modifyer.loaded_item)
 						linked_modifyer.loaded_item.loc = linked_modifyer.loc
 						linked_modifyer.loaded_item = null
-						linked_modifyer.icon_state = "d_analyzer"
+						linked_modifyer.icon_state = "bronya_pusta"
 						screen = 3.1
 
 	else if(href_list["deconstruct"]) //Deconstruct the item in the destructive analyzer and update the research holder.
