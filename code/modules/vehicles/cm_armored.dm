@@ -372,21 +372,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		A.update_icon()
 
 
-//Built in smoke launcher system verb
-/obj/vehicle/multitile/root/cm_armored/verb/smoke_cover()
-	set name = "Activate M75 Smoke Deploy System"
-	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
-
-	if(smoke_ammo_current)
-		to_chat(usr, "<span class='warning'>You activate M75 Smoke Deploy System!</span>")
-		visible_message("<span class='danger'>You notice two grenades flying in front of the tank!</span>")
-		smoke_shot()
-	else
-		to_chat(usr, "<span class='warning'>Out of ammo! Reload smoke grenades magazine!</span>")
-		return
-
-
 //verb shows only to TCs status update on their tank including: ammo and backup clips in weapons and combined health of all modules showed in %
 /obj/vehicle/multitile/root/cm_armored/verb/tank_status()
 	set name = "Check Vehicle Status"
@@ -660,10 +645,11 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 				if(T_LIGHT)
 					switch(XEN.t_squish_level)
 						if(0)
+							step_away(M,root,4)
 							M.KnockDown(5)
 							return
 						if(1)
-							step_away(M,root,1)
+							step_away(M,root,2)
 							M.KnockDown(1)
 							M.apply_damage(5 + rand(5, 10), BRUTE)
 							return
@@ -1240,7 +1226,17 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	T = get_turf(new_exit)
 	return T
 
-/obj/vehicle/multitile/root/cm_armored/tank/proc/check_entrance()
+//checks entrance tile for closed turfs and un-passable objects and returns TRUE if it is so
+/obj/vehicle/multitile/root/cm_armored/proc/tile_blocked_check(var/Location)
+	if(!isturf(Location))
+		return TRUE
+	var/turf/T = Location
+	if(T.density)
+		return TRUE
+	for(var/atom/A in T.contents)
+		if(A.density)
+			return TRUE
+	return FALSE
 
 //Special case for entering the vehicle without using the verb
 /obj/vehicle/multitile/root/cm_armored/attack_hand(var/mob/user)
@@ -1253,13 +1249,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		handle_player_entrance(user)
 		return
 
-	var/blocked = 0
-	var/turf/closed/T = entrance.loc
-	var/obj/O = entrance.loc
-	if(istype(T) || O.density)
-		blocked = 1
 
-	if(blocked == 1)		//vehicle entrance cannot be blocked to prevent TCs getting in
+	if(tile_blocked_check(entrance.loc))		//vehicle entrance cannot be blocked to prevent TCs getting in
 		handle_player_entrance(user)
 		return
 

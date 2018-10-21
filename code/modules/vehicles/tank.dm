@@ -136,28 +136,23 @@
 /obj/vehicle/multitile/root/cm_armored/tank/handle_all_modules_broken()
 	deactivate_all_hardpoints()
 
-	var/turf/T
-	T in entrance.loc
-	if(!gunner.Move)
-		//T = get_new_exit_point()
-		to_chat(global, "<span class='danger'>entrance turf check: [T.name]</span>")
-		if(!istype(T))
+	if(tile_blocked_check(entrance.loc))
+		to_chat(global, "<span class='danger'>entrance turf check - blocked</span>")
+		var/turf/T = get_new_exit_point()
+		if(tile_blocked_check(T.loc))
+			return
+		else
 			if(gunner)
-				gunner.Move(T.loc)
+				gunner.Move(T)
 				to_chat(gunner, "<span class='danger'>You cannot breath in all the smoke inside the vehicle and back hatch is blocked, so you get out through an auxiliary top hatch and jump off the tank!</span>")
 			if(driver)
-				driver.Move(T.loc)
+				driver.Move(T)
 				to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle and back hatch is blocked, so you get out through an auxiliary top hatch and jump off the tank!</span>")
-		else
-			to_chat(gunner, "<span class='danger'>You cannot breath in all the smoke inside the vehicle, but the back hatch is blocked!</span>")
-			to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle, but the back hatch is blocked!</span>")
-			return
 	else
 		to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle so you dismount!</span>")
 		gunner.Move(entrance.loc)
 		to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle so you dismount!</span>")
 		driver.Move(entrance.loc)
-
 	if(gunner.client)
 		gunner.client.mouse_pointer_icon = initial(gunner.client.mouse_pointer_icon)
 	gunner.unset_interaction()
@@ -217,13 +212,36 @@
 	set name = "Use Megaphone"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set src in view(0)
+	if(usr != gunner && usr != driver)
+		return
 	use_megaphone(usr)
+
+//Built in smoke launcher system verb
+/obj/vehicle/multitile/root/cm_armored/tank/verb/smoke_cover()
+	set name = "Activate Smoke Deploy System"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
+	set src in view(0)
+
+	if(usr != gunner && usr != driver)
+		return
+
+	if(smoke_ammo_current)
+		to_chat(usr, "<span class='warning'>You activate Smoke Deploy System!</span>")
+		visible_message("<span class='danger'>You notice two grenades flying in front of the tank!</span>")
+		smoke_shot()
+	else
+		to_chat(usr, "<span class='warning'>Out of ammo! Reload smoke grenades magazine!</span>")
+		return
 
 //Naming done right
 /obj/vehicle/multitile/root/cm_armored/tank/verb/name_tank()
 	set name = "Name The Tank (Single Use)"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set src in view(0)
+
+	if(usr != gunner && usr != driver)
+		return
+
 	if(named)
 		to_chat(usr, "<span class='warning'>Tank was already named!</span>")
 		return
@@ -404,12 +422,12 @@
 				to_chat(M, "<span class='notice'>Someone got into that seat before you could.</span>")
 				return
 			driver = M
-			//M.loc = src testing
 			M.Move(src)
 			if(loc_check == entrance.loc)
 				to_chat(M, "<span class='notice'>You enter the driver's seat.</span>")
 			else
 				to_chat(M, "<span class='notice'>You climb onto the tank and enter the driver's seat through an auxiliary top hatchet.</span>")
+
 			M.set_interaction(src)
 			return
 
@@ -437,9 +455,9 @@
 			M.Move(src)
 			deactivate_binos(gunner)
 			if(loc_check == entrance.loc)
-				to_chat(M, "<span class='notice'>You enter the gunner's seat.</span>")
+				to_chat(M, "<span class='notice'>You enter the driver's seat.</span>")
 			else
-				to_chat(M, "<span class='notice'>You climb onto the tank and enter the gunner's seat through an auxiliary top hatchet.</span>")
+				to_chat(M, "<span class='notice'>You climb onto the tank and enter the driver's seat through an auxiliary top hatchet.</span>")
 			M.set_interaction(src)
 			if(M.client)
 				M.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
@@ -464,12 +482,9 @@
 	sleep(50)
 	occupant_exiting = 0
 
-	//if(!M.Move(entrance.loc))
-	//var/turf/closed/T = entrance.loc
-	//var/obj/O = entrance.loc
-	//if(istype(T) || O.density)
-	if(!M.Move(entrance.loc))
+	if(tile_blocked_check(entrance.loc))
 		to_chat(M, "<span class='notice'>Something is blocking you from exiting.</span>")
+		return
 	else
 		if(M == gunner)
 			deactivate_all_hardpoints()
