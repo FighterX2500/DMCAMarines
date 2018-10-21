@@ -22,6 +22,11 @@
 		return
 	if(A == loc)	// if placing the labeller into something (e.g. backpack)
 		return		// don't set a label
+
+	if(istype(A, /obj/vehicle/multitile/root/cm_armored))
+		to_chat(user, "<span class='notice'>Label doesn't stick to this. You are sad.</span>")	//NOPE!
+		return
+
 	if(!label || !length(label))
 		to_chat(user, "<span class='notice'>No text set.</span>")
 		return

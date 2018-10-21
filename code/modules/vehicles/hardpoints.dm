@@ -12,10 +12,11 @@ Currently only has the tank hardpoints
 	icon = 'icons/obj/hardpoint_modules.dmi'
 	icon_state = "tires" //Placeholder
 
-	var/maxhealth = 100
-	health = 100
+	var/maxhealth = 0
+	health = 0
 	w_class = 15
 	var/hp_weight = 1	//this is new variable for weight of every single module as a part of new weight system
+	var/secondhand = 0	//flag to show if module new or was already broken and fixed in repair machinery
 
 	//If we use ammo, put it here
 	var/obj/item/ammo_magazine/ammo_type = null //weapon ammo type to check with the magazine type we are trying to add
@@ -49,6 +50,9 @@ Currently only has the tank hardpoints
 	return
 
 /obj/item/hardpoint/proc/deactivate()
+	var/obj/vehicle/multitile/root/cm_armored/tank/C = owner
+	if(C.gunner.client)
+		C.gunner.client.mouse_pointer_icon = initial(C.gunner.client.mouse_pointer_icon)
 	return
 
 /obj/item/hardpoint/proc/livingmob_interact(var/mob/living/M)
@@ -138,13 +142,25 @@ Currently only has the tank hardpoints
 /obj/item/hardpoint/treads
 	slot = HDPT_TREADS
 
+//examine() that tells the player condition of the module
+/obj/item/hardpoint/examine(var/mob/user)
+	..()
+	var/cond = round(health * 100 / maxhealth)
+	if((user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
+		if (cond > 0)
+			to_chat(user, "Integrity: [cond]%.")
+		else
+			to_chat(user, "Integrity: 0%.")
+
 ////////////////////
 // PRIMARY SLOTS // START
 ////////////////////
+// USCM
+////////////////////
 
 /obj/item/hardpoint/primary/cannon
-	name = "LTB Cannon"
-	desc = "A primary cannon for tanks that shoots explosive rounds. "
+	name = "M5 LTB Cannon"
+	desc = "A primary 86mm cannon for tank that shoots explosive rounds."
 
 	maxhealth = 500
 	health = 500
@@ -167,7 +183,8 @@ Currently only has the tank hardpoints
 
 	is_ready()
 		if(world.time < next_use)
-			to_chat(usr, "<span class='warning'>This module is not ready to be used yet.</span>")
+			var/CD = round(next_use - world.time) / 10
+			to_chat(usr, "<span class='warning'>[src] will be ready to fire in [CD] seconds.</span>")
 			return 0
 		if(health <= 0)
 			to_chat(usr, "<span class='warning'>This module is too broken to be used.</span>")
@@ -181,7 +198,7 @@ Currently only has the tank hardpoints
 			return
 
 		next_use = world.time + owner.cooldowns["primary"] * owner.misc_ratios["prim_cool"]
-		if(!prob(owner.accuracies["primary"] * 100 * owner.misc_ratios["prim_acc"]))
+		if(!prob(owner.accuracies["primary"] * 100 * owner.misc_ratios["prim_acc"] * owner.w_ratios["w_prim_acc"]))
 			T = get_step(T, pick(cardinal))
 		var/obj/item/projectile/P = new
 		P.generate_bullet(new A.default_ammo)
@@ -189,9 +206,55 @@ Currently only has the tank hardpoints
 		playsound(get_turf(src), pick('sound/weapons/tank_cannon_fire1.ogg', 'sound/weapons/tank_cannon_fire2.ogg'), 60, 1)
 		A.current_rounds--
 
+/obj/item/hardpoint/primary/autocannon
+	name = "M21 Autocannon"
+	desc = "A primary light autocannon for tank. Designed for light scout tank. Shoots 30mm light HE rounds. Fire rate was reduced with adding IFF support."
+
+	maxhealth = 400
+	health = 400
+	point_cost = 100
+	hp_weight = 1
+
+	icon_state = "autocannon"
+
+	disp_icon = "tank"
+	disp_icon_state = "autocannon"
+
+	ammo_type = new /obj/item/ammo_magazine/tank/autocannon
+
+	max_clips = 3
+	max_angle = 60
+
+	apply_buff()
+		owner.cooldowns["primary"] = 5
+		owner.accuracies["primary"] = 0.9
+	is_ready()
+		if(world.time < next_use)
+			to_chat(usr, "<span class='warning'>This module is not ready to be used yet.</span>")
+			return 0
+		if(health <= 0)
+			to_chat(usr, "<span class='warning'>This module is too broken to be used.</span>")
+			return 0
+		return 1
+
+	active_effect(var/turf/T)
+		var /obj/item/ammo_magazine/tank/autocannon/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
+			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
+			return
+
+		next_use = world.time + owner.cooldowns["primary"] * owner.misc_ratios["prim_cool"]
+		if(!prob(owner.accuracies["primary"] * 100 * owner.misc_ratios["prim_acc"] * owner.w_ratios["w_prim_acc"]))
+			T = get_step(T, pick(cardinal))
+		var/obj/item/projectile/P = new
+		P.generate_bullet(new A.default_ammo)
+		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+		playsound(get_turf(src), 'sound/weapons/tank_autocannon_fire1.ogg', 60, 1)
+		A.current_rounds--
+
 /obj/item/hardpoint/primary/minigun
-	name = "LTAA-AP Minigun"
-	desc = "A primary weapon for tanks that spews bullets"
+	name = "M74 LTAA-AP Minigun"
+	desc = "It's a minigun, what is not clear? Just go pew-pew-pew."
 
 	maxhealth = 350
 	health = 350
@@ -254,7 +317,7 @@ Currently only has the tank hardpoints
 		if(chained <= 0) chained = 1
 
 		next_use = world.time + (chained > chain_delays.len ? 0.5 : chain_delays[chained]) * owner.misc_ratios["prim_cool"]
-		if(!prob(owner.accuracies["primary"] * 100 * owner.misc_ratios["prim_acc"]))
+		if(!prob(owner.accuracies["primary"] * 100 * owner.misc_ratios["prim_acc"] * owner.w_ratios["w_prim_acc"]))
 			T = get_step(T, pick(cardinal))
 		var/obj/item/projectile/P = new
 		P.generate_bullet(new A.default_ammo)
@@ -263,17 +326,69 @@ Currently only has the tank hardpoints
 		playsound(get_turf(src), S, 60)
 		A.current_rounds--
 
+
+////////////////////
+// USCM // END
+////////////////////
+// UPP // START
+////////////////////
+/obj/item/hardpoint/primary/cannon/upp
+	name = "Type 43 Cannon"
+	desc = "A primary 86mm cannon for tank that shoots explosive rounds."
+
+	point_cost = 0
+	ammo_type = new /obj/item/ammo_magazine/tank/ltb_cannon/upp
+
+	active_effect(var/turf/T)
+		var /obj/item/ammo_magazine/tank/ltb_cannon/upp/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
+			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
+			return
+
+		next_use = world.time + owner.cooldowns["primary"] * owner.misc_ratios["prim_cool"]
+		if(!prob(owner.accuracies["primary"] * 100 * owner.misc_ratios["prim_acc"] * owner.w_ratios["w_prim_acc"]))
+			T = get_step(T, pick(cardinal))
+		var/obj/item/projectile/P = new
+		P.generate_bullet(new A.default_ammo)
+		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+		playsound(get_turf(src), pick('sound/weapons/tank_cannon_fire1.ogg', 'sound/weapons/tank_cannon_fire2.ogg'), 60, 1)
+		A.current_rounds--
+
+/obj/item/hardpoint/primary/autocannon/upp
+	name = "Type 41 Autocannon"
+	desc = "A primary light autocannon for tank. Designed for light scout tank. Shoots 30mm HE rounds."
+	point_cost = 0
+
+	ammo_type = new /obj/item/ammo_magazine/tank/autocannon/upp
+
+	active_effect(var/turf/T)
+		var /obj/item/ammo_magazine/tank/autocannon/upp/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
+			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
+			return
+
+		next_use = world.time + owner.cooldowns["primary"] * owner.misc_ratios["prim_cool"]
+		if(!prob(owner.accuracies["primary"] * 100 * owner.misc_ratios["prim_acc"] * owner.w_ratios["w_prim_acc"]))
+			T = get_step(T, pick(cardinal))
+		var/obj/item/projectile/P = new
+		P.generate_bullet(new A.default_ammo)
+		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+		playsound(get_turf(src), 'sound/weapons/tank_autocannon_fire1.ogg', 60, 1)
+		A.current_rounds--
+
+
 ////////////////////
 // PRIMARY SLOTS // END
 ////////////////////
 
 /////////////////////
-// SECONDARY SLOTS // START
+// SECONDARY SLOTS //
 /////////////////////
-
+// USCM // START
+/////////////////////
 /obj/item/hardpoint/secondary/flamer
-	name = "Secondary Flamer Unit"
-	desc = "A secondary weapon for tanks that shoots flames"
+	name = "M7 \"Dragon\" Flamethrower Unit"
+	desc = "A secondary weapon for tank. Don't let it fool you, it's not your ordinary flamer, this thing literally shoots fireballs. No kidding."
 
 	maxhealth = 300
 	health = 300
@@ -295,7 +410,8 @@ Currently only has the tank hardpoints
 
 	is_ready()
 		if(world.time < next_use)
-			to_chat(usr, "<span class='warning'>This module is not ready to be used yet.</span>")
+			var/CD = round(next_use - world.time) / 10
+			to_chat(usr, "<span class='warning'>[src] will be ready to fire in [CD] seconds.</span>")
 			return 0
 		if(health <= 0)
 			to_chat(usr, "<span class='warning'>This module is too broken to be used.</span>")
@@ -310,7 +426,7 @@ Currently only has the tank hardpoints
 			return
 
 		next_use = world.time + owner.cooldowns["secondary"] * owner.misc_ratios["secd_cool"]
-		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"]))
+		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"] * owner.w_ratios["w_secd_acc"]))
 			T = get_step(T, pick(cardinal))
 		var/obj/item/projectile/P = new
 		P.generate_bullet(new A.default_ammo)
@@ -319,8 +435,8 @@ Currently only has the tank hardpoints
 		A.current_rounds--
 
 /obj/item/hardpoint/secondary/towlauncher
-	name = "TOW Launcher"
-	desc = "A secondary weapon for tanks that shoots rockets"
+	name = "M8-2 TOW Launcher"
+	desc = "A secondary weapon for tank that shoots powerful AP rockets. Deals heavy damage, but only on direct hits."
 
 	maxhealth = 500
 	health = 500
@@ -342,7 +458,8 @@ Currently only has the tank hardpoints
 
 	is_ready()
 		if(world.time < next_use)
-			to_chat(usr, "<span class='warning'>This module is not ready to be used yet.</span>")
+			var/CD = round(next_use - world.time) / 10
+			to_chat(usr, "<span class='warning'>[src] will be ready to fire in [CD] seconds.</span>")
 			return 0
 		if(health <= 0)
 			to_chat(usr, "<span class='warning'>This module is too broken to be used.</span>")
@@ -357,7 +474,7 @@ Currently only has the tank hardpoints
 			return
 
 		next_use = world.time + owner.cooldowns["secondary"] * owner.misc_ratios["secd_cool"]
-		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"]))
+		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"] * owner.w_ratios["w_secd_acc"]))
 			T = get_step(T, pick(cardinal))
 		var/obj/item/projectile/P = new
 		P.generate_bullet(new A.default_ammo)
@@ -365,12 +482,13 @@ Currently only has the tank hardpoints
 		A.current_rounds--
 
 /obj/item/hardpoint/secondary/m56cupola
-	name = "M56 Cupola"
-	desc = "A secondary weapon for tanks that shoots bullets"
+	name = "M56 \"Cupola\""
+	desc = "A secondary weapon for tank. Refitted M56 has higher accuracy and rate of fire. Compatible with IFF system."
 
 	maxhealth = 350
 	health = 350
-	point_cost = 50
+	point_cost = 100
+	hp_weight = 2
 
 	icon_state = "m56_cupola"
 
@@ -380,7 +498,7 @@ Currently only has the tank hardpoints
 	ammo_type = new /obj/item/ammo_magazine/tank/m56_cupola
 	max_clips = 2
 	max_angle = 75
-	hp_weight = 2
+
 
 	apply_buff()
 		owner.cooldowns["secondary"] = 2
@@ -403,7 +521,7 @@ Currently only has the tank hardpoints
 			return
 
 		next_use = world.time + owner.cooldowns["secondary"] * owner.misc_ratios["secd_cool"]
-		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"]))
+		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"] * owner.w_ratios["w_secd_acc"]))
 			T = get_step(T, pick(cardinal))
 		var/obj/item/projectile/P = new
 		P.generate_bullet(new A.default_ammo)
@@ -412,12 +530,12 @@ Currently only has the tank hardpoints
 		A.current_rounds--
 
 /obj/item/hardpoint/secondary/grenade_launcher
-	name = "Grenade Launcher"
-	desc = "A secondary weapon for tanks that shoots grenades"
+	name = "M92 Grenade Launcher"
+	desc = "A secondary weapon for tank that shoots HEDP grenades further than you see. No, seriously, that's how it works."
 
 	maxhealth = 500
 	health = 500
-	point_cost = 25
+	point_cost = 100
 	hp_weight = 2
 
 	icon_state = "glauncher"
@@ -426,16 +544,16 @@ Currently only has the tank hardpoints
 	disp_icon_state = "glauncher"
 
 	ammo_type = new /obj/item/ammo_magazine/tank/tank_glauncher
-	max_clips = 3
+	max_clips = 2
 	max_angle = 90
 
 	apply_buff()
-		owner.cooldowns["secondary"] = 30
+		owner.cooldowns["secondary"] = 7
 		owner.accuracies["secondary"] = 0.4
 
 	is_ready()
 		if(world.time < next_use)
-			to_chat(usr, "<span class='warning'>This module is not ready to be used yet.</span>")
+			to_chat(usr, "<span class='warning'>[src] is not ready to fire yet.</span>")
 			return 0
 		if(health <= 0)
 			to_chat(usr, "<span class='warning'>This module is too broken to be used.</span>")
@@ -450,28 +568,127 @@ Currently only has the tank hardpoints
 			return
 
 		next_use = world.time + owner.cooldowns["secondary"] * owner.misc_ratios["secd_cool"]
-		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"]))
+		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"] * owner.w_ratios["w_secd_acc"]))
 			T = get_step(T, pick(cardinal))
 		var/obj/item/projectile/P = new
 		P.generate_bullet(new A.default_ammo)
 		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
 		playsound(get_turf(src), 'sound/weapons/gun_m92_attachable.ogg', 60, 1)
 		A.current_rounds--
+
+/////////////////////
+// USCM // END
+/////////////////////
+// UPP // START
+/////////////////////
+
+/obj/item/hardpoint/secondary/flamer/upp
+	name = "Type 04 Flamethrower"
+	desc = "A secondary weapon for tank. Don't let it fool you, it's not your ordinary flamer, this thing literally shoots fireballs. Not kidding."
+	point_cost = 0
+
+	ammo_type = new /obj/item/ammo_magazine/tank/flamer/upp
+
+	active_effect(var/turf/T)
+
+		var /obj/item/ammo_magazine/tank/flamer/upp/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
+			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
+			return
+
+		next_use = world.time + owner.cooldowns["secondary"] * owner.misc_ratios["secd_cool"]
+		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"] * owner.w_ratios["w_secd_acc"]))
+			T = get_step(T, pick(cardinal))
+		var/obj/item/projectile/P = new
+		P.generate_bullet(new A.default_ammo)
+		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+		playsound(get_turf(src), 'sound/weapons/tank_flamethrower.ogg', 60, 1)
+		A.current_rounds--
+
+/obj/item/hardpoint/secondary/towlauncher/upp
+	name = "Type 05 PTRK"
+	desc = "A secondary weapon for tank that shoots powerful AP rockets. Deals heavy damage, but only on direct hits."
+	ammo_type = new /obj/item/ammo_magazine/tank/towlauncher/upp
+	point_cost = 0
+
+	active_effect(var/turf/T)
+
+		var obj/item/ammo_magazine/tank/towlauncher/upp/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
+			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
+			return
+
+		next_use = world.time + owner.cooldowns["secondary"] * owner.misc_ratios["secd_cool"]
+		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"] * owner.w_ratios["w_secd_acc"]))
+			T = get_step(T, pick(cardinal))
+		var/obj/item/projectile/P = new
+		P.generate_bullet(new A.default_ammo)
+		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+		A.current_rounds--
+
+/obj/item/hardpoint/secondary/m56cupola/upp
+	name = "Type 01 PKT"
+	desc = "A secondary weapon for tank. Heavy-hitting machine gun."
+	point_cost = 0
+
+	ammo_type = new /obj/item/ammo_magazine/tank/m56_cupola/upp
+
+	active_effect(var/turf/T)
+
+		var /obj/item/ammo_magazine/tank/m56_cupola/upp/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
+			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
+			return
+
+		next_use = world.time + owner.cooldowns["secondary"] * owner.misc_ratios["secd_cool"]
+		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"] * owner.w_ratios["w_secd_acc"]))
+			T = get_step(T, pick(cardinal))
+		var/obj/item/projectile/P = new
+		P.generate_bullet(new A.default_ammo)
+		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+		playsound(get_turf(src), pick(list('sound/weapons/gun_smartgun1.ogg', 'sound/weapons/gun_smartgun2.ogg', 'sound/weapons/gun_smartgun3.ogg')), 60, 1)
+		A.current_rounds--
+
+/obj/item/hardpoint/secondary/grenade_launcher/upp
+	name = "Type 02 AGS"
+	point_cost = 0
+
+	ammo_type = new /obj/item/ammo_magazine/tank/tank_glauncher/upp
+
+	active_effect(var/turf/T)
+
+		var /obj/item/ammo_magazine/tank/tank_glauncher/upp/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
+			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
+			return
+
+		next_use = world.time + owner.cooldowns["secondary"] * owner.misc_ratios["secd_cool"]
+		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"] * owner.w_ratios["w_secd_acc"]))
+			T = get_step(T, pick(cardinal))
+		var/obj/item/projectile/P = new
+		P.generate_bullet(new A.default_ammo)
+		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+		playsound(get_turf(src), 'sound/weapons/gun_m92_attachable.ogg', 60, 1)
+		A.current_rounds--
+
 /////////////////////
 // SECONDARY SLOTS // END
 /////////////////////
 
 ///////////////////
-// SUPPORT SLOTS // START
+// SUPPORT SLOTS
+///////////////////
+// USCM // START
 ///////////////////
 //Slauncher was built in tank.
 /obj/item/hardpoint/support/smoke_launcher
-	name = "Smoke Launcher"
-	desc = "Launches smoke forward to obscure vision"
+	name = "M75 Smoke Deploy System"
+	desc = "Launches smoke forward to obscure vision."
 
 	maxhealth = 300
 	health = 300
-	point_cost = 10
+	point_cost = 0
+	hp_weight = 1
 
 	icon_state = "slauncher_0"
 
@@ -481,7 +698,7 @@ Currently only has the tank hardpoints
 	ammo_type = new /obj/item/ammo_magazine/tank/tank_slauncher
 	max_clips = 4
 	is_activatable = 1
-	hp_weight = 1
+
 
 	apply_buff()
 		owner.cooldowns["support"] = 30
@@ -489,7 +706,8 @@ Currently only has the tank hardpoints
 
 	is_ready()
 		if(world.time < next_use)
-			to_chat(usr, "<span class='warning'>This module is not ready to be used yet.</span>")
+			var/CD = round(next_use - world.time) / 10
+			to_chat(usr, "<span class='warning'>[src] will be ready to fire in [CD] seconds.</span>")
 			return 0
 		if(health <= 0)
 			to_chat(usr, "<span class='warning'>This module is too broken to be used.</span>")
@@ -529,8 +747,8 @@ Currently only has the tank hardpoints
 		return image(icon = "[disp_icon]_[icon_suffix]", icon_state = "[disp_icon_state]_[icon_state_suffix]", pixel_x = x_offset, pixel_y = y_offset)
 
 /obj/item/hardpoint/support/weapons_sensor
-	name = "Integrated Weapons Sensor Array"
-	desc = "Improves the accuracy and fire rate of all onboard weapons"
+	name = "M40 Integrated Weapons Sensor Array"
+	desc = "Improves the accuracy and fire rate of all installed weapons. Actually more useful than you may think."
 
 	maxhealth = 250
 	health = 250
@@ -561,8 +779,8 @@ Currently only has the tank hardpoints
 		owner.misc_ratios["supp_acc"] = 1.0
 
 /obj/item/hardpoint/support/overdrive_enhancer
-	name = "Overdrive Enhancer"
-	desc = "Increases the movement speed of the vehicle it's atached to"
+	name = "M103 Overdrive Enhancer"
+	desc = "Pimp your ride. Increases the movement and turn speed of the vehicle it's attached to."
 
 	maxhealth = 250
 	health = 250
@@ -575,14 +793,14 @@ Currently only has the tank hardpoints
 	disp_icon_state = "odrive_enhancer"
 
 	apply_buff()
-		owner.misc_ratios["move"] = 0.6
+		owner.misc_ratios.["OD_buff"] = 0.8
 
 	remove_buff()
-		owner.misc_ratios["move"] = 1.0
+		owner.misc_ratios.["OD_buff"] = 1.0
 
 /obj/item/hardpoint/support/artillery_module
-	name = "Artillery Module"
-	desc = "Allows the gunner to look far into the distance."
+	name = "M6 Artillery Module"
+	desc = "A bunch of enhanced optics and targeting computers. Greatly increases range of view of a gunner. Also adds structures visibility even in complete darkness."
 
 	maxhealth = 250
 	health = 250
@@ -638,12 +856,28 @@ Currently only has the tank hardpoints
 		M.client.pixel_x = 0
 		M.client.pixel_y = 0
 		M.artmod_use = 0
+		if(M.client)
+			M.client.mouse_pointer_icon = initial(M.client.mouse_pointer_icon)
 
 	remove_buff()
 		deactivate()
 
 	is_ready()
 		return 1
+
+///////////////////
+// USCM // END
+///////////////////
+// UPP // START
+///////////////////
+
+/obj/item/hardpoint/support/weapons_sensor/upp
+	name = "Type 31 Weapons Modernisation Kit"
+	point_cost = 0
+
+/obj/item/hardpoint/support/artillery_module/upp
+	name = "Type 33 Artillery Module"
+	point_cost = 0
 
 ///////////////////
 // SUPPORT SLOTS // END
@@ -654,11 +888,11 @@ Currently only has the tank hardpoints
 /////////////////
 
 /obj/item/hardpoint/armor/ballistic
-	name = "Ballistic Armor"
-	desc = "Protects the vehicle from high-penetration weapons"
+	name = "M65-B Armor"
+	desc = "Standard tank armor. Middle ground in everything, from damage resistance to weight."
 
-	maxhealth = 1000
-	health = 1000
+	maxhealth = 800
+	health = 800
 	point_cost = 100
 	hp_weight = 7
 
@@ -668,21 +902,25 @@ Currently only has the tank hardpoints
 	disp_icon_state = "ballistic_armor"
 
 	apply_buff()
-		owner.dmg_multipliers["bullet"] = 0.67
+		owner.dmg_multipliers["acid"] = 1.2
 		owner.dmg_multipliers["slash"] = 0.67
-		owner.dmg_multipliers["all"] = 0.9
+		owner.dmg_multipliers["explosive"] = 0.8
+		owner.dmg_multipliers["blunt"] = 0.7
+		owner.dmg_multipliers["bullet"] = 0.2
 
 	remove_buff()
-		owner.dmg_multipliers["bullet"] = 1.0
+		owner.dmg_multipliers["acid"] = 1.5
 		owner.dmg_multipliers["slash"] = 1.0
-		owner.dmg_multipliers["all"] = 1.0
+		owner.dmg_multipliers["explosive"] = 1.0
+		owner.dmg_multipliers["blunt"] = 0.9
+		owner.dmg_multipliers["bullet"] = 0.67
 
 /obj/item/hardpoint/armor/caustic
-	name = "Caustic Armor"
-	desc = "Protects vehicles from most types of acid"
+	name = "M70 \"Caustic\" Armor"
+	desc = "Special set of tank armor. Purpose: reduce vehicle parts degradation in hostile surroundings on planets with unstable and highly corrosive atmosphere."
 
-	maxhealth = 1000
-	health = 1000
+	maxhealth = 700
+	health = 700
 	point_cost = 100
 	hp_weight = 5
 
@@ -692,19 +930,24 @@ Currently only has the tank hardpoints
 	disp_icon_state = "caustic_armor"
 
 	apply_buff()
-		owner.dmg_multipliers["acid"] = 0.67
-		owner.dmg_multipliers["all"] = 0.9
+		owner.dmg_multipliers["acid"] = 0.1
+		owner.dmg_multipliers["slash"] = 0.9
+		owner.dmg_multipliers["explosive"] = 0.9
+		owner.dmg_multipliers["bullet"] = 0.4
 
 	remove_buff()
-		owner.dmg_multipliers["acid"] = 1.0
-		owner.dmg_multipliers["all"] = 1.0
+		owner.dmg_multipliers["acid"] = 1.5
+		owner.dmg_multipliers["slash"] = 1.0
+		owner.dmg_multipliers["explosive"] = 1.0
+		owner.dmg_multipliers["bullet"] = 0.67
 
 /obj/item/hardpoint/armor/concussive
-	name = "Concussive Armor"
-	desc = "Protects the vehicle from high-impact weapons"
+	name = "M66-LC Armor"
+	desc = "Light armor, designed for recon type of tank loadouts. Offers less protection in exchange for better maneuverability. After initial tests resistance to blunt damage was increased due to drivers driving into walls."
 
-	maxhealth = 1000
-	health = 1000
+	maxhealth = 600
+	health = 600
+
 	point_cost = 100
 	hp_weight = 4
 
@@ -714,16 +957,22 @@ Currently only has the tank hardpoints
 	disp_icon_state = "concussive_armor"
 
 	apply_buff()
-		owner.dmg_multipliers["blunt"] = 0.67
-		owner.dmg_multipliers["all"] = 0.9
+		owner.dmg_multipliers["acid"] = 1.3
+		owner.dmg_multipliers["slash"] = 0.75
+		owner.dmg_multipliers["explosive"] = 0.6
+		owner.dmg_multipliers["blunt"] = 0.3
+		owner.dmg_multipliers["bullet"] = 0.4
 
 	remove_buff()
-		owner.dmg_multipliers["blunt"] = 1.0
-		owner.dmg_multipliers["all"] = 1.0
+		owner.dmg_multipliers["acid"] = 1.5
+		owner.dmg_multipliers["slash"] = 1.0
+		owner.dmg_multipliers["explosive"] = 1.0
+		owner.dmg_multipliers["blunt"] = 0.9
+		owner.dmg_multipliers["bullet"] = 0.67
 
 /obj/item/hardpoint/armor/paladin
-	name = "Paladin Armor"
-	desc = "Protects the vehicle from large incoming explosive projectiles"
+	name = "M90 \"Paladin\" Armor"
+	desc = "Heavy armor for heavy tank. Converts your tank into what an essentially is a slowly moving bunker. High resistance to almost all types of damage."
 
 	maxhealth = 1000
 	health = 1000
@@ -736,21 +985,27 @@ Currently only has the tank hardpoints
 	disp_icon_state = "paladin_armor"
 
 	apply_buff()
-		owner.dmg_multipliers["explosive"] = 0.67
-		owner.dmg_multipliers["all"] = 0.9
+		owner.dmg_multipliers["acid"] = 1.3
+		owner.dmg_multipliers["slash"] = 0.5
+		owner.dmg_multipliers["explosive"] = 0.4
+		owner.dmg_multipliers["blunt"] = 0.4
+		owner.dmg_multipliers["bullet"] = 0.05 //juggernaut is not meant to be just shot, fuck off
 
 	remove_buff()
+		owner.dmg_multipliers["acid"] = 1.5
+		owner.dmg_multipliers["slash"] = 1.0
 		owner.dmg_multipliers["explosive"] = 1.0
-		owner.dmg_multipliers["all"] = 1.0
+		owner.dmg_multipliers["blunt"] = 0.9
+		owner.dmg_multipliers["bullet"] = 0.67
 
 /obj/item/hardpoint/armor/snowplow
-	name = "Snowplow"
-	desc = "Clears a path in the snow for friendlies"
+	name = "M37 \"Snowplow\" Armor"
+	desc = "Special set of tank armor, equipped with multipurpose front \"snowplow\". Designed to remove snow and demine minefields. As a result armor has high explosion damage resistance in front, while offering low protection from other types of damage."
 
-	maxhealth = 500
-	health = 500
+	maxhealth = 700
+	health = 700
 	is_activatable = 1
-	point_cost = 20
+	point_cost = 100
 	hp_weight = 3
 
 	icon_state = "snowplow"
@@ -758,12 +1013,47 @@ Currently only has the tank hardpoints
 	disp_icon = "tank"
 	disp_icon_state = "snowplow"
 
+	apply_buff()
+		owner.dmg_multipliers["acid"] = 1.4
+		owner.dmg_multipliers["slash"] = 0.9
+		owner.dmg_multipliers["explosive"] = 0.5	//demining minefields, after all
+		owner.dmg_multipliers["blunt"] = 0.6
+		owner.dmg_multipliers["bullet"] = 0.5
+
+	remove_buff()
+		owner.dmg_multipliers["acid"] = 1.5
+		owner.dmg_multipliers["slash"] = 1.0
+		owner.dmg_multipliers["explosive"] = 1.0
+		owner.dmg_multipliers["blunt"] = 0.9
+		owner.dmg_multipliers["bullet"] = 0.67
+
 	livingmob_interact(var/mob/living/M)
 		var/turf/targ = get_step(M, owner.dir)
 		targ = get_step(M, owner.dir)
 		targ = get_step(M, owner.dir)
 		M.throw_at(targ, 4, 2, src, 1)
-		M.apply_damage(7 + rand(0, 3), BRUTE)
+		M.apply_damage(7 + rand(0, 13), BRUTE)
+
+/////////////////
+// USCM // END
+/////////////////
+// UPP // START
+/////////////////
+
+/obj/item/hardpoint/armor/ballistic/upp
+	name = "Type 50 MBT Armor"
+	desc = "Standard UPP tank armor. Offers some decent explosion protection."
+	point_cost = 0
+
+	maxhealth = 900
+	health = 900
+
+	apply_buff()
+		owner.dmg_multipliers["acid"] = 1.2
+		owner.dmg_multipliers["slash"] = 0.67
+		owner.dmg_multipliers["explosive"] = 0.5
+		owner.dmg_multipliers["blunt"] = 0.7
+		owner.dmg_multipliers["bullet"] = 0.2
 
 /////////////////
 // ARMOR SLOTS // END
@@ -774,8 +1064,8 @@ Currently only has the tank hardpoints
 /////////////////
 
 /obj/item/hardpoint/treads/standard
-	name = "Treads"
-	desc = "Integral to the movement of the vehicle"
+	name = "M2 Tank Treads"
+	desc = "Standard tank treads. Suprisingly, greatly improves vehicle moving speed."
 
 	maxhealth = 500
 	health = 500
@@ -790,16 +1080,78 @@ Currently only has the tank hardpoints
 	get_icon_image(var/x_offset, var/y_offset, var/new_dir)
 		return null //Handled in update_icon()
 
-	apply_buff()
-		owner.move_delay = 7
 
-	remove_buff()
-		owner.move_delay = 30
+/obj/item/hardpoint/treads/heavy
+	name = "M2-R Tank Treads"
+	desc = "Heavily reinforced tank treads. Three times heavier but can endure more damage. Has special protective layer akin to M70 armor."
+
+	maxhealth = 750
+	health = 750
+	point_cost = 25
+	hp_weight = 3
+
+	icon_state = "treads"
+
+	disp_icon = "tank"
+	disp_icon_state = "treads"
+
+	get_icon_image(var/x_offset, var/y_offset, var/new_dir)
+		return null //Handled in update_icon()
+
+//repairing treads in field
+/obj/item/hardpoint/treads/attackby(var/obj/item/O, var/mob/user)
+
+	//Need to the what the hell you're doing
+	if(user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer < SKILL_ENGINEER_ENGI)
+		to_chat(user, "<span class='warning'>You don't know what to do with [O] on [src].</span>")
+		return
+	if(!iswelder(O))
+		to_chat(user, "<span class='warning'>That's the wrong tool. Use a welder.</span>")
+		return
+	var/obj/item/tool/weldingtool/WT = O
+	if(!WT.isOn())
+		to_chat(user, "<span class='warning'>You need to light your [WT] first.</span>")
+		return
+	if(WT.get_fuel() < 8)
+		to_chat(user, "<span class='warning'>You don't have enough fuel in your [WT].</span>")
+		return
+	var/q_health = round(src.maxhealth * 0.25)
+	if(health >= q_health)
+		to_chat(user, "<span class='warning'>You can't repair treads more than that in the field.</span>")
+		return
+	user.visible_message("<span class='notice'>[user] starts field repair on the [src].</span>", "<span class='notice'>You start field repair on the [src].</span>")
+
+	if(!do_after(user, 150, TRUE, 5, BUSY_ICON_FRIENDLY))
+		user.visible_message("<span class='notice'>[user] stops repairing the [src].</span>", "<span class='notice'>You stop repairing the [src].</span>")
+		return
+	if(!Adjacent(user))
+		user.visible_message("<span class='notice'>[user] stops repairing the [src].</span>", "<span class='notice'>You stop repairing the [src].</span>")
+		return
+	WT.remove_fuel(8, user)
+	user.visible_message("<span class='notice'>[user] repairs the [src] as best as possible in field conditions.</span>", "<span class='notice'>You repair the [src] as best as possible in field conditions.</span>")
+
+	src.health = q_health //We repaired it to 25%, good job
+
+	. = ..()
+
+
+/////////////////
+// USCM // END
+/////////////////
+// UPP // START
+/////////////////
+
+/obj/item/hardpoint/treads/standard/upp
+	name = "Type 07 Tank Treads"
+	desc = "Standard UPP tank treads. They look quite tough."
+	point_cost = 0
+
+	maxhealth = 650
+	health = 650
 
 /////////////////
 // TREAD SLOTS // END
 /////////////////
-
 
 ///////////////
 // AMMO MAGS // START
@@ -811,7 +1163,7 @@ Currently only has the tank hardpoints
 	var/point_cost = 0
 
 /obj/item/ammo_magazine/tank/ltb_cannon
-	name = "LTB Cannon Magazine"
+	name = "M5 LTB Cannon Magazine"
 	desc = "A primary armament cannon magazine"
 	caliber = "86mm" //Making this unique on purpose
 	icon_state = "ltbcannon_4"
@@ -825,9 +1177,23 @@ Currently only has the tank hardpoints
 	update_icon()
 		icon_state = "ltbcannon_[current_rounds]"
 
+/obj/item/ammo_magazine/tank/autocannon
+	name = "M21 Autocannon Magazine"
+	desc = "A primary armament autocannon magazine"
+	caliber = "30mm"
+	icon_state = "autocannon_1"
+	w_class = 10
+	default_ammo = /datum/ammo/rocket/autocannon
+	current_rounds = 40
+	max_rounds = 40
+	point_cost = 50
+	gun_type = /obj/item/hardpoint/primary/autocannon
+
+	update_icon()
+		icon_state = "autocannon_0"
 
 /obj/item/ammo_magazine/tank/ltaaap_minigun
-	name = "LTAA-AP Minigun Magazine"
+	name = "M74 LTAA-AP Minigun Magazine"
 	desc = "A primary armament minigun magazine"
 	caliber = "7.62x51mm" //Correlates to miniguns
 	icon_state = "painless"
@@ -840,7 +1206,7 @@ Currently only has the tank hardpoints
 
 
 /obj/item/ammo_magazine/tank/flamer
-	name = "Flamer Magazine"
+	name = "M70 Flamer Tank"
 	desc = "A secondary armament flamethrower magazine"
 	caliber = "UT-Napthal Fuel" //correlates to flamer mags
 	icon_state = "flametank_large"
@@ -853,7 +1219,7 @@ Currently only has the tank hardpoints
 
 
 /obj/item/ammo_magazine/tank/towlauncher
-	name = "TOW Launcher Magazine"
+	name = "M8-2 TOW Launcher Magazine"
 	desc = "A secondary armament rocket magazine"
 	caliber = "rocket" //correlates to any rocket mags
 	icon_state = "quad_rocket"
@@ -879,14 +1245,14 @@ Currently only has the tank hardpoints
 
 
 /obj/item/ammo_magazine/tank/tank_glauncher
-	name = "Grenade Launcher Magazine"
+	name = "M92 Grenade Launcher Magazine"
 	desc = "A secondary armament grenade magazine"
 	caliber = "grenade"
 	icon_state = "glauncher_2"
 	w_class = 9
 	default_ammo = /datum/ammo/grenade_container
-	current_rounds = 10
-	max_rounds = 10
+	current_rounds = 20
+	max_rounds = 20
 	point_cost = 25
 	gun_type = /obj/item/hardpoint/secondary/grenade_launcher
 
@@ -900,7 +1266,7 @@ Currently only has the tank hardpoints
 
 
 /obj/item/ammo_magazine/tank/tank_slauncher
-	name = "Smoke Launcher Magazine"
+	name = "Smoke Deploy System Magazine"
 	desc = "A smoke cover system grenade magazine"
 	caliber = "grenade"
 	icon_state = "slauncher_1"
@@ -913,7 +1279,43 @@ Currently only has the tank hardpoints
 
 	update_icon()
 		icon_state = "slauncher_[current_rounds <= 0 ? "0" : "1"]"
+///////////////
+// USCM // END
+///////////////
+// UPP // START
+///////////////
 
+/obj/item/ammo_magazine/tank/ltb_cannon/upp
+	name = "Type 43 Cannon Magazine"
+	gun_type = /obj/item/hardpoint/primary/cannon/upp
+	point_cost = 0
+
+/obj/item/ammo_magazine/tank/autocannon/upp
+	name = "Type 41 Autocannon Magazine"
+	default_ammo = /datum/ammo/rocket/autocannon/upp
+	gun_type = /obj/item/hardpoint/primary/autocannon/upp
+	point_cost = 0
+
+/obj/item/ammo_magazine/tank/m56_cupola/upp
+	name = "Type 01 PKT Magazine"
+	default_ammo = /datum/ammo/bullet/smartgun/lethal
+	gun_type = /obj/item/hardpoint/secondary/m56cupola/upp
+	point_cost = 0
+
+/obj/item/ammo_magazine/tank/flamer/upp
+	name = "Type 04 Flamethrower Tank"
+	gun_type = /obj/item/hardpoint/secondary/flamer/upp
+	point_cost = 0
+
+/obj/item/ammo_magazine/tank/towlauncher/upp
+	name = "Type 05 PTRK Magazine"
+	gun_type = /obj/item/hardpoint/secondary/towlauncher/upp
+	point_cost = 0
+
+/obj/item/ammo_magazine/tank/tank_glauncher/upp
+	name = "Type 02 AGS Magazine"
+	gun_type = /obj/item/hardpoint/secondary/grenade_launcher/upp
+	point_cost = 0
 ///////////////
 // AMMO MAGS // END
 ///////////////

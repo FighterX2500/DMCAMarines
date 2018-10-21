@@ -1,4 +1,7 @@
-
+//ATTENTION
+//Due numerous changes related only to tank, some of which are, apparently, cannot be moved to tank.dm
+//this file will be only for tank
+//I will make cm_transport for APC, coping content of this file and editing it. A lot.
 
 //NOT bitflags, just global constant values
 #define HDPT_PRIMARY "primary"
@@ -6,6 +9,9 @@
 #define HDPT_SUPPORT "support"
 #define HDPT_ARMOR "armor"
 #define HDPT_TREADS "treads"
+#define T_LIGHT "light"
+#define T_MEDIUM "medium"
+#define T_HEAVY "heavy"
 
 //Percentages of what hardpoints take what damage, e.g. armor takes 37.5% of the damage
 var/list/armorvic_dmg_distributions = list(
@@ -25,7 +31,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	HDPT_TREADS = "0,0")*/
 
 /client/proc/remove_players_from_vic()
-	set name = "Remove All From Tank"
+	set name = "Eject TCs from tank (emergency only)"
 	set category = "Admin"
 
 	for(var/obj/vehicle/multitile/root/cm_armored/CA in view())
@@ -40,26 +46,40 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	hitbox_type = /obj/vehicle/multitile/hitbox/cm_armored //Used for emergencies and respawning hitboxes
 
 	//What slots the vehicle can have
-	var/list/hardpoints = list(HDPT_ARMOR, HDPT_TREADS, HDPT_SECDGUN, HDPT_SUPPORT, HDPT_PRIMARY)
+	var/list/hardpoints = list(HDPT_SUPPORT, HDPT_TREADS, HDPT_ARMOR, HDPT_SECDGUN, HDPT_PRIMARY)
 
 	//The next world.time when the tank can move
 	var/next_move = 0
 
-	//Below are vars that can be affected by hardpoints, generally used as ratios or decisecond timers
-
-	move_delay = 30 //default 3 seconds per tile
-
-	var/active_hp
-	//var/t_weight = 1
-	var/smoke_ammo_max = 10
+	//smoke deploy system
+	var/smoke_ammo_max = 10		//one use consumes 2 smoke nades, so always put even number
 	var/smoke_ammo_current = 0
 	var/smoke_next_use
-	var/obj/item/hardpoint/support/smoke_launcher/SML
+	var/obj/item/hardpoint/support/smoke_launcher/SML	//literally inbuilt smoke launcher.
+	//needed to be referenced in firing proc as gun we fire from(for some reason, I couldn't use tank itself), that's why it's here
+
+
+	//Below are vars that can be affected by hardpoints, generally used as ratios or decisecond timers
+
+	move_delay = 70 //treads-less tank barely moves. Fix those damn treads, marine!
+	var/speed
+	unacidable = 1
+	var/active_hp
+	var/t_weight = 0		//tank mass = summarized mass of all installed hardpoints, very important for new weight system
+	var/t_class = 0			//tank class. Depends on t_weight. Xenos behaviour after tank bumps into them depends on tank class
+
+	//list of damag distribution among all installed AND not broken hardpoint modules
 	var/list/dmg_distribs = list()
+
+	//weight buffs/debuffs
+	var/list/w_ratios = list(
+		"w_prim_acc" = 1.0,
+		"w_secd_acc" = 1.0,
+		"w_supp_acc" = 1.0)
 
 	//Changes cooldowns and accuracies
 	var/list/misc_ratios = list(
-		"move" = 1.0,
+		"OD_buff" = 1.0,
 		"prim_acc" = 1.0,
 		"secd_acc" = 1.0,
 		"supp_acc" = 1.0,
@@ -67,14 +87,20 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		"secd_cool" = 1.0,
 		"supp_cool" = 1.0)
 
+	//Percentage accuracies for slot
+	var/list/accuracies = list(
+		"primary" = 0.97,
+		"secondary" = 0.67,
+		"support" = 0.5)
+
 	//Changes how much damage the tank takes
 	var/list/dmg_multipliers = list(
-		"all" = 1.0, //for when you want to make it invincible
-		"acid" = 1.0,
-		"slash" = 1.0,
-		"bullet" = 1.0,
+		"all" = 1.0,	//for when you want to make it invincible
+		"acid" = 1.5,	//tank without armor will be quite fast, so it needs some serious weak spot, the most obvious thing is acid resistance.
+		"slash" = 1.0,	//full slash damage without armor seems fair
+		"bullet" = 0.67,	//it's a huge metal box, it has basic bullet protection
 		"explosive" = 1.0,
-		"blunt" = 1.0,
+		"blunt" = 0.9,
 		"abstract" = 1.0) //abstract for when you just want to hurt it
 
 	//Decisecond cooldowns for the slots
@@ -82,12 +108,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		"primary" = 300,
 		"secondary" = 200,
 		"support" = 150)
-
-	//Percentage accuracies for slot
-	var/list/accuracies = list(
-		"primary" = 0.97,
-		"secondary" = 0.67,
-		"support" = 0.5)
 
 	//Which hardpoints need to be repaired before the module can be replaced
 	var/list/damaged_hps = list()
@@ -117,17 +137,118 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/root/cm_armored/proc/remove_all_players()
 	return
 
+
+	//proc to calculate new speed, class and accuracy modificators depending on current weight
+	//speed_min = 3 - only treads installed
+	//speed_max = 20 - heaviest possible build
+	//speed_delay = 30 - broken treads (OD won't affect speed with broken speed anymore)
+	//numbers in t_weight represent relative weight of tank - summary of tank modules weight
+	//less than 8 t_weight means tank lacks modules. To discourage going commando on the tank
+	//AND to prevent serious debuff on already not fully functioning tank, below 8 has the same stats
+/obj/vehicle/multitile/root/cm_armored/proc/t_class_update()
+
+	switch (t_weight)
+		if(8)
+			speed = 3.5
+			t_class = T_LIGHT
+			w_ratios["w_prim_acc"] = 0.90
+			w_ratios["w_secd_acc"] = 0.92
+			//w_ratios["w_supp_acc"] = 0.92
+		if(9)
+			speed = 4.2
+			t_class = T_LIGHT
+			w_ratios["w_prim_acc"] = 0.92
+			w_ratios["w_secd_acc"] = 0.95
+			//w_ratios["w_supp_acc"] = 0.95
+		if(10)
+			speed = 5
+			t_class = T_LIGHT
+			w_ratios["w_prim_acc"] = 0.95
+			w_ratios["w_secd_acc"] = 0.98
+			//w_ratios["w_supp_acc"] = 0.97
+		if(11)
+			speed = 6
+			t_class = T_MEDIUM
+			w_ratios["w_prim_acc"] = 1.0
+			w_ratios["w_secd_acc"] = 1.0
+			//w_ratios["w_supp_acc"] = 1.0
+		if(12)
+			speed = 7
+			t_class = T_MEDIUM
+			w_ratios["w_prim_acc"] = 1.0
+			w_ratios["w_secd_acc"] = 1.0
+			//w_ratios["w_supp_acc"] = 1.0
+		if(13)
+			speed = 7.5
+			t_class = T_MEDIUM
+			w_ratios["w_prim_acc"] = 1.0
+			w_ratios["w_secd_acc"] = 1.0
+			//w_ratios["w_supp_acc"] = 1.0
+		if(14)
+			speed = 8
+			t_class = T_MEDIUM
+			w_ratios["w_prim_acc"] = 1.0
+			w_ratios["w_secd_acc"] = 1.0
+			//w_ratios["w_supp_acc"] = 1.0
+		if(15)
+			speed = 9
+			t_class = T_MEDIUM
+			w_ratios["w_prim_acc"] = 1.0
+			w_ratios["w_secd_acc"] = 1.0
+			//w_ratios["w_supp_acc"] = 1.0
+		if(16)
+			speed = 14
+			t_class = T_HEAVY
+			w_ratios["w_prim_acc"] = 1.02
+			w_ratios["w_secd_acc"] = 1.01
+			//w_ratios["w_supp_acc"] = 1.01
+		if(17)
+			speed = 15.5
+			t_class = T_HEAVY
+			w_ratios["w_prim_acc"] = 1.03
+			w_ratios["w_secd_acc"] = 1.02
+			//w_ratios["w_supp_acc"] = 1.02
+		if(18)
+			speed = 17
+			t_class = T_HEAVY
+			w_ratios["w_prim_acc"] = 1.04
+			w_ratios["w_secd_acc"] = 1.03
+			//w_ratios["w_supp_acc"] = 1.03
+		if(19)
+			speed = 18.5
+			t_class = T_HEAVY
+			w_ratios["w_prim_acc"] = 1.05
+			w_ratios["w_secd_acc"] = 1.04
+			//w_ratios["w_supp_acc"] = 1.04
+
+		else
+			speed = 3.0
+			t_class = T_LIGHT
+			w_ratios["w_prim_acc"] = 0.85
+			w_ratios["w_secd_acc"] = 0.85
+			//w_ratios["w_supp_acc"] = 0.90
+
+
 //The basic vehicle code that moves the tank, with movement delay implemented
 /obj/vehicle/multitile/root/cm_armored/relaymove(var/mob/user, var/direction)
 	if(world.time < next_move) return
-	next_move = world.time + move_delay * misc_ratios["move"]
+	if(hardpoints[HDPT_TREADS] && hardpoints[HDPT_TREADS].health > 0)	//OD doesn't affect moving without treads anymore
+		next_move = world.time + src.speed * misc_ratios.["OD_buff"]
+	else
+		next_move = world.time + move_delay
+
 
 	return ..()
 
 //Same thing but for rotations
 /obj/vehicle/multitile/root/cm_armored/try_rotate(var/deg, var/mob/user, var/force = 0)
 	if(world.time < next_move && !force) return
-	next_move = world.time + move_delay * (misc_ratios["move"] - 0.1) * (force ? 2 : 3) //3 for a 3 point turn, idk
+
+	if(hardpoints[HDPT_TREADS] && hardpoints[HDPT_TREADS].health > 0)	//same goes for turning
+		next_move = world.time + src.speed * misc_ratios.["OD_buff"] * (force ? 2 : 3) //3 for a 3 point turn, idk
+	else
+		next_move = world.time + move_delay * (force ? 2 : 3)
+
 	return ..()
 
 /obj/vehicle/multitile/root/cm_armored/proc/can_use_hp(var/mob/M)
@@ -136,6 +257,15 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //No one but the gunner can gun
 //And other checks to make sure you aren't breaking the law
 /obj/vehicle/multitile/root/cm_armored/tank/handle_click(var/mob/living/user, var/atom/A, var/list/mods)
+
+//sadly, point-to requires mob to give message in chat and probably is the reason why it doesn't work from inside of a tank
+//	if (mods["shift"] && mods["middle"])
+//		user.point_to(A)
+//		return
+
+	if (mods["shift"])		//finally fixed shift-clicking in tank.
+		user.examine()
+		return
 
 	if(!can_use_hp(user)) return
 
@@ -180,20 +310,30 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	if(!HP)
 		to_chat(usr, "<span class='warning'>There's nothing installed on that hardpoint.</span>")
 
+	deactivate_binos(usr)
 	active_hp = slot
-	to_chat(usr, "<span class='notice'>You select the [slot] slot.</span>")
+	to_chat(usr, "<span class='notice'>You select the [HP.name].</span>")
 	if(isliving(usr))
 		var/mob/living/M = usr
 		M.set_interaction(src)
 
 
-//proc to actually shoot grenades
+
+//anti-binoculars exploit fix
+/obj/vehicle/multitile/root/cm_armored/proc/deactivate_binos(var/mob/user)
+	for(var/obj/item/device/binoculars/BN in user.contents)
+		if(BN.zoom)
+			to_chat(usr, "<span class='warning'>You realize using [BN.name] and operating tank weapons at the same time is impossible!</span>")
+			BN.zoom(user)
+
+//proc to actually shoot smoke grenades
 /obj/vehicle/multitile/root/cm_armored/proc/smoke_shot()
 
 	if(world.time < smoke_next_use)
-		to_chat(usr, "<span class='warning'>M75 Smoke Deploy System is not ready!</span>")
+		to_chat(usr, "<span class='warning'>Smoke Deploy System is not ready!</span>")
 		return
 
+	//need to figure out better way to locate needed turfs to fire at
 	var/turf/F
 	var/turf/S
 	var/right_dir
@@ -210,20 +350,19 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	F = get_step(F, right_dir)
 	F = get_step(F, right_dir)
 
-
-
+	//this is basically a copypasta from Hardpoints shooting proc with a modifcations
 	var/obj/item/ammo_magazine/tank/tank_slauncher/A = new
 	smoke_next_use = world.time + 150
 	var/obj/item/projectile/P = new
 	P.generate_bullet(new A.default_ammo)
 	P.fire_at(F, src, SML, 6, P.ammo.shell_speed)
-	playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire.ogg', 60, 1)
+	playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire2.ogg', 60, 1)
 	smoke_ammo_current--
 	sleep (10)
 	var/obj/item/projectile/G = new
 	G.generate_bullet(new A.default_ammo)
 	G.fire_at(S, src, SML, 6, G.ammo.shell_speed)
-	playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire.ogg', 60, 1)
+	playsound(get_turf(src), 'sound/weapons/tank_smokelauncher_fire2.ogg', 60, 1)
 	smoke_ammo_current--
 
 	if(smoke_ammo_current <= 0)
@@ -335,7 +474,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	var/obj/item/hardpoint/HP = hardpoints[slot]
 	if(HP.clips.len < 1)
-		to_chat(usr, "<span class='warning'>That module has no clips left in it!</span>")
+		to_chat(usr, "<span class='warning'>[HP.name] has no clips left in it!</span>")
 		return
 
 	//if(!A)
@@ -356,13 +495,13 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 /obj/vehicle/multitile/root/cm_armored/proc/get_activatable_hardpoints()
 	var/list/slots = list()
-	for(var/slot in hardpoints)
-		var/obj/item/hardpoint/HP = hardpoints[slot]
-		if(!HP) continue
-		if(HP.health <= 0) continue
-		if(!HP.is_activatable) continue
-		slots += slot
-
+	if(hardpoints.len)
+		for(var/slot in hardpoints)
+			var/obj/item/hardpoint/HP = hardpoints[slot]
+			if(!HP) continue
+			if(HP.health <= 0) continue
+			if(!HP.is_activatable) continue
+			slots += slot
 	return slots
 
 //Specialness for armored vics
@@ -412,19 +551,31 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		if(!HP)
 			to_chat(user, "There is nothing installed on the [i] hardpoint slot.")
 		else
-			//if((user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
-			if(HP.health <= 0)
-				to_chat(user, "There is a broken [HP] installed on [i] hardpoint slot.")
-			if(HP.health > 0 && (HP.health < (HP.maxhealth / 3)))
-				to_chat(user, "There is a heavy damaged [HP] installed on [i] hardpoint slot.")
-			if((HP.health > (HP.maxhealth / 3)) && (HP.health < (HP.maxhealth * (2/3))))
-				to_chat(user, "There is a damaged [HP] installed on [i] hardpoint slot.")			//removed skills check, because any baldie PFC can tell if module is unscratched or will fall apart from touching it
-			if((HP.health > (HP.maxhealth * (2/3))) && (HP.health < HP.maxhealth))
-				to_chat(user, "There is a lightly damaged [HP] installed on [i] hardpoint slot.")
-			if(HP.health == HP.maxhealth)
-				to_chat(user, "There is a non-damaged [HP] installed on [i] hardpoint slot.")
+			if(isXeno(user))
+				if(HP.health <= 0)
+					to_chat(user, "There is a broken module installed on [i] hardpoint slot.")
+				if(HP.health > 0 && (HP.health < (HP.maxhealth / 3)))
+					to_chat(user, "There is a heavily damaged module installed on [i] hardpoint slot.")
+				if((HP.health > (HP.maxhealth / 3)) && (HP.health < (HP.maxhealth * (2/3))))
+					to_chat(user, "There is a damaged module installed on [i] hardpoint slot.")			//removed modules' names for aliens.
+				if((HP.health > (HP.maxhealth * (2/3))) && (HP.health < HP.maxhealth))
+					to_chat(user, "There is a lightly damaged module installed on [i] hardpoint slot.")
+				if(HP.health == HP.maxhealth)
+					to_chat(user, "There is a non-damaged module installed on [i] hardpoint slot.")
+			else
+				if(HP.health <= 0)
+					to_chat(user, "There is a broken [HP] installed on [i] hardpoint slot.")
+				if(HP.health > 0 && (HP.health < (HP.maxhealth / 3)))
+					to_chat(user, "There is a heavily damaged [HP] installed on [i] hardpoint slot.")
+				if((HP.health > (HP.maxhealth / 3)) && (HP.health < (HP.maxhealth * (2/3))))
+					to_chat(user, "There is a damaged [HP] installed on [i] hardpoint slot.")			//removed skills check, because any baldie PFC can tell if module is unscratched or will fall apart from touching it
+				if((HP.health > (HP.maxhealth * (2/3))) && (HP.health < HP.maxhealth))
+					to_chat(user, "There is a lightly damaged [HP] installed on [i] hardpoint slot.")
+				if(HP.health == HP.maxhealth)
+					to_chat(user, "There is a non-damaged [HP] installed on [i] hardpoint slot.")
 			//else
 			//	to_chat(user, "There is a [HP.health <= 0 ? "broken" : "working"] [HP] installed on the [i] hardpoint slot.")
+
 
 //Special armored vic healthcheck that mainly updates the hardpoint states
 /obj/vehicle/multitile/root/cm_armored/healthcheck()
@@ -443,6 +594,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		handle_all_modules_broken()
 
 	update_icon()
+
 
 //Since the vics are 3x4 we need to swap between the two files with different dimensions
 //Also need to offset to center the tank about the root object
@@ -499,25 +651,70 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //Tramplin' time, but other than that identical
 /obj/vehicle/multitile/hitbox/cm_armored/Bump(var/atom/A)
 	. = ..()
+	var/obj/vehicle/multitile/root/cm_armored/CA = root
 	if(isliving(A))
-		if (isXenoDefender(A))
-			var/mob/living/carbon/Xenomorph/X = A
-			if (X.fortify)
-				return
-		if (isXenoQueen(A) || isXenoCrusher (A))
-			return
 		var/mob/living/M = A
-		if(M.lying==0 && !isXenoLarva(M))
-			step_away(M,root,0,0)
-			M.KnockDown(5)
-			M.apply_damage(7 + rand(0, 5), BRUTE)
-			return
-		M.KnockDown(5)
+		if(isXeno(M))
+			var/mob/living/carbon/Xenomorph/XEN = M
+			switch(CA.t_class)
+				if(T_LIGHT)
+					switch(XEN.t_squish_level)
+						if(0)
+							M.KnockDown(5)
+							return
+						if(1)
+							step_away(M,root,1)
+							M.KnockDown(1)
+							M.apply_damage(5 + rand(5, 10), BRUTE)
+							return
+						if(2)
+							step_away(M,root,0)
+							return
+						if(3)
+							M.visible_message("<span class='danger'>[M] pushes against the [src], holding it in place with ease!</span>", "<span class='xenodanger'>You stopped [src]! It's no match to you!</span>")
+							return
+				if(T_MEDIUM)
+					switch(XEN.t_squish_level)
+						if(0)
+							M.KnockDown(5)
+							return
+						if(1)
+							step_away(M,root,0)
+							M.KnockDown(2)
+							M.apply_damage(5 + rand(5, 10), BRUTE)
+							return
+						if(2)
+							step_away(M,root,0)
+							M.KnockDown(1)
+							M.apply_damage(5 + rand(5, 10), BRUTE)
+							return
+						if(3)
+							M.visible_message("<span class='danger'>[M] pushes against the [src], holding it in place with effort!</span>", "<span class='xenodanger'>You stopped [src]!</span>")
+							return
+				if(T_HEAVY)
+					switch(XEN.t_squish_level)
+						if(0)
+							M.KnockDown(5)
+							return
+						if(1)
+							M.KnockDown(2)
+							M.apply_damage(5 + rand(5, 10), BRUTE)
+							return
+						if(2)
+							step_away(M,root,0)
+							M.KnockDown(2)
+							M.apply_damage(5 + rand(5, 10), BRUTE)
+							return
+						if(3)
+							step_away(M,root,0)
+							M.visible_message("<span class='danger'>[M] pushes against the [src], trying to hold it in place, but fails!</span>", "<span class='danger'>[src] is much heavier, you can't hold it in place!</span>")
+							return
 		if (!isXeno(M))
-			M.apply_damage(5 + rand(0, 10), BRUTE)
-		M.apply_damage(10 + rand(0, 10), BRUTE)
+			step_away(M,root,0,0)
+			M.KnockDown(3)
+			M.apply_damage(15 + rand(0, 15), BRUTE)
 		M.visible_message("<span class='danger'>[src] runs over [M]!</span>", "<span class='danger'>[src] runs you over! Get out of the way!</span>")
-		var/obj/vehicle/multitile/root/cm_armored/CA = root
+		log_attack("[src] drove over/bumped into [M]([M.client ? M.client.ckey : "disconnected"]).")
 		var/list/slots = CA.get_activatable_hardpoints()
 		for(var/slot in slots)
 			var/obj/item/hardpoint/H = CA.hardpoints[slot]
@@ -528,14 +725,26 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		F.visible_message("<span class='danger'>[root] smashes through [F]!</span>")
 		F.health = 0
 		F.healthcheck()
-	else if(istype(A, /turf/closed/wall))
+	else if(istype(A, /turf/closed/wall) && !istype(A, /turf/closed/wall/resin))
 		var/turf/closed/wall/W = A
 		W.take_damage(30)
-		var/obj/vehicle/multitile/root/cm_armored/CA = root
-		CA.take_damage_type(10, "blunt", W)
+		CA.take_damage_type(15, "blunt", W)
 		if(world.time > lastsound + 10)
 			playsound(W, 'sound/effects/metal_crash.ogg', 35)
 			lastsound = world.time
+		W.visible_message("<span class='danger'>[root] crushes into [W]!</span>")
+	else if(istype(A, /turf/closed/wall/resin) && !istype(A, /turf/closed/wall/resin/thick))
+		var/turf/closed/wall/RW = A
+		RW.take_damage(250)
+		CA.take_damage_type(10, "blunt", RW)
+		playsound(RW, 'sound/effects/alien_resin_break1.ogg', 35)
+		RW.visible_message("<span class='danger'>[root] crushes through [RW]!</span>")
+	else if(istype(A, /turf/closed/wall/resin/thick))
+		var/turf/closed/wall/RT = A
+		RT.take_damage(500)
+		CA.take_damage_type(20, "blunt", RT)
+		playsound(RT, 'sound/effects/alien_resin_break2.ogg', 20)
+		RT.visible_message("<span class='danger'>[root] crushes through [RT]!</span>")
 	else if(istype(A, /obj/structure/mineral_door/resin))
 		var/obj/structure/mineral_door/resin/R = A
 		R.health = 0
@@ -551,8 +760,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	else if(istype(A, /obj/structure/girder))
 		var/obj/structure/girder/G = A
 		G.dismantle()
-		var/obj/vehicle/multitile/root/cm_armored/CA = root
-		CA.take_damage_type(10, "blunt", G)
+		CA.take_damage_type(15, "blunt", G)
 		if(world.time > lastsound + 10)
 			playsound(G, 'sound/effects/metal_crash.ogg', 35)
 			lastsound = world.time
@@ -574,7 +782,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		new /obj/item/stack/sheet/metal(WF.loc, 2)
 		new /obj/item/stack/sheet/glass(WF.loc, 2)
 		WF.visible_message("<span class='danger'>[root] crushes through [WF]!</span>")
-		var/obj/vehicle/multitile/root/cm_armored/CA = root
 		CA.take_damage_type(10, "blunt", WF)
 		if(world.time > lastsound + 10)
 			playsound(WF, 'sound/effects/metal_crash.ogg', 35)
@@ -595,21 +802,37 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		new /obj/item/stack/sheet/metal(CP.loc, 1)
 		cdel(CP)
 //from here goes list of newly added objects and machinery that tank should've drive over or through, but for some reason couldn't
+
+	else if (istype(A, /obj/structure/filingcabinet))
+		var/obj/structure/filingcabinet/FC = A
+		FC.visible_message("<span class='danger'>[root] crushes [FC]!</span>")
+		new /obj/item/stack/sheet/metal(FC.loc, 1)
+		cdel(FC)
 	else if (istype(A, /obj/machinery/autodoc))
 		var/obj/machinery/autodoc/AD = A
 		AD.visible_message("<span class='danger'>[root] crushes [AD]!</span>")
 		new /obj/item/stack/sheet/plasteel(AD.loc, 2)
 		cdel(AD)
+	else if (istype(A, /obj/machinery/biogenerator))
+		var/obj/machinery/biogenerator/BI = A
+		BI.visible_message("<span class='danger'>[root] crushes [BI]!</span>")
+		new /obj/item/stack/sheet/metal(BI.loc, 2)
+		cdel(BI)
+	else if (istype(A, /obj/machinery/seed_extractor))
+		var/obj/machinery/seed_extractor/SE = A
+		SE.visible_message("<span class='danger'>[root] crushes [SE]!</span>")
+		new /obj/item/stack/sheet/metal(SE.loc, 2)
+		cdel(SE)
 	else if (istype(A, /obj/machinery/chem_dispenser))
 		var/obj/machinery/chem_dispenser/DS = A
 		DS.visible_message("<span class='danger'>[root] crushes [DS]!</span>")
 		new /obj/item/stack/sheet/metal(DS.loc, 2)
 		cdel(DS)
-	else if (istype(A,	/obj/machinery/smartfridge/chemistry))
-		var	/obj/machinery/smartfridge/chemistry/CH = A
-		CH.visible_message("<span class='danger'>[root] crushes [CH]!</span>")
-		new /obj/item/stack/sheet/metal(CH.loc, 2)
-		cdel(CH)
+	else if (istype(A,	/obj/machinery/smartfridge))
+		var	/obj/machinery/smartfridge/chemistry/SF = A
+		SF.visible_message("<span class='danger'>[root] crushes [SF]!</span>")
+		new /obj/item/stack/sheet/metal(SF.loc, 2)
+		cdel(SF)
 	else if (istype(A, /obj/machinery/photocopier))
 		var/obj/machinery/photocopier/PC = A
 		PC.visible_message("<span class='danger'>[root] crushes [PC]!</span>")
@@ -702,32 +925,53 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	else if (istype(A, /obj/machinery/m56d_post))
 		var/obj/machinery/m56d_post/MD = A
 		new /obj/item/device/m56d_post(MD.loc)
+		MD.visible_message("<span class='danger'>[root] drives over [MD]!</span>")
 		cdel(MD)
-	else if (istype(A, /obj/machinery/m56d_hmg) && !istype(A, /obj/machinery/m56d_hmg/mg_turret))
+	else if (istype(A, /obj/machinery/m56d_hmg))
 		var/obj/machinery/m56d_hmg/MG = A
 		var/obj/item/device/m56d_gun/HMG = new(MG.loc) //Here we generate our disassembled mg.
 		new /obj/item/device/m56d_post(MG.loc)
 		HMG.rounds = MG.rounds //Inherent the amount of ammo we had.
+		HMG.visible_message("<span class='danger'>[root] drives over [HMG]!</span>")
 		cdel(MG)
+	else if (istype(A, /obj/structure/dropship_equipment/mg_holder))
+		var/obj/structure/dropship_equipment/mg_holder/MGH = A
+		MGH.visible_message("<span class='danger'>[root] crushes [MGH]!</span>")
+		cdel(MGH)
 	else if (istype(A, /obj/structure/mortar))
 		var/obj/structure/mortar/MR = A
 		var/turf/T = get_turf(MR)
 		new /obj/item/mortar_kit(T)
 		cdel(MR)
+	else if(istype(A, /obj/machinery/door/firedoor))
+		var/obj/machinery/door/firedoor/FD = A
+		FD.visible_message("<span class='danger'>[root] crushes through[FD]!</span>")
+		new /obj/item/stack/sheet/metal(FD.loc, 2)
+		cdel(FD)
 	else if(istype(A, /obj/machinery/door/airlock))
 		var/obj/machinery/door/airlock/AR = A
-		var/obj/vehicle/multitile/root/cm_armored/CA = root
-		CA.take_damage_type(30, "blunt", AR)
+		CA.take_damage_type(50, "blunt", AR)
 		if(world.time > lastsound + 10)
 			playsound(AR, 'sound/effects/metal_crash.ogg', 35)
 			lastsound = world.time
 		AR.visible_message("<span class='danger'>[root] crushes through[AR]!</span>")
 		new /obj/item/stack/sheet/metal(AR.loc, 2)
 		cdel(AR)
+	else if(istype(A, /obj/structure/bed/roller))
+		var/obj/structure/bed/roller/RL = A
+		RL.visible_message("<span class='danger'>[root] crushes [RL]!</span>")
+		new /obj/item/stack/sheet/metal(RL.loc, 2)
+		RL.manual_unbuckle()
+		cdel(RL)
+	else if(istype(A, /obj/structure/bed/medevac_stretcher))
+		var/obj/structure/bed/medevac_stretcher/MES = A
+		MES.visible_message("<span class='danger'>[root] crushes through[MES]!</span>")
+		MES.manual_unbuckle()
+		new /obj/item/roller/medevac(MES.loc)
+		cdel(MES)
 	else if(istype(A, /obj/machinery/door/poddoor/almayer))
 		var/obj/machinery/door/poddoor/almayer/PA = A
-		var/obj/vehicle/multitile/root/cm_armored/CA = root
-		CA.take_damage_type(40, "blunt", PA)
+		CA.take_damage_type(60, "blunt", PA)
 		if(world.time > lastsound + 10)
 			playsound(PA, 'sound/effects/metal_crash.ogg', 35)
 			lastsound = world.time
@@ -736,11 +980,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		cdel(PA)
 	else if(istype(A, /obj/machinery/door/poddoor/shutters) && !istype(A, /obj/machinery/door/poddoor/shutters/transit) && !istype(A, /obj/machinery/door/poddoor/shutters/almayer/pressure))
 		var/obj/machinery/door/poddoor/almayer/SH = A
-		var/obj/vehicle/multitile/root/cm_armored/CA = root
-		CA.take_damage_type(15, "blunt", SH)
-		if(world.time > lastsound + 10)
-			playsound(SH, 'sound/effects/metal_crash.ogg', 35)
-			lastsound = world.time
+		CA.take_damage_type(30, "blunt", SH)
+		playsound(SH, 'sound/effects/metal_crash.ogg', 35)
 		SH.visible_message("<span class='danger'>[root] crushes through[SH]!</span>")
 		cdel(SH)
 	else if (istype(A, /obj/structure/ship_ammo))
@@ -805,22 +1046,52 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		WD.visible_message("<span class='danger'>[root] smashes through[WD]!</span>")
 		WD.take_damage(350)
 
+	healthcheck()
+
 /obj/vehicle/multitile/hitbox/cm_armored/Move(var/atom/A, var/direction)
 
 	for(var/mob/living/M in get_turf(src))
-		M.sleeping = 5 //Not 0, they just got driven over by a giant ass whatever and that hurts
+		M.sleeping = 3 //Not 0, they just got driven over by a giant ass whatever and that hurts
+		M.apply_damage(1 + rand(0, 5), BRUTE)
+	for(var/obj/effect/alien/egg/Eg in get_turf(src))
+		Eg.Burst(1)
+	for(var/obj/item/clothing/mask/facehugger/FG in get_turf(src))
+		FG.Die()
+	var/obj/vehicle/multitile/root/cm_armored/CA = root
+	for(var/obj/effect/xenomorph/spray/SR in get_turf(src))
+		if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/standard) && CA.hardpoints[HDPT_TREADS].health > 0)
+			CA.hardpoints[HDPT_TREADS].health -= 10
+			CA.visible_message("<span class='danger'>You hear hissing and smoke from [root]'s treads!</span>")
+			healthcheck()
+			update_icon()
+		else
+			if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/heavy) && CA.hardpoints[HDPT_TREADS].health > 0)
+				CA.hardpoints[HDPT_TREADS].health -= 5
+				healthcheck()
 
 	. = ..()
 
 	if(.)
 		for(var/mob/living/M in get_turf(A))
 			//I don't call Bump() otherwise that would encourage trampling for infinite unpunishable damage
-			M.sleeping = 5 //Maintain their lying-down-ness
+			M.sleeping = 3 //Maintain their lying-down-ness
+		for(var/obj/effect/alien/egg/Eg in get_turf(src))
+			Eg.Burst(1)
+		for(var/obj/item/clothing/mask/facehugger/FG in get_turf(src))
+			FG.Die()
+		//for(var/obj/effect/xenomorph/spray/SR in get_turf(src))
+		//	if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/standard) && CA.hardpoints[HDPT_TREADS].health >= 0)
+		//		CA.hardpoints[HDPT_TREADS].health -= 45
+		//		healthcheck()
+		//	else
+		//		if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/heavy) && CA.hardpoints[HDPT_TREADS].health >= 0)
+		//			CA.hardpoints[HDPT_TREADS].health -= 40
+		//			healthcheck()
 
 /obj/vehicle/multitile/hitbox/cm_armored/Uncrossed(var/atom/movable/A)
 	if(isliving(A))
 		var/mob/living/M = A
-		M.sleeping = 5
+		M.sleeping = 3
 
 	return ..()
 
@@ -884,7 +1155,32 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	var/dam_type = "bullet"
 
-	if(P.ammo.flags_ammo_behavior & AMMO_XENO_ACID) dam_type = "acid"
+
+	if(istype(P, /datum/ammo/xeno/boiler_gas/corrosive))
+		dam_type = "acid"
+		take_damage_type((P.damage * 4), dam_type, P.firer)
+		healthcheck()
+		return
+	if(P.ammo.flags_ammo_behavior & AMMO_XENO_ACID)
+		dam_type = "acid"
+		take_damage_type(P.damage * (0.75 + P.ammo.penetration/100), dam_type, P.firer)
+		healthcheck()
+		return
+	if(istype(P, /datum/ammo/rocket/ap))
+		dam_type = "explosive"
+		take_damage_type(P.damage * (1.2 + P.ammo.penetration/100), dam_type, P.firer)
+		healthcheck()
+		return
+	if(istype(P, /datum/ammo/rocket/tow))
+		dam_type = "explosive"
+		take_damage_type(P.damage * (1.5 + P.ammo.penetration/100), dam_type, P.firer)
+		healthcheck()
+		return
+	if(istype(P, /datum/ammo/rocket/ltb))
+		dam_type = "explosive"
+		take_damage_type(P.damage * (3 + P.ammo.penetration/100), dam_type, P.firer)
+		healthcheck()
+		return
 
 	take_damage_type(P.damage * (0.75 + P.ammo.penetration/100), dam_type, P.firer)
 
@@ -933,6 +1229,19 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	healthcheck()
 
+//used when entrance is blocked by something awful
+/obj/vehicle/multitile/root/cm_armored/tank/proc/get_new_exit_point()
+	var dir = rand(1, 8)
+	var/turf/T
+	var/new_exit
+	new_exit = get_step(src, dir)
+	T = get_turf(new_exit)
+	new_exit = get_step(T, dir)
+	T = get_turf(new_exit)
+	return T
+
+/obj/vehicle/multitile/root/cm_armored/tank/proc/check_entrance()
+
 //Special case for entering the vehicle without using the verb
 /obj/vehicle/multitile/root/cm_armored/attack_hand(var/mob/user)
 
@@ -941,6 +1250,16 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		return
 
 	if(user.loc == entrance.loc)
+		handle_player_entrance(user)
+		return
+
+	var/blocked = 0
+	var/turf/closed/T = entrance.loc
+	var/obj/O = entrance.loc
+	if(istype(T) || O.density)
+		blocked = 1
+
+	if(blocked == 1)		//vehicle entrance cannot be blocked to prevent TCs getting in
 		handle_player_entrance(user)
 		return
 
@@ -995,7 +1314,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/obj/item/ammo_magazine/AM = O
 		if(istype(O, /obj/item/ammo_magazine/tank/tank_slauncher))
 			if(smoke_ammo_current == 0)
-				smoke_ammo_current = 10
+				smoke_ammo_current = smoke_ammo_max
 				user.temp_drop_inv_item(O, 0)
 				to_chat(user, "<span class='notice'>You load smoke system magazine into [src].</span>")
 				return
@@ -1118,7 +1437,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //Similar to repairing stuff, down to the time delay
 /obj/vehicle/multitile/root/cm_armored/proc/install_hardpoint(var/obj/item/hardpoint/HP, var/mob/user)
 
-	if(!user.mind || !(!user.mind.cm_skills || user.mind.cm_skills.engineer >= SKILL_ENGINEER_MT))
+	if(!user.mind || !(!user.mind.cm_skills || user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI))
 		to_chat(user, "<span class='warning'>You don't know what to do with [HP] on [src].</span>")
 		return
 
@@ -1158,7 +1477,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //Again, similar to the above ones
 /obj/vehicle/multitile/root/cm_armored/proc/uninstall_hardpoint(var/obj/item/O, var/mob/user)
 
-	if(!user.mind || !(!user.mind.cm_skills || user.mind.cm_skills.engineer >= SKILL_ENGINEER_MT))
+	if(!user.mind || !(!user.mind.cm_skills || user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI))
 		to_chat(user, "<span class='warning'>You don't know what to do with [O] on [src].</span>")
 		return
 
@@ -1210,6 +1529,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	HP.owner = src
 	HP.apply_buff()
 	HP.loc = src
+	src.t_weight += HP.hp_weight
+	src.t_class_update()
 
 	hardpoints[HP.slot] = HP
 
@@ -1224,8 +1545,11 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		old.loc = entrance.loc
 	old.remove_buff()
 
-	if(old.health <= 0)
-		cdel(old)
+	src.t_weight -= old.hp_weight
+	src.t_class_update()
+
+	//if(old.health <= 0)
+	//	cdel(old)
 
 	hardpoints[old.slot] = null
 	update_icon()
