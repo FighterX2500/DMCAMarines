@@ -135,11 +135,11 @@
 //For the tank, start forcing people out if everything is broken
 /obj/vehicle/multitile/root/cm_armored/tank/handle_all_modules_broken()
 	deactivate_all_hardpoints()
-
-	if(tile_blocked_check(entrance.loc))
+	var/turf/T = locate(entrance.loc)
+	if(tile_blocked_check(T))
 		to_chat(global, "<span class='danger'>entrance turf check - blocked</span>")
-		var/turf/T = get_new_exit_point()
-		if(tile_blocked_check(T.loc))
+		T = get_new_exit_point()
+		if(tile_blocked_check(T))
 			return
 		else
 			if(gunner)
@@ -195,12 +195,14 @@
 		return
 	message = capitalize(message)
 	log_admin("[key_name(user)] used a tank megaphone to say: >[message]<")
-	if ((src.loc == user && usr.stat == 0))
-		for(var/mob/living/carbon/human/O in (viewers(src)))
+	if (usr.stat == 0)
+		for(var/mob/living/carbon/human/O in (range(7,src)))
 			if(O.species && O.species.name == "Yautja") //NOPE
 				O.show_message("Some loud speech heard from [src], but you can't understand it.")
 				continue
-			O.show_message("<B>[src]</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2) // 2 stands for hearable message
+			O.show_message("<B>[src]</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2)
+		if(gunner) gunner.show_message("<B>[src]</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2) // 2 stands for hearable message
+		if(driver) driver.show_message("<B>[src]</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2)
 
 		spamcheck = 1
 		spawn(20)
@@ -216,7 +218,7 @@
 		return
 	use_megaphone(usr)
 
-//Built in smoke launcher system verb
+//Built in smoke launcher system verb.
 /obj/vehicle/multitile/root/cm_armored/tank/verb/smoke_cover()
 	set name = "Activate Smoke Deploy System"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.

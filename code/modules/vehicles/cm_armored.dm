@@ -263,6 +263,10 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //		user.point_to(A)
 //		return
 
+	if(usr.in_throw_mode)
+		usr.drop_held_item()
+		return
+
 	if (mods["shift"])		//finally fixed shift-clicking in tank.
 		user.examine()
 		return
@@ -438,7 +442,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 			to_chat(usr, "<span class='warning'>Secondary weapon: [HP4.name]. Ammo: [HP4.clips[1].current_rounds]/[HP4.clips[1].max_rounds]. [HP4.clips.len - 1]/[HP4.max_clips - 1] spare magazines available.</span><br>")
 
 /obj/vehicle/multitile/root/cm_armored/verb/reload_hp()
-	set name = "Reload Active Weapon"
+	set name = "Reload Weapon"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set src in view(0)
 
@@ -645,19 +649,25 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 				if(T_LIGHT)
 					switch(XEN.t_squish_level)
 						if(0)
-							step_away(M,root,4)
 							M.KnockDown(5)
 							return
 						if(1)
-							step_away(M,root,2)
+							var/facing = get_dir(src, M)
+							var/turf/T = loc
+							var/turf/temp = loc
+							for(var/i=0;i<2;i++)
+								temp = get_step(temp, facing)
+							T = get_step(temp, pick(cardinal))
+							M.throw_at(T, 3, 1, src, 1)
 							M.KnockDown(1)
 							M.apply_damage(5 + rand(5, 10), BRUTE)
 							return
 						if(2)
 							step_away(M,root,0)
+							step_away(M,root,0)
 							return
 						if(3)
-							M.visible_message("<span class='danger'>[M] pushes against the [src], holding it in place with ease!</span>", "<span class='xenodanger'>You stopped [src]! It's no match to you!</span>")
+							//M.visible_message("<span class='danger'>[M] pushes against the [src], holding it in place with ease!</span>", "<span class='xenodanger'>You stopped [src]! It's no match to you!</span>")
 							return
 				if(T_MEDIUM)
 					switch(XEN.t_squish_level)
@@ -665,17 +675,22 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 							M.KnockDown(5)
 							return
 						if(1)
+							var/facing = get_dir(src, M)
+							var/turf/T = loc
+							var/turf/temp = loc
+							temp = get_step(temp, facing)
+							temp = get_step(temp, facing)
+							T = get_step(temp, pick(cardinal))
+							M.throw_at(T, 2, 1, src, 1)
+							M.KnockDown(1)
+							M.apply_damage(5 + rand(5, 10), BRUTE)
+						if(2)
 							step_away(M,root,0)
 							M.KnockDown(2)
 							M.apply_damage(5 + rand(5, 10), BRUTE)
 							return
-						if(2)
-							step_away(M,root,0)
-							M.KnockDown(1)
-							M.apply_damage(5 + rand(5, 10), BRUTE)
-							return
 						if(3)
-							M.visible_message("<span class='danger'>[M] pushes against the [src], holding it in place with effort!</span>", "<span class='xenodanger'>You stopped [src]!</span>")
+							//M.visible_message("<span class='danger'>[M] pushes against the [src], holding it in place with effort!</span>", "<span class='xenodanger'>You stopped [src]!</span>")
 							return
 				if(T_HEAVY)
 					switch(XEN.t_squish_level)
@@ -683,22 +698,22 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 							M.KnockDown(5)
 							return
 						if(1)
-							M.KnockDown(2)
+							M.KnockDown(4)
 							M.apply_damage(5 + rand(5, 10), BRUTE)
 							return
 						if(2)
 							step_away(M,root,0)
-							M.KnockDown(2)
+							M.KnockDown(4)
 							M.apply_damage(5 + rand(5, 10), BRUTE)
 							return
 						if(3)
 							step_away(M,root,0)
-							M.visible_message("<span class='danger'>[M] pushes against the [src], trying to hold it in place, but fails!</span>", "<span class='danger'>[src] is much heavier, you can't hold it in place!</span>")
+							//M.visible_message("<span class='danger'>[M] pushes against the [src], trying to hold it in place, but fails!</span>", "<span class='danger'>[src] is much heavier, you can't hold it in place!</span>")
 							return
 		if (!isXeno(M))
 			step_away(M,root,0,0)
 			M.KnockDown(3)
-			M.apply_damage(15 + rand(0, 15), BRUTE)
+			M.apply_damage(10 + rand(0, 10), BRUTE)
 		M.visible_message("<span class='danger'>[src] runs over [M]!</span>", "<span class='danger'>[src] runs you over! Get out of the way!</span>")
 		log_attack("[src] drove over/bumped into [M]([M.client ? M.client.ckey : "disconnected"]).")
 		var/list/slots = CA.get_activatable_hardpoints()
@@ -788,7 +803,28 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		new /obj/item/stack/sheet/metal(CP.loc, 1)
 		cdel(CP)
 //from here goes list of newly added objects and machinery that tank should've drive over or through, but for some reason couldn't
-
+	else if(istype(A, /obj/structure/bed) && !istype(A, /obj/structure/bed/chair/dropship) && !istype(A, /obj/structure/bed/medevac_stretcher) && !istype(A, /obj/structure/bed/roller) && !istype(A, /obj/structure/bed/chair/janicart))
+		var/obj/structure/bed/BE = A
+		BE.visible_message("<span class='danger'>[root] crushes [BE]!</span>")
+		BE.unbuckle()
+		new /obj/item/stack/sheet/metal(BE.loc, 1)
+		cdel(BE)
+	else if(istype(A, /obj/structure/bed/chair/janicart))
+		var/obj/structure/bed/JC = A
+		JC.visible_message("<span class='danger'>[root] crushes [JC]!</span>")
+		cdel(JC)
+	else if (istype(A, /obj/structure/filingcabinet))
+		var/obj/structure/filingcabinet/FC = A
+		FC.visible_message("<span class='danger'>[root] crushes [FC]!</span>")
+		new /obj/item/stack/sheet/metal(FC.loc, 1)
+		cdel(FC)
+	else if (istype(A, /obj/machinery/autolathe))
+		var/obj/machinery/autolathe/AL = A
+		AL.visible_message("<span class='danger'>[root] crushes [AL]!</span>")
+		new /obj/item/stack/sheet/metal(AL.loc, 2)
+		new /obj/item/stack/sheet/metal(AL.loc, AL.stored_material["metal"])
+		new /obj/item/stack/sheet/glass(AL.loc, AL.stored_material["glass"])
+		cdel(AL)
 	else if (istype(A, /obj/structure/filingcabinet))
 		var/obj/structure/filingcabinet/FC = A
 		FC.visible_message("<span class='danger'>[root] crushes [FC]!</span>")
@@ -1038,13 +1074,13 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	for(var/mob/living/M in get_turf(src))
 		M.sleeping = 3 //Not 0, they just got driven over by a giant ass whatever and that hurts
-		M.apply_damage(1 + rand(0, 5), BRUTE)
+		M.apply_damage(1, BRUTE)
 	for(var/obj/effect/alien/egg/Eg in get_turf(src))
 		Eg.Burst(1)
 	for(var/obj/item/clothing/mask/facehugger/FG in get_turf(src))
 		FG.Die()
 	var/obj/vehicle/multitile/root/cm_armored/CA = root
-	for(var/obj/effect/xenomorph/spray/SR in get_turf(src))
+/*	for(var/obj/effect/xenomorph/spray/SR in get_turf(src))
 		if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/standard) && CA.hardpoints[HDPT_TREADS].health > 0)
 			CA.hardpoints[HDPT_TREADS].health -= 10
 			CA.visible_message("<span class='danger'>You hear hissing and smoke from [root]'s treads!</span>")
@@ -1054,25 +1090,25 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 			if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/heavy) && CA.hardpoints[HDPT_TREADS].health > 0)
 				CA.hardpoints[HDPT_TREADS].health -= 5
 				healthcheck()
-
+*/
 	. = ..()
 
 	if(.)
 		for(var/mob/living/M in get_turf(A))
 			//I don't call Bump() otherwise that would encourage trampling for infinite unpunishable damage
-			M.sleeping = 3 //Maintain their lying-down-ness
+			M.sleeping = 1 //Maintain their lying-down-ness
 		for(var/obj/effect/alien/egg/Eg in get_turf(src))
 			Eg.Burst(1)
 		for(var/obj/item/clothing/mask/facehugger/FG in get_turf(src))
 			FG.Die()
-		//for(var/obj/effect/xenomorph/spray/SR in get_turf(src))
-		//	if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/standard) && CA.hardpoints[HDPT_TREADS].health >= 0)
-		//		CA.hardpoints[HDPT_TREADS].health -= 45
-		//		healthcheck()
-		//	else
-		//		if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/heavy) && CA.hardpoints[HDPT_TREADS].health >= 0)
-		//			CA.hardpoints[HDPT_TREADS].health -= 40
-		//			healthcheck()
+		for(var/obj/effect/xenomorph/spray/SR in get_turf(src))
+			if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/standard) && CA.hardpoints[HDPT_TREADS].health > 0)
+				CA.hardpoints[HDPT_TREADS].health -= 10
+				healthcheck()
+			else
+				if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/heavy) && CA.hardpoints[HDPT_TREADS].health > 0)
+					CA.hardpoints[HDPT_TREADS].health -= 5
+					healthcheck()
 
 /obj/vehicle/multitile/hitbox/cm_armored/Uncrossed(var/atom/movable/A)
 	if(isliving(A))
@@ -1144,7 +1180,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	if(istype(P, /datum/ammo/xeno/boiler_gas/corrosive))
 		dam_type = "acid"
-		take_damage_type((P.damage * 4), dam_type, P.firer)
+		take_damage_type(P.damage * 4, dam_type, P.firer)
 		healthcheck()
 		return
 	if(P.ammo.flags_ammo_behavior & AMMO_XENO_ACID)
@@ -1227,7 +1263,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	return T
 
 //checks entrance tile for closed turfs and un-passable objects and returns TRUE if it is so
-/obj/vehicle/multitile/root/cm_armored/proc/tile_blocked_check(var/Location)
+/obj/vehicle/multitile/root/cm_armored/proc/tile_blocked_check(var/turf/Location)
 	if(!isturf(Location))
 		return TRUE
 	var/turf/T = Location

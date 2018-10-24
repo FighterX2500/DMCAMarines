@@ -1300,19 +1300,21 @@
 
 				<h1><a name="Contents">Contents</a></h1>
 				<ol>
-					<li><a href="#Foreword">Author's Foreword</a></li>
+					<li><a href="#Foreword">Author's Foreword/Предисловие</a></li>
 					<li><a href="#General">General Information</a></li>
 					<li><a href="#Primary">Primary Weaponry</a></li>
 					<li><a href="#Secondary">Secondary Weaponry</a></li>
 					<li><a href="#Support">Support Modules</a></li>
 					<li><a href="#Armor">Tank Armor</a></li>
 					<li><a href="#Treads">Treads</a></li>
+					<li><a href="#Tips">Tips For Rookies</a></li>
 					<li><a href="#General_ru">ОбщаЯ ИнформациЯ</a></li>
 					<li><a href="#Primary_ru">Основные Оружейные Модули</a></li>
 					<li><a href="#Secondary_ru">Дополнительные Оружейные Модули</a></li>
 					<li><a href="#Support_ru">Вспомогательные Модули</a></li>
 					<li><a href="#Armor_ru">ТанковаЯ БронЯ</a></li>
 					<li><a href="#Treads_ru">Траки</a></li>
+					<li><a href="#Tips_ru">Советы ДлЯ Новичков</a></li>
 				</ol><br>
 
 				<h1><a name="Foreword"><U><B>HOW TO BE A GOOD TANK CREW</B></U></a></h1><BR>
@@ -1383,8 +1385,33 @@
 				<h1><a name="Treads"><B>Treads</B></a></h1>
 				<li><I>M2 Tank Treads.</I> 1RW. Standard tank treads. Suprisingly, greatly improves vehicle moving speed.</li>
 				<li><I>M2-R Tank Treads.</I> 3RW. Heavily reinforced tank treads. Three times heavier but can endure more damage. Has special protective layer akin to M70 armor.</li><BR><BR>
-				We hope this Technial Manual helped you to understand how you can make the tank to fit with your experience and mission intel.<BR>
-				Good luck, marine. Hoorah!
+
+				<h1><a name="Tips"><B>Tips For Rookies</B></a></h1>
+				<h3><B>Tips for both:</B></a></h3>
+				<li><B>1. Anger management.</B> There will always be at least one marine yelling at you for no reason. Your other TC will sooner or later make serious mistake. Take it easy, tank needs cold head to be effective and not harmful for allies.</li>
+				<li><B>2. Team work is essential.</B> Both between you and your other TC and between tank and marine squads. Tank and infantry are supposed to cover each other's weaknesses. Keep that in mind when you will drive somewhere alone.</li>
+				<li><B>3. Panic is deadly.</B> You panic - you are done. Simple as that.</li>
+				<li><B>4. At high cost.</B> If it's clear to you that you are not getting out of this alive, take as many with you as you can. Tank Crewmans are usually killed on sight.</li>
+				<li><B>5. Haul ammo.</B> Magazines, fuel tanks can be attached to armor or worn instead of belt. You better do that.</li><BR><BR>
+
+				<h3><B>Gunner:</B></a></h3>
+				<li><B>1. Do not shoot without making sure there is no marines in front of you.</B> Exception: if you have M21 Autocannon and M56 Cupola installed. Then it's exactly your job to lay suppressive fire over marines' heads.</li>
+				<li><B>2. Check ammo often.</B> The only thing worse than facing a dangerous enemy is facing one with empty gun.</li>
+				<li><B>3. Adapt to situation quickly.</B> Make sure to train switching active weapons as fast as you can. Good combinations of primary and secondary weapons do miracles.</li>
+				<li><B>4. Communication is a key.</B> Switch on squad channels. That helps <B>a lot</B>.</li>
+				<li><B>5. You are tank commander.</B> It's your duty to order driver where to move and turn. Forgetting this will lead to significant decrease in combat efficiency.</li>
+				<li><B>6. Shooting at targets danger close to marines is very bad idea.</B> Especially with M5. Just don't. Exception: one marine uncapable to fight with no marines near to help them. Then shoot and call medic immediately.</li><BR>
+
+				<h3><B>Driver:</B></a></h3>
+				<li><B>1. Less initiative.</B> Making sudden turn without warning not only will make gunner miss, but also may result in serious FF toward marines. Always follow gunner's orders unless tip #2.</li>
+				<li><B>2. You are the one responsible for tank safety.</B> Gunner is busy with shooting and may not notice danger coming from other side. Carefully listen to squads' and command channels. If you are sure that tank is in danger and you need to pull out, do it.</li>
+				<li><B>3. Target priority.</B> Turning towards enemy with marines in the way is very bad idea, unless you have M21 Autocannon and M56 "Cupola" installed. Better keep an eye on other directions.</li>
+				<li><B>4. Crush them. Or don't.</B> Sometimes there are situations when you can and should drive over enemy. Driving over fallen marines to cover them from enemy with your armor often considered a good move, despite inflicted injures. Sometimes.</li>
+				<li><B>5. Front toward enemy.</B> Always keep tank facing enemy or direction potential enemies will come from. No exceptions.</li>
+				<li><B>6. Use binoculars.</B> They will help you to assess situation around tank better and you will be able to help gunner, by adjusting position allowing other TC to hit contacts.</li>
+				<li><B>7. Angles matter.</B> Remember, that tank's Primary Weaponry has only 45 degrees arc of fire. Keep that in mind, when getting into firing position.</li><BR><BR>
+				We hope this Technial Manual helped you to understand strong and weak points of M46 "Stingray" and you will serve on it for a long time.<BR>
+				Good luck, marine. Hoorah!<BR><BR>
 
 
 				<h1><a name="General_ru"><B>ОбщаЯ ИнформациЯ</B></a></h1>
@@ -1407,10 +1434,10 @@
 				<li>Инженеры смогли немного расширить внутреннее пространство, что позволило менЯтьсЯ местами даже когда оба ТСа находЯтсЯ в танке.</li>
 				<li>Также они установили новые сенсоры и монитор, отображающий по запросу состоЯние танка, включаЯ: общее состоЯние всех модулей в процентах, количество
 				боеприпасов и запасных магазинов, а так же количество оставшихсЯ использований системы М75.</li>
-				<li>Был установлен вспомогательный люк в верхней части танка, который позволяет попасть в танк, даже если задний люк заблокирован.</li>
-				<li>В танк была встроена специальная камера, позволяющая командованию видеть танк на их консолях камер (Armored Vehicle в списке камер).</li>
+				<li>Был установлен вспомогательный люк в верхней части танка, который позволЯет попасть в танк, даже если задний люк заблокирован.</li>
+				<li>В танк была встроена специальнаЯ камера, позволЯющаЯ командованию видеть танк на их консолЯх камер (Armored Vehicle в списке камер).</li>
 				<li>Внешний громкоговоритель был починен и теперь исправно работает. Правда, вы сами не сможете услышать, что вы говорите в него.</li>
-				<li>Помните, что любой с инженерными навыками уровня боевого инженера может демонтировать, произвести полевой ремонт и установить обратно ваши траки.</li>
+				<li>Помните, что любой с инженерными навыками уровнЯ боевого инженера может демонтировать, произвести полевой ремонт и установить обратно ваши траки.</li>
 				<li>Все модули могут быть починены в Станции Ремонта Модулей в Гараже возле Такнового Вендора.</li>
 
 				<h1><a name="Primary_ru"><B>Основные Оружейные Модули</B></a></h1>
@@ -1440,6 +1467,30 @@
 				<li><I>M2 Tank Treads.</I> 1RW. Стандартные траки. Удивительным образом благоприЯтно сказываютсЯ на скорости танкаю.</li>
 				<li><I>M2-R Tank Treads.</I> 3RW. Укрепленные траки. В три раза тЯжеле стандартных, однако значительно крепче. Присутствует слой схожего с покрытием брони М70.</li><BR><BR>
 
+				<h1><a name="Tips_ru"><B>Советы ДлЯ новичков</B></a></h1>
+				<h3><B>Советы обоим танкистам:</B></a></h3>
+				<li><B>1. Контроль темперамента.</B> Всегда найдетсЯ морпех, который будет материтсЯ на танк без причины. Ваш напарник рано или поздно совершит серьезную ошибку. Дышите глубже, длЯ танка требуетсЯ спокойствие и сосредоточенность, иначе от него будет только вред.</li>
+				<li><B>2. Важность командной работы.</B> Как между вами, так и между танком и морпехами. Танк и пехота должны усиливать друг друга. Учитывайте это, уезжаЯ в одиночку куда-либо.</li>
+				<li><B>3. Паника смертельна.</B> Запаникуете - вам конец. Все просто.</li>
+				<li><B>4. ВысокаЯ цена.</B> Если вам стало Ясно, что живыми вы не уйдете, постарайтесь прихватить с собой как можно больше противников. По Танкистам обычно стрелЯют на поражение.</li>
+				<li><B>5. Все свое ношу с собой.</B> Магазины, топливные баки длЯ оружиЯ можно носить вместо поЯса или прицепить к броне. Советуем это сделать.</li><BR><BR>
+
+				<h3><B>Советы стрелку:</B></a></h3>
+				<li><B>1. Не стрелЯйте, не удостоверившись, что перед вами нат морпехов.</B> Исключение: если у вас установлены М21 Автопушка и М56 "Cupola". В таком случае ваша задача именно поливать противника перед морпехами огнем на подавление.</li>
+				<li><B>2. Ведите учет боеприпасов.</B> Хуже встречи с опасным противником может быть только отсутствие боеприпасов.</li>
+				<li><B>3. Приспосабливайтесь к ситуации.</B> Потренируйтесь быстро переключать оружие. Правильные сочетаниЯ Основного и Второстепенного оружиЯ творЯт чудеса.</li>
+				<li><B>4. Ценность информации.</B> Подключите каналы отрЯдов в вашем наушнике. Это <B>сильно</B> помогает.</li>
+				<li><B>5. Вы - командир танка.</B> Это ваша обЯзанность отдавать приказы мехводу куда двигатьсЯ и поворачивать. Эффективность танка сильно снижаетсЯ при забывании этого факта.</li>
+				<li><B>6. СтрелЯть по целЯм в близости от морпехов плохаЯ идеЯ.</B> Особенно с М5. Не стоит этого делать. Исключение: один морпех, неспособный к бою, без морпехов поблизости, которые могли бы помочь. В таком случае стрелЯйте и немедленно зовите медика.</li><BR>
+
+				<h3><B>Советы мехводу:</B></a></h3>
+				<li><B>1. Поменьше инициативы.</B> Резкие повороты без предупреждениЯ не только заставЯт стрелка промахнутьсЯ, они также могут привести к серьезному огню по своим. Всегда следуйте приказам стрелка, за исключением пункта #2.</li>
+				<li><B>2. Вы ответственны за целостность танка.</B> Стрелок занЯт стрельбой и может не заметить угрозу с другого направлениЯ. Вслушивайтесь в переговоры на каналах командованиЯ и отрЯдов. Если вы считаете, что танку грозит опасность и нужно отходить, отходите.</li>
+				<li><B>3. Приоритет целей.</B> РазворачиватьсЯ в сторону противника, перед которым находЯтсЯ морпехи очень плохаЯ идеЯ, если только у вас не установлены М21 Автопушка и М56 "Cupola". Лучше следите за другими направлениЯми.</li>
+				<li><B>4. Сокрушите их. Или нет.</B> В некоторых ситуациЯх вам предоставитьсЯ возможность переехать противника. Советуем это сделать. Также иногда стоит переехать упавших морпехов, чтобы прикрыть их от противника своей броней, несмотрЯ на нанесенный им вред. Иногда.</li>
+				<li><B>5. НаправлЯть на врага.</B> Всегда держитесь передом к противнику или направлению, откуда противник должен поЯвитсЯ.. Без исключений.</li>
+				<li><B>6. Используйте бинокль.</B> Он поможет лучше понимать ситуацию вокруг вас, а также позволит вам помогать стрелку с наводкой на противника, корректируЯ позицию танка.</li>
+				<li><B>7. Углы прицеливаниЯ.</B> Помните, что у основного орудиЯ танка сектор прицеливаниЯ равен 45 градусам. Учитывайте это при выходе на огневой рубеж.</li><BR><BR>
 
 				Мы надеемсЯ, что данной Техническое Руководство помогло вам понЯть как именно снарЯдить свой танк с учетом вашего опыта и данных по операции.<BR>
 				Удачи, морпехи. Ура и к черту!
