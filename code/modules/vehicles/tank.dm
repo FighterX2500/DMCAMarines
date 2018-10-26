@@ -6,8 +6,8 @@
 
 
 /obj/vehicle/multitile/root/cm_armored/tank
-	name = "M46 \"Stingray\" Modular Multipurpose Tank"
-	desc = "A giant piece of armor, was made as a budget version of a tank specifically for USCM. Supports installing different types of modules and weapons, allowing technicians to refit tank for any type of operation. Has inbuilt M75 Smoke Deploy System. Entrance in the back."
+	name = "M46 \"Stingray\" Tank"
+	desc = "M46 \"Stingray\" Modular Multipurpose Tank. A giant piece of armor, was made as a budget version of a tank specifically for USCM. Supports installing different types of modules and weapons, allowing technicians to refit tank for any type of operation. Has inbuilt M75 Smoke Deploy System. Entrance in the back."
 
 	icon = 'icons/obj/tank_NS.dmi'
 	icon_state = "tank_base"
@@ -198,11 +198,13 @@
 	if (usr.stat == 0)
 		for(var/mob/living/carbon/human/O in (range(7,src)))
 			if(O.species && O.species.name == "Yautja") //NOPE
-				O.show_message("Some loud speech heard from [src], but you can't understand it.")
+				O.show_message("Some loud speech heard from the tank, but you can't understand it.")
 				continue
-			O.show_message("<B>[src]</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2)
-		if(gunner) gunner.show_message("<B>[src]</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2) // 2 stands for hearable message
-		if(driver) driver.show_message("<B>[src]</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2)
+			O.show_message("<B>Tank</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2)
+		for(var/mob/living/carbon/Xenomoprh/X in (range(7,src)))
+			O.show_message("Some loud tallhost noises heard from the metal turtle, but you can't understand it.")
+		//if(gunner) gunner.show_message("<B>[src]</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2) // 2 stands for hearable message
+		//if(driver) driver.show_message("<B>[src]</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2)
 
 		spamcheck = 1
 		spawn(20)
@@ -247,7 +249,7 @@
 	if(named)
 		to_chat(usr, "<span class='warning'>Tank was already named!</span>")
 		return
-	var/nickname = copytext(sanitize(input(usr, "Name your tank (20 symbols, without \"\", they will be added)", "Naming", null) as text),1,20)
+	var/nickname = copytext(sanitize(input(usr, "Name your tank (20 symbols, without \"\", they will be added), russian symbols won't be seen", "Naming", null) as text),1,20)
 	if(!nickname)
 		to_chat(usr, "<span class='warning'>No text entered!</span>")
 		return
@@ -259,6 +261,9 @@
 	set name = "Swap Seats"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set src in view(0)
+
+	if(usr != gunner && usr != driver)
+		return
 	var/answer = alert(usr, "Are you sure you want to swap seats?", , "Yes", "No") //added confirmation window
 	if(answer == "No")
 		return

@@ -122,6 +122,9 @@ Vehicles are placed on the map by a spawner or admin verb
 	set name = "Exit Vehicle"
 	set src in view(0)
 
+	if(usr != gunner && usr != driver)
+		return
+
 	var/answer = alert(usr, "Are you sure you want to disembark?", , "Yes", "No")
 	if(answer == "Yes")
 		handle_player_exit(usr)
@@ -143,6 +146,9 @@ Vehicles are placed on the map by a spawner or admin verb
 	set name = "Rotate Vehicle Clockwise"
 	set src in view(0)
 
+	if(usr != driver)
+		return
+
 	var/mob/M = usr
 	try_rotate(-90, M)
 
@@ -150,6 +156,9 @@ Vehicles are placed on the map by a spawner or admin verb
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set name = "Rotate Vehicle Counterclockwise"
 	set src in view(0)
+
+	if(usr != driver)
+		return
 
 	var/mob/M = usr
 	try_rotate(90, M)

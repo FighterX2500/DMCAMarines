@@ -381,6 +381,10 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	set name = "Check Vehicle Status"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set src in view(0)
+
+	if(usr != gunner && usr != driver)
+		return
+
 	var/obj/item/hardpoint/HP1 = hardpoints[HDPT_ARMOR]
 	var/obj/item/hardpoint/HP2 = hardpoints[HDPT_TREADS]
 	var/obj/item/hardpoint/HP3 = hardpoints[HDPT_SUPPORT]
@@ -650,22 +654,23 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 					switch(XEN.t_squish_level)
 						if(0)
 							M.KnockDown(5)
-							return
 						if(1)
 							var/facing = get_dir(src, M)
 							var/turf/T = loc
 							var/turf/temp = loc
-							for(var/i=0;i<2;i++)
+							for(var/i=0;i<3;i++)
 								temp = get_step(temp, facing)
 							T = get_step(temp, pick(cardinal))
-							M.throw_at(T, 3, 1, src, 1)
+							M.throw_at(T, 4, 1, src, 1)
 							M.KnockDown(1)
 							M.apply_damage(5 + rand(5, 10), BRUTE)
-							return
+							if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow)
+								M.apply_damage(10 + rand(5, 10), BRUTE)
 						if(2)
+							if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow)
+								M.apply_damage(10 + rand(5, 10), BRUTE)
 							step_away(M,root,0)
 							step_away(M,root,0)
-							return
 						if(3)
 							//M.visible_message("<span class='danger'>[M] pushes against the [src], holding it in place with ease!</span>", "<span class='xenodanger'>You stopped [src]! It's no match to you!</span>")
 							return
@@ -673,7 +678,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 					switch(XEN.t_squish_level)
 						if(0)
 							M.KnockDown(5)
-							return
 						if(1)
 							var/facing = get_dir(src, M)
 							var/turf/T = loc
@@ -684,11 +688,14 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 							M.throw_at(T, 2, 1, src, 1)
 							M.KnockDown(1)
 							M.apply_damage(5 + rand(5, 10), BRUTE)
+							if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow)
+								M.apply_damage(5 + rand(5, 10), BRUTE)
 						if(2)
 							step_away(M,root,0)
 							M.KnockDown(2)
 							M.apply_damage(5 + rand(5, 10), BRUTE)
-							return
+							if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow)
+								M.apply_damage(5 + rand(5, 10), BRUTE)
 						if(3)
 							//M.visible_message("<span class='danger'>[M] pushes against the [src], holding it in place with effort!</span>", "<span class='xenodanger'>You stopped [src]!</span>")
 							return
@@ -696,16 +703,13 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 					switch(XEN.t_squish_level)
 						if(0)
 							M.KnockDown(5)
-							return
 						if(1)
 							M.KnockDown(4)
 							M.apply_damage(5 + rand(5, 10), BRUTE)
-							return
 						if(2)
 							step_away(M,root,0)
 							M.KnockDown(4)
 							M.apply_damage(5 + rand(5, 10), BRUTE)
-							return
 						if(3)
 							step_away(M,root,0)
 							//M.visible_message("<span class='danger'>[M] pushes against the [src], trying to hold it in place, but fails!</span>", "<span class='danger'>[src] is much heavier, you can't hold it in place!</span>")
@@ -714,13 +718,10 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 			step_away(M,root,0,0)
 			M.KnockDown(3)
 			M.apply_damage(10 + rand(0, 10), BRUTE)
+			if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow)
+				M.apply_damage(10 + rand(5, 10), BRUTE)
 		M.visible_message("<span class='danger'>[src] runs over [M]!</span>", "<span class='danger'>[src] runs you over! Get out of the way!</span>")
 		log_attack("[src] drove over/bumped into [M]([M.client ? M.client.ckey : "disconnected"]).")
-		var/list/slots = CA.get_activatable_hardpoints()
-		for(var/slot in slots)
-			var/obj/item/hardpoint/H = CA.hardpoints[slot]
-			if(!H) continue
-			H.livingmob_interact(M)
 	else if(istype(A, /obj/structure/fence))
 		var/obj/structure/fence/F = A
 		F.visible_message("<span class='danger'>[root] smashes through [F]!</span>")
@@ -1073,8 +1074,11 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/hitbox/cm_armored/Move(var/atom/A, var/direction)
 
 	for(var/mob/living/M in get_turf(src))
-		M.sleeping = 3 //Not 0, they just got driven over by a giant ass whatever and that hurts
-		M.apply_damage(1, BRUTE)
+		if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
+			step_away(M,root,0)
+		else
+			M.sleeping = 3 //Not 0, they just got driven over by a giant ass whatever and that hurts
+			M.apply_damage(1, BRUTE)
 	for(var/obj/effect/alien/egg/Eg in get_turf(src))
 		Eg.Burst(1)
 	for(var/obj/item/clothing/mask/facehugger/FG in get_turf(src))
@@ -1205,6 +1209,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		return
 
 	take_damage_type(P.damage * (0.75 + P.ammo.penetration/100), dam_type, P.firer)
+	playsound(M.loc, pick('sound/bullets/bullet_ricochet2.ogg', 'sound/bullets/bullet_ricochet3.ogg', 'sound/bullets/bullet_ricochet4.ogg', 'sound/bullets/bullet_ricochet5.ogg'), 25, 1)
 
 	healthcheck()
 
@@ -1234,8 +1239,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	if(M.frenzy_aura > 0)
 		damage += (M.frenzy_aura * 2)
 
-	M.animation_attack_on(src)
-
 	//Somehow we will deal no damage on this attack
 	if(!damage)
 		playsound(M.loc, 'sound/weapons/alien_claw_swipe.ogg', 25, 1)
@@ -1244,6 +1247,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		"<span class='danger'>You lunge at [src]!</span>")
 		return 0
 
+	M.animation_attack_on(src)
+	playsound(M.loc, 'sound/weapons/alien_claw_swipe.ogg', 25, 1)
 	M.visible_message("<span class='danger'>\The [M] slashes [src]!</span>", \
 	"<span class='danger'>You slash [src]!</span>")
 
