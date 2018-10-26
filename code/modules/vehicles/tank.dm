@@ -201,8 +201,8 @@
 				O.show_message("Some loud speech heard from the tank, but you can't understand it.")
 				continue
 			O.show_message("<B>Tank</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2)
-		for(var/mob/living/carbon/Xenomoprh/X in (range(7,src)))
-			O.show_message("Some loud tallhost noises heard from the metal turtle, but you can't understand it.")
+		for(var/mob/living/carbon/Xenomorph/X in (range(7,src)))
+			X.show_message("Some loud tallhost noises heard from the metal turtle, but you can't understand it.")
 		//if(gunner) gunner.show_message("<B>[src]</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2) // 2 stands for hearable message
 		//if(driver) driver.show_message("<B>[src]</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2)
 

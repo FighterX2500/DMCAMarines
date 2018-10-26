@@ -382,9 +382,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
 	set src in view(0)
 
-	if(usr != gunner && usr != driver)
-		return
-
 	var/obj/item/hardpoint/HP1 = hardpoints[HDPT_ARMOR]
 	var/obj/item/hardpoint/HP2 = hardpoints[HDPT_TREADS]
 	var/obj/item/hardpoint/HP3 = hardpoints[HDPT_SUPPORT]
@@ -664,10 +661,10 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 							M.throw_at(T, 4, 1, src, 1)
 							M.KnockDown(1)
 							M.apply_damage(5 + rand(5, 10), BRUTE)
-							if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
+							if(istype(CA.hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
 								M.apply_damage(10 + rand(5, 10), BRUTE)
 						if(2)
-							if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
+							if(istype(CA.hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
 								M.apply_damage(10 + rand(5, 10), BRUTE)
 							step_away(M,root,0)
 							step_away(M,root,0)
@@ -688,13 +685,13 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 							M.throw_at(T, 2, 1, src, 1)
 							M.KnockDown(1)
 							M.apply_damage(5 + rand(5, 10), BRUTE)
-							if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
+							if(istype(CA.hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
 								M.apply_damage(5 + rand(5, 10), BRUTE)
 						if(2)
 							step_away(M,root,0)
 							M.KnockDown(2)
 							M.apply_damage(5 + rand(5, 10), BRUTE)
-							if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
+							if(istype(CA.hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
 								M.apply_damage(5 + rand(5, 10), BRUTE)
 						if(3)
 							//M.visible_message("<span class='danger'>[M] pushes against the [src], holding it in place with effort!</span>", "<span class='xenodanger'>You stopped [src]!</span>")
@@ -718,7 +715,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 			step_away(M,root,0,0)
 			M.KnockDown(3)
 			M.apply_damage(10 + rand(0, 10), BRUTE)
-			if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow)
+			if(istype(CA.hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
 				M.apply_damage(10 + rand(5, 10), BRUTE)
 		M.visible_message("<span class='danger'>[src] runs over [M]!</span>", "<span class='danger'>[src] runs you over! Get out of the way!</span>")
 		log_attack("[src] drove over/bumped into [M]([M.client ? M.client.ckey : "disconnected"]).")
@@ -1072,10 +1069,12 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	healthcheck()
 
 /obj/vehicle/multitile/hitbox/cm_armored/Move(var/atom/A, var/direction)
-
+	var/obj/vehicle/multitile/root/cm_armored/CA = root
 	for(var/mob/living/M in get_turf(src))
-		if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
-			step_away(M,root,0)
+		var/facing = get_dir(src, M)
+		if(istype(CA.hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
+			if(src.dir == facing)
+				step_away(M,root,0)
 		else
 			M.sleeping = 3 //Not 0, they just got driven over by a giant ass whatever and that hurts
 			M.apply_damage(1, BRUTE)
@@ -1083,7 +1082,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		Eg.Burst(1)
 	for(var/obj/item/clothing/mask/facehugger/FG in get_turf(src))
 		FG.Die()
-	var/obj/vehicle/multitile/root/cm_armored/CA = root
+
 /*	for(var/obj/effect/xenomorph/spray/SR in get_turf(src))
 		if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/standard) && CA.hardpoints[HDPT_TREADS].health > 0)
 			CA.hardpoints[HDPT_TREADS].health -= 10
@@ -1209,7 +1208,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		return
 
 	take_damage_type(P.damage * (0.75 + P.ammo.penetration/100), dam_type, P.firer)
-	playsound(root.loc, pick('sound/bullets/bullet_ricochet2.ogg', 'sound/bullets/bullet_ricochet3.ogg', 'sound/bullets/bullet_ricochet4.ogg', 'sound/bullets/bullet_ricochet5.ogg'), 25, 1)
+	playsound(src.loc, pick('sound/bullets/bullet_ricochet2.ogg', 'sound/bullets/bullet_ricochet3.ogg', 'sound/bullets/bullet_ricochet4.ogg', 'sound/bullets/bullet_ricochet5.ogg'), 25, 1)
 
 	healthcheck()
 
