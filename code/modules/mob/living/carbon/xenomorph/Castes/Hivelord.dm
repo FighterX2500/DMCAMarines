@@ -23,11 +23,7 @@
 	drag_delay = 6 //pulling a big dead xeno is hard
 	var/speed_activated = 0
 	tier = 2
-	t_squish_level = 1	//This variable is used to determine what will happen with alien after tank bumps into it.
-	//0 - always just drive over the thing (currently larva only)
-	//1 - very squishy and/or relatively light alien, (light tank can throw it away, heavy tank will straight drive over it)
-	//2 - average alien, quite tough (light tank won't knock this one down, just push it one tile, other tank classes will push one tile and knock down)
-	//3 - fortified alien, big and heavy will block light and medium tank, however heavy tank won't be blocked.
+	t_squish_level = 1
 	upgrade = 0
 	aura_strength = 1 //Hivelord's aura is not extremely strong, but better than Drones. At the top, it's just a bit above a young Queen. Climbs by 0.5 to 2.5
 	actions = list(
