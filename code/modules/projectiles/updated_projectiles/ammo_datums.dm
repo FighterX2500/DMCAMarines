@@ -983,7 +983,7 @@
 	shell_speed = config.fast_shell_speed
 
 /datum/ammo/rocket/autocannon/on_hit_mob(mob/M, obj/item/projectile/P)
-	area_stagger_burst(get_turf(M), P)
+	staggerstun(M, P, config.max_shell_range, 0, 0, 4, 3, 0, 1, 3, 2)
 
 /datum/ammo/rocket/autocannon/on_hit_obj(obj/O, obj/item/projectile/P)
 	area_stagger_burst(get_turf(P), P)
@@ -994,7 +994,7 @@
 /datum/ammo/rocket/autocannon/do_at_max_range(obj/item/projectile/P)
 	area_stagger_burst(get_turf(P), P)
 
-//no IFF for communistic cunts!
+//no IFF for communistic pigs!
 /datum/ammo/rocket/autocannon/upp
 	icon_state = "bullet"
 	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET
@@ -1009,7 +1009,7 @@
 	shell_speed = config.fast_shell_speed
 
 /datum/ammo/rocket/autocannon/on_hit_mob(mob/M, obj/item/projectile/P)
-	area_stagger_burst(get_turf(M), P)
+	staggerstun(M, P, config.max_shell_range, 0, 0, 4, 3, 0, 1, 3, 2)
 
 /datum/ammo/rocket/autocannon/on_hit_obj(obj/O, obj/item/projectile/P)
 	area_stagger_burst(get_turf(P), P)

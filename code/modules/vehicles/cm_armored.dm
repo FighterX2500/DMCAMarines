@@ -1259,11 +1259,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/root/cm_armored/tank/proc/get_new_exit_point()
 	var dir = rand(1, 8)
 	var/turf/T
-	var/new_exit
-	new_exit = get_step(src, dir)
-	T = get_turf(new_exit)
-	new_exit = get_step(T, dir)
-	T = get_turf(new_exit)
+	T = get_step(src, dir)
+	T = get_step(T, dir)
 	return T
 
 //checks entrance tile for closed turfs and un-passable objects and returns TRUE if it is so

@@ -137,8 +137,12 @@
 	deactivate_all_hardpoints()
 	var/turf/T = locate(entrance.loc)
 	if(tile_blocked_check(T))
-		to_chat(global, "<span class='danger'>entrance turf check - blocked</span>")
+		src.visible_message("<span class='danger'>Debug message: entrance turf check - blocked!</span>",)
 		T = get_new_exit_point()
+		//T = get_step(src, src.dir)
+		//T = get_step(T, src.dir)
+		//var left = turn(src.dir, -90)
+		//T = get_step(T, left)
 		if(tile_blocked_check(T))
 			return
 		else
