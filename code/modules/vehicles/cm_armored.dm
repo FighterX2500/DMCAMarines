@@ -664,10 +664,10 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 							M.throw_at(T, 4, 1, src, 1)
 							M.KnockDown(1)
 							M.apply_damage(5 + rand(5, 10), BRUTE)
-							if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow)
+							if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
 								M.apply_damage(10 + rand(5, 10), BRUTE)
 						if(2)
-							if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow)
+							if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
 								M.apply_damage(10 + rand(5, 10), BRUTE)
 							step_away(M,root,0)
 							step_away(M,root,0)
@@ -688,13 +688,13 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 							M.throw_at(T, 2, 1, src, 1)
 							M.KnockDown(1)
 							M.apply_damage(5 + rand(5, 10), BRUTE)
-							if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow)
+							if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
 								M.apply_damage(5 + rand(5, 10), BRUTE)
 						if(2)
 							step_away(M,root,0)
 							M.KnockDown(2)
 							M.apply_damage(5 + rand(5, 10), BRUTE)
-							if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow)
+							if(istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
 								M.apply_damage(5 + rand(5, 10), BRUTE)
 						if(3)
 							//M.visible_message("<span class='danger'>[M] pushes against the [src], holding it in place with effort!</span>", "<span class='xenodanger'>You stopped [src]!</span>")
@@ -1209,7 +1209,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		return
 
 	take_damage_type(P.damage * (0.75 + P.ammo.penetration/100), dam_type, P.firer)
-	playsound(M.loc, pick('sound/bullets/bullet_ricochet2.ogg', 'sound/bullets/bullet_ricochet3.ogg', 'sound/bullets/bullet_ricochet4.ogg', 'sound/bullets/bullet_ricochet5.ogg'), 25, 1)
+	playsound(root.loc, pick('sound/bullets/bullet_ricochet2.ogg', 'sound/bullets/bullet_ricochet3.ogg', 'sound/bullets/bullet_ricochet4.ogg', 'sound/bullets/bullet_ricochet5.ogg'), 25, 1)
 
 	healthcheck()
 
