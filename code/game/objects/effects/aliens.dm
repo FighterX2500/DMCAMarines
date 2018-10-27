@@ -164,3 +164,28 @@
 
 	sleep(rand(200,300) * (acid_strength))
 	.()
+
+//When anti-acid is primed
+/obj/effect/xenomorph/acid/attackby(var/obj/O as obj, var/mob/user as mob)
+	if(istype(O, /obj/item/anti_acid))
+		var/obj/item/anti_acid/deacid = O
+		switch(acid_strength)
+			if(2.5)
+				if(deacid.use_time < 1)
+					return
+				deacid.use_time--
+				cdel(src)
+				visible_message("<span class='warning'>Anti-acid mixture succsessfully neutrilize the acid!</span>")
+				return
+			if(1)
+				if(deacid.use_time < 5)
+					return
+				deacid.use_time -= 5
+				cdel(src)
+				visible_message("<span class='warning'>Anti-acid mixture barely neutrilize the acid!</span>")
+				return
+			if(0.4)
+				visible_message("<span class='warning'>Anti-acid mixture failed to neutralize the acid!</span>")
+				return
+		return
+	return

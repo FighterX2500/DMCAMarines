@@ -21,12 +21,15 @@
 	build_path = /obj/machinery/computer/analyze_console
 	origin_tech = "programming=3" // juuuust a placehonder
 
-/*
+/obj/item/circuitboard/machine/marineprotolathe
+	name = "Circuit board (Armory Protolathe)"
+	build_path = /obj/machinery/r_n_d/marineprotolathe
+	origin_tech = null
+
 /obj/item/circuitboard/machine/biolathe
 	name = "Circuit board (Bio-Organic Autolathe)"
 	build_path = /obj/machinery/r_n_d/biolathe
 	origin_tech = 14
-*/
 
 /obj/machinery/computer/XenoRnD
 	name = "R&D Console"
@@ -38,6 +41,7 @@
 	var/datum/marineResearch/files							//Stores all the collected research data.
 	var/obj/machinery/r_n_d/dissector/linked_dissector = null      //linked Organic Dissector
 	var/obj/machinery/r_n_d/modifyer/linked_modifyer = null      //linked EMU
+	var/obj/machinery/r_n_d/marineprotolathe/linked_lathe = null 		//linked marine protolathe
 
 	var/screen = 1.0	//Which screen is currently showing.
 	var/id = 0			//ID of the computer (for server restrictions).
@@ -67,6 +71,14 @@
 
 	return return_name
 
+/obj/machinery/computer/XenoRnD/proc/CanConstruct(metal, glass, biomass)	//Check for available resource
+	if(metal > linked_lathe.material_storage["metal"])
+		return 0
+	if(glass > linked_lathe.material_storage["glass"])
+		return 0
+	if(biomass > linked_lathe.material_storage["biomass"])
+		return 0
+	return 1
 
 /obj/machinery/computer/XenoRnD/New()
 	..()
@@ -83,6 +95,10 @@
 		if(istype(D, /obj/machinery/r_n_d/modifyer))
 			if(linked_modifyer == null)
 				linked_modifyer = D
+				D.linked_console = src
+		if(istype(D, /obj/machinery/r_n_d/marineprotolathe))
+			if(linked_lathe == null)
+				linked_lathe = D
 				D.linked_console = src
 	return
 
@@ -179,6 +195,9 @@
 			if("modifyer")
 				linked_modifyer.linked_console = null
 				linked_modifyer = null
+			if("protolathe")
+				linked_lathe.linked_console = null
+				linked_lathe = null
 
 	else if(href_list["research"])
 		var/topic = text2num(href_list["research"])
@@ -197,6 +216,24 @@
 					files.CheckAvail()
 					updateUsrDialog()
 				break
+
+	else if(href_list["create"])
+		for(var/datum/marine_design/design in files.possible_design)
+			if(href_list["create"] != design.id)
+				continue
+			if(!CanConstruct(design.materials["metal"], design.materials["glass"], design.materials["biomass"]))
+				break
+			errored = 1
+			if(design.build_path)
+				flick("protolathe_n", linked_lathe)
+				errored = 0
+				screen = 0.6
+				linked_lathe.material_storage["metal"] -= design.materials["metal"]
+				linked_lathe.material_storage["glass"] -= design.materials["glass"]
+				linked_lathe.material_storage["biomass"] -= design.materials["biomass"]
+				spawn(16)
+					new design.build_path(linked_lathe.loc)
+					break
 
 	else if(href_list["print"])
 		var/topic = text2num(href_list["print"])
@@ -329,6 +366,11 @@
 				screen = 3.1
 			else
 				screen = 3.2
+		if(4 to 4.9)
+			if(linked_lathe == null)
+				screen = 4.0
+			else
+				screen = 4.1
 
 	if(errored)
 		dat += "An error has occured when constructing prototype. Try refreshing the console."
@@ -353,17 +395,31 @@
 			dat += "Imprinting Circuit. Please Wait..."
 
 		if(0.5)
-			dat += "Analysis in prosess. Please Wait.."
+			dat += "Analysis in prosess. Please Wait..."
+
+		if(0.6)
+			dat += "Constructing equipment. Please, Stand-By..."
 
 		if(1.0) //Main Menu
 			dat += "Main Menu:<BR><BR>"
 			dat += "<A href='?src=\ref[src];menu=1.1'>Current Available Research</A><BR>"
 			dat += "<A href='?src=\ref[src];menu=1.2'>Current Research Level</A><BR>"
 			dat += "<A href='?src=\ref[src];menu=1.5'>Available Modifications</A><BR><HR>"
-			if(linked_dissector != null) dat += "<A href='?src=\ref[src];menu=2.2'>Organic Dissector Menu</A><BR>"
-			else dat += "NO ORGANIC DISSECTOR LINKED<BR>"
-			if(linked_modifyer != null) dat += "<A href='?src=\ref[src];menu=3.2'>Equipment Modification Unit Menu</A><BR>"
-			else dat += "NO EMU LINKED<BR>"
+
+			if(linked_dissector != null)
+				dat += "<A href='?src=\ref[src];menu=2.2'>Organic Dissector Menu</A><BR>"
+			else
+				dat += "NO ORGANIC DISSECTOR LINKED<BR>"
+
+			if(linked_dissector != null)
+				dat += "<A href='?src=\ref[src];menu=4.1'>Armory Protolathe Menu</A><BR>"
+			else
+				dat += "NO ARMORY PROTOLATHE LINKED<BR>"
+
+			if(linked_modifyer != null)
+				dat += "<A href='?src=\ref[src];menu=3.2'>Equipment Modification Unit Menu</A><BR>"
+			else
+				dat += "NO EMU LINKED<BR>"
 			dat += "<HR><A href='?src=\ref[src];menu=1.3'>Settings</A>"
 
 		if(1.1)
@@ -398,6 +454,10 @@
 				dat += "* Organic Dissector <A href='?src=\ref[src];disconnect=dissector'>(Disconnect)</A><BR>"
 			else
 				dat += "* (No Organic Dissector Linked)<BR>"
+			if(linked_lathe)
+				dat += "* Armory Protolathe <A href='?src=\ref[src];disconnect=protolathe'>(Disconnect)</A><BR>"
+			else
+				dat += "* (No Armory Protolathe Linked)<BR>"
 			if(linked_modifyer)
 				dat += "* Equipment Modification Unit <A href='?src=\ref[src];disconnect=modifyer'>(Disconnect)</A><BR>"
 			else
@@ -477,6 +537,24 @@
 					dat += "Apply <A href='?src=\ref[src];modify=blackmarsh'>'Blackmarsh'</A> modification<BR>"
 			dat += "<HR><A href='?src=\ref[src];eject_item=modifyer'>Eject Item</A>"
 
+
+		//////////////////////Protolate Screens//////////////////
+		if(4.0)
+			dat += "NO ARMORY PROTOLATE LINKED TO CONSOLE<BR><BR>"
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A>"
+
+		if(4.1)
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><HR>"
+			dat += "Current Material Amount: [linked_lathe.TotalMaterials()] units total.<BR>"
+			dat += "Material Amount per resource:<BR>"
+			dat += "Metal: [linked_lathe.material_storage["metal"]]/[linked_lathe.max_per_resource["metal"]]<BR>"
+			dat += "Glass: [linked_lathe.material_storage["glass"]]/[linked_lathe.max_per_resource["glass"]]<BR>"
+			if(files.Check_tech(0) == 1)
+				dat += "Xenomorph biomatter[linked_lathe.material_storage["biomass"]]/[linked_lathe.max_per_resource["biomass"]]<BR>"
+			dat += "<BR>Available experimental equipment.<HR><HR>"
+			for(var/datum/marine_design/design in files.known_design)
+				dat += "<A href='?src=\ref[src];create=[design.id]'>[design.name]</A>:<BR>Description: [design.desc]"
+			dat += "<HR><HR>"
 
 	user << browse("<TITLE>Research and Development Console</TITLE><HR>[dat]", "window=rdconsole;size=575x400")
 	onclose(user, "rdconsole")
