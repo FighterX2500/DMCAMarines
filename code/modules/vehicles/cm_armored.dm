@@ -314,11 +314,16 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	if(!HP)
 		to_chat(usr, "<span class='warning'>There's nothing installed on that hardpoint.</span>")
 
+	var/mob/living/carbon/human/M = usr
+	var/obj/item/card/id/I = M.wear_id
+	if(I.rank == "Synthetic" && I.registered_name == M.real_name)
+		to_chat(usr, "<span class='notice'>Your programm doesn't allow operating tank weapons.</span>")
+		return
+
 	deactivate_binos(usr)
 	active_hp = slot
 	to_chat(usr, "<span class='notice'>You select the [HP.name].</span>")
 	if(isliving(usr))
-		var/mob/living/M = usr
 		M.set_interaction(src)
 
 
@@ -968,7 +973,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		FD.visible_message("<span class='danger'>[root] crushes through[FD]!</span>")
 		new /obj/item/stack/sheet/metal(FD.loc, 2)
 		cdel(FD)
-	else if(istype(A, /obj/machinery/door/airlock))
+	else if(istype(A, /obj/machinery/door/airlock) && !istype(A, /obj/machinery/door/airlock/multi_tile/almayer/dropshiprear/ds1) && !istype(A, /obj/machinery/door/airlock/multi_tile/almayer/dropshiprear/ds2))
 		var/obj/machinery/door/airlock/AR = A
 		CA.take_damage_type(50, "blunt", AR)
 		if(world.time > lastsound + 10)
@@ -977,6 +982,21 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		AR.visible_message("<span class='danger'>[root] crushes through[AR]!</span>")
 		new /obj/item/stack/sheet/metal(AR.loc, 2)
 		cdel(AR)
+	else if(istype(A, /obj/machinery/door/airlock/multi_tile/almayer/dropshiprear/ds1) || istype(A, /obj/machinery/door/airlock/multi_tile/almayer/dropshiprear/ds2))
+		var/obj/machinery/door/airlock/multi_tile/almayer/dropshiprear/DR = A
+		if(DR.locked)
+			if(z == 4)
+				return
+			else
+				CA.take_damage_type(50, "blunt", DR)
+				if(world.time > lastsound + 10)
+					playsound(DR, 'sound/effects/metal_crash.ogg', 35)
+					lastsound = world.time
+				DR.visible_message("<span class='danger'>[root] crushes through[DR]!</span>")
+				new /obj/item/stack/sheet/metal(DR.loc, 2)
+				cdel(DR)
+		else
+			DR.open()	//2/3 rounds TCs destroy reardoor in firstdeployment, this should fix it
 	else if(istype(A, /obj/structure/bed/roller))
 		var/obj/structure/bed/roller/RL = A
 		RL.visible_message("<span class='danger'>[root] crushes [RL]!</span>")

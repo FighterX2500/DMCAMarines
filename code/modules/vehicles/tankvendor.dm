@@ -652,7 +652,7 @@
 	idle_power_usage = 20
 	icon = 'icons/obj/machines/drone_fab.dmi'
 	icon_state = "drone_fab_idle"
-	var/tank_points = 550
+	var/tank_points = 525
 	var/busy
 
 /obj/machinery/tank_part_fabricator/New()
@@ -722,14 +722,14 @@
 		if(build_cost)
 			dat += "<a href='byond://?src=\ref[src];produce=[build_type];cost=[build_cost]'>[build_name] ([build_cost])</a><br>"
 
-	dat += "<h3>Weapon Ammo:</h3>"
+	/*dat += "<h3>Weapon Ammo:</h3>"
 	for(var/build_type in typesof(/obj/item/ammo_magazine/tank))
 		var/obj/item/ammo_magazine/tank/AM = build_type
 		var/build_name = initial(AM.name)
 		var/build_cost = initial(AM.point_cost)
 		if(build_cost)
 			dat += "<a href='byond://?src=\ref[src];produce=[build_type];cost=[build_cost]'>[build_name] ([build_cost])</a><br>"
-
+*/
 
 	user << browse(dat, "window=dropship_part_fab")
 	onclose(user, "dropship_part_fab")
