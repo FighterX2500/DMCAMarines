@@ -145,8 +145,8 @@ Currently only has the tank hardpoints
 //examine() that tells the player condition of the module
 /obj/item/hardpoint/examine(var/mob/user)
 	..()
-	var/cond = round(health * 100 / maxhealth)
 	if((user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
+		var/cond = round(health * 100 / maxhealth)
 		if (cond > 0)
 			to_chat(user, "Integrity: [cond]%.")
 		else
@@ -1171,7 +1171,7 @@ Currently only has the tank hardpoints
 	default_ammo = /datum/ammo/rocket/ltb
 	current_rounds = 4
 	max_rounds = 4
-	point_cost = 50
+	point_cost = 0
 	gun_type = /obj/item/hardpoint/primary/cannon
 
 	update_icon()
@@ -1186,7 +1186,7 @@ Currently only has the tank hardpoints
 	default_ammo = /datum/ammo/rocket/autocannon
 	current_rounds = 40
 	max_rounds = 40
-	point_cost = 50
+	point_cost = 0
 	gun_type = /obj/item/hardpoint/primary/autocannon
 
 	update_icon()
@@ -1201,7 +1201,7 @@ Currently only has the tank hardpoints
 	default_ammo = /datum/ammo/bullet/minigun
 	current_rounds = 300
 	max_rounds = 300
-	point_cost = 25
+	point_cost = 0
 	gun_type = /obj/item/hardpoint/primary/minigun
 
 
@@ -1214,7 +1214,7 @@ Currently only has the tank hardpoints
 	default_ammo = /datum/ammo/flamethrower/tank_flamer
 	current_rounds = 120
 	max_rounds = 120
-	point_cost = 50
+	point_cost = 0
 	gun_type = /obj/item/hardpoint/secondary/flamer
 
 
@@ -1227,7 +1227,7 @@ Currently only has the tank hardpoints
 	default_ammo = /datum/ammo/rocket/tow //Fun fact, AP rockets seem to be a straight downgrade from normal rockets. Maybe I'm missing something...
 	current_rounds = 2
 	max_rounds = 2
-	point_cost = 100
+	point_cost = 0
 	gun_type = /obj/item/hardpoint/secondary/towlauncher
 
 
@@ -1240,7 +1240,7 @@ Currently only has the tank hardpoints
 	default_ammo = /datum/ammo/bullet/smartgun
 	current_rounds = 500
 	max_rounds = 500
-	point_cost = 10
+	point_cost = 0
 	gun_type = /obj/item/hardpoint/secondary/m56cupola
 
 
@@ -1253,7 +1253,7 @@ Currently only has the tank hardpoints
 	default_ammo = /datum/ammo/grenade_container
 	current_rounds = 20
 	max_rounds = 20
-	point_cost = 25
+	point_cost = 0
 	gun_type = /obj/item/hardpoint/secondary/grenade_launcher
 
 	update_icon()
@@ -1274,7 +1274,7 @@ Currently only has the tank hardpoints
 	default_ammo = /datum/ammo/grenade_container/smoke
 	current_rounds = 10
 	max_rounds = 10
-	point_cost = 5
+	point_cost = 0
 	//gun_type = /obj/item/hardpoint/support/smoke_launcher
 
 	update_icon()
