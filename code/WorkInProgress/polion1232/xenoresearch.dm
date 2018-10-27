@@ -2,10 +2,14 @@ datum/marineResearch                        //Holder
 	var/list/available_tech = list()
 	var/list/known_tech = list()
 	var/list/possible_tech = list()
+	var/list/known_design = list()
+	var/list/possible_design = list()
 
 datum/marineResearch/New()
 	for(var/T in subtypesof(/datum/marineTech))
 		possible_tech += new T(src)
+	for(var/T in subtypesof(/datum/marine_design))
+		possible_design += new T(src)
 
 datum/marineResearch/proc/Check_tech(tech)					// return 0 if tech not available nor known, return 1 if known, return 2 if available
 	for(var/datum/marineTech/avail in available_tech)
@@ -62,9 +66,26 @@ datum/marineResearch/proc/CheckAvail()
 				possible_tech -= possible
 	return
 
+datum/marineResearch/proc/CheckDesigns()
+	var/fl = 0
+	for(var/datum/marine_design/design in possible_design)
+		for(var/id in design.req_tech)
+			fl = 0
+			for(var/datum/marineTech/known in known_tech)
+				if(id == known.id)
+					fl = 1
+		if(!fl)
+			continue
+		AddDesigns(design)
+
+datum/marineResearch/proc/AddDesigns(datum/marine_design/design)			//Haphazardous[2]
+	possible_design -= design
+	known_design += design
+
 datum/marineResearch/proc/AvailToKnown(datum/marineTech/reserched)			//Haphazardous
 	available_tech -= reserched
 	known_tech += reserched
+	CheckDesigns()
 
 /datum/marineTech
 	var/name = "name"					//Name of the technology.
