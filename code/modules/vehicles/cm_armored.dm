@@ -487,6 +487,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		to_chat(usr, "<span class='notice'>You reload the [HP.name].</span>")
 	else
 		to_chat(usr, "<span class='notice'>You empty the [HP.name].</span>")
+	playsound(src, 'sound/weapons/gun_mortar_unpack.ogg', 40, 1)
 
 /obj/vehicle/multitile/root/cm_armored/proc/get_activatable_hardpoints()
 	var/list/slots = list()
@@ -1092,7 +1093,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	var/obj/vehicle/multitile/root/cm_armored/CA = root
 	for(var/mob/living/M in get_turf(src))
 		var/facing = get_dir(src, M)
-		if(istype(CA.hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow))
+		if(istype(CA.hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow) && M.lying == 1)
 			if(src.dir == facing)
 				step_away(M,root,0)
 		else
@@ -1136,7 +1137,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/hitbox/cm_armored/Uncrossed(var/atom/movable/A)
 	if(isliving(A))
 		var/mob/living/M = A
-		M.sleeping = 3
+		M.sleeping = 2
 
 	return ..()
 
@@ -1267,7 +1268,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		return 0
 
 	M.animation_attack_on(src)
-	playsound(M.loc, 'sound/weapons/alien_claw_swipe.ogg', 25, 1)
+	playsound(M.loc, pick('sound/weapons/alien_claw_metal1.ogg', 'sound/weapons/alien_claw_metal2.ogg', 'sound/weapons/alien_claw_metal3.ogg'), 25, 1)
 	M.visible_message("<span class='danger'>\The [M] slashes [src]!</span>", \
 	"<span class='danger'>You slash [src]!</span>")
 
@@ -1277,7 +1278,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 //used when entrance is blocked by something awful
 /obj/vehicle/multitile/root/cm_armored/tank/proc/get_new_exit_point()
-	var dir = rand(1, 8)
+	var dir = pick(1, 2, 4, 5, 6, 8, 9, 10)
 	var/turf/T
 	T = get_step(src, dir)
 	T = get_step(T, dir)
@@ -1307,7 +1308,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		return
 
 
-	if(tile_blocked_check(entrance.loc))		//vehicle entrance cannot be blocked to prevent TCs getting in
+	if(tile_blocked_check(get_turf(entrance)))		//vehicle entrance cannot be blocked to prevent TCs getting in
 		handle_player_entrance(user)
 		return
 

@@ -135,7 +135,7 @@
 //For the tank, start forcing people out if everything is broken
 /obj/vehicle/multitile/root/cm_armored/tank/handle_all_modules_broken()
 	deactivate_all_hardpoints()
-	var/turf/T = locate(entrance.loc)
+	var/turf/T = get_turf(entrance)
 	if(tile_blocked_check(T))
 		src.visible_message("<span class='danger'>Debug message: entrance turf check - blocked!</span>",)
 		T = get_new_exit_point()
@@ -204,6 +204,8 @@
 			if(O.species && O.species.name == "Yautja") //NOPE
 				O.show_message("Some loud speech heard from the tank, but you can't understand it.")
 				continue
+			O.show_message("<B>Tank</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2)
+		for(var/mob/dead/observer/O in (range(7,src)))
 			O.show_message("<B>Tank</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2)
 		for(var/mob/living/carbon/Xenomorph/X in (range(7,src)))
 			X.show_message("Some loud tallhost noises heard from the metal turtle, but you can't understand it.")
@@ -529,17 +531,21 @@
 						ST.slayer = 0
 						ST.update_icon(1, 0)
 				var/obj/effect/alien/weeds/WE
-				if(locate(/obj/effect/alien/weeds) in T)
-					for(WE in T)
-						WE.Dispose()
+				for(WE in T)
+					WE.Dispose()
 				var/obj/item/explosive/mine/MN
-				if(locate(/obj/item/explosive/mine) in T)
-					for(MN in T)
-						MN.trigger_explosion()
+				for(MN in T)
+					MN.trigger_explosion()
+				var/obj/structure/bed/nest/XN
+				for(XN in T)
+					XN.unbuckle()
+					XN.Dispose()
+				var/obj/effect/alien/resin/sticky/ST
+				for(ST in T)
+					ST.Dispose()
 				var/obj/effect/alien/resin/trap/TR
-				if(locate(/obj/effect/alien/resin/trap) in T)
-					for(TR in T)
-						TR.Dispose()
+				for(TR in T)
+					TR.Dispose()
 
 
 

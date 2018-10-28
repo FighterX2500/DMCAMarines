@@ -86,7 +86,7 @@
 		for(var/mob/living/carbon/M in range(1,Center))
 			M.visible_message("<span class='danger'>[M] got a concussion from \a [P.name]!</span>","[isXeno(M)?"<span class='xenodanger'>":"<span class='highdanger'>"]You are concussed from \a </b>[P.name] explosion</b>!</span>")
 			M.apply_damage(rand(5,P.damage), "explosion")
-			staggerstun(M, P, config.max_shell_range, 0, 0, 4, 3, 0, 1, 3, 2)
+			staggerstun(M, P, config.max_shell_range, 0, 0, 3, 4, 0, 1, 3, 2)
 
 	proc/knockback(mob/M, obj/item/projectile/P, var/max_range = 2)
 		if(!M || M == P.firer)
@@ -983,7 +983,7 @@
 	shell_speed = config.fast_shell_speed
 
 /datum/ammo/rocket/autocannon/on_hit_mob(mob/M, obj/item/projectile/P)
-	staggerstun(M, P, config.max_shell_range, 0, 0, 4, 3, 0, 1, 3, 2)
+	staggerstun(M, P, config.max_shell_range, 0, 0, 3, 4, 0, 1, 3, 2)
 
 /datum/ammo/rocket/autocannon/on_hit_obj(obj/O, obj/item/projectile/P)
 	area_stagger_burst(get_turf(P), P)
@@ -1009,7 +1009,7 @@
 	shell_speed = config.fast_shell_speed
 
 /datum/ammo/rocket/autocannon/on_hit_mob(mob/M, obj/item/projectile/P)
-	staggerstun(M, P, config.max_shell_range, 0, 0, 4, 3, 0, 1, 3, 2)
+	staggerstun(M, P, config.max_shell_range, 0, 0, 3, 4, 0, 1, 3, 2)
 
 /datum/ammo/rocket/autocannon/on_hit_obj(obj/O, obj/item/projectile/P)
 	area_stagger_burst(get_turf(P), P)
