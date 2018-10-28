@@ -999,7 +999,7 @@
 	icon_state = "bullet"
 	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET
 
-/datum/ammo/rocket/autocannon/New()
+/datum/ammo/rocket/autocannon/upp/New()
 	..()
 	accuracy = config.med_hit_accuracy
 	accurate_range = config.long_shell_range
@@ -1008,16 +1008,16 @@
 	penetration= config.low_armor_penetration
 	shell_speed = config.fast_shell_speed
 
-/datum/ammo/rocket/autocannon/on_hit_mob(mob/M, obj/item/projectile/P)
+/datum/ammo/rocket/autocannon/upp/on_hit_mob(mob/M, obj/item/projectile/P)
 	staggerstun(M, P, config.max_shell_range, 0, 0, 3, 4, 0, 1, 3, 2)
 
-/datum/ammo/rocket/autocannon/on_hit_obj(obj/O, obj/item/projectile/P)
+/datum/ammo/rocket/autocannon/upp/on_hit_obj(obj/O, obj/item/projectile/P)
 	area_stagger_burst(get_turf(P), P)
 
-/datum/ammo/rocket/autocannon/on_hit_turf(turf/T, obj/item/projectile/P)
+/datum/ammo/rocket/autocannon/upp/on_hit_turf(turf/T, obj/item/projectile/P)
 	area_stagger_burst(get_turf(P), P)
 
-/datum/ammo/rocket/autocannon/do_at_max_range(obj/item/projectile/P)
+/datum/ammo/rocket/autocannon/upp/do_at_max_range(obj/item/projectile/P)
 	area_stagger_burst(get_turf(P), P)
 
 /datum/ammo/rocket/wp
