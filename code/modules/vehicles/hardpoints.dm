@@ -1005,7 +1005,6 @@ Currently only has the tank hardpoints
 
 	maxhealth = 700
 	health = 700
-	is_activatable = 1
 	point_cost = 100
 	hp_weight = 3
 

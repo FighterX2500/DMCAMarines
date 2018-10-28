@@ -1278,7 +1278,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 //used when entrance is blocked by something awful
 /obj/vehicle/multitile/root/cm_armored/tank/proc/get_new_exit_point()
-	var dir = rand(1, 8)
+	var dir = pick(1, 2, 4, 5, 6, 8, 9, 10)
 	var/turf/T
 	T = get_step(src, dir)
 	T = get_step(T, dir)

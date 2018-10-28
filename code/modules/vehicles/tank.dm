@@ -540,6 +540,9 @@
 				for(XN in T)
 					XN.unbuckle()
 					XN.Dispose()
+				var/obj/effect/alien/resin/sticky/ST
+				for(ST in T)
+					ST.Dispose()
 				var/obj/effect/alien/resin/trap/TR
 				for(TR in T)
 					TR.Dispose()
