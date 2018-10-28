@@ -84,9 +84,10 @@ Currently only has the tank hardpoints
 		return 0
 
 	user.temp_drop_inv_item(A, 0)
-	to_chat(user, "<span class='notice'>You install \the [A] in \the [owner].</span>")
+	user.visible_message("<span class='notice'>[user] installs [A] into [owner].</span>",
+		"<span class='notice'>You install \the [A] in \the [owner].</span>")
 	if (clips.len == 0)
-		to_chat(user, "<span class='notice'>You hear clanking as \the [A] is getting automatically loaded into the weapon.</span>")
+		user.visible_message("<span class='notice'>You hear clanking as \the [A] is getting automatically loaded into \the weapon.</span>")
 	clips += A
 	return 1
 

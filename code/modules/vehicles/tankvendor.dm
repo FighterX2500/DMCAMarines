@@ -204,6 +204,13 @@
 		return
 	if(stat & NOPOWER)
 		icon_state = "drone_fab_nopower"
+		if(busy)
+			playsound(src, pick('sound/machines/hydraulics_1.ogg', 'sound/machines/hydraulics_2.ogg'), 40, 1)
+			sleep(10)
+			var/turf/T = locate(x+1,y,z)
+			HP.Move(T)
+			HP = null
+			busy = FALSE
 		return
 	if(busy)
 		icon_state = "drone_fab_active"
@@ -257,17 +264,19 @@
 	icon_state = "drone_fab_active"
 	busy = TRUE
 	var/timer = (100 - health_per) * 30	//here we check the amount of missing hp in % and then multiply by 30, so competely broken module requires 5min (300s) to fix
-	var/adjustment = rand(0, 1800)		//here we adjust that number by random amount of deciseconds. Adjustment will be from 0 to 3 mins.
+	var/adjustment = rand(0, 600)		//here we adjust that number by random amount of deciseconds. Adjustment will be from 0 to 1 min.
 	timer += adjustment
 	to_chat(user, "<span class='notice'>On [src] screen you see that estimated time till module is repaired: [timer / 10] seconds.</span>")
 
-	sleep(timer)
+	for(var/i=0;i<5;i++)
+		sleep(timer/5)
+		HP.health += round((100 - health_per)/5)
 	HP.health = HP.maxhealth
 	busy = FALSE
 	playsound(src, pick('sound/machines/hydraulics_1.ogg', 'sound/machines/hydraulics_2.ogg'), 40, 1)
 	sleep(10)
 	playsound(src, 'sound/machines/twobeep.ogg', 40, 1)
-	visible_message("<span class='notice'>[src] states: \"Repair complete.\" and ejects module.</span>")
+	visible_message("<span class='notice'>[src] states: \"Repair complete\" and ejects module.</span>")
 	HP.Move(T)
 	HP = null
 	icon_state = "drone_fab_idle"
@@ -652,7 +661,7 @@
 	idle_power_usage = 20
 	icon = 'icons/obj/machines/drone_fab.dmi'
 	icon_state = "drone_fab_idle"
-	var/tank_points = 525
+	var/tank_points = 425
 	var/busy
 
 /obj/machinery/tank_part_fabricator/New()
@@ -747,7 +756,7 @@
 	busy = TRUE
 	sleep(100)
 	busy = FALSE
-	var/turf/T = locate(x+1,y-1,z)
+	var/turf/T = locate(x+1,y,z)
 	playsound(src, 'sound/machines/hydraulics_1.ogg', 40, 1)
 	new part_type(T)
 	icon_state = "drone_fab_idle"
