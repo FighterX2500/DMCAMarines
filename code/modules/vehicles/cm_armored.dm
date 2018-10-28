@@ -9,9 +9,9 @@
 #define HDPT_SUPPORT "support"
 #define HDPT_ARMOR "armor"
 #define HDPT_TREADS "treads"
-#define T_LIGHT "light"
-#define T_MEDIUM "medium"
-#define T_HEAVY "heavy"
+#define WEIGHT_LIGHT "light"
+#define WEIGHT_MEDIUM "medium"
+#define WEIGHT_HEAVY "heavy"
 
 //Percentages of what hardpoints take what damage, e.g. armor takes 37.5% of the damage
 var/list/armorvic_dmg_distributions = list(
@@ -79,7 +79,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	//Changes cooldowns and accuracies
 	var/list/misc_ratios = list(
-		"OD_buff" = 1.0,
+		"OD_buff" = FALSE,
 		"prim_acc" = 1.0,
 		"secd_acc" = 1.0,
 		"supp_acc" = 1.0,
@@ -149,81 +149,81 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	switch (t_weight)
 		if(8)
-			speed = 3.5
-			t_class = T_LIGHT
+			speed = 3.5 * ( (misc_ratios["OD_buff"]) ? 0.9 : 1 )	//this is needed for tweaking OD buff for different classes of tank
+			t_class = WEIGHT_LIGHT
 			w_ratios["w_prim_acc"] = 0.90
 			w_ratios["w_secd_acc"] = 0.92
 			//w_ratios["w_supp_acc"] = 0.92
 		if(9)
-			speed = 4.2
-			t_class = T_LIGHT
+			speed = 4.2 * ( (misc_ratios["OD_buff"]) ? 0.8 : 1 )
+			t_class = WEIGHT_LIGHT
 			w_ratios["w_prim_acc"] = 0.92
 			w_ratios["w_secd_acc"] = 0.95
 			//w_ratios["w_supp_acc"] = 0.95
 		if(10)
-			speed = 5
-			t_class = T_LIGHT
+			speed = 5 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
+			t_class = WEIGHT_LIGHT
 			w_ratios["w_prim_acc"] = 0.95
 			w_ratios["w_secd_acc"] = 0.98
 			//w_ratios["w_supp_acc"] = 0.97
 		if(11)
-			speed = 6
-			t_class = T_MEDIUM
+			speed = 6 * ( (misc_ratios["OD_buff"]) ? 0.6 : 1 )
+			t_class = WEIGHT_MEDIUM
 			w_ratios["w_prim_acc"] = 1.0
 			w_ratios["w_secd_acc"] = 1.0
 			//w_ratios["w_supp_acc"] = 1.0
 		if(12)
-			speed = 7
-			t_class = T_MEDIUM
+			speed = 7 * ( (misc_ratios["OD_buff"]) ? 0.65 : 1 )
+			t_class = WEIGHT_MEDIUM
 			w_ratios["w_prim_acc"] = 1.0
 			w_ratios["w_secd_acc"] = 1.0
 			//w_ratios["w_supp_acc"] = 1.0
 		if(13)
-			speed = 7.5
-			t_class = T_MEDIUM
+			speed = 7.5 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
+			t_class = WEIGHT_MEDIUM
 			w_ratios["w_prim_acc"] = 1.0
 			w_ratios["w_secd_acc"] = 1.0
 			//w_ratios["w_supp_acc"] = 1.0
 		if(14)
-			speed = 8
-			t_class = T_MEDIUM
+			speed = 8 * ( (misc_ratios["OD_buff"]) ? 0.75 : 1 )
+			t_class = WEIGHT_MEDIUM
 			w_ratios["w_prim_acc"] = 1.0
 			w_ratios["w_secd_acc"] = 1.0
 			//w_ratios["w_supp_acc"] = 1.0
 		if(15)
-			speed = 9
-			t_class = T_MEDIUM
+			speed = 9 * ( (misc_ratios["OD_buff"]) ? 0.8 : 1 )
+			t_class = WEIGHT_MEDIUM
 			w_ratios["w_prim_acc"] = 1.0
 			w_ratios["w_secd_acc"] = 1.0
 			//w_ratios["w_supp_acc"] = 1.0
 		if(16)
-			speed = 14
-			t_class = T_HEAVY
+			speed = 14 * ( (misc_ratios["OD_buff"]) ? 0.65 : 1 )
+			t_class = WEIGHT_HEAVY
 			w_ratios["w_prim_acc"] = 1.02
 			w_ratios["w_secd_acc"] = 1.01
 			//w_ratios["w_supp_acc"] = 1.01
 		if(17)
-			speed = 15.5
-			t_class = T_HEAVY
+			speed = 15.5 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
+			t_class = WEIGHT_HEAVY
 			w_ratios["w_prim_acc"] = 1.03
 			w_ratios["w_secd_acc"] = 1.02
 			//w_ratios["w_supp_acc"] = 1.02
 		if(18)
-			speed = 17
-			t_class = T_HEAVY
+			speed = 17 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
+			t_class = WEIGHT_HEAVY
 			w_ratios["w_prim_acc"] = 1.04
 			w_ratios["w_secd_acc"] = 1.03
 			//w_ratios["w_supp_acc"] = 1.03
 		if(19)
-			speed = 18.5
-			t_class = T_HEAVY
+			speed = 18.5 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
+			t_class = WEIGHT_HEAVY
 			w_ratios["w_prim_acc"] = 1.05
 			w_ratios["w_secd_acc"] = 1.04
 			//w_ratios["w_supp_acc"] = 1.04
 
 		else
-			speed = 3.0
-			t_class = T_LIGHT
+			speed = 3.0 * ( (misc_ratios["OD_buff"]) ? 0.9 : 1 )
+			t_class = WEIGHT_LIGHT
 			w_ratios["w_prim_acc"] = 0.85
 			w_ratios["w_secd_acc"] = 0.85
 			//w_ratios["w_supp_acc"] = 0.90
@@ -233,7 +233,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/root/cm_armored/relaymove(var/mob/user, var/direction)
 	if(world.time < next_move) return
 	if(hardpoints[HDPT_TREADS] && hardpoints[HDPT_TREADS].health > 0)	//OD doesn't affect moving without treads anymore
-		next_move = world.time + src.speed * misc_ratios.["OD_buff"]
+		next_move = world.time + src.speed
 	else
 		next_move = world.time + move_delay
 
@@ -245,7 +245,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	if(world.time < next_move && !force) return
 
 	if(hardpoints[HDPT_TREADS] && hardpoints[HDPT_TREADS].health > 0)	//same goes for turning
-		next_move = world.time + src.speed * misc_ratios.["OD_buff"] * (force ? 2 : 3) //3 for a 3 point turn, idk
+		next_move = world.time + src.speed * (force ? 2 : 3) //3 for a 3 point turn, idk
 	else
 		next_move = world.time + move_delay * (force ? 2 : 3)
 
@@ -653,7 +653,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		if(isXeno(M))
 			var/mob/living/carbon/Xenomorph/XEN = M
 			switch(CA.t_class)
-				if(T_LIGHT)
+				if(WEIGHT_LIGHT)
 					switch(XEN.t_squish_level)
 						if(0)
 							M.KnockDown(5)
@@ -677,7 +677,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 						if(3)
 							//M.visible_message("<span class='danger'>[M] pushes against the [src], holding it in place with ease!</span>", "<span class='xenodanger'>You stopped [src]! It's no match to you!</span>")
 							return
-				if(T_MEDIUM)
+				if(WEIGHT_MEDIUM)
 					switch(XEN.t_squish_level)
 						if(0)
 							M.KnockDown(5)
@@ -702,7 +702,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 						if(3)
 							//M.visible_message("<span class='danger'>[M] pushes against the [src], holding it in place with effort!</span>", "<span class='xenodanger'>You stopped [src]!</span>")
 							return
-				if(T_HEAVY)
+				if(WEIGHT_HEAVY)
 					switch(XEN.t_squish_level)
 						if(0)
 							M.KnockDown(5)
