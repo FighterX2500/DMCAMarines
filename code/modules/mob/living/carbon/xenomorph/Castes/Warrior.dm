@@ -21,6 +21,7 @@
 	evolves_to = list("Praetorian", "Crusher")
 	armor_deflection = 30
 	tier = 2
+	t_squish_level = 2
 	upgrade = 0
 	actions = list(
 		/datum/action/xeno_action/xeno_resting,

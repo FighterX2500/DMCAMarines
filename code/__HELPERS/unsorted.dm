@@ -186,44 +186,113 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 
 //among other things, used by flamethrower and boiler spray to calculate if flame/spray can pass through.
+/proc/PostBlocksFire(turf/loc) //Will be affected by fire but not allow it to spread further.
+	if(loc.density)
+		return TRUE
+	for(var/obj/structure/window/D in loc)
+		if(!D.density)
+			continue
+		if(D.is_full_window())
+			return TRUE
+	for(var/obj/machinery/door/D in loc)
+		if(!D.density)
+			continue
+		if(!istype(D, /obj/machinery/door/window))
+			return TRUE	// it's a real, air blocking door
+	for(var/obj/structure/mineral_door/D in loc)
+		if(D.density)
+			return TRUE
+	return FALSE
+
+/proc/LinkPreBlocksFire(turf/A, turf/B) //Will cut fire, protecting the tile.
+	if(A == null || B == null)
+		return TRUE
+	var/abdir = get_dir(A,B)
+	if(abdir & (abdir-1))//is diagonal direction
+		var/turf/Y = get_step(A,abdir&(NORTH|SOUTH))
+		if(!DirPreBlockedFire(A,Y) && !DirPreBlockedFire(Y,B))
+			return FALSE // can go through the Y axis
+		var/turf/X = get_step(A,abdir&(EAST|WEST))
+		if(!DirPreBlockedFire(A,X) && !DirPreBlockedFire(X,B))
+			return FALSE // can go through the X axis
+		return TRUE // both directions blocked
+	if(DirPreBlockedFire(A,B))
+		return TRUE
+	return FALSE
+
+/proc/DirPreBlockedFire(turf/A,turf/B)
+	var/abdir = get_dir(A,B)
+	var/badir = get_dir(B,A)
+	for(var/obj/structure/window/D in A)
+		if(!D.density)
+			continue
+		if(D.dir == abdir)
+			return TRUE
+	for(var/obj/machinery/door/D in A)
+		if(!D.density)
+			continue
+		if(D.dir == abdir)
+			return TRUE
+	for(var/obj/structure/window/D in B)
+		if(!D.density)
+			continue
+		if(D.dir == badir)
+			return TRUE
+	for(var/obj/machinery/door/D in B)
+		if(!D.density)
+			continue
+		if(D.dir == badir)
+			return TRUE
+	return FALSE
+
 /proc/LinkBlocked(turf/A, turf/B)
-	if(A == null || B == null) return 1
+	if(A == null || B == null)
+		return TRUE
 	var/adir = get_dir(A,B)
 	var/rdir = get_dir(B,A)
 	if(adir & (adir-1))//is diagonal direction
 		var/turf/iStep = get_step(A,adir&(NORTH|SOUTH))
-		if(!iStep.density && !LinkBlocked(A,iStep) && !LinkBlocked(iStep,B)) return 0
+		if(!iStep.density && !LinkBlocked(A,iStep) && !LinkBlocked(iStep,B))
+			return FALSE
 
 		var/turf/pStep = get_step(A,adir&(EAST|WEST))
-		if(!pStep.density && !LinkBlocked(A,pStep) && !LinkBlocked(pStep,B)) return 0
-		return 1
+		if(!pStep.density && !LinkBlocked(A,pStep) && !LinkBlocked(pStep,B))
+			return FALSE
+		return TRUE
 
-	if(DirBlocked(A,adir)) return 1
-	if(DirBlocked(B,rdir)) return 1
-	return 0
+	if(DirBlocked(A,adir))
+		return TRUE
+	if(DirBlocked(B,rdir))
+		return TRUE
+	return FALSE
 
 /proc/DirBlocked(turf/loc,var/direction)
 	for(var/obj/structure/window/D in loc)
-		if(!D.density)			continue
-		if(D.is_full_window())	return 1
-		if(D.dir == direction) return 1
+		if(!D.density)
+			continue
+		if(D.is_full_window())
+			return TRUE
+		if(D.dir == direction)
+			return TRUE
 
 	for(var/obj/machinery/door/D in loc)
-		if(!D.density)			continue
+		if(!D.density)
+			continue
 		if(istype(D, /obj/machinery/door/window))
-			if(D.dir == direction)		return 1
-		else return 1	// it's a real, air blocking door
+			if(D.dir == direction)
+				return TRUE
+		else
+			return TRUE	// it's a real, air blocking door
 	for(var/obj/structure/mineral_door/D in loc)
-		if(D.density) return 1
-	return 0
+		if(D.density)
+			return TRUE
+	return FALSE
 
 /proc/TurfBlockedNonWindow(turf/loc)
 	for(var/obj/O in loc)
 		if(O.density && !istype(O, /obj/structure/window))
-			return 1
-	return 0
-
-
+			return TRUE
+	return FALSE
 
 /proc/sign(x)
 	return x!=0?x/abs(x):0
@@ -519,6 +588,33 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 	return creatures
 
+/proc/getlivinghumans()
+	var/list/mobs = sorthumans()
+	var/list/names = list()
+	var/list/creatures = list()
+	var/list/namecounts = list()
+	for(var/mob/M in mobs)
+		if(isYautja(M))
+			continue
+		if(iszombie(M))
+			continue
+		if (M.stat == 2)
+			continue
+		if(!M.ckey || !M.client) 
+			continue
+		var/name = M.name
+		if (name in names)
+			namecounts[name]++
+			name = "[name] ([namecounts[name]])"
+		else
+			names.Add(name)
+			namecounts[name] = 1
+		if (M.real_name && M.real_name != M.name)
+			name += " \[[M.real_name]\]"
+		creatures[name] = M
+
+	return creatures
+
 //Orders mobs by type then by name
 /proc/sortmobs()
 	var/list/moblist = list()
@@ -755,21 +851,23 @@ proc/anim(turf/location,atom/target,a_icon,a_icon_state as text,flick_anim as te
 	return toReturn
 
 //Step-towards method of determining whether one atom can see another. Similar to viewers()
-/proc/can_see(var/atom/source, var/atom/target, var/length=5) // I couldnt be arsed to do actual raycasting :I This is horribly inaccurate.
+/proc/can_see(atom/source, atom/target, length=5) // I couldnt be arsed to do actual raycasting :I This is horribly inaccurate.
 	var/turf/current = get_turf(source)
 	var/turf/target_turf = get_turf(target)
-	var/steps = 0
-
-	while(current != target_turf)
-		if(steps > length) return 0
-		if(current.opacity) return 0
-		for(var/atom/A in current)
-			if(A.opacity) return 0
+	if(current == target_turf)
+		return TRUE
+	if(get_dist(current, target_turf) > length)
+		return FALSE
+	current = get_step_towards(source, target_turf)
+	while((current != target_turf))
+		if(current.opacity)
+			return FALSE
+		for(var/thing in current)
+			var/atom/A = thing
+			if(A.opacity)
+				return FALSE
 		current = get_step_towards(current, target_turf)
-		steps++
-
-	return 1
-
+	return TRUE
 /proc/is_blocked_turf(var/turf/T)
 	var/cant_pass = 0
 	if(T.density) cant_pass = 1

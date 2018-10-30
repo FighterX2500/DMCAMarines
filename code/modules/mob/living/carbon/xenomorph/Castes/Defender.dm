@@ -22,6 +22,7 @@
 	charge_type = 2 //Pounce - Hunter
 	armor_deflection = 40
 	tier = 1
+	t_squish_level = 2
 	upgrade = 0
 	actions = list(
 		/datum/action/xeno_action/xeno_resting,
