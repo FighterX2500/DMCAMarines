@@ -38,6 +38,7 @@
 	attack_delay = -2
 	speed = -2.1
 	tier = 1
+	t_squish_level = 2
 	upgrade = -1 //Predaliens are already in their ultimate form, they don't get even better
 
 	var/butchered_last //world.time to prevent spam.

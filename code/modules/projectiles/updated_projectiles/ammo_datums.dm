@@ -47,6 +47,7 @@
 	var/bonus_projectiles_type 					// Type path of the extra projectiles
 	var/bonus_projectiles_amount 	= 0 		// How many extra projectiles it shoots out. Works kind of like firing on burst, but all of the projectiles travel together
 	var/debilitate[]				= null 		// Stun,knockdown,knockout,irradiate,stutter,eyeblur,drowsy,agony
+	var/barricade_clear_distance	= 1			// How far the bullet can travel before incurring a chance of hitting barricades; normally 1.
 
 	New()
 		accuracy 			= config.min_hit_accuracy 	// This is added to the bullet's base accuracy.
@@ -78,6 +79,14 @@
 
 	proc/on_hit_obj(obj/O, obj/item/projectile/P) //Special effects when hitting objects.
 		return
+
+	proc/area_stagger_burst(turf/Center, obj/item/projectile/P)	//by Jeser specifically for autocannon. Mix of Burst() and Stagger(): Deals damage in area + applies stagger to movs in area
+		if(!Center || !P)
+			return
+		for(var/mob/living/carbon/M in range(1,Center))
+			M.visible_message("<span class='danger'>[M] got a concussion from \a [P.name]!</span>","[isXeno(M)?"<span class='xenodanger'>":"<span class='highdanger'>"]You are concussed from \a </b>[P.name] explosion</b>!</span>")
+			M.apply_damage(rand(5,P.damage), "explosion")
+			staggerstun(M, P, config.max_shell_range, 0, 0, 3, 4, 0, 1, 3, 2)
 
 	proc/knockback(mob/M, obj/item/projectile/P, var/max_range = 2)
 		if(!M || M == P.firer)
@@ -142,6 +151,8 @@
 			#if DEBUG_STAGGER_SLOWDOWN
 			to_chat(world, "<span class='debuginfo'>Damage: Initial slowdown is: <b>[target.slowdown]</b></span>")
 			#endif
+			if(X.slowdown) //No slowdown stacking
+				X.slowdown = 0
 			X.add_slowdown(slowdown)
 			#if DEBUG_STAGGER_SLOWDOWN
 			to_chat(world, "<span class='debuginfo'>Damage: Final slowdown is: <b>[target.slowdown]</b></span>")
@@ -197,8 +208,8 @@
 	proc/drop_flame(turf/T) // ~Art updated fire 20JAN17
 		if(!istype(T))
 			return
-		if(locate(/obj/flamer_fire) in T)
-			return
+		for(var/obj/flamer_fire/F in T) // No stacking flames!
+			cdel(F)
 		new /obj/flamer_fire(T, 20, 20)
 
 
@@ -598,7 +609,7 @@
 	accuracy_var_low = config.med_proj_variance
 	accuracy_var_high = config.med_proj_variance
 	max_range = config.short_shell_range
-	damage = config.lmed_hit_damage
+	damage = config.low_hit_damage
 	damage_var_low = -config.low_proj_variance
 	damage_var_high = config.low_proj_variance
 	damage_falloff *= 0.5
@@ -774,7 +785,7 @@
 	name = "autocannon bullet"
 	icon_state 	= "redbullet" //Red bullets to indicate friendly fire restriction
 	iff_signal = ACCESS_IFF_MARINE
-	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SKIPS_HUMANS|AMMO_SKIP_BARRICADE
+	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SKIPS_HUMANS
 
 /datum/ammo/bullet/turret/New()
 	..()
@@ -788,12 +799,10 @@
 
 /datum/ammo/bullet/turret/dumb
 	icon_state 	= "bullet"
-	flags_ammo_behavior = AMMO_SKIP_BARRICADE
 	iff_signal = 0
 
 /datum/ammo/bullet/machinegun //Adding this for the MG Nests (~Art)
 	name = "machinegun bullet"
-	flags_ammo_behavior = AMMO_SKIP_BARRICADE
 	icon_state 	= "bullet" // Keeping it bog standard with the turret but allows it to be changed. Had to remove IFF so you have to watch out.
 
 /datum/ammo/bullet/machinegun/New()
@@ -802,6 +811,7 @@
 	damage = config.med_hit_damage
 	penetration= config.mhigh_armor_penetration //Bumped the penetration to serve a different role from sentries, MGs are a bit more offensive
 	accuracy = config.med_hit_accuracy
+	barricade_clear_distance = 2
 
 /datum/ammo/bullet/minigun
 	name = "minigun bullet"
@@ -901,7 +911,7 @@
 /datum/ammo/rocket/tow
 	name = "TOW rocket"
 	damage_falloff = 0
-	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET|AMMO_SKIP_BARRICADE
+	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET
 
 /datum/ammo/rocket/tow/New()
 		..()
@@ -935,7 +945,7 @@
 /datum/ammo/rocket/ltb
 	name = "cannon round"
 	icon_state = "ltb"
-	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET|AMMO_SKIP_BARRICADE
+	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET
 
 /datum/ammo/rocket/ltb/New()
 	..()
@@ -956,6 +966,59 @@
 
 /datum/ammo/rocket/ltb/do_at_max_range(obj/item/projectile/P)
 	explosion(get_turf(P), 1, 1, 5, 6)
+
+/datum/ammo/rocket/autocannon
+	name = "autocannon round"
+	icon_state = "redbullet"
+	iff_signal = ACCESS_IFF_MARINE
+	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET|AMMO_SKIPS_HUMANS
+
+/datum/ammo/rocket/autocannon/New()
+	..()
+	accuracy = config.med_hit_accuracy
+	accurate_range = config.long_shell_range
+	max_range = config.max_shell_range
+	damage = config.llow_hit_damage
+	penetration= config.low_armor_penetration
+	shell_speed = config.fast_shell_speed
+
+/datum/ammo/rocket/autocannon/on_hit_mob(mob/M, obj/item/projectile/P)
+	staggerstun(M, P, config.max_shell_range, 0, 0, 3, 4, 0, 1, 3, 2)
+
+/datum/ammo/rocket/autocannon/on_hit_obj(obj/O, obj/item/projectile/P)
+	area_stagger_burst(get_turf(P), P)
+
+/datum/ammo/rocket/autocannon/on_hit_turf(turf/T, obj/item/projectile/P)
+	area_stagger_burst(get_turf(P), P)
+
+/datum/ammo/rocket/autocannon/do_at_max_range(obj/item/projectile/P)
+	area_stagger_burst(get_turf(P), P)
+
+//no IFF for communistic pigs!
+/datum/ammo/rocket/autocannon/upp
+	icon_state = "bullet"
+	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET
+
+/datum/ammo/rocket/autocannon/upp/New()
+	..()
+	accuracy = config.med_hit_accuracy
+	accurate_range = config.long_shell_range
+	max_range = config.max_shell_range
+	damage = config.low_hit_damage
+	penetration= config.low_armor_penetration
+	shell_speed = config.fast_shell_speed
+
+/datum/ammo/rocket/autocannon/upp/on_hit_mob(mob/M, obj/item/projectile/P)
+	staggerstun(M, P, config.max_shell_range, 0, 0, 3, 4, 0, 1, 3, 2)
+
+/datum/ammo/rocket/autocannon/upp/on_hit_obj(obj/O, obj/item/projectile/P)
+	area_stagger_burst(get_turf(P), P)
+
+/datum/ammo/rocket/autocannon/upp/on_hit_turf(turf/T, obj/item/projectile/P)
+	area_stagger_burst(get_turf(P), P)
+
+/datum/ammo/rocket/autocannon/upp/do_at_max_range(obj/item/projectile/P)
+	area_stagger_burst(get_turf(P), P)
 
 /datum/ammo/rocket/wp
 	name = "white phosphorous rocket"
@@ -1396,7 +1459,7 @@
 	name = "flame"
 	icon_state = "pulse0"
 	damage_type = BURN
-	flags_ammo_behavior = AMMO_INCENDIARY|AMMO_IGNORE_ARMOR|AMMO_SKIP_BARRICADE
+	flags_ammo_behavior = AMMO_INCENDIARY|AMMO_IGNORE_ARMOR
 
 /datum/ammo/flamethrower/New()
 	..()

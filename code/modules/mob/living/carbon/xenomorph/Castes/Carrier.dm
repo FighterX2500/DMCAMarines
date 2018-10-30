@@ -31,6 +31,7 @@
 	var/eggs_cur = 0
 	var/eggs_max = 3
 	tier = 2
+	t_squish_level = 2
 	upgrade = 0
 	pixel_x = -16 //Needed for 2x2
 	old_x = -16

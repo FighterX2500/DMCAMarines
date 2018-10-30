@@ -20,6 +20,7 @@
 	speed = -1.6 //Zoom!
 	away_timer = 300
 	tier = 0  //Larva's don't count towards Pop limits
+	t_squish_level = 0
 	upgrade = -1
 	crit_health = -25
 	gib_chance = 25

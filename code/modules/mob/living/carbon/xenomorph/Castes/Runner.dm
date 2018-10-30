@@ -22,10 +22,11 @@
 	flags_pass = PASSTABLE
 	attack_delay = -4
 	tier = 1
+	t_squish_level = 1
 	upgrade = 0
 	pixel_x = -16  //Needed for 2x2
 	old_x = -16
-	pull_speed = -1
+	pull_speed = -0.6
 	actions = list(
 		/datum/action/xeno_action/xeno_resting,
 		/datum/action/xeno_action/regurgitate,
