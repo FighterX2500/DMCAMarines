@@ -137,26 +137,27 @@
 	deactivate_all_hardpoints()
 	var/turf/T = get_turf(entrance)
 	if(tile_blocked_check(T))
-		src.visible_message("<span class='danger'>Debug message: entrance turf check - blocked!</span>",)
-		T = get_new_exit_point()
-		//T = get_step(src, src.dir)
-		//T = get_step(T, src.dir)
-		//var left = turn(src.dir, -90)
-		//T = get_step(T, left)
-		if(tile_blocked_check(T))
-			return
-		else
-			if(gunner)
+		if(gunner)
+			T = get_new_exit_point()
+			if(tile_blocked_check(T))
+				return
+			else
 				gunner.Move(T)
 				to_chat(gunner, "<span class='danger'>You cannot breath in all the smoke inside the vehicle and back hatch is blocked, so you get out through an auxiliary top hatch and jump off the tank!</span>")
-			if(driver)
+				gunner = null
+		if(driver)
+			T = get_new_exit_point()
+			if(tile_blocked_check(T))
+				return
+			else
 				driver.Move(T)
 				to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle and back hatch is blocked, so you get out through an auxiliary top hatch and jump off the tank!</span>")
+				driver = null
 	else
 		to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle so you dismount!</span>")
-		gunner.Move(entrance.loc)
+		gunner.Move(T)
 		to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle so you dismount!</span>")
-		driver.Move(entrance.loc)
+		driver.Move(T)
 	if(gunner.client)
 		gunner.client.mouse_pointer_icon = initial(gunner.client.mouse_pointer_icon)
 	gunner.unset_interaction()
