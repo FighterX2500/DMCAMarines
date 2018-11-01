@@ -1,3 +1,4 @@
+
 datum/marineResearch                        //Holder
 	var/list/available_tech = list()
 	var/list/known_tech = list()
@@ -100,30 +101,30 @@ datum/marineResearch/proc/AvailToKnown(datum/marineTech/reserched)			//Haphazard
 ///// List of ids for teches/////
 
 //First letter determinates path, second - tech
-Starting (Xenomorphs) - 0
+Starting (Xenomorphs) - RESEARCH_XENOSTART
 
-Xeno Biology - 10
-Bio Plating - 11
-Crusher Plating - 12
-Xeno Muscles - 13
-Hivelord thingy - 14
+Xeno Biology - RESEARCH_XENO_BIOLOGY
+Bio Plating - RESEARCH_BIO_PLATING
+Crusher Plating - RESEARCH_CRUSHER_PLATING
+Xeno Muscles - RESEARCH_XENO_MUSCLES
+Hivelord thingy - RESEARCH_XENO_HIVELORD
 
-Xeno Chemistry - 20
-Spitter thingy - 21
+Xeno Chemistry - RESEARCH_XENO_CHEMISTRY
+Spitter thingy - RESEARCH_XENO_SPITTER
 
-Xeno Flora - 30
-Xenoweed - 31
-Xenosack - 32
-Drone thingy - 33
+Xeno Flora - RESEARCH_XENO_FLORA
+Xenoweed - RESEARCH_XENO_WEED
+Xenosack - RESEARCH_XENO_SACK
+Drone thingy - RESEARCH_XENO_DRONE
 
-Queen thingy - 40
+Queen thingy - RESEARCH_XENO_QUEEN
 */
 
 /datum/marineTech/Xenomorph  //Starting tech
 	name = "Xenomorphs"
 	desc = "Analysis of alien species."
 	resdesc = "Well, lets sink it - we are fighting against increadibly powerful and staggering foe. CLF, UPP, pirates - they are nothing compare to those beasts, if not a monsters. We need research further.."
-	id = 0
+	id = RESEARCH_XENOSTART
 
 
 //Xenobiology path//
@@ -131,37 +132,37 @@ Queen thingy - 40
 	name = "Xenomorph Biology"
 	desc = "Analysis of bizzare nature of Xenomorphs"
 	resdesc = "If we thought that humanity is a crowned kings of nature... Xenomorphs are Emperors. Resistant even for vacuum, they blood appears to be acid, that even corrode tank armor... And don't even think about those claws.."
-	id = 10
-	req_tech = list(0)
+	id = RESEARCH_XENO_BIOLOGY
+	req_tech = list(RESEARCH_XENOSTART)
 	need_item = 0									//No need for the item
 
 /datum/marineTech/BioPlating
 	name = "Xenomorph Armor Plating"
 	desc = "Technology of manufacturing valuable plating for standart armor"
 	resdesc = "Even their terrifying nature can benefit Colonial Marines with some valuable upgrades. Molecular structure of their chitin are increadibly strong and durable for being biological at fundamental. So much benefits, and no drawbacks..."
-	id = 11
-	req_tech = list(10)
+	id = RESEARCH_BIO_PLATING
+	req_tech = list(RESEARCH_XENO_BIOLOGY)
 
 /datum/marineTech/CrusherPlating
 	name = "Crusher chitin patterns"
 	desc = "Analysis of durable Crusher's chitin provides us with more reinforced plating"
 	resdesc = "Well, to begin with - Crusher is very tenacious fella to kill even with AP rounds. But the best part of it - flamethowers will lighten him up like 4th July and provide us with stronger upgrades!"
-	id = 12
-	req_tech = list(10)
+	id = RESEARCH_CRUSHER_PLATING
+	req_tech = list(RESEARCH_XENO_BIOLOGY)
 
 /datum/marineTech/Muscle
 	name = "Xenomorph muscle tissue"
 	desc = "Alien muscle tissue using same methods as human muscles, but they proven to be more durable and acid-resistant"
 	resdesc = "It's true, that xenomorph claws can pierce armor, thanks to their sharpness. But to make it worse for our troops, Xenomophs have powerful muscle system, that can even withstand the most powerful of acids. It can still be pierced by standart rifle bullets, but have fun to pierce it with 9mm."
-	id = 13
-	req_tech = list(10)
+	id = RESEARCH_XENO_MUSCLES
+	req_tech = list(RESEARCH_XENO_BIOLOGY)
 
 /datum/marineTech/hivelord
 	name = "Hivelord metabolism"
 	desc = "Detailed analysis of Hivelords' metabolism shows, that their organism very energy-efficent"
 	resdesc = "Wow. Hivelord cannot be poisoned. It cannot overeat either. Whatever it eats, food will provide 100% nutriment, even if it's drugged. Moreover, Hivelord will be basically uncatchable on weed, thanks to sharpened senses and enigmatic connection between xenobiology and xenoflora."
-	id = 14
-	req_tech = list(10, 13, 20, 30, 33)
+	id = RESEARCH_XENO_HIVELORD
+	req_tech = list(RESEARCH_XENO_BIOLOGY, RESEARCH_XENO_MUSCLES, RESEARCH_XENO_CHEMISTRY, RESEARCH_XENO_FLORA, RESEARCH_XENO_DRONE)
 
 
 //Chemistry path
@@ -169,16 +170,16 @@ Queen thingy - 40
 	name = "Xenomorph Chemistry"
 	desc = "Analysis of highly potent Xeno chemistry"
 	resdesc = "Foundation of inner xenochemistry is acids. Yes, their blood are acid, their enzymes are acid, their some kind of DNA(Xenomorph-Based Acid onward on) are STRONG acid. Just don't get caught by Sentinels's shots, or it will be painful."
-	id = 20
-	req_tech = list(0)
+	id = RESEARCH_XENO_CHEMISTRY
+	req_tech = list(RESEARCH_XENOSTART)
 
 
 /datum/marineTech/SpitterChem
 	name = "Spitter's toxicity"
 	desc = "Potency of Spitter's chemisty was been proven highly effective against any target"
 	resdesc = "Spitters are spitting their own XBA at you. They produce it in their glands, but it does not makes it better. But the most facinating about those glands is that they produce XBA of every Xenomorph subspecies."
-	id = 21
-	req_tech = list(20)
+	id = RESEARCH_XENO_SPITTER
+	req_tech = list(RESEARCH_XENO_CHEMISTRY)
 /*
 /datum/marineTech/Pheromones
 	name = "Xenomorph Pheromones"
@@ -193,30 +194,30 @@ Queen thingy - 40
 	name = "Xenomorph Flora"
 	desc = "Analysis of xenoflora, abudantly found near all Hives"
 	resdesc = "It's not a flora. It's all resins. But our troops our ignorant, or stupid enough. But somehow, that resin acts like flora anyway and makes some enigmatic connection with xenobiology."
-	id = 30
-	req_tech = list(0)
-	need_item = 1
+	id = RESEARCH_XENO_FLORA
+	req_tech = list(RESEARCH_XENOSTART)
+	need_item = 0
 
 /datum/marineTech/XenoWeed
 	name = "Xenoweed"
 	desc = "Weed - is a main part of xenomorphs's flora, that can somehow interact with xenomorphs's chitin"
 	resdesc = "Again, it's not a weed. It's a resin that covers any surface on its way. But it in some way alive, thanks to acting like flora."
-	id = 31
-	req_tech = list(30)
+	id = RESEARCH_XENO_WEED
+	req_tech = list(RESEARCH_XENO_FLORA)
 
 /datum/marineTech/XenoSack
 	name = "Purple Sacks"
 	desc = "Those sacks - small 'bushes', that produces weed nearby"
 	resdesc = "As more we study xenoflora, the more enigmatic it for us. Purple Sack - is a small tank with mixture of various xenomorph-based acids with complex organ-like thing. We assume, that thing is responsible for producing weeds nearby."
-	id = 32
-	req_tech = list(30)
+	id = RESEARCH_XENO_SACK
+	req_tech = list(RESEARCH_XENO_FLORA)
 
 /datum/marineTech/XenoDrone
 	name = "Drone resin secrete"
 	desc = "Analysis of various patterns of Drone's secrete glands"
 	resdesc = "Drone is a true enigma. Let's take their secrete glands. Gland, that produces resin. Highly complex and unbelievably small, those glands can rapidly put sacks anywhere. Only one question is unanswered - where does it takes energy for that?"
-	id = 33
-	req_tech = list(10, 30)
+	id = RESEARCH_XENO_DRONE
+	req_tech = list(RESEARCH_XENO_BIOLOGY, RESEARCH_XENO_FLORA)
 
 
 //Xenopsi path
@@ -224,8 +225,8 @@ Queen thingy - 40
 	name = "Xenomorph Psionics"
 	desc = "Analysis of telepathic connections between members of Xenohive"
 	resdesc = "Psionics are no mistery. Xenomorphs have telepathy, but most of them only recieving signals. But our dear Queeny is center of this network! She is responsible for unity inside the Hive! She is commanding Xenomophs Forces! But NO MORE! And her death will be demise for every xeno that had been controlled by her will!"
-	id = 40
-	req_tech = list(0, 10, 20)
+	id = RESEARCH_XENO_QUEEN
+	req_tech = list(RESEARCH_XENOSTART, RESEARCH_XENO_BIOLOGY, RESEARCH_XENO_CHEMISTRY)
 /*
 /datum/marineTech/Disruptor			// Fun starting here
 	name = "Hivelink disruption"

@@ -2261,6 +2261,25 @@ SCIENCE
 	access = ACCESS_MARINE_ENGINEERING
 	group = "Science"
 
+/datum/supply_packs/machinery_parts
+	name = "Surplus Research Equipment"
+	contains = list(
+					/obj/item/stock_parts/micro_laser,
+					/obj/item/stock_parts/micro_laser,
+					/obj/item/stock_parts/micro_laser,
+					/obj/item/stock_parts/manipulator,
+					/obj/item/stock_parts/manipulator,
+					/obj/item/stock_parts/manipulator,
+					/obj/item/stock_parts/scanning_module,
+					/obj/item/stock_parts/scanning_module,
+					/obj/item/stock_parts/matter_bin,
+					/obj/item/stock_parts/matter_bin,
+					/obj/item/stock_parts/matter_bin
+					)
+	cost = RO_PRICE_NEAR_FREE
+	containertype = /obj/structure/closet/crate/science
+	containername = "surplus stock parts crate"
+	group = "Science"
 
 /*******************************************************************************
 SUPPLIES

@@ -465,21 +465,21 @@
 
 		if(1.5) //Available designs
 			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><BR><HR>"
-			if(files.Check_tech(11) == 1)
+			if(files.Check_tech(RESEARCH_BIO_PLATING) == 1)
 				dat += "Name: 'Hunter'-class armor modification<BR>"
 				dat += "Description: Our first attempt to recreate molecular structure of xenomorphs' chitin. Using this structure as basis of armor layer results increaced durability.<BR><BR>"
 				dat += "Name: 'Bughead'-class helmet modification<BR>"
 				dat += "Description: Our first attempt to recreate molecular structure of xenomorphs' chitin. Using this structure as basis of armor layer results increaced durability.<BR><BR>"
-				if(files.Check_tech(12) == 1)
+				if(files.Check_tech(RESEARCH_CRUSHER_PLATING) == 1)
 					dat += "Name: 'Juggernaut'-class armor modification<BR>"
 					dat += "Description: Using crushers' chitin molecular patterns makes our standart armor thicker and durable in exchange of movement speed due to increaced weight.<BR><BR>"
 					dat += "Name: 'Defender'-class helmet modification<BR>"
 					dat += "Description: Using crushers' chitin molecular patterns makes our standart armor thicker and durable.<BR>"
 					dat +=" It may not provide same protection as 'Juggernaut' mod, but still better than 'Bughead'<BR><BR>"
-			if(files.Check_tech(13) == 1)
+			if(files.Check_tech(RESEARCH_XENO_MUSCLES) == 1)
 				dat += "Name: 'Farsight'-class armor modification<BR>"
 				dat += "Description: Including alien muscle tissues in-between layers results joints became more flexible in exchange of armor.<BR><BR>"
-			if(files.Check_tech(13) == 1)
+			if(files.Check_tech(RESEARCH_XENO_MUSCLES) == 1)
 				dat += "Name: 'Blackmarsh'-class boots modification<BR>"
 				dat += "Description: Using thin layer of xenomorph muscle tissue on combat boots completely negates slowdown on xenoweed.<BR><BR>"
 
