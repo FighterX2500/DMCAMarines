@@ -903,7 +903,7 @@ Currently only has the tank hardpoints
 	disp_icon_state = "ballistic_armor"
 
 	apply_buff()
-		owner.dmg_multipliers["acid"] = 1.0
+		owner.dmg_multipliers["acid"] = 0.9
 		owner.dmg_multipliers["slash"] = 0.67
 		owner.dmg_multipliers["explosive"] = 0.8
 		owner.dmg_multipliers["blunt"] = 0.7
@@ -950,7 +950,7 @@ Currently only has the tank hardpoints
 	health = 600
 
 	point_cost = 100
-	hp_weight = 4
+	hp_weight = 3
 
 	icon_state = "concussive_armor"
 
@@ -958,9 +958,9 @@ Currently only has the tank hardpoints
 	disp_icon_state = "concussive_armor"
 
 	apply_buff()
-		owner.dmg_multipliers["acid"] = 1.1
+		owner.dmg_multipliers["acid"] = 1.0
 		owner.dmg_multipliers["slash"] = 0.75
-		owner.dmg_multipliers["explosive"] = 0.6
+		owner.dmg_multipliers["explosive"] = 0.7
 		owner.dmg_multipliers["blunt"] = 0.3
 		owner.dmg_multipliers["bullet"] = 0.4
 
@@ -986,7 +986,7 @@ Currently only has the tank hardpoints
 	disp_icon_state = "paladin_armor"
 
 	apply_buff()
-		owner.dmg_multipliers["acid"] = 0.8
+		owner.dmg_multipliers["acid"] = 0.5
 		owner.dmg_multipliers["slash"] = 0.5
 		owner.dmg_multipliers["explosive"] = 0.4
 		owner.dmg_multipliers["blunt"] = 0.4
@@ -1006,7 +1006,7 @@ Currently only has the tank hardpoints
 	maxhealth = 700
 	health = 700
 	point_cost = 100
-	hp_weight = 3
+	hp_weight = 4
 
 	icon_state = "snowplow"
 
@@ -1014,7 +1014,7 @@ Currently only has the tank hardpoints
 	disp_icon_state = "snowplow"
 
 	apply_buff()
-		owner.dmg_multipliers["acid"] = 1.2
+		owner.dmg_multipliers["acid"] = 1.0
 		owner.dmg_multipliers["slash"] = 0.9
 		owner.dmg_multipliers["explosive"] = 0.5	//demining minefields, after all
 		owner.dmg_multipliers["blunt"] = 0.6
@@ -1052,7 +1052,7 @@ Currently only has the tank hardpoints
 		owner.dmg_multipliers["acid"] = 0.8
 		owner.dmg_multipliers["slash"] = 0.67
 		owner.dmg_multipliers["explosive"] = 0.5
-		owner.dmg_multipliers["blunt"] = 0.7
+		owner.dmg_multipliers["blunt"] = 0.5
 		owner.dmg_multipliers["bullet"] = 0.2
 
 /////////////////

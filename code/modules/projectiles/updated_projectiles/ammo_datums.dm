@@ -80,7 +80,7 @@
 	proc/on_hit_obj(obj/O, obj/item/projectile/P) //Special effects when hitting objects.
 		return
 
-	proc/area_stagger_burst(turf/Center, obj/item/projectile/P)	//by Jeser specifically for autocannon. Mix of Burst() and Stagger(): Deals damage in area + applies stagger to movs in area
+	proc/area_stagger_burst(turf/Center, obj/item/projectile/P)	//by Jeser specifically for autocannon. Mix of Burst() and Stagger(): Deals damage in area + applies stagger to mobs in area
 		if(!Center || !P)
 			return
 		for(var/mob/living/carbon/M in range(1,Center))
