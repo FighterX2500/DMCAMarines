@@ -14,8 +14,6 @@
 	component_parts += new /obj/item/circuitboard/machine/biolathe(src)
 	component_parts += new /obj/item/marineResearch/xenomorp/secretor/hivelord(src)		// Aliens will ABSOLUTELY HATE any researcher, that build this thing
 	component_parts += new /obj/item/stock_parts/manipulator(src)
-	component_parts += new /obj/item/stock_parts/manipulator(src)
-
 
 /obj/machinery/r_n_d/biolathe/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	if (shocked)

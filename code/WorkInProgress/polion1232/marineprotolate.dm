@@ -151,6 +151,8 @@
 			if(linked_biolathe == null)
 				linked_biolathe = D
 				linked_biolathe.linked_protolathe = src
+				RefilBio()
+				break
 
 	else if(href_list["disconnect"])
 		if(linked_biolathe != null)

@@ -141,10 +141,10 @@
 			return TRUE
 		to_chat(user, "You took sample from [src].")
 		if(istype(src, /obj/effect/alien/weeds/node))
-			A.sample = /obj/item/marineResearch/xenomorp/weed/sack
+			A.sample = new /obj/item/marineResearch/xenomorp/weed/sack
 			A.icon_state = "3"
 		else
-			A.sample = /obj/item/marineResearch/xenomorp/weed
+			A.sample = new /obj/item/marineResearch/xenomorp/weed
 			A.icon_state = "2_trava"
 		A.filled = 1
 		return TRUE //don't call afterattack
