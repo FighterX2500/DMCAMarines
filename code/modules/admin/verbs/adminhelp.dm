@@ -20,19 +20,21 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 	adminhelped = 1 //Determines if they get the message to reply by clicking the name.
 
 	var/msg
-	var/list/type = list ("Предложение / Баги", "Геимплей / Ролеплей")
+	/*var/list/type = list ("Предложение / Баги", "Геимплей / Ролеплей")
 	var/selected_type = input("Выберите категорию.", "Admin Help", null, null) as null|anything in type
 	if(selected_type == "Геимплей / Ролеплей")
 		msg = input("Опишите ситуацию:", "Admin Help", null, null) as message|null
-
-	if(selected_type == "Предложение / Баги")
-		switch(alert(sanitize("Adminhelp не для предложений или сообщений о багах - для этого существует GitHub.",,"Go to GitHub","Cancel")))
+	*/
+	msg = input("Шаблон ахелпа, если вы сообщаете о нарушении: \n1. Полное имЯ игрока(ов) (Скопируйте из описаниЯ или логов в чате). \n2. Четко опишите что именно не так сделал игрок, чем больше полезных деталей - тем быстрее разберут ахелп. \n3. Ахелпать надо сразу, как поЯвитсЯ вохможность. Ситуацию, котораЯ случилась больше 30 минут назад никто не станет разбирать. \n4. Репорты игроков не по шаблону имеют высокий шанс не рассматриватьсЯ. \n\nIf you report player, copy his full name and then describe what did he do and don't ahelp things that happened more than 30 mins ago. \nПо поводу багов писать сюда | Bug reports go here: https://github.com/FighterX2500/DMCAMarines/issues", "Admin Help", null, null) as message|null
+	/*if(selected_type == "Предложение / Баги")
+		switch(alert(sanitize("Adminhelp не длЯ предложений или сообщений о багах - длЯ этого существует GitHub.",,"Go to GitHub","Cancel")))
 			if("Go to GitHub")
 				src << link("https://github.com/FighterX2500/DMCAMarines/issues")
 			else
 				return
+	*/
 
-	var/selected_upper = uppertext(selected_type)
+	//var/selected_upper = uppertext(selected_type)
 
 	if(src.handle_spam_prevention(msg,MUTE_ADMINHELP))
 		return
@@ -102,8 +104,11 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 	if(!mob)
 		return	//this doesn't happen
 
-	var/mentor_msg = "<br><br><font color='#009900'><b>[selected_upper]: [get_options_bar(mob, 0, 0, 1, 0)]:</b></font> <br><font color='#DA6200'><b>[msg]</font></b><br>"
-	msg = "<br><br><font color='#009900'><b>[selected_upper]: [get_options_bar(mob, 2, 1, 1)]:</b></font> <br><font color='#DA6200'><b>[msg]</font></b><br>"
+	//var/mentor_msg = "<br><br><font color='#009900'><b>[selected_upper]: [get_options_bar(mob, 0, 0, 1, 0)]:</b></font> <br><font color='#DA6200'><b>[msg]</font></b><br>"
+	//msg = "<br><br><font color='#009900'><b>[selected_upper]: [get_options_bar(mob, 2, 1, 1)]:</b></font> <br><font color='#DA6200'><b>[msg]</font></b><br>"
+	var/mentor_msg = "<br><br><font color='#009900'><b>Gameplay: [get_options_bar(mob, 0, 0, 1, 0)]:</b></font> <br><font color='#DA6200'><b>[msg]</font></b><br>"
+	msg = "<br><br><font color='#009900'><b>Gameplay: [get_options_bar(mob, 2, 1, 1)]:</b></font> <br><font color='#DA6200'><b>[msg]</font></b><br>"
+
 
 	var/admin_number_afk = 0
 
@@ -138,7 +143,8 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 				to_chat(X, msg)
 
 	//show it to the person adminhelping too
-	to_chat(src, "<br><font color='#009900'><b>PM to Staff ([selected_type]): <font color='#DA6200'>[original_msg]</b></font><br>")
+	//to_chat(src, "<br><font color='#009900'><b>PM to Staff ([selected_type]): <font color='#DA6200'>[original_msg]</b></font><br>")
+	to_chat(src, "<br><font color='#009900'><b>PM to Staff: <font color='#DA6200'>[original_msg]</b></font><br>")
 
 	// Adminhelp cooldown
 	verbs -= /client/verb/adminhelp
@@ -183,10 +189,10 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 			(<A HREF='?_src_=holder;adminmoreinfo=[ref_mob]'>?</A>)</b>"
 		if(2)
 			return "<b>[key_name(C, link, name, highlight_special)] \
-			(<A HREF='?_src_=holder;mark=[ref_mob]'>Mark</A>) \
-			(<A HREF='?_src_=holder;noresponse=[ref_mob]'>NR</A>) \
-			(<A HREF='?_src_=holder;warning=[ref_mob]'>Warn</A>) \
-			(<A HREF='?_src_=holder;autoresponse=[ref_mob]'>AutoResponse...</A>) \
+			(<A HREF='?_src_=holder;mark=[ref_mob]'>Пометить</A>) \
+			(<A HREF='?_src_=holder;noresponse=[ref_mob]'>Нет Ответа</A>) \
+			(<A HREF='?_src_=holder;warning=[ref_mob]'>Предупреждение</A>) \
+			(<A HREF='?_src_=holder;autoresponse=[ref_mob]'>Авто-ответ...</A>) \
 			(<A HREF='?_src_=holder;adminmoreinfo=[ref_mob]'>?</A>) \
 			(<A HREF='?_src_=holder;adminplayeropts=[ref_mob]'>PP</A>) \
 			(<A HREF='?_src_=vars;Vars=[ref_mob]'>VV</A>) \
