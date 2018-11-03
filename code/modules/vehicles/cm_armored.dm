@@ -151,20 +151,20 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		if(8)
 			speed = 3.5 * ( (misc_ratios["OD_buff"]) ? 0.9 : 1 )	//this is needed for tweaking OD buff for different classes of tank
 			t_class = WEIGHT_LIGHT
-			w_ratios["w_prim_acc"] = 0.90
-			w_ratios["w_secd_acc"] = 0.92
+			w_ratios["w_prim_acc"] = 0.91
+			w_ratios["w_secd_acc"] = 0.93
 			//w_ratios["w_supp_acc"] = 0.92
 		if(9)
 			speed = 4.2 * ( (misc_ratios["OD_buff"]) ? 0.8 : 1 )
 			t_class = WEIGHT_LIGHT
-			w_ratios["w_prim_acc"] = 0.92
-			w_ratios["w_secd_acc"] = 0.95
+			w_ratios["w_prim_acc"] = 0.93
+			w_ratios["w_secd_acc"] = 0.96
 			//w_ratios["w_supp_acc"] = 0.95
 		if(10)
 			speed = 5 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
 			t_class = WEIGHT_LIGHT
-			w_ratios["w_prim_acc"] = 0.95
-			w_ratios["w_secd_acc"] = 0.98
+			w_ratios["w_prim_acc"] = 0.96
+			w_ratios["w_secd_acc"] = 0.99
 			//w_ratios["w_supp_acc"] = 0.97
 		if(11)
 			speed = 6 * ( (misc_ratios["OD_buff"]) ? 0.6 : 1 )
@@ -224,8 +224,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		else
 			speed = 3.0 * ( (misc_ratios["OD_buff"]) ? 0.9 : 1 )
 			t_class = WEIGHT_LIGHT
-			w_ratios["w_prim_acc"] = 0.85
-			w_ratios["w_secd_acc"] = 0.85
+			w_ratios["w_prim_acc"] = 0.9
+			w_ratios["w_secd_acc"] = 0.9
 			//w_ratios["w_supp_acc"] = 0.90
 
 
