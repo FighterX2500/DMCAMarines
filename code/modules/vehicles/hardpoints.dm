@@ -1190,7 +1190,7 @@ Currently only has the tank hardpoints
 	gun_type = /obj/item/hardpoint/primary/autocannon
 
 	update_icon()
-		if(current_rounds >0)
+		if(current_ammo >0)
 			icon_state = "autocannon_1"
 		else
 			icon_state = "autocannon_0"
