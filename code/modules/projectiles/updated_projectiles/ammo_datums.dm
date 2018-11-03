@@ -85,7 +85,7 @@
 			return
 		for(var/mob/living/carbon/M in range(1,Center))
 			M.visible_message("<span class='danger'>[M] got a concussion from \a [P.name]!</span>","[isXeno(M)?"<span class='xenodanger'>":"<span class='highdanger'>"]You are concussed from \a </b>[P.name] explosion</b>!</span>")
-			M.apply_damage(rand(5,P.damage), "explosion")
+			M.apply_damage(rand(10,P.damage), "explosion")
 			staggerstun(M, P, config.max_shell_range, 0, 0, 3, 4, 0, 1, 3, 2)
 
 	proc/knockback(mob/M, obj/item/projectile/P, var/max_range = 2)

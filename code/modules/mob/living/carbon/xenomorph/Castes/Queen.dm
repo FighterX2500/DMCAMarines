@@ -367,7 +367,7 @@
 		if(dist <= 4)
 			to_chat(M, "<span class='danger'>An ear-splitting guttural roar shakes the ground beneath your feet and disorientates you!</span>")
 			M.stunned += 2 * protection_aura_reduction
-			M.temporary_slowdown = 2 * mobility_aura_reduction
+			M.temporary_slowdown = 3 * mobility_aura_reduction
 			M.KnockDown(2 * protection_aura_reduction)
 			if(!M.eye_blind)
 				M.eye_blurry += 4 * marksman_aura_reduction //blurry vision
@@ -375,7 +375,7 @@
 				M.ear_deaf += 4 //Deafens them temporarily
 		else if(dist >= 5 && dist < 7)
 			M.KnockDown(1 * protection_aura_reduction)
-			M.temporary_slowdown = 1 * mobility_aura_reduction
+			M.temporary_slowdown = 2 * mobility_aura_reduction
 			if(!M.eye_blind)
 				M.eye_blurry += 3 * marksman_aura_reduction
 			to_chat(M, "<span class='danger'>The roar shakes your body to the core, freezing you in place and disorientates you a little!</span>")

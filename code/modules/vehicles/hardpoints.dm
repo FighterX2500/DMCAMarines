@@ -228,7 +228,7 @@ Currently only has the tank hardpoints
 
 	apply_buff()
 		owner.cooldowns["primary"] = 5
-		owner.accuracies["primary"] = 0.9
+		owner.accuracies["primary"] = 0.97
 	is_ready()
 		if(world.time < next_use)
 			to_chat(usr, "<span class='warning'>This module is not ready to be used yet.</span>")
@@ -550,7 +550,7 @@ Currently only has the tank hardpoints
 
 	apply_buff()
 		owner.cooldowns["secondary"] = 7
-		owner.accuracies["secondary"] = 0.4
+		owner.accuracies["secondary"] = 0.8
 
 	is_ready()
 		if(world.time < next_use)
@@ -905,7 +905,7 @@ Currently only has the tank hardpoints
 	apply_buff()
 		owner.dmg_multipliers["acid"] = 0.9
 		owner.dmg_multipliers["slash"] = 0.67
-		owner.dmg_multipliers["explosive"] = 0.8
+		owner.dmg_multipliers["explosive"] = 0.7
 		owner.dmg_multipliers["blunt"] = 0.7
 		owner.dmg_multipliers["bullet"] = 0.2
 
@@ -959,9 +959,9 @@ Currently only has the tank hardpoints
 
 	apply_buff()
 		owner.dmg_multipliers["acid"] = 1.0
-		owner.dmg_multipliers["slash"] = 0.75
-		owner.dmg_multipliers["explosive"] = 0.7
-		owner.dmg_multipliers["blunt"] = 0.3
+		owner.dmg_multipliers["slash"] = 0.67
+		owner.dmg_multipliers["explosive"] = 0.8
+		owner.dmg_multipliers["blunt"] = 0.5
 		owner.dmg_multipliers["bullet"] = 0.4
 
 	remove_buff()
@@ -1017,7 +1017,7 @@ Currently only has the tank hardpoints
 		owner.dmg_multipliers["acid"] = 1.0
 		owner.dmg_multipliers["slash"] = 0.9
 		owner.dmg_multipliers["explosive"] = 0.5	//demining minefields, after all
-		owner.dmg_multipliers["blunt"] = 0.6
+		owner.dmg_multipliers["blunt"] = 0.4
 		owner.dmg_multipliers["bullet"] = 0.5
 
 	remove_buff()
@@ -1190,7 +1190,10 @@ Currently only has the tank hardpoints
 	gun_type = /obj/item/hardpoint/primary/autocannon
 
 	update_icon()
-		icon_state = "autocannon_0"
+		if(current_ammo >0)
+			icon_state = "autocannon_1"
+		else
+			icon_state = "autocannon_0"
 
 /obj/item/ammo_magazine/tank/ltaaap_minigun
 	name = "M74 LTAA-AP Minigun Magazine"

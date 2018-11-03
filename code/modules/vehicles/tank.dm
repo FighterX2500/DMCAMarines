@@ -258,7 +258,10 @@
 	if(!nickname)
 		to_chat(usr, "<span class='warning'>No text entered!</span>")
 		return
-	src.name += " \"[nickname]\""
+	if(!named)
+		src.name += " \"[nickname]\""
+	else
+		to_chat(usr, "<span class='warning'>Other TC was quicker! Tank already was named!</span>")
 	named = TRUE
 
 //Let's you switch into the other seat, doesn't work if it's occupied
