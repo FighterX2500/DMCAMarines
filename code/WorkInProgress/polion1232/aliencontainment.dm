@@ -159,6 +159,7 @@
 	else
 		go_out()
 	add_fingerprint(usr)
+	update_icon()
 	return
 
 /obj/machinery/container/proc/go_out()
