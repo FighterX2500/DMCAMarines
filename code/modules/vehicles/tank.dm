@@ -258,7 +258,10 @@
 	if(!nickname)
 		to_chat(usr, "<span class='warning'>No text entered!</span>")
 		return
-	src.name += " \"[nickname]\""
+	if(!named)
+		src.name += " \"[nickname]\""
+	else
+		to_chat(usr, "<span class='warning'>Other TC was quicker! Tank already was named!</span>")
 	named = TRUE
 
 //Let's you switch into the other seat, doesn't work if it's occupied
@@ -527,7 +530,7 @@
 				var/turf/T = locate(src.x + C.x_pos, src.y + C.y_pos, src.z + C.z_pos)
 				if(istype(T, /turf/open/snow))
 					var/turf/open/snow/ST = T
-					if(ST || !ST.slayer)
+					if(ST && ST.slayer)
 						new /obj/item/stack/snow(ST, ST.slayer)
 						ST.slayer = 0
 						ST.update_icon(1, 0)
