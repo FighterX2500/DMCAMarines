@@ -61,7 +61,7 @@
 			if(linked_console)
 				linked_console.linked_lathe = null
 				linked_console = null
-			icon_state = "protolathe_t"
+			icon_state = "protolathe_off"
 			to_chat(user, "You open the maintenance hatch of [src].")
 		else
 			opened = 0
@@ -85,7 +85,12 @@
 			if(material_storage["biomass"] > 0)
 				visible_message("<span class='danger'>All biomass has been splattered across the floor!</span>")
 				new /obj/effect/decal/cleanable/blood/xeno(src.loc)
-			linked_biolathe.linked_protolathe = null
+			if(linked_biolathe)
+				linked_biolathe.linked_protolathe = null
+				linked_biolathe = null
+			if(linked_console)
+				linked_console.linked_lathe = null
+				linked_console = null
 			cdel(src)
 			return 1
 
