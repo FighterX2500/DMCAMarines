@@ -218,7 +218,7 @@
 				break
 
 	else if(href_list["create"])
-		for(var/datum/marine_design/design in files.possible_design)
+		for(var/datum/marine_design/design in files.known_design)
 			if(href_list["create"] != design.id)
 				continue
 			if(!CanConstruct(design.materials["metal"], design.materials["glass"], design.materials["biomass"]))
@@ -233,6 +233,7 @@
 				linked_lathe.material_storage["biomass"] -= design.materials["biomass"]
 				spawn(16)
 					new design.build_path(linked_lathe.loc)
+					screen = 4.1
 					break
 
 	else if(href_list["print"])
@@ -553,7 +554,7 @@
 				dat += "Xenomorph biomatter[linked_lathe.material_storage["biomass"]]/[linked_lathe.max_per_resource["biomass"]]<BR>"
 			dat += "<BR>Available experimental equipment.<HR><HR>"
 			for(var/datum/marine_design/design in files.known_design)
-				dat += "<A href='?src=\ref[src];create=[design.id]'>[design.name]</A>:<BR>Description: [design.desc]"
+				dat += "<A href='?src=\ref[src];create=[design.id]'>[design.name]</A>:<BR>Description: [design.desc]<HR>"
 			dat += "<HR><HR>"
 
 	user << browse("<TITLE>Research and Development Console</TITLE><HR>[dat]", "window=rdconsole;size=575x400")

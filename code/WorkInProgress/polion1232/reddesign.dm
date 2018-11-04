@@ -23,7 +23,7 @@
 /datum/marine_design/anti_acid
 	name = "Anti-Acid standart chemical mixture"
 	desc = "Useful mixture of alkalies, strong enough to neutralize most of XBA-based acids."
-	id = "sprayer"
+	id = "anti-acid_sprayer"
 	build_path = /obj/item/anti_acid
 	build_type = MARINE_PROTHOLATHE
 	req_tech = list(RESEARCH_XENO_SPITTER)
