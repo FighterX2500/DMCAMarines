@@ -318,6 +318,58 @@ datum/game_mode/proc/initialize_special_clamps()
 		return
 	return 1
 
+/datum/game_mode/proc/attempt_to_join_as_larva(mob/xeno_candidate)
+	if(!ticker.mode.stored_larva)
+		to_chat(xeno_candidate, "<span class='warning'>There are no burrowed larvas.</span>")
+		return FALSE
+	var/available_queens[] = list()
+	for(var/mob/A in living_mob_list)
+		if(!isXenoQueen(A) || A.z == ADMIN_Z_LEVEL)
+			continue
+		var/mob/living/carbon/Xenomorph/Queen/Q = A
+		if(Q.ovipositor && !Q.is_mob_incapacitated(TRUE))
+			available_queens += Q
+	if(!available_queens.len)
+		to_chat(xeno_candidate, "<span class='warning'>There are no mothers with an ovipositor deployed.</span>")
+		return FALSE
+	var/mob/living/carbon/Xenomorph/Queen/mother = input("Available Mothers") as null|anything in available_queens
+	if (!istype(mother) || !xeno_candidate || !xeno_candidate.client)
+		return FALSE
+	if(!ticker.mode.stored_larva)
+		to_chat(xeno_candidate, "<span class='warning'>There are no longer burrowed larvas available.</span>")
+		return FALSE
+	if(!mother.ovipositor || mother.is_mob_incapacitated(TRUE))
+		to_chat(xeno_candidate, "<span class='warning'>Mother is not in a state to receive us.</span>")
+		return FALSE
+	if(!xeno_bypass_timer && !istype(xeno_candidate, /mob/new_player))
+		var/deathtime = world.time - xeno_candidate.timeofdeath
+		var/deathtimeminutes = round(deathtime / 600)
+		var/deathtimeseconds = round((deathtime - deathtimeminutes * 600) / 10,1)
+		if(deathtime < 3000 && ( !xeno_candidate.client.holder || !(xeno_candidate.client.holder.rights & R_ADMIN)) )
+			to_chat(xeno_candidate, "<span class='warning'>You have been dead for [deathtimeminutes >= 1 ? "[deathtimeminutes] minute\s and " : ""][deathtimeseconds] second\s.</span>")
+			to_chat(xeno_candidate, "<span class='warning'>You must wait 5 minutes before rejoining the game!</span>")
+			return FALSE
+	return mother
+
+/datum/game_mode/proc/spawn_larva(mob/xeno_candidate, var/mob/living/carbon/Xenomorph/Queen/mother)
+	if(!xeno_candidate)
+		return FALSE
+	if(!ticker.mode.stored_larva || !mother || !istype(mother))
+		to_chat(xeno_candidate, "<span class='warning'>Something went awry. Can't spawn at the moment.</span>")
+		log_admin("[xeno_candidate.key] has failed to join as a larva.")
+		return FALSE
+	var/mob/living/carbon/Xenomorph/Larva/new_xeno = new /mob/living/carbon/Xenomorph/Larva(mother.loc)
+	new_xeno.visible_message("<span class='xenodanger'>A larva suddenly burrows out of the ground!</span>",
+	"<span class='xenodanger'>You burrow out of the ground and awaken from your slumber. For the Hive!</span>")
+	new_xeno << sound('sound/effects/xeno_newlarva.ogg')
+	new_xeno.key = xeno_candidate.key
+	if(new_xeno.client)
+		new_xeno.client.change_view(world.view)
+	to_chat(new_xeno, "<span class='xenoannounce'>You are a xenomorph larva awakened from slumber!</span>")
+	new_xeno << sound('sound/effects/xeno_newlarva.ogg')
+	ticker.mode.stored_larva--
+	log_admin("[new_xeno.key] has joined as [new_xeno].")
+
 /datum/game_mode/proc/attempt_to_join_as_xeno(mob/xeno_candidate, instant_join = 0)
 	var/available_xenos[] = list()
 	var/available_xenos_non_ssd[] = list()
