@@ -80,13 +80,13 @@
 	proc/on_hit_obj(obj/O, obj/item/projectile/P) //Special effects when hitting objects.
 		return
 
-	proc/area_stagger_burst(turf/Center, obj/item/projectile/P)	//by Jeser specifically for autocannon. Mix of Burst() and Stagger(): Deals damage in area + applies stagger to movs in area
+	proc/area_stagger_burst(turf/Center, obj/item/projectile/P)	//by Jeser specifically for autocannon. Mix of Burst() and Stagger(): Deals damage in area + applies stagger to mobs in area
 		if(!Center || !P)
 			return
 		for(var/mob/living/carbon/M in range(1,Center))
 			M.visible_message("<span class='danger'>[M] got a concussion from \a [P.name]!</span>","[isXeno(M)?"<span class='xenodanger'>":"<span class='highdanger'>"]You are concussed from \a </b>[P.name] explosion</b>!</span>")
-			M.apply_damage(rand(5,P.damage), "explosion")
-			staggerstun(M, P, config.max_shell_range, 0, 0, 3, 4, 0, 1, 3, 2)
+			M.apply_damage(rand(10,P.damage), "explosion")
+			staggerstun(M, P, config.max_shell_range, 0, 0, 3, 7, 0, 1, 3, 2)
 
 	proc/knockback(mob/M, obj/item/projectile/P, var/max_range = 2)
 		if(!M || M == P.firer)
@@ -983,7 +983,7 @@
 	shell_speed = config.fast_shell_speed
 
 /datum/ammo/rocket/autocannon/on_hit_mob(mob/M, obj/item/projectile/P)
-	staggerstun(M, P, config.max_shell_range, 0, 0, 3, 4, 0, 1, 3, 2)
+	staggerstun(M, P, config.max_shell_range, 0, 0, 3, 7, 0, 1, 3, 2)
 
 /datum/ammo/rocket/autocannon/on_hit_obj(obj/O, obj/item/projectile/P)
 	area_stagger_burst(get_turf(P), P)
@@ -999,7 +999,7 @@
 	icon_state = "bullet"
 	flags_ammo_behavior = AMMO_EXPLOSIVE|AMMO_ROCKET
 
-/datum/ammo/rocket/autocannon/New()
+/datum/ammo/rocket/autocannon/upp/New()
 	..()
 	accuracy = config.med_hit_accuracy
 	accurate_range = config.long_shell_range
@@ -1008,16 +1008,16 @@
 	penetration= config.low_armor_penetration
 	shell_speed = config.fast_shell_speed
 
-/datum/ammo/rocket/autocannon/on_hit_mob(mob/M, obj/item/projectile/P)
-	staggerstun(M, P, config.max_shell_range, 0, 0, 3, 4, 0, 1, 3, 2)
+/datum/ammo/rocket/autocannon/upp/on_hit_mob(mob/M, obj/item/projectile/P)
+	staggerstun(M, P, config.max_shell_range, 0, 0, 3, 7, 0, 1, 3, 2)
 
-/datum/ammo/rocket/autocannon/on_hit_obj(obj/O, obj/item/projectile/P)
+/datum/ammo/rocket/autocannon/upp/on_hit_obj(obj/O, obj/item/projectile/P)
 	area_stagger_burst(get_turf(P), P)
 
-/datum/ammo/rocket/autocannon/on_hit_turf(turf/T, obj/item/projectile/P)
+/datum/ammo/rocket/autocannon/upp/on_hit_turf(turf/T, obj/item/projectile/P)
 	area_stagger_burst(get_turf(P), P)
 
-/datum/ammo/rocket/autocannon/do_at_max_range(obj/item/projectile/P)
+/datum/ammo/rocket/autocannon/upp/do_at_max_range(obj/item/projectile/P)
 	area_stagger_burst(get_turf(P), P)
 
 /datum/ammo/rocket/wp

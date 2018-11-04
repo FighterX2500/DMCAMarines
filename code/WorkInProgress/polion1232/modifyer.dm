@@ -25,6 +25,12 @@
 	idle_power_usage = 30
 	active_power_usage = 2500
 
+/obj/machinery/r_n_d/modifyer/update_icon()
+	if(!loaded_item)
+		icon_state = "bronya_pusta"
+	else
+		icon_state = "bronya_est"
+
 /obj/machinery/r_n_d/modifyer/New()
 	..()
 	component_parts = list()
@@ -42,12 +48,11 @@
 			if(linked_console)
 				linked_console.linked_destroy = null
 				linked_console = null
-			icon_state = "d_analyzer_t"
 			to_chat(user, "You open the maintenance hatch of [src].")
 		else
 			opened = 0
-			icon_state = "d_analyzer"
 			to_chat(user, "You close the maintenance hatch of [src].")
+		update_icon()
 		return
 	if (opened)
 		if(istype(O, /obj/item/tool/crowbar))

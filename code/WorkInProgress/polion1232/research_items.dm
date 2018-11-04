@@ -84,3 +84,43 @@
 /obj/item/anti_acid/New()
 	..()
 	use_time = max_use
+
+/////////////
+/*
+/obj/item/weapon/gun/energy/tesla			//ZZZZZZZZZAP
+	name = "HEW-2 \"Zeus\""
+	//name = "ESW MKIV \"Paralyzer\""		//
+	des = "The actual firearm in 2-piece HEW(Heavy Electrical Weapon) system MKII. Being civilian-grade gun system, primary used by scientific divisions, that gun can still be useful for USCM in limited numbers."
+	icon_state = "m56"
+	item_state = "m56"
+	ammo = /datum/ammo/energy/taser/tesla
+	var/charge_cost = 100
+	var/overcharge_cost = 200
+	var/charge = 0			//prepered charge
+	var/overcharge = 0		//If you want kill xeno tho. But only 50 burn
+	gun_skill_category = GUN_SKILL_SMARTGUN		//Heavy as fuck
+	flags_gun_features = GUN_INTERNAL_MAG|GUN_WIELDED_FIRING_ONLY
+
+/obj/item/weapon/gun/energy/tesla/set_gun_config_values()
+	fire_delay = config.max_fire_delay * 2
+	accuracy_mult = config.base_hit_accuracy_mult
+	accuracy_mult_unwielded = config.base_hit_accuracy_mult
+	scatter = config.med_scatter_value
+	scatter_unwielded = config.med_scatter_value
+	damage_mult = config.base_hit_damage_mult
+
+/obj/item/weapon/gun/tesla/able_to_fire(mob/living/user)
+	. = ..()
+	if(.)
+		if(!ishuman(user)) return 0
+		var/mob/living/carbon/human/H = user
+		if(user.mind && user.mind.cm_skills && user.mind.cm_skills.smartgun < SKILL_SMART_USE)
+			to_chat(user, "<span class='warning'>You don't seem to know how to use [src]...</span>")
+			return 0
+
+/obj/item/weapon/gun/tesla/proc/auto_reload()
+	set waitfor = 0
+	sleep(5)
+	if(power_pack && power_pack.loc)
+		power_pack.attack_self(smart_gunner, TRUE)
+*/

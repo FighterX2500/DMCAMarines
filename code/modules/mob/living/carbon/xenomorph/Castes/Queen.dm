@@ -357,18 +357,29 @@
 				shake_camera(M, 30, 1) //50 deciseconds, SORRY 5 seconds was way too long. 3 seconds now
 
 	for(var/mob/living/carbon/human/M in oview(7, src))
-		if(istype(M.wear_ear, /obj/item/clothing/ears/earmuffs))
-			continue
+		//if(istype(M.wear_ear, /obj/item/clothing/ears/earmuffs))
+		//	continue
+		var/mobility_aura_reduction = max(1 - 0.2 * M.mobility_aura, 0)	//All Orders help to handle different effects of screech
+		var/protection_aura_reduction = max(1 - 0.2 * M.protection_aura, 0)
+		var/marksman_aura_reduction = max(1 - 0.2 * M.marskman_aura, 0)
+
 		var/dist = get_dist(src,M)
 		if(dist <= 4)
-			to_chat(M, "<span class='danger'>An ear-splitting guttural roar shakes the ground beneath your feet!</span>")
-			M.stunned += 4 //Seems the effect lasts between 3-8 seconds.
-			M.KnockDown(4)
+			to_chat(M, "<span class='danger'>An ear-splitting guttural roar shakes the ground beneath your feet and disorientates you!</span>")
+			M.stunned += 2 * protection_aura_reduction
+			M.temporary_slowdown = 3 * mobility_aura_reduction
+			M.KnockDown(2 * protection_aura_reduction)
+			if(!M.eye_blind)
+				M.eye_blurry += 4 * marksman_aura_reduction //blurry vision
 			if(!M.ear_deaf)
-				M.ear_deaf += 8 //Deafens them temporarily
+				M.ear_deaf += 4 //Deafens them temporarily
 		else if(dist >= 5 && dist < 7)
-			M.stunned += 3
-			to_chat(M, "<span class='danger'>The roar shakes your body to the core, freezing you in place!</span>")
+			M.KnockDown(1 * protection_aura_reduction)
+			M.temporary_slowdown = 2 * mobility_aura_reduction
+			if(!M.eye_blind)
+				M.eye_blurry += 3 * marksman_aura_reduction
+			to_chat(M, "<span class='danger'>The roar shakes your body to the core, freezing you in place and disorientates you a little!</span>")
+
 
 /mob/living/carbon/Xenomorph/Queen/proc/queen_gut(atom/A)
 

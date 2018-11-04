@@ -16,7 +16,7 @@
 	var/mode = 0	//off or on.
 
 /obj/item/tool/hand_labeler/afterattack(atom/A, mob/user as mob, proximity)
-	if(!proximity) 
+	if(!proximity)
 		return
 	if(!mode)	//if it's off, give up.
 		return
@@ -24,7 +24,7 @@
 		return		// don't set a label
 
 	if(istype(A, /obj/vehicle/multitile/root/cm_armored))
-		to_chat(user, "<span class='notice'>Label doesn't stick to this. You are sad.</span>")	//NOPE!
+		to_chat(user, "<span class='notice'>The label won't stick to that.</span>")	//NOPE!
 		return
 
 	if(!label || !length(label))
