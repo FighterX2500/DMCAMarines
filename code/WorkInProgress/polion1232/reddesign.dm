@@ -37,3 +37,30 @@
 	build_type = MARINE_PROTHOLATHE
 	req_tech = list(RESEARCH_XENO_HIVELORD)
 	materials = list("metal" = 0, "glass" = 500, "biomass" = 50)
+
+/datum/marine_design/teslagun
+	name = "HEW \"Paralayzer\" military-grade retrofit"
+	desc = "Initial flaw, that we found in Xenomorph organism, bring us to the idea of retrofitting old Heavy Electrical Weapon. But it need suitable recharger, what can be created separately."
+	id = "tesla"
+	build_path = /obj/item/weapon/gun/energy/tesla
+	build_type = MARINE_PROTHOLATHE
+	req_tech = list(RESEARCH_XENOSTART)
+	materials = list("metal" = 1000, "glass" = 500, "biomass" = 0)
+
+/datum/marine_design/teslabackpack
+	name = "HEW-2 \"Zeus\" Powerpack"
+	desc = "Powerful recharging system for HEW-2 \"Zeus\", needed for proper functioning of discharger."
+	id = "teslabackpack"
+	build_path = /obj/item/tesla_powerpack
+	build_type = MARINE_PROTHOLATHE
+	req_tech = list(RESEARCH_XENOSTART)
+	materials = list("metal" = 1000, "glass" = 500, "biomass" = 0)
+
+/datum/marine_design/cell
+	name = "XBA-based power cells"
+	desc = "Powerful Xenomoprh acids can be very useful for power cells' production."
+	id = "cell"
+	build_path = /obj/item/cell/xba
+	build_type = MARINE_PROTHOLATHE
+	req_tech = list(RESEARCH_XENO_CHEMISTRY)
+	materials = list("metal" = 100, "glass" = 0, "biomass" = 100)
