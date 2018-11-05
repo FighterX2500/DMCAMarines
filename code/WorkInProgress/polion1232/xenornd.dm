@@ -551,11 +551,11 @@
 			dat += "Metal: [linked_lathe.material_storage["metal"]]/[linked_lathe.max_per_resource["metal"]]<BR>"
 			dat += "Glass: [linked_lathe.material_storage["glass"]]/[linked_lathe.max_per_resource["glass"]]<BR>"
 			if(files.Check_tech(0) == 1)
-				dat += "Xenomorph biomatter[linked_lathe.material_storage["biomass"]]/[linked_lathe.max_per_resource["biomass"]]<BR>"
+				dat += "Xenomorph biomatter: [linked_lathe.material_storage["biomass"]]/[linked_lathe.max_per_resource["biomass"]]<BR>"
 			dat += "<BR>Available experimental equipment.<HR><HR>"
 			for(var/datum/marine_design/design in files.known_design)
-				dat += "<A href='?src=\ref[src];create=[design.id]'>[design.name]</A>:<BR>Description: [design.desc]<HR>"
-			dat += "<HR><HR>"
+				dat += "<A href='?src=\ref[src];create=[design.id]'>[design.name]</A>:<BR>Description: [design.desc]<BR>"
+				dat += "Requirements:<BR>Metal: [design.materials["metal"]]<BR>Glass: [design.materials["glass"]]<BR>Biomatter: [design.materials["biomass"]]<HR>"
 
 	user << browse("<TITLE>Research and Development Console</TITLE><HR>[dat]", "window=rdconsole;size=575x400")
 	onclose(user, "rdconsole")
