@@ -130,14 +130,12 @@
 
 	busy = 1
 	use_power(max(1000, (3750*amount/10)))
-	var/stacktype = stack.type
 	stack.use(amount)
 	to_chat(user, "\blue You add [amount] sheets to the [src.name].")
-	switch(stacktype)
-		if(/obj/item/stack/sheet/metal)
-			material_storage["metal"] += amount * 3750
-		if(/obj/item/stack/sheet/glass)
-			material_storage["glass"] += amount * 3750
+	if(istype(stack, /obj/item/stack/sheet/metal))
+		material_storage["metal"] += amount * 3750
+	if(istype(stack, /obj/item/stack/sheet/glass))
+		material_storage["glass"] += amount * 3750
 	busy = 0
 	src.updateUsrDialog()
 
