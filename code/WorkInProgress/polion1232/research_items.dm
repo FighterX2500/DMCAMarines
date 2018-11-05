@@ -160,24 +160,6 @@
 	..()
 	charge_battery = new /obj/item/cell/high()
 
-/obj/item/tesla_powerpack/attackby(var/obj/O as obj, var/mob/user as mob)
-	if(src.loc == user)
-		return
-	if(!istype(O, /obj/item/tool/screwdriver))
-		return
-	if(opened)
-		opened = !opened
-		to_chat(user, "You close powerpack hatch.")
-	else
-		opened = !opened
-		to_chat(user, "You open powerpack hatch.")
-
-/obj/item/tesla_powerpack/attack_hand(mob/user as mob)
-	if(!opened)
-		return
-	new charge_battery.type(user.loc)
-	charge_battery = null
-
 /obj/item/tesla_powerpack/proc/reload(mob/user, obj/item/weapon/gun/energy/tesla/mygun)
 	mygun.charge = mygun.charge_cost
 	charge_battery.charge -= mygun.charge
