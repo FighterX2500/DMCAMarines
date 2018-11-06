@@ -20,12 +20,17 @@
 /area/shuttle/almayer/elevator_hangar/lowerdeck
 	name = "Hangar Elevator"
 	icon_state = "shuttle"
-	fake_zlevel = 2 // lowerdeck
+	fake_zlevel = 3 // lowerdeck
+
+/area/vehicle/apc
+	name = "APC Interior"
+	icon_state = "apc"
+	fake_zlevel = 2
 
 /area/shuttle/almayer/elevator_hangar/underdeck
 	name = "Hangar Elevator"
 	icon_state = "shuttle"
-	fake_zlevel = 3
+	fake_zlevel = 3 // lowerdeck
 
 /obj/machinery/computer/shuttle_control/almayer/hangar
 	name = "Elevator Console"
@@ -179,17 +184,17 @@
 /area/almayer/hallways/vehiclehangar
 	name = "Vehicle Storage"
 	icon_state = "exoarmor"
-	fake_zlevel = 3
+	fake_zlevel = 2
 
 /area/almayer/living/tankerbunks
 	name = "Vehicle Crew Bunks"
 	icon_state = "livingspace"
-	fake_zlevel = 3
+	fake_zlevel = 2
 
 /area/almayer/squads/tankdeliveries
 	name = "Vehicle ASRS"
 	icon_state = "req"
-	fake_zlevel = 3 // lowerdeck
+	fake_zlevel = 2 // lowerdeck
 
 /area/almayer/hallways/exoarmor
 	name = "Vehicle Armor Storage"
