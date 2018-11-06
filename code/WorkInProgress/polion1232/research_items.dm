@@ -208,6 +208,8 @@
 	damage = config.min_hit_damage
 	max_range = config.short_shell_range
 	shell_speed = config.ultra_shell_speed
+	accuracy = config.max_hit_accuracy
+	scatter = 0
 
 /datum/ammo/energy/tesla/on_hit_mob(mob/M, obj/item/projectile/P)
 	stun_living(M, P)
@@ -217,10 +219,7 @@
 		var/mob/living/carbon/Xenomorph/target = M
 		if(!(isXenoQueen(M) || isXenoRavager(target)))
 			M.visible_message("<span class='danger'>[M.name] roared and fallen down.</span>","<span class='userdanger'>You feel like your own nerves stopped working!</span>")
-			if(isXenoCrusher(target) || isXenoPraetorian(target) || isXenoBoiler(target))
-				target.apply_effects(2,2)
-				return
-			target.apply_effects(6,6)									// I suppose, it's a three seconds
+			target.apply_effects(8,8)									// I suppose, it's a three seconds
 			return
 		if(isXenoQueen(M) || isXenoRavager(target))
 			target.visible_message("<span class='danger'>Tesla discharge was been shrugged off [target.name]'s chitin!</span>", "You felt weird thing, that pokes your chitin")
