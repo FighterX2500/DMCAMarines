@@ -1672,7 +1672,7 @@ All of the hardpoints, for the tank and APC
 
 		var /obj/item/ammo_magazine/apc/flare_launcher/A = clips[1]
 		if(health <= 0) icon_state_suffix = "1"
-		else if(clips[1] == NULL || A.current_rounds <= 0) icon_state_suffix = "2"
+		else if(clips[1] == null || A.current_rounds <= 0) icon_state_suffix = "2"
 
 		return image(icon = "[disp_icon]_[icon_suffix]", icon_state = "[disp_icon_state]_[icon_state_suffix]", pixel_x = x_offset, pixel_y = y_offset)
 

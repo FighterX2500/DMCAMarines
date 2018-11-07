@@ -1,6 +1,3 @@
-
-
-
 //TANKS, HURRAY
 //Read the documentation in cm_armored.dm and multitile.dm before trying to decipher this stuff
 
