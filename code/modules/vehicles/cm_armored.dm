@@ -718,6 +718,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 							//M.visible_message("<span class='danger'>[M] pushes against the [src], trying to hold it in place, but fails!</span>", "<span class='danger'>[src] is much heavier, you can't hold it in place!</span>")
 							return
 		if (!isXeno(M))
+			if(M.buckled)
+				M.buckled.unbuckle()
 			step_away(M,root,0,0)
 			M.KnockDown(3)
 			M.apply_damage(10 + rand(0, 10), BRUTE)
@@ -810,9 +812,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	else if(istype(A, /obj/structure/bed) && !istype(A, /obj/structure/bed/chair/dropship) && !istype(A, /obj/structure/bed/medevac_stretcher) && !istype(A, /obj/structure/bed/roller) && !istype(A, /obj/structure/bed/chair/janicart))
 		var/obj/structure/bed/BE = A
 		BE.visible_message("<span class='danger'>[root] crushes [BE]!</span>")
-		BE.unbuckle()
+		BE.Dispose()
 		new /obj/item/stack/sheet/metal(BE.loc, 1)
-		cdel(BE)
 	else if(istype(A, /obj/structure/bed/chair/janicart))
 		var/obj/structure/bed/JC = A
 		JC.visible_message("<span class='danger'>[root] crushes [JC]!</span>")
@@ -826,8 +827,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/obj/machinery/autolathe/AL = A
 		AL.visible_message("<span class='danger'>[root] crushes [AL]!</span>")
 		new /obj/item/stack/sheet/metal(AL.loc, 2)
-		new /obj/item/stack/sheet/metal(AL.loc, AL.stored_material["metal"])
-		new /obj/item/stack/sheet/glass(AL.loc, AL.stored_material["glass"])
+		new /obj/item/stack/sheet/metal(AL.loc, round(AL.stored_material["metal"] / 3750))
+		new /obj/item/stack/sheet/glass(AL.loc, round(AL.stored_material["glass"] / 3750))
 		cdel(AL)
 	else if (istype(A, /obj/structure/filingcabinet))
 		var/obj/structure/filingcabinet/FC = A
@@ -1092,13 +1093,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/hitbox/cm_armored/Move(var/atom/A, var/direction)
 	var/obj/vehicle/multitile/root/cm_armored/CA = root
 	for(var/mob/living/M in get_turf(src))
-		var/facing = get_dir(src, M)
-		if(istype(CA.hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow) && M.lying == 1)
-			if(src.dir == facing)
-				step_away(M,root,0)
-		else
-			M.sleeping = 3 //Not 0, they just got driven over by a giant ass whatever and that hurts
-			M.apply_damage(1, BRUTE)
+		M.sleeping = 3 //Not 0, they just got driven over by a giant ass whatever and that hurts
+		M.apply_damage(1, BRUTE)
 	for(var/obj/effect/alien/egg/Eg in get_turf(src))
 		Eg.Burst(1)
 	for(var/obj/item/clothing/mask/facehugger/FG in get_turf(src))
@@ -1118,6 +1114,10 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	. = ..()
 
 	if(.)
+		for(var/obj/structure/bed/BD in get_turf(A))
+			if(!istype(BD, /obj/structure/bed/chair/dropship) && !istype(BD, /obj/structure/bed/medevac_stretcher) && !istype(BD, /obj/structure/bed/roller) && !istype(BD, /obj/structure/bed/chair/janicart))
+				BD.visible_message("<span class='danger'>[root] crushes [BD]!</span>")
+				BD.Dispose()
 		for(var/mob/living/M in get_turf(A))
 			//I don't call Bump() otherwise that would encourage trampling for infinite unpunishable damage
 			M.sleeping = 1 //Maintain their lying-down-ness

@@ -56,6 +56,8 @@
 	spit_delay = 25
 	spit_types = list(/datum/ammo/xeno/acid/medium)
 
+	var/was_shot = FALSE	//flag used for messaging xenos that Queen is under attack
+
 	var/breathing_counter = 0
 	var/ovipositor = FALSE //whether the Queen is attached to an ovipositor
 	var/ovipositor_cooldown = 0
@@ -168,6 +170,18 @@
 								ticker.mode.stored_larva++
 								round_statistics.total_xenos_created-- // keep stats sane
 								cdel(L)
+
+
+/mob/living/carbon/Xenomorph/Queen/bullet_act(obj/item/projectile/P)
+	. = ..()
+	if(health < 0 && !was_shot)
+		xeno_message("<span class='xenohighdanger'>Your Queen is barely alive! Help her!</span>",3,hivenumber)
+	if(health > 0 && !was_shot)
+		xeno_message("<span class='xenohighdanger'>You can feel your Queen is getting hurt. A strong desire to rush to help her fills you!</span>",3,hivenumber)
+		was_shot = TRUE
+		spawn(150)
+		was_shot = FALSE
+
 
 
 //Custom bump for crushers. This overwrites normal bumpcode from carbon.dm
@@ -348,6 +362,7 @@
 	visible_message("<span class='xenohighdanger'>\The [src] emits an ear-splitting guttural roar!</span>")
 	create_shriekwave() //Adds the visual effect. Wom wom wom
 	//stop_momentum(charge_dir) //Screech kills a charge
+	xeno_message("<span class='xenohighdanger'>You feel as your Queen emits a powerful screech. You feel urge to join her in the fight!</span>",3,hivenumber)
 
 	for(var/mob/M in view())
 		if(M && M.client)
