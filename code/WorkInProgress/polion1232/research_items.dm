@@ -113,7 +113,7 @@
 	fire_delay = config.max_fire_delay * 2
 	accuracy_mult = config.base_hit_accuracy_mult
 	accuracy_mult_unwielded = config.base_hit_accuracy_mult
-	scatter = config.med_scatter_value
+	scatter = 0
 	scatter_unwielded = config.med_scatter_value
 	damage_mult = config.base_hit_damage_mult
 
@@ -152,8 +152,19 @@
 	w_class = 5.0
 	actions_types = list(/datum/action/item_action/toggle)
 	var/obj/item/cell/charge_battery = null
-	var/opened = 0						//rearm powerpack
 	var/reloading = FALSE
+
+/obj/item/tesla_powerpack/attackby(var/obj/item/A as obj, mob/user as mob)
+	if(istype(A,/obj/item/cell))
+		var/obj/item/cell/C = A
+		visible_message("[user.name] swaps out the power cell in the [src.name].","You swap out the power cell in the [src] and drop the old one.")
+		to_chat(user, "The new cell contains: [C.charge] power.")
+		charge_battery.loc = get_turf(user)
+		charge_battery = C
+		C.loc = src
+		playsound(src,'sound/machines/click.ogg', 25, 1)
+	else
+		..()
 
 /obj/item/tesla_powerpack/New()
 	select_gamemode_skin(/obj/item/smartgun_powerpack)
@@ -171,7 +182,7 @@
 	var/obj/item/weapon/gun/energy/tesla/mygun = user.get_active_hand()
 
 	if(isnull(mygun) || !mygun || !istype(mygun))
-		to_chat(user, "You must be holding an M56 Smartgun to begin the reload process.")
+		to_chat(user, "You must be holding an HEW-2 \"Zeus\" to begin the reload process.")
 		return
 	if(charge_battery.charge < mygun.charge_cost)
 		to_chat(user, "Your powerpack is completely drained! Looks like you're up shit creek, maggot!")
