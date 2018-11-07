@@ -966,7 +966,6 @@ var/list/available_specialist_sets = list("Scout Set", "Sniper Set", "Demolition
 						/obj/item/device/squad_beacon,
 						/obj/item/device/squad_beacon,
 						/obj/item/device/squad_beacon,
-						/obj/item/device/squad_beacon/bomb,
 						/obj/item/weapon/gun/flamer,
 						/obj/item/storage/box/zipcuffs,
 						)
