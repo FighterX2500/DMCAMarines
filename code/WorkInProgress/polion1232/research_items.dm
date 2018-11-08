@@ -113,7 +113,7 @@
 	fire_delay = config.max_fire_delay * 2
 	accuracy_mult = config.base_hit_accuracy_mult
 	accuracy_mult_unwielded = config.base_hit_accuracy_mult
-	scatter = config.med_scatter_value
+	scatter = 0
 	scatter_unwielded = config.med_scatter_value
 	damage_mult = config.base_hit_damage_mult
 
@@ -152,8 +152,19 @@
 	w_class = 5.0
 	actions_types = list(/datum/action/item_action/toggle)
 	var/obj/item/cell/charge_battery = null
-	var/opened = 0						//rearm powerpack
 	var/reloading = FALSE
+
+/obj/item/tesla_powerpack/attackby(var/obj/item/A as obj, mob/user as mob)
+	if(istype(A,/obj/item/cell))
+		var/obj/item/cell/C = A
+		visible_message("[user.name] swaps out the power cell in the [src.name].","You swap out the power cell in the [src] and drop the old one.")
+		to_chat(user, "The new cell contains: [C.charge] power.")
+		charge_battery.loc = get_turf(user)
+		charge_battery = C
+		C.loc = src
+		playsound(src,'sound/machines/click.ogg', 25, 1)
+	else
+		..()
 
 /obj/item/tesla_powerpack/New()
 	select_gamemode_skin(/obj/item/smartgun_powerpack)
@@ -171,7 +182,7 @@
 	var/obj/item/weapon/gun/energy/tesla/mygun = user.get_active_hand()
 
 	if(isnull(mygun) || !mygun || !istype(mygun))
-		to_chat(user, "You must be holding an M56 Smartgun to begin the reload process.")
+		to_chat(user, "You must be holding an HEW-2 \"Zeus\" to begin the reload process.")
 		return
 	if(charge_battery.charge < mygun.charge_cost)
 		to_chat(user, "Your powerpack is completely drained! Looks like you're up shit creek, maggot!")
@@ -208,6 +219,8 @@
 	damage = config.min_hit_damage
 	max_range = config.short_shell_range
 	shell_speed = config.ultra_shell_speed
+	accuracy = config.max_hit_accuracy
+	scatter = 0
 
 /datum/ammo/energy/tesla/on_hit_mob(mob/M, obj/item/projectile/P)
 	stun_living(M, P)
@@ -217,10 +230,7 @@
 		var/mob/living/carbon/Xenomorph/target = M
 		if(!(isXenoQueen(M) || isXenoRavager(target)))
 			M.visible_message("<span class='danger'>[M.name] roared and fallen down.</span>","<span class='userdanger'>You feel like your own nerves stopped working!</span>")
-			if(isXenoCrusher(target) || isXenoPraetorian(target) || isXenoBoiler(target))
-				target.apply_effects(2,2)
-				return
-			target.apply_effects(6,6)									// I suppose, it's a three seconds
+			target.apply_effects(8,8)									// I suppose, it's a three seconds
 			return
 		if(isXenoQueen(M) || isXenoRavager(target))
 			target.visible_message("<span class='danger'>Tesla discharge was been shrugged off [target.name]'s chitin!</span>", "You felt weird thing, that pokes your chitin")
