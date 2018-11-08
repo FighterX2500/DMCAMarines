@@ -1,6 +1,5 @@
 /*
-All of the hardpoints, for the tank or other
-Currently only has the tank hardpoints
+All of the hardpoints, for the tank and APC
 */
 
 
@@ -16,7 +15,6 @@ Currently only has the tank hardpoints
 	health = 0
 	w_class = 15
 	var/hp_weight = 1	//this is new variable for weight of every single module as a part of new weight system
-	var/secondhand = 0	//flag to show if module new or was already broken and fixed in repair machinery
 
 	//If we use ammo, put it here
 	var/obj/item/ammo_magazine/ammo_type = null //weapon ammo type to check with the magazine type we are trying to add
@@ -88,6 +86,7 @@ Currently only has the tank hardpoints
 		"<span class='notice'>You install \the [A] in \the [owner].</span>")
 	if (clips.len == 0)
 		user.visible_message("<span class='notice'>You hear clanking as \the [A] is getting automatically loaded into \the weapon.</span>")
+		playsound(src, 'sound/weapons/gun_mortar_unpack.ogg', 40, 1)
 	clips += A
 	return 1
 
@@ -1339,3 +1338,479 @@ Currently only has the tank hardpoints
 ///////////////
 // AMMO MAGS // END
 ///////////////
+// TANK HARDPOINTS // END
+///////////////
+
+////////////////////////////////////////////////////////////////////////////
+//							APC HARDPOINTS // START
+////////////////////////////////////////////////////////////////////////////
+
+/obj/item/apc_hardpoint
+
+	var/slot //What slot do we attach to?
+	var/obj/vehicle/multitile/root/cm_transport/owner //Who do we work for?
+
+	icon = 'icons/obj/hardpoint_modules.dmi'
+	icon_state = "tires" //Placeholder
+
+	var/maxhealth = 0
+	health = 0
+	w_class = 15
+
+	//If we use ammo, put it here
+	var/obj/item/ammo_magazine/ammo_type = null //weapon ammo type to check with the magazine type we are trying to add
+
+	//Strings, used to get the overlay for the armored vic
+	var/disp_icon //This also differentiates tank vs apc vs other
+	var/disp_icon_state
+
+	var/next_use = 0
+	var/is_activatable = 0
+	var/max_angle = 180
+	var/point_cost = 0
+
+	var/list/clips = list()
+	var/max_clips = 1 //1 so they can reload their backups and actually reload once
+
+//changed how ammo works. No more AMMO obj, we take what we need straight from first obj in CLIPS list (ex-backup_clips) and work with it.
+//Every ammo mag now has CURRENT_AMMO value, also it is possible now to unload ALL mags from the gun, not only backup clips.
+
+//Called on attaching, for weapons sets the actual cooldowns
+/obj/item/apc_hardpoint/proc/apply_buff()
+	return
+
+//Called when removing, resets cooldown lengths, move delay, etc
+/obj/item/apc_hardpoint/proc/remove_buff()
+	return
+
+//Called when you want to activate the hardpoint, such as a gun
+//This can also be used for some type of temporary buff, up to you
+/obj/item/apc_hardpoint/proc/active_effect(var/turf/T)
+	return
+
+/obj/item/apc_hardpoint/proc/deactivate()
+	var/obj/vehicle/multitile/root/cm_transport/apc/C = owner
+	if(C.gunner.client)
+		C.gunner.client.mouse_pointer_icon = initial(C.gunner.client.mouse_pointer_icon)
+	return
+
+/obj/item/apc_hardpoint/proc/livingmob_interact(var/mob/living/M)
+	return
+
+//If our cooldown has elapsed
+/obj/item/apc_hardpoint/proc/is_ready()
+	if(owner.z == 2 || owner.z == 3)
+		to_chat(usr, "<span class='warning'>Don't fire here, you'll blow a hole in the ship!</span>")
+		return 0
+	return 1
+
+/obj/item/apc_hardpoint/proc/try_add_clip(var/obj/item/ammo_magazine/apc/A, var/mob/user)
+
+	if(max_clips == 0)
+		to_chat(user, "<span class='warning'>This module does not have room for additional ammo.</span>")
+		return 0
+	else if(clips.len >= max_clips)
+		to_chat(user, "<span class='warning'>The reloader is full.</span>")
+		return 0
+	else if(!istype(A, ammo_type.type))
+		to_chat(user, "<span class='warning'>That is the wrong ammo type.</span>")
+		return 0
+
+	to_chat(user, "<span class='notice'>Installing \the [A] in \the [owner].</span>")
+
+	if(!do_after(user, 10))
+		to_chat(user, "<span class='warning'>Something interrupted you while reloading [owner].</span>")
+		return 0
+
+	user.temp_drop_inv_item(A, 0)
+	user.visible_message("<span class='notice'>[user] installs [A] into [owner].</span>",
+		"<span class='notice'>You install \the [A] in \the [owner].</span>")
+	if (clips.len == 0)
+		user.visible_message("<span class='notice'>You hear clanking as \the [A] is getting automatically loaded into \the weapon.</span>")
+		playsound(src, 'sound/weapons/gun_mortar_unpack.ogg', 40, 1)
+	clips += A
+	return 1
+
+//Returns the image object to overlay onto the root object
+/obj/item/apc_hardpoint/proc/get_icon_image(var/x_offset, var/y_offset, var/new_dir)
+
+	var/icon_suffix = "NS"
+	var/icon_state_suffix = "0"
+
+	if(new_dir in list(NORTH, SOUTH))
+		icon_suffix = "NS"
+	else if(new_dir in list(EAST, WEST))
+		icon_suffix = "EW"
+
+	if(health <= 0)
+		icon_state_suffix = "1"
+
+	return image(icon = "[disp_icon]_[icon_suffix]", icon_state = "[disp_icon_state]_[icon_state_suffix]", pixel_x = x_offset, pixel_y = y_offset)
+
+/obj/item/apc_hardpoint/proc/firing_arc(var/atom/A)
+	var/turf/T = get_turf(A)
+	var/dx = T.x - owner.x
+	var/dy = T.y - owner.y
+	var/deg = 0
+	switch(owner.dir)
+		if(EAST) deg = 0
+		if(NORTH) deg = -90
+		if(WEST) deg = -180
+		if(SOUTH) deg = -270
+
+	var/nx = dx * cos(deg) - dy * sin(deg)
+	var/ny = dx * sin(deg) + dy * cos(deg)
+	if(nx == 0) return max_angle >= 180
+	var/angle = arctan(ny/nx)
+	if(nx < 0) angle += 180
+	return abs(angle) <= max_angle
+
+//Delineating between slots
+/obj/item/apc_hardpoint/primary
+	slot = HDPT_PRIMARY
+	is_activatable = 1
+
+/obj/item/apc_hardpoint/secondary
+	slot = HDPT_SECDGUN
+	is_activatable = 1
+
+/obj/item/apc_hardpoint/support
+	slot = HDPT_SUPPORT
+
+/obj/item/apc_hardpoint/wheels
+	slot = HDPT_WHEELS
+
+//examine() that tells the player condition of the module
+/obj/item/apc_hardpoint/examine(var/mob/user)
+	..()
+	if((user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
+		var/cond = round(health * 100 / maxhealth)
+		if (cond > 0)
+			to_chat(user, "Integrity: [cond]%.")
+		else
+			to_chat(user, "Integrity: 0%.")
+
+
+
+////////////////////
+// PRIMARY SLOTS // START
+////////////////////
+// USCM
+////////////////////
+
+/obj/item/apc_hardpoint/primary/dual_cannon
+	name = "M78 Dual Cannon"
+	desc = "A primary 45mm dual cannon for APC."
+
+	maxhealth = 500
+	health = 500
+	point_cost = 100
+
+	icon_state = "dual_cannon"
+
+	disp_icon = "apcarrier"
+	disp_icon_state = "dual_cannon"
+
+	ammo_type = new /obj/item/ammo_magazine/apc/dual_cannon
+
+	max_clips = 3
+	max_angle = 45
+
+	apply_buff()
+		owner.cooldowns["primary"] = 8
+		owner.accuracies["primary"] = 0.97
+
+	is_ready()
+		if(world.time < next_use)
+			to_chat(usr, "<span class='warning'>[src] is not ready to fire yet.</span>")
+			return 0
+		if(health <= 0)
+			to_chat(usr, "<span class='warning'>This module is too broken to be used.</span>")
+			return 0
+		return 1
+
+	active_effect(var/turf/T)
+		var /obj/item/ammo_magazine/apc/dual_cannon/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
+			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
+			return
+
+		next_use = world.time + owner.cooldowns["primary"] * owner.misc_ratios["prim_cool"]
+		if(!prob(owner.accuracies["primary"] * 100 * owner.misc_ratios["prim_acc"]))
+			T = get_step(T, pick(cardinal))
+		var/obj/item/projectile/P = new
+		P.generate_bullet(new A.default_ammo)
+		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+		playsound(get_turf(src), 'sound/weapons/tank_autocannon_fire1.ogg', 60, 1)
+		A.current_rounds--
+
+
+////////////////////
+// PRIMARY SLOTS // END
+////////////////////
+
+/////////////////////
+// SECONDARY SLOTS //
+/////////////////////
+// USCM // START
+/////////////////////
+/obj/item/apc_hardpoint/secondary/front_cannon
+	name = "M26 Frontal Cannon"
+	desc = "A secondary frontal cannon for APC."
+
+	maxhealth = 300
+	health = 300
+	point_cost = 100
+
+	icon_state = "front_cannon"
+
+	disp_icon = "apcarrier"
+	disp_icon_state = "front_cannon"
+
+	ammo_type = new /obj/item/ammo_magazine/apc/front_cannon
+	max_clips = 2
+	max_angle = 90
+
+	apply_buff()
+		owner.cooldowns["secondary"] = 4
+		owner.accuracies["secondary"] = 0.7
+
+	is_ready()
+		if(world.time < next_use)
+			to_chat(usr, "<span class='warning'>[src] is not ready to fire yet.</span>")
+			return 0
+		if(health <= 0)
+			to_chat(usr, "<span class='warning'>This module is too broken to be used.</span>")
+			return 0
+		return 1
+
+	active_effect(var/turf/T)
+
+		var /obj/item/ammo_magazine/apc/front_cannon/A = clips[1]
+		if(A == null || A.current_rounds <= 0)
+			to_chat(usr, "<span class='warning'>This module does not have any ammo.</span>")
+			return
+
+		next_use = world.time + owner.cooldowns["secondary"] * owner.misc_ratios["secd_cool"]
+		if(!prob(owner.accuracies["secondary"] * 100 * owner.misc_ratios["secd_acc"]))
+			T = get_step(T, pick(cardinal))
+		var/obj/item/projectile/P = new
+		P.generate_bullet(new A.default_ammo)
+		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
+		playsound(get_turf(src), pick(list('sound/weapons/gun_smartgun1.ogg', 'sound/weapons/gun_smartgun2.ogg', 'sound/weapons/gun_smartgun3.ogg')), 60, 1)
+		A.current_rounds--
+
+/////////////////////
+// SECONDARY SLOTS // END
+/////////////////////
+
+
+///////////////////
+// SUPPORT SLOTS
+///////////////////
+// USCM // START
+///////////////////
+/obj/item/apc_hardpoint/support/flare_launcher
+	name = "M9 Flare Launcher System"
+	desc = "Launches flares forward light up the area."
+
+	maxhealth = 300
+	health = 300
+	point_cost = 100
+
+	icon_state = "flare_launcher"
+
+	disp_icon = "apcarrier"
+	disp_icon_state = "flare_launcher"
+
+	ammo_type = new /obj/item/ammo_magazine/apc/flare_launcher
+	max_clips = 3
+	is_activatable = 1
+
+
+	apply_buff()
+		owner.cooldowns["support"] = 50
+
+	is_ready()
+		if(world.time < next_use)
+			var/CD = round(next_use - world.time) / 10
+			to_chat(usr, "<span class='warning'>[src] will be ready to fire in [CD] seconds.</span>")
+			return 0
+		if(health <= 0)
+			to_chat(usr, "<span class='warning'>This module is too broken to be used.</span>")
+			return 0
+		return 1
+
+	active_effect(var/turf/T)
+
+		var/turf/F
+		var/turf/S
+		var/right_dir
+		var/left_dir
+		F = get_step(src.loc, src.dir)
+		F = get_step(F, src.dir)
+		F = get_step(F, src.dir)
+		F = get_step(F, src.dir)
+		F = get_step(F, src.dir)
+		F = get_step(F, src.dir)
+		F = get_step(F, src.dir)
+		left_dir = turn(src.dir, -90)
+		S = get_step(F, left_dir)
+		S = get_step(S, left_dir)
+		S = get_step(S, left_dir)
+		right_dir = turn(src.dir, 90)
+		F = get_step(F, right_dir)
+		F = get_step(F, right_dir)
+		F = get_step(F, right_dir)
+
+		var/obj/item/ammo_magazine/apc/flare_launcher/A = clips[1]
+		next_use = world.time + owner.cooldowns["secondary"] * owner.misc_ratios["secd_cool"]
+		var/obj/item/projectile/P = new
+		P.generate_bullet(new A.default_ammo)
+		P.fire_at(F, src, src, 8, P.ammo.shell_speed)
+		playsound(get_turf(src), 'sound/weapons/gun_flare.ogg', 60, 1)
+		A.current_rounds--
+		sleep (10)
+		var/obj/item/projectile/G = new
+		G.generate_bullet(new A.default_ammo)
+		G.fire_at(S, src, src, 8, G.ammo.shell_speed)
+		playsound(get_turf(src), 'sound/weapons/gun_flare.ogg', 60, 1)
+		A.current_rounds--
+
+	get_icon_image(var/x_offset, var/y_offset, var/new_dir)
+
+		var/icon_suffix = "NS"
+		var/icon_state_suffix = "0"
+
+		if(new_dir in list(NORTH, SOUTH))
+			icon_suffix = "NS"
+		else if(new_dir in list(EAST, WEST))
+			icon_suffix = "EW"
+
+		var /obj/item/ammo_magazine/apc/flare_launcher/A = clips[1]
+		if(health <= 0) icon_state_suffix = "1"
+		else if(clips[1] == null || A.current_rounds <= 0) icon_state_suffix = "2"
+
+		return image(icon = "[disp_icon]_[icon_suffix]", icon_state = "[disp_icon_state]_[icon_state_suffix]", pixel_x = x_offset, pixel_y = y_offset)
+
+///////////////////
+// SUPPORT SLOTS // END
+///////////////////
+
+/////////////////
+// WHEELS SLOTS // START
+/////////////////
+
+/obj/item/apc_hardpoint/wheels
+	name = "M3 APC Wheels Kit"
+	desc = "Standard armored APC wheels. Suprisingly, greatly improves vehicle moving speed."
+
+	maxhealth = 500
+	health = 500
+	point_cost = 25
+
+	icon_state = "tires"
+
+	disp_icon = "apcarrier"
+	disp_icon_state = "wheels"
+
+	get_icon_image(var/x_offset, var/y_offset, var/new_dir)
+		return null //Handled in update_icon()
+
+	apply_buff()
+		owner.move_delay = 2.5
+
+	remove_buff()
+		owner.move_delay = 30
+
+/////////////////
+// TREAD SLOTS // END
+/////////////////
+
+///////////////
+// AMMO MAGS // START
+///////////////
+
+//Special ammo magazines for hardpoint modules. Some aren't here since you can use normal magazines on them
+/obj/item/ammo_magazine/apc
+	flags_magazine = 0 //No refilling
+	var/point_cost = 0
+
+/obj/item/ammo_magazine/apc/dual_cannon
+	name = "M78 Dualcannon Magazine"
+	desc = "A primary armament dualcannon magazine"
+	caliber = "45mm"
+	icon_state = "autocannon_1"
+	w_class = 10
+	default_ammo = /datum/ammo/rocket/autocannon
+	current_rounds = 30
+	max_rounds = 30
+	point_cost = 0
+	gun_type = /obj/item/apc_hardpoint/primary/dual_cannon
+
+	update_icon()
+		if(current_rounds >0)
+			icon_state = "autocannon_1"
+		else
+			icon_state = "autocannon_0"
+
+/obj/item/ammo_magazine/apc/front_cannon
+	name = "M26 Frontal Cannon"
+	desc = "A secondary armament cannon magazine"
+	caliber = "10x28mm" //Correlates to smartguns
+	icon_state = "big_ammo_box"
+	w_class = 12
+	default_ammo = /datum/ammo/bullet/smartgun/lethal
+	current_rounds = 300
+	max_rounds = 300
+	point_cost = 0
+	gun_type = /obj/item/apc_hardpoint/secondary/front_cannon
+
+
+/obj/item/ammo_magazine/apc/flare_launcher
+	name = "Flare Launcher System Magazine"
+	desc = "A flare launcher system magazine"
+	caliber = "flare"
+	icon_state = "slauncher_1"
+	w_class = 12
+	default_ammo = /datum/ammo/flare
+	current_rounds = 10
+	max_rounds = 10
+	point_cost = 0
+	gun_type = /obj/item/apc_hardpoint/support/flare_launcher
+
+	update_icon()
+		icon_state = "slauncher_[current_rounds <= 0 ? "0" : "1"]"
+
+///////////////
+// AMMO MAGS // END
+///////////////
+// APC HARDPOINTS // END
+///////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/datum/ammo/flare
