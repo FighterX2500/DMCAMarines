@@ -534,6 +534,14 @@
 						new /obj/item/stack/snow(ST, ST.slayer)
 						ST.slayer = 0
 						ST.update_icon(1, 0)
+				var/mob/living/carbon/MB
+				for(MB in T)
+					if(MB.lying == 1)
+						var/turf/temp = T
+						temp = get_step(temp, direction)
+						MB.throw_at(temp, 1, 1, src, 0)
+						if(!isXeno(MB))
+							MB.apply_damage(10, BRUTE)
 				var/obj/effect/alien/weeds/WE
 				for(WE in T)
 					WE.Dispose()

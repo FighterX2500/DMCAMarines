@@ -140,8 +140,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	//proc to calculate new speed, class and accuracy modificators depending on current weight
 	//speed_min = 3 - if tank_weight below 8
-	//speed_max = 17.5 - heaviest possible build
-	//speed_delay = 30 - broken treads (OD won't affect speed with broken speed anymore)
+	//speed_max = 14.5 - heaviest possible build (19)
+	//speed_delay = 70 - broken treads (OD won't affect speed with broken speed anymore)
 	//numbers in tank_weight represent relative weight of tank - summary of tank modules weight
 	//less than 8 tank_weight means tank lacks modules. To discourage going commando on the tank
 	//AND to prevent serious debuff on already not fully functioning tank, below 8 has the same stats
@@ -167,62 +167,62 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 			w_ratios["w_secd_acc"] = 0.99
 			//w_ratios["w_supp_acc"] = 0.97
 		if(11)
-			speed = 5.5 * ( (misc_ratios["OD_buff"]) ? 0.6 : 1 )
+			speed = 5.5 * ( (misc_ratios["OD_buff"]) ? 0.65 : 1 )
 			tank_class = WEIGHT_MEDIUM
 			w_ratios["w_prim_acc"] = 1.0
 			w_ratios["w_secd_acc"] = 1.0
 			//w_ratios["w_supp_acc"] = 1.0
 		if(12)
-			speed = 6 * ( (misc_ratios["OD_buff"]) ? 0.65 : 1 )
+			speed = 6 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
 			tank_class = WEIGHT_MEDIUM
 			w_ratios["w_prim_acc"] = 1.0
 			w_ratios["w_secd_acc"] = 1.0
 			//w_ratios["w_supp_acc"] = 1.0
 		if(13)
-			speed = 7 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
+			speed = 7 * ( (misc_ratios["OD_buff"]) ? 0.75 : 1 )
 			tank_class = WEIGHT_MEDIUM
 			w_ratios["w_prim_acc"] = 1.0
 			w_ratios["w_secd_acc"] = 1.0
 			//w_ratios["w_supp_acc"] = 1.0
 		if(14)
-			speed = 7.5 * ( (misc_ratios["OD_buff"]) ? 0.75 : 1 )
+			speed = 7.5 * ( (misc_ratios["OD_buff"]) ? 0.8 : 1 )
 			tank_class = WEIGHT_MEDIUM
 			w_ratios["w_prim_acc"] = 1.0
 			w_ratios["w_secd_acc"] = 1.0
 			//w_ratios["w_supp_acc"] = 1.0
 		if(15)
-			speed = 8 * ( (misc_ratios["OD_buff"]) ? 0.8 : 1 )
+			speed = 8 * ( (misc_ratios["OD_buff"]) ? 0.85 : 1 )
 			tank_class = WEIGHT_MEDIUM
 			w_ratios["w_prim_acc"] = 1.0
 			w_ratios["w_secd_acc"] = 1.0
 			//w_ratios["w_supp_acc"] = 1.0
 		if(16)
-			speed = 12 * ( (misc_ratios["OD_buff"]) ? 0.65 : 1 )
+			speed = 10 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
 			tank_class = WEIGHT_HEAVY
 			w_ratios["w_prim_acc"] = 1.02
 			w_ratios["w_secd_acc"] = 1.01
 			//w_ratios["w_supp_acc"] = 1.01
 		if(17)
-			speed = 13.5 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
+			speed = 11.5 * ( (misc_ratios["OD_buff"]) ? 0.74 : 1 )
 			tank_class = WEIGHT_HEAVY
 			w_ratios["w_prim_acc"] = 1.03
 			w_ratios["w_secd_acc"] = 1.02
 			//w_ratios["w_supp_acc"] = 1.02
 		if(18)
-			speed = 15 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
+			speed = 13 * ( (misc_ratios["OD_buff"]) ? 0.78 : 1 )
 			tank_class = WEIGHT_HEAVY
 			w_ratios["w_prim_acc"] = 1.04
 			w_ratios["w_secd_acc"] = 1.03
 			//w_ratios["w_supp_acc"] = 1.03
 		if(19)
-			speed = 17.5 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
+			speed = 14.5 * ( (misc_ratios["OD_buff"]) ? 0.82 : 1 )
 			tank_class = WEIGHT_HEAVY
 			w_ratios["w_prim_acc"] = 1.05
 			w_ratios["w_secd_acc"] = 1.04
 			//w_ratios["w_supp_acc"] = 1.04
 
 		else
-			speed = 3.0 * ( (misc_ratios["OD_buff"]) ? 0.9 : 1 )
+			speed = 3.0 * ( (misc_ratios["OD_buff"]) ? 0.95 : 1 )
 			tank_class = WEIGHT_LIGHT
 			w_ratios["w_prim_acc"] = 0.9
 			w_ratios["w_secd_acc"] = 0.9
@@ -718,6 +718,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 							//M.visible_message("<span class='danger'>[M] pushes against the [src], trying to hold it in place, but fails!</span>", "<span class='danger'>[src] is much heavier, you can't hold it in place!</span>")
 							return
 		if (!isXeno(M))
+			if(M.buckled)
+				M.buckled.unbuckle()
 			step_away(M,root,0,0)
 			M.KnockDown(3)
 			M.apply_damage(10 + rand(0, 10), BRUTE)
@@ -810,9 +812,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	else if(istype(A, /obj/structure/bed) && !istype(A, /obj/structure/bed/chair/dropship) && !istype(A, /obj/structure/bed/medevac_stretcher) && !istype(A, /obj/structure/bed/roller) && !istype(A, /obj/structure/bed/chair/janicart))
 		var/obj/structure/bed/BE = A
 		BE.visible_message("<span class='danger'>[root] crushes [BE]!</span>")
-		BE.unbuckle()
+		BE.Dispose()
 		new /obj/item/stack/sheet/metal(BE.loc, 1)
-		cdel(BE)
 	else if(istype(A, /obj/structure/bed/chair/janicart))
 		var/obj/structure/bed/JC = A
 		JC.visible_message("<span class='danger'>[root] crushes [JC]!</span>")
@@ -826,8 +827,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		var/obj/machinery/autolathe/AL = A
 		AL.visible_message("<span class='danger'>[root] crushes [AL]!</span>")
 		new /obj/item/stack/sheet/metal(AL.loc, 2)
-		new /obj/item/stack/sheet/metal(AL.loc, AL.stored_material["metal"])
-		new /obj/item/stack/sheet/glass(AL.loc, AL.stored_material["glass"])
+		new /obj/item/stack/sheet/metal(AL.loc, round(AL.stored_material["metal"] / 3750))
+		new /obj/item/stack/sheet/glass(AL.loc, round(AL.stored_material["glass"] / 3750))
 		cdel(AL)
 	else if (istype(A, /obj/structure/filingcabinet))
 		var/obj/structure/filingcabinet/FC = A
@@ -1092,13 +1093,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/hitbox/cm_armored/Move(var/atom/A, var/direction)
 	var/obj/vehicle/multitile/root/cm_armored/CA = root
 	for(var/mob/living/M in get_turf(src))
-		var/facing = get_dir(src, M)
-		if(istype(CA.hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow) && M.lying == 1)
-			if(src.dir == facing)
-				step_away(M,root,0)
-		else
-			M.sleeping = 3 //Not 0, they just got driven over by a giant ass whatever and that hurts
-			M.apply_damage(1, BRUTE)
+		M.sleeping = 3 //Not 0, they just got driven over by a giant ass whatever and that hurts
+		M.apply_damage(1, BRUTE)
 	for(var/obj/effect/alien/egg/Eg in get_turf(src))
 		Eg.Burst(1)
 	for(var/obj/item/clothing/mask/facehugger/FG in get_turf(src))
@@ -1118,6 +1114,10 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	. = ..()
 
 	if(.)
+		for(var/obj/structure/bed/BD in get_turf(A))
+			if(!istype(BD, /obj/structure/bed/chair/dropship) && !istype(BD, /obj/structure/bed/medevac_stretcher) && !istype(BD, /obj/structure/bed/roller) && !istype(BD, /obj/structure/bed/chair/janicart))
+				BD.visible_message("<span class='danger'>[root] crushes [BD]!</span>")
+				BD.Dispose()
 		for(var/mob/living/M in get_turf(A))
 			//I don't call Bump() otherwise that would encourage trampling for infinite unpunishable damage
 			M.sleeping = 1 //Maintain their lying-down-ness

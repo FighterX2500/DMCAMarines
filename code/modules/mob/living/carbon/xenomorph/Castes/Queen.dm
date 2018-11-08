@@ -56,6 +56,8 @@
 	spit_delay = 25
 	spit_types = list(/datum/ammo/xeno/acid/medium)
 
+	var/was_shot = FALSE	//flag used for messaging xenos that Queen is under attack
+
 	var/breathing_counter = 0
 	var/ovipositor = FALSE //whether the Queen is attached to an ovipositor
 	var/ovipositor_cooldown = 0
@@ -168,6 +170,29 @@
 								ticker.mode.stored_larva++
 								round_statistics.total_xenos_created-- // keep stats sane
 								cdel(L)
+
+
+/mob/living/carbon/Xenomorph/Queen/bullet_act(obj/item/projectile/P)
+	. = ..()
+	if(!was_shot)
+		if(health < 0)
+			if(ticker && ticker.mode)
+				for(var/datum/mind/L in ticker.mode.xenomorphs)
+					var/mob/living/carbon/Xenomorph/X = L.current
+					if(X && X.client && istype(X) && !isXenoQueen(X) && !X.stat && hivenumber == X.hivenumber)
+						X << sound(get_sfx("queen"),wait = 0,volume = 50)
+						to_chat(X, "<span class='xenohighdanger'>Your Queen is barely alive! Help her!</span>")
+		if(health > 0)
+			if(ticker && ticker.mode)
+				for(var/datum/mind/L in ticker.mode.xenomorphs)
+					var/mob/living/carbon/Xenomorph/X = L.current
+					if(X && X.client && istype(X) && !isXenoQueen(X) && !X.stat && hivenumber == X.hivenumber)
+						X << sound(get_sfx("queen"),wait = 0,volume = 50)
+						to_chat(X, "<span class='xenohighdanger'>You can feel your Queen is getting hurt. A strong desire to rush and help her fills you!</span>")
+		was_shot = TRUE
+		spawn(100)
+		was_shot = FALSE
+
 
 
 //Custom bump for crushers. This overwrites normal bumpcode from carbon.dm
@@ -348,6 +373,12 @@
 	visible_message("<span class='xenohighdanger'>\The [src] emits an ear-splitting guttural roar!</span>")
 	create_shriekwave() //Adds the visual effect. Wom wom wom
 	//stop_momentum(charge_dir) //Screech kills a charge
+	if(ticker && ticker.mode)
+		for(var/datum/mind/L in ticker.mode.xenomorphs)
+			var/mob/living/carbon/Xenomorph/X = L.current
+			if(X && X.client && istype(X) && !isXenoQueen(X) && !X.stat && hivenumber == X.hivenumber)
+				X << sound(get_sfx("queen"),wait = 0,volume = 50)
+				to_chat(X, "<span class='xenohighdanger'>You feel as your Queen emits a powerful screech. You feel urge to join her in the fight!</span>")
 
 	for(var/mob/M in view())
 		if(M && M.client)
