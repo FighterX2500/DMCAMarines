@@ -140,8 +140,8 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 	//proc to calculate new speed, class and accuracy modificators depending on current weight
 	//speed_min = 3 - if tank_weight below 8
-	//speed_max = 17.5 - heaviest possible build
-	//speed_delay = 30 - broken treads (OD won't affect speed with broken speed anymore)
+	//speed_max = 14.5 - heaviest possible build (19)
+	//speed_delay = 70 - broken treads (OD won't affect speed with broken speed anymore)
 	//numbers in tank_weight represent relative weight of tank - summary of tank modules weight
 	//less than 8 tank_weight means tank lacks modules. To discourage going commando on the tank
 	//AND to prevent serious debuff on already not fully functioning tank, below 8 has the same stats
@@ -167,62 +167,62 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 			w_ratios["w_secd_acc"] = 0.99
 			//w_ratios["w_supp_acc"] = 0.97
 		if(11)
-			speed = 5.5 * ( (misc_ratios["OD_buff"]) ? 0.6 : 1 )
+			speed = 5.5 * ( (misc_ratios["OD_buff"]) ? 0.65 : 1 )
 			tank_class = WEIGHT_MEDIUM
 			w_ratios["w_prim_acc"] = 1.0
 			w_ratios["w_secd_acc"] = 1.0
 			//w_ratios["w_supp_acc"] = 1.0
 		if(12)
-			speed = 6 * ( (misc_ratios["OD_buff"]) ? 0.65 : 1 )
+			speed = 6 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
 			tank_class = WEIGHT_MEDIUM
 			w_ratios["w_prim_acc"] = 1.0
 			w_ratios["w_secd_acc"] = 1.0
 			//w_ratios["w_supp_acc"] = 1.0
 		if(13)
-			speed = 7 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
+			speed = 7 * ( (misc_ratios["OD_buff"]) ? 0.75 : 1 )
 			tank_class = WEIGHT_MEDIUM
 			w_ratios["w_prim_acc"] = 1.0
 			w_ratios["w_secd_acc"] = 1.0
 			//w_ratios["w_supp_acc"] = 1.0
 		if(14)
-			speed = 7.5 * ( (misc_ratios["OD_buff"]) ? 0.75 : 1 )
+			speed = 7.5 * ( (misc_ratios["OD_buff"]) ? 0.8 : 1 )
 			tank_class = WEIGHT_MEDIUM
 			w_ratios["w_prim_acc"] = 1.0
 			w_ratios["w_secd_acc"] = 1.0
 			//w_ratios["w_supp_acc"] = 1.0
 		if(15)
-			speed = 8 * ( (misc_ratios["OD_buff"]) ? 0.8 : 1 )
+			speed = 8 * ( (misc_ratios["OD_buff"]) ? 0.85 : 1 )
 			tank_class = WEIGHT_MEDIUM
 			w_ratios["w_prim_acc"] = 1.0
 			w_ratios["w_secd_acc"] = 1.0
 			//w_ratios["w_supp_acc"] = 1.0
 		if(16)
-			speed = 12 * ( (misc_ratios["OD_buff"]) ? 0.65 : 1 )
+			speed = 10 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
 			tank_class = WEIGHT_HEAVY
 			w_ratios["w_prim_acc"] = 1.02
 			w_ratios["w_secd_acc"] = 1.01
 			//w_ratios["w_supp_acc"] = 1.01
 		if(17)
-			speed = 13.5 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
+			speed = 11.5 * ( (misc_ratios["OD_buff"]) ? 0.74 : 1 )
 			tank_class = WEIGHT_HEAVY
 			w_ratios["w_prim_acc"] = 1.03
 			w_ratios["w_secd_acc"] = 1.02
 			//w_ratios["w_supp_acc"] = 1.02
 		if(18)
-			speed = 15 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
+			speed = 13 * ( (misc_ratios["OD_buff"]) ? 0.78 : 1 )
 			tank_class = WEIGHT_HEAVY
 			w_ratios["w_prim_acc"] = 1.04
 			w_ratios["w_secd_acc"] = 1.03
 			//w_ratios["w_supp_acc"] = 1.03
 		if(19)
-			speed = 17.5 * ( (misc_ratios["OD_buff"]) ? 0.7 : 1 )
+			speed = 14.5 * ( (misc_ratios["OD_buff"]) ? 0.82 : 1 )
 			tank_class = WEIGHT_HEAVY
 			w_ratios["w_prim_acc"] = 1.05
 			w_ratios["w_secd_acc"] = 1.04
 			//w_ratios["w_supp_acc"] = 1.04
 
 		else
-			speed = 3.0 * ( (misc_ratios["OD_buff"]) ? 0.9 : 1 )
+			speed = 3.0 * ( (misc_ratios["OD_buff"]) ? 0.95 : 1 )
 			tank_class = WEIGHT_LIGHT
 			w_ratios["w_prim_acc"] = 0.9
 			w_ratios["w_secd_acc"] = 0.9
