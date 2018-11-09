@@ -91,4 +91,5 @@
 #define RESEARCH_XENO_DRONE 33
 
 #define RESEARCH_XENO_QUEEN 40
+#define RESEARCH_XENO_DISRUPTION 41
 //=================================================
