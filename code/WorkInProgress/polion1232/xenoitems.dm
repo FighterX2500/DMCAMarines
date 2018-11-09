@@ -114,7 +114,17 @@ Queen thingy - 40
 	var/filled = 0
 	var/obj/item/marineResearch/xenomorp/weed/sample = null
 
+// To be placed in Almayer research
+/obj/item/paper/res_note
+	name = "Note about equipment"
+	info = "Well, I actually managed to add to Requsition our old surplus equipment, such as scanning modules, matter bins, ect. Let's hope those monkeys from Req. will not greedy enough to NOT give us needed equipment."
 
-
+/*
+/obj/item/marineResearch/gene_injector
+	name = "Xeno Corruption Injector"
+	desc = "Powerful gene-agent for changing xenomoph eggs genetic structure."
+	icon_state = "3"
+	var/used = 0
+*/
 
 ///// ZZZZZZAP! Lets find some test subjects /////

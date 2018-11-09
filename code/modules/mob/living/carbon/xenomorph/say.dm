@@ -93,13 +93,23 @@
 		return
 
 	var/rendered
+	var/disrupted_message
+	var/area/A = get_area(hive.disruptor)
+	if(hive.disrupted)
+		disrupted_message = Gibberish(message, 70)
 	if(isXenoQueen(src))
-		rendered = "<font size='3' font color='purple'><i><span class='game say'>Hivemind, <span class='name'>[name]</span> <span class='message'> hisses, '[message]'</span></span></i></font>"
+		if(!hive.disrupted)
+			rendered = "<font size='3' font color='purple'><i><span class='game say'>Hivemind, <span class='name'>[name]</span> <span class='message'> hisses, '[message]'</span></span></i></font>"
+		else
+			rendered = "<font size='3' font color='purple'><i><span class='game say'>Hivemind, <span class='name'>[name]</span> <span class='message'> hisses, '[disrupted_message]'</span></span></i></font>"
 	else if(is_robotic)
 		var/message_b = pick("high-pitched blast of static","series of pings","long string of numbers","loud, mechanical squeal", "series of beeps")
 		rendered = "<i><span class='game say'>Hivemind, <span class='name'>[name]</span> emits a [message_b]!</span></i>"
 	else
-		rendered = "<i><span class='game say'>Hivemind, <span class='name'>[name]</span> <span class='message'> hisses, '[message]'</span></span></i>"
+		if(!hive.disrupted)
+			rendered = "<i><span class='game say'>Hivemind, <span class='name'>[name]</span> <span class='message'> hisses, '[message]'</span></span></i>"
+		else
+			rendered = "<font size='3' font color='purple'><i><span class='game say'>Hivemind, <span class='name'>[name]</span> <span class='message'> hisses, '[disrupted_message]'</span></span></i></font>"
 	log_talk(message, LOG_HIVEMIND)
 
 	var/track = ""
@@ -116,7 +126,14 @@
 						ghostrend = "<i><span class='game say'>Hivemind, <span class='name'>[name]</span> [track]<span class='message'> hisses, '[message]'</span></span></i>"
 					S.show_message(ghostrend, 2)
 			else if(S != src && S == hive.living_xeno_queen && hive.living_xeno_queen.ovipositor)
-				var/queenrend = "<i><span class='game say'>Hivemind, <span class='name'>[name]</span> (<a href='byond://?src=\ref[S];queentrack=\ref[src]'>watch</a>)<span class='message'> hisses, '[message]'</span></span></i>"
+				var/queenrend
+				if(!hive.disrupted)
+					queenrend ="<i><span class='game say'>Hivemind, <span class='name'>[name]</span> (<a href='byond://?src=\ref[S];queentrack=\ref[src]'>watch</a>)<span class='message'> hisses, '[message]'</span></span></i>"
+				else
+					queenrend ="<i><span class='game say'>Hivemind, <span class='name'>[name]</span> (<a href='byond://?src=\ref[S];queentrack=\ref[src]'>watch</a>)<span class='message'> hisses, '[disrupted_message]'</span></span></i>"
+					to_chat(S, "<span class='xenodanger'>You can sense that disturbing noise somewhere [A? " from [sanitize(A.name)]":""]..</span>")
 				S.show_message(queenrend, 2)
 			else if(hivenumber == xeno_hivenumber(S))
 				S.show_message(rendered, 2)
+				if(hive.disrupted)
+					to_chat(S, "<span class='xenodanger'>You can sense that disturbing noise somewhere [A? " from [sanitize(A.name)]":""]..</span>")

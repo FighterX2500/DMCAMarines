@@ -233,6 +233,7 @@
 /datum/surgery_step/xeno/internal/secretor/hivelord/end_step(mob/living/user, mob/living/carbon/Xenomorph/target, obj/item/tool)
 	user.visible_message("<span class='notice'>[user] cut strange tissue out of [target]'s body</span>")
 	new /obj/item/marineResearch/xenomorp/secretor/hivelord(target.loc)
+	new /obj/item/marineResearch/xenomorp/secretor/hivelord(target.loc)
 	target.xeno_surgery_step = 0
 	target.xeno_forbid_retract = 1 // Poor xeno butchered
 	return

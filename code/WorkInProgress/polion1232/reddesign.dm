@@ -11,6 +11,15 @@
 
 ///// Machines of xenos' impending DOOM /////
 
+/datum/marine_design/sampler
+	name = "Standart science-issued sampler"
+	desc = "Common sampler, used by most scientific groups. Limited numbers of that devices we already have in hands, but we may need more of them."
+	id = "sampler"
+	build_path = /obj/item/marineResearch/sampler
+	build_type = MARINE_PROTHOLATHE
+	req_tech = list(RESEARCH_XENOSTART)
+	materials = list("metal" = 500, "glass" = 0, "biomass" = 0)
+
 /datum/marine_design/anti_weed
 	name = "Plant-B-Gone military-grade sprinkler"
 	desc = "Common pesticide had been found useful against Xenoflora of all kind."
@@ -64,3 +73,12 @@
 	build_type = MARINE_PROTHOLATHE
 	req_tech = list(RESEARCH_XENO_CHEMISTRY)
 	materials = list("metal" = 100, "glass" = 0, "biomass" = 100)
+
+/datum/marine_design/disruptorcircuit									//You must REALLY hate xeno, if you creating that
+	name = "Hivelink Disruptor Prototype"
+	desc = "Powerful machinery, what can throw entire Hive chain of command into chaos."
+	id = "disruptor"
+	build_path = /obj/item/circuitboard/machine/hive_disruptor
+	build_type = MARINE_PROTHOLATHE
+	req_tech = list(RESEARCH_XENO_DISRUPTION)
+	materials = list("metal" = 0, "glass" = 500, "biomass" = 7500)

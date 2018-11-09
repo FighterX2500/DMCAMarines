@@ -29,7 +29,19 @@
 /obj/item/circuitboard/machine/biolathe
 	name = "Circuit board (Bio-Organic Autolathe)"
 	build_path = /obj/machinery/r_n_d/biolathe
-	origin_tech = 14
+	origin_tech = RESEARCH_XENO_HIVELORD
+	req_components = list(
+							"/obj/item/stock_parts/manipulator" = 1,
+							"/obj/item/marineResearch/xenomorp/secretor/hivelord" = 1
+							)
+
+/obj/item/circuitboard/machine/hive_disruptor			// Hehe
+	name = "Circuit board (Hivelink Disruptor)"
+	build_path = /obj/machinery/hive_disruptor
+	origin_tech = null
+	var/hive_signature = XENO_HIVE_NORMAL				//What hive will be ddosed
+	frame_desc = "Requires 2 Scanning modules."
+	req_components = list(/obj/item/stock_parts/scanning_module = 2)
 
 /obj/machinery/computer/XenoRnD
 	name = "R&D Console"

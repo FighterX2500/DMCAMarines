@@ -168,6 +168,8 @@
 	var/hive_orders = "" //What orders should the hive have
 	var/color = null
 	var/prefix = ""
+	var/disrupted = 0				//for hive_message
+	var/obj/machinery/hive_disruptor/disruptor = null	//used only when disrupted is 1
 	var/list/xeno_leader_list = list()
 
 /datum/hive_status/corrupted
