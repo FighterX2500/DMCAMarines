@@ -228,7 +228,7 @@ Currently only has the tank hardpoints
 
 	apply_buff()
 		owner.cooldowns["primary"] = 5
-		owner.accuracies["primary"] = 0.9
+		owner.accuracies["primary"] = 0.97
 	is_ready()
 		if(world.time < next_use)
 			to_chat(usr, "<span class='warning'>This module is not ready to be used yet.</span>")
@@ -336,8 +336,9 @@ Currently only has the tank hardpoints
 /obj/item/hardpoint/primary/cannon/upp
 	name = "Type 43 Cannon"
 	desc = "A primary 86mm cannon for tank that shoots explosive rounds."
-
 	point_cost = 0
+	color = "#c2b678"
+
 	ammo_type = new /obj/item/ammo_magazine/tank/ltb_cannon/upp
 
 	active_effect(var/turf/T)
@@ -359,6 +360,7 @@ Currently only has the tank hardpoints
 	name = "Type 41 Autocannon"
 	desc = "A primary light autocannon for tank. Designed for light scout tank. Shoots 30mm HE rounds."
 	point_cost = 0
+	color = "#c2b678"
 
 	ammo_type = new /obj/item/ammo_magazine/tank/autocannon/upp
 
@@ -550,7 +552,7 @@ Currently only has the tank hardpoints
 
 	apply_buff()
 		owner.cooldowns["secondary"] = 7
-		owner.accuracies["secondary"] = 0.4
+		owner.accuracies["secondary"] = 0.8
 
 	is_ready()
 		if(world.time < next_use)
@@ -587,6 +589,7 @@ Currently only has the tank hardpoints
 	name = "Type 04 Flamethrower"
 	desc = "A secondary weapon for tank. Don't let it fool you, it's not your ordinary flamer, this thing literally shoots fireballs. Not kidding."
 	point_cost = 0
+	color = "#c2b678"
 
 	ammo_type = new /obj/item/ammo_magazine/tank/flamer/upp
 
@@ -609,8 +612,10 @@ Currently only has the tank hardpoints
 /obj/item/hardpoint/secondary/towlauncher/upp
 	name = "Type 05 PTRK"
 	desc = "A secondary weapon for tank that shoots powerful AP rockets. Deals heavy damage, but only on direct hits."
-	ammo_type = new /obj/item/ammo_magazine/tank/towlauncher/upp
 	point_cost = 0
+	color = "#c2b678"
+
+	ammo_type = new /obj/item/ammo_magazine/tank/towlauncher/upp
 
 	active_effect(var/turf/T)
 
@@ -631,6 +636,7 @@ Currently only has the tank hardpoints
 	name = "Type 01 PKT"
 	desc = "A secondary weapon for tank. Heavy-hitting machine gun."
 	point_cost = 0
+	color = "#c2b678"
 
 	ammo_type = new /obj/item/ammo_magazine/tank/m56_cupola/upp
 
@@ -653,6 +659,7 @@ Currently only has the tank hardpoints
 /obj/item/hardpoint/secondary/grenade_launcher/upp
 	name = "Type 02 AGS"
 	point_cost = 0
+	color = "#c2b678"
 
 	ammo_type = new /obj/item/ammo_magazine/tank/tank_glauncher/upp
 
@@ -875,10 +882,12 @@ Currently only has the tank hardpoints
 /obj/item/hardpoint/support/weapons_sensor/upp
 	name = "Type 31 Weapons Modernisation Kit"
 	point_cost = 0
+	color = "#c2b678"
 
 /obj/item/hardpoint/support/artillery_module/upp
 	name = "Type 33 Artillery Module"
 	point_cost = 0
+	color = "#c2b678"
 
 ///////////////////
 // SUPPORT SLOTS // END
@@ -903,9 +912,9 @@ Currently only has the tank hardpoints
 	disp_icon_state = "ballistic_armor"
 
 	apply_buff()
-		owner.dmg_multipliers["acid"] = 1.0
+		owner.dmg_multipliers["acid"] = 0.9
 		owner.dmg_multipliers["slash"] = 0.67
-		owner.dmg_multipliers["explosive"] = 0.8
+		owner.dmg_multipliers["explosive"] = 0.7
 		owner.dmg_multipliers["blunt"] = 0.7
 		owner.dmg_multipliers["bullet"] = 0.2
 
@@ -950,7 +959,7 @@ Currently only has the tank hardpoints
 	health = 600
 
 	point_cost = 100
-	hp_weight = 4
+	hp_weight = 3
 
 	icon_state = "concussive_armor"
 
@@ -958,10 +967,10 @@ Currently only has the tank hardpoints
 	disp_icon_state = "concussive_armor"
 
 	apply_buff()
-		owner.dmg_multipliers["acid"] = 1.1
-		owner.dmg_multipliers["slash"] = 0.75
-		owner.dmg_multipliers["explosive"] = 0.6
-		owner.dmg_multipliers["blunt"] = 0.3
+		owner.dmg_multipliers["acid"] = 1.0
+		owner.dmg_multipliers["slash"] = 0.67
+		owner.dmg_multipliers["explosive"] = 0.8
+		owner.dmg_multipliers["blunt"] = 0.5
 		owner.dmg_multipliers["bullet"] = 0.4
 
 	remove_buff()
@@ -986,7 +995,7 @@ Currently only has the tank hardpoints
 	disp_icon_state = "paladin_armor"
 
 	apply_buff()
-		owner.dmg_multipliers["acid"] = 0.8
+		owner.dmg_multipliers["acid"] = 0.5
 		owner.dmg_multipliers["slash"] = 0.5
 		owner.dmg_multipliers["explosive"] = 0.4
 		owner.dmg_multipliers["blunt"] = 0.4
@@ -1006,7 +1015,7 @@ Currently only has the tank hardpoints
 	maxhealth = 700
 	health = 700
 	point_cost = 100
-	hp_weight = 3
+	hp_weight = 4
 
 	icon_state = "snowplow"
 
@@ -1014,10 +1023,10 @@ Currently only has the tank hardpoints
 	disp_icon_state = "snowplow"
 
 	apply_buff()
-		owner.dmg_multipliers["acid"] = 1.2
+		owner.dmg_multipliers["acid"] = 1.0
 		owner.dmg_multipliers["slash"] = 0.9
 		owner.dmg_multipliers["explosive"] = 0.5	//demining minefields, after all
-		owner.dmg_multipliers["blunt"] = 0.6
+		owner.dmg_multipliers["blunt"] = 0.4
 		owner.dmg_multipliers["bullet"] = 0.5
 
 	remove_buff()
@@ -1044,6 +1053,7 @@ Currently only has the tank hardpoints
 	name = "Type 50 MBT Armor"
 	desc = "Standard UPP tank armor. Offers some decent explosion protection."
 	point_cost = 0
+	color = "#c2b678"
 
 	maxhealth = 900
 	health = 900
@@ -1052,7 +1062,7 @@ Currently only has the tank hardpoints
 		owner.dmg_multipliers["acid"] = 0.8
 		owner.dmg_multipliers["slash"] = 0.67
 		owner.dmg_multipliers["explosive"] = 0.5
-		owner.dmg_multipliers["blunt"] = 0.7
+		owner.dmg_multipliers["blunt"] = 0.5
 		owner.dmg_multipliers["bullet"] = 0.2
 
 /////////////////
@@ -1145,6 +1155,7 @@ Currently only has the tank hardpoints
 	name = "Type 07 Tank Treads"
 	desc = "Standard UPP tank treads. They look quite tough."
 	point_cost = 0
+	color = "#c2b678"
 
 	maxhealth = 650
 	health = 650
@@ -1190,7 +1201,10 @@ Currently only has the tank hardpoints
 	gun_type = /obj/item/hardpoint/primary/autocannon
 
 	update_icon()
-		icon_state = "autocannon_0"
+		if(current_rounds >0)
+			icon_state = "autocannon_1"
+		else
+			icon_state = "autocannon_0"
 
 /obj/item/ammo_magazine/tank/ltaaap_minigun
 	name = "M74 LTAA-AP Minigun Magazine"
@@ -1289,33 +1303,39 @@ Currently only has the tank hardpoints
 	name = "Type 43 Cannon Magazine"
 	gun_type = /obj/item/hardpoint/primary/cannon/upp
 	point_cost = 0
+	color = "#c2b678"
 
 /obj/item/ammo_magazine/tank/autocannon/upp
 	name = "Type 41 Autocannon Magazine"
 	default_ammo = /datum/ammo/rocket/autocannon/upp
 	gun_type = /obj/item/hardpoint/primary/autocannon/upp
 	point_cost = 0
+	color = "#c2b678"
 
 /obj/item/ammo_magazine/tank/m56_cupola/upp
 	name = "Type 01 PKT Magazine"
 	default_ammo = /datum/ammo/bullet/smartgun/lethal
 	gun_type = /obj/item/hardpoint/secondary/m56cupola/upp
 	point_cost = 0
+	color = "#c2b678"
 
 /obj/item/ammo_magazine/tank/flamer/upp
 	name = "Type 04 Flamethrower Tank"
 	gun_type = /obj/item/hardpoint/secondary/flamer/upp
 	point_cost = 0
+	color = "#c2b678"
 
 /obj/item/ammo_magazine/tank/towlauncher/upp
 	name = "Type 05 PTRK Magazine"
 	gun_type = /obj/item/hardpoint/secondary/towlauncher/upp
 	point_cost = 0
+	color = "#c2b678"
 
 /obj/item/ammo_magazine/tank/tank_glauncher/upp
 	name = "Type 02 AGS Magazine"
 	gun_type = /obj/item/hardpoint/secondary/grenade_launcher/upp
 	point_cost = 0
+	color = "#c2b678"
 ///////////////
 // AMMO MAGS // END
 ///////////////

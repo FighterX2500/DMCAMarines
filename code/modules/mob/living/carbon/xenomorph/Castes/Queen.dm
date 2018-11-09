@@ -56,6 +56,8 @@
 	spit_delay = 25
 	spit_types = list(/datum/ammo/xeno/acid/medium)
 
+	var/was_shot = FALSE	//flag used for messaging xenos that Queen is under attack
+
 	var/breathing_counter = 0
 	var/ovipositor = FALSE //whether the Queen is attached to an ovipositor
 	var/ovipositor_cooldown = 0
@@ -168,6 +170,29 @@
 								ticker.mode.stored_larva++
 								round_statistics.total_xenos_created-- // keep stats sane
 								cdel(L)
+
+
+/mob/living/carbon/Xenomorph/Queen/bullet_act(obj/item/projectile/P)
+	. = ..()
+	if(!was_shot)
+		if(health < 0)
+			if(ticker && ticker.mode)
+				for(var/datum/mind/L in ticker.mode.xenomorphs)
+					var/mob/living/carbon/Xenomorph/X = L.current
+					if(X && X.client && istype(X) && !isXenoQueen(X) && !X.stat && hivenumber == X.hivenumber)
+						X << sound(get_sfx("queen"),wait = 0,volume = 50)
+						to_chat(X, "<span class='xenohighdanger'>Your Queen is barely alive! Help her!</span>")
+		if(health > 0)
+			if(ticker && ticker.mode)
+				for(var/datum/mind/L in ticker.mode.xenomorphs)
+					var/mob/living/carbon/Xenomorph/X = L.current
+					if(X && X.client && istype(X) && !isXenoQueen(X) && !X.stat && hivenumber == X.hivenumber)
+						X << sound(get_sfx("queen"),wait = 0,volume = 50)
+						to_chat(X, "<span class='xenohighdanger'>You can feel your Queen is getting hurt. A strong desire to rush and help her fills you!</span>")
+		was_shot = TRUE
+		spawn(100)
+		was_shot = FALSE
+
 
 
 //Custom bump for crushers. This overwrites normal bumpcode from carbon.dm
@@ -348,6 +373,12 @@
 	visible_message("<span class='xenohighdanger'>\The [src] emits an ear-splitting guttural roar!</span>")
 	create_shriekwave() //Adds the visual effect. Wom wom wom
 	//stop_momentum(charge_dir) //Screech kills a charge
+	if(ticker && ticker.mode)
+		for(var/datum/mind/L in ticker.mode.xenomorphs)
+			var/mob/living/carbon/Xenomorph/X = L.current
+			if(X && X.client && istype(X) && !isXenoQueen(X) && !X.stat && hivenumber == X.hivenumber)
+				X << sound(get_sfx("queen"),wait = 0,volume = 50)
+				to_chat(X, "<span class='xenohighdanger'>You feel as your Queen emits a powerful screech. You feel urge to join her in the fight!</span>")
 
 	for(var/mob/M in view())
 		if(M && M.client)
@@ -357,18 +388,29 @@
 				shake_camera(M, 30, 1) //50 deciseconds, SORRY 5 seconds was way too long. 3 seconds now
 
 	for(var/mob/living/carbon/human/M in oview(7, src))
-		if(istype(M.wear_ear, /obj/item/clothing/ears/earmuffs))
-			continue
+		//if(istype(M.wear_ear, /obj/item/clothing/ears/earmuffs))
+		//	continue
+		var/mobility_aura_reduction = max(1 - 0.2 * M.mobility_aura, 0)	//All Orders help to handle different effects of screech
+		var/protection_aura_reduction = max(1 - 0.2 * M.protection_aura, 0)
+		var/marksman_aura_reduction = max(1 - 0.2 * M.marskman_aura, 0)
+
 		var/dist = get_dist(src,M)
 		if(dist <= 4)
-			to_chat(M, "<span class='danger'>An ear-splitting guttural roar shakes the ground beneath your feet!</span>")
-			M.stunned += 4 //Seems the effect lasts between 3-8 seconds.
-			M.KnockDown(4)
+			to_chat(M, "<span class='danger'>An ear-splitting guttural roar shakes the ground beneath your feet and disorientates you!</span>")
+			M.stunned += 2 * protection_aura_reduction
+			M.temporary_slowdown = 3 * mobility_aura_reduction
+			M.KnockDown(2 * protection_aura_reduction)
+			if(!M.eye_blind)
+				M.eye_blurry += 4 * marksman_aura_reduction //blurry vision
 			if(!M.ear_deaf)
-				M.ear_deaf += 8 //Deafens them temporarily
+				M.ear_deaf += 4 //Deafens them temporarily
 		else if(dist >= 5 && dist < 7)
-			M.stunned += 3
-			to_chat(M, "<span class='danger'>The roar shakes your body to the core, freezing you in place!</span>")
+			M.KnockDown(1 * protection_aura_reduction)
+			M.temporary_slowdown = 2 * mobility_aura_reduction
+			if(!M.eye_blind)
+				M.eye_blurry += 3 * marksman_aura_reduction
+			to_chat(M, "<span class='danger'>The roar shakes your body to the core, freezing you in place and disorientates you a little!</span>")
+
 
 /mob/living/carbon/Xenomorph/Queen/proc/queen_gut(atom/A)
 

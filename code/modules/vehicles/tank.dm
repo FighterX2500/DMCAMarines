@@ -137,26 +137,27 @@
 	deactivate_all_hardpoints()
 	var/turf/T = get_turf(entrance)
 	if(tile_blocked_check(T))
-		src.visible_message("<span class='danger'>Debug message: entrance turf check - blocked!</span>",)
-		T = get_new_exit_point()
-		//T = get_step(src, src.dir)
-		//T = get_step(T, src.dir)
-		//var left = turn(src.dir, -90)
-		//T = get_step(T, left)
-		if(tile_blocked_check(T))
-			return
-		else
-			if(gunner)
+		if(gunner)
+			T = get_new_exit_point()
+			if(tile_blocked_check(T))
+				return
+			else
 				gunner.Move(T)
 				to_chat(gunner, "<span class='danger'>You cannot breath in all the smoke inside the vehicle and back hatch is blocked, so you get out through an auxiliary top hatch and jump off the tank!</span>")
-			if(driver)
+				gunner = null
+		if(driver)
+			T = get_new_exit_point()
+			if(tile_blocked_check(T))
+				return
+			else
 				driver.Move(T)
 				to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle and back hatch is blocked, so you get out through an auxiliary top hatch and jump off the tank!</span>")
+				driver = null
 	else
 		to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle so you dismount!</span>")
-		gunner.Move(entrance.loc)
+		gunner.Move(T)
 		to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle so you dismount!</span>")
-		driver.Move(entrance.loc)
+		driver.Move(T)
 	if(gunner.client)
 		gunner.client.mouse_pointer_icon = initial(gunner.client.mouse_pointer_icon)
 	gunner.unset_interaction()
@@ -257,7 +258,10 @@
 	if(!nickname)
 		to_chat(usr, "<span class='warning'>No text entered!</span>")
 		return
-	src.name += " \"[nickname]\""
+	if(!named)
+		src.name += " \"[nickname]\""
+	else
+		to_chat(usr, "<span class='warning'>Other TC was quicker! Tank already was named!</span>")
 	named = TRUE
 
 //Let's you switch into the other seat, doesn't work if it's occupied
@@ -526,10 +530,18 @@
 				var/turf/T = locate(src.x + C.x_pos, src.y + C.y_pos, src.z + C.z_pos)
 				if(istype(T, /turf/open/snow))
 					var/turf/open/snow/ST = T
-					if(ST || !ST.slayer)
+					if(ST && ST.slayer)
 						new /obj/item/stack/snow(ST, ST.slayer)
 						ST.slayer = 0
 						ST.update_icon(1, 0)
+				var/mob/living/carbon/MB
+				for(MB in T)
+					if(MB.lying == 1)
+						var/turf/temp = T
+						temp = get_step(temp, direction)
+						MB.throw_at(temp, 1, 1, src, 0)
+						if(!isXeno(MB))
+							MB.apply_damage(10, BRUTE)
 				var/obj/effect/alien/weeds/WE
 				for(WE in T)
 					WE.Dispose()
