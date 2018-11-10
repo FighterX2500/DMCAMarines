@@ -180,13 +180,14 @@ Queen thingy - RESEARCH_XENO_QUEEN
 	resdesc = "Spitters are spitting their own XBA at you. They produce it in their glands, but it does not makes it better. But the most facinating about those glands is that they produce XBA of every Xenomorph subspecies."
 	id = RESEARCH_XENO_SPITTER
 	req_tech = list(RESEARCH_XENO_CHEMISTRY)
-/*
-/datum/marineTech/Pheromones
-	name = "Xenomorph Pheromones"
-	desc = "Analysis of very powerful xenomorph pheromones"
-	id = 22
-	req_tech = list(20)
-*/
+
+/datum/marineTech/LaserExperimental
+	name = "Experimental laser weapons"
+	desc = "Possible ways to create portable laser weapons"
+	resdesc = "SR-LG \"Thunder\", our first working portable laser weapon with adequate power cell - our first milestone. Now future is here!"
+	id = RESEARCH_XENO_LASGUN
+	req_tech = list(RESEARCH_XENO_SPITTER)
+	need_item = 0
 
 
 //Xenoflora path//

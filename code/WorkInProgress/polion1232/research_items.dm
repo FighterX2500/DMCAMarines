@@ -234,3 +234,60 @@
 			return
 		if(isXenoQueen(M) || isXenoRavager(target))
 			target.visible_message("<span class='danger'>Tesla discharge was been shrugged off [target.name]'s chitin!</span>", "You felt weird thing, that pokes your chitin")
+
+// Laser Gun
+/obj/item/weapon/gun/energy/lasgan
+	name = "SR-LG \"Thunder\""
+	desc = "Next-Gen rifle, powered by XBA cells, sends ruinous laser bolt to any enemy on it's path."
+	icon = 'icons/obj/old_guns/old_guns.dmi'
+	icon_state = "laser"
+	item_state = "FP9000"
+	ammo = /datum/ammo/energy/lasgan
+	fire_sound = 'sound/weapons/laser3.ogg'
+	var/charge_cost = 100
+	var/obj/item/cell/xba/mag = null
+	flags_gun_features = GUN_INTERNAL_MAG
+
+/obj/item/weapon/gun/energy/lasgan/New()
+	..()
+	mag = new /obj/item/cell/xba
+
+/obj/item/weapon/gun/energy/lasgan/set_gun_config_values()
+	fire_delay = config.max_fire_delay
+	accuracy_mult = config.base_hit_accuracy_mult + config.high_hit_accuracy_mult
+	accuracy_mult_unwielded = config.base_hit_accuracy_mult
+	scatter = 0
+	scatter_unwielded = config.med_scatter_value
+	damage_mult = config.base_hit_damage_mult
+
+/obj/item/weapon/gun/energy/lasgan/attackby(var/obj/item/A as obj, mob/user as mob)
+	if(istype(A,/obj/item/cell))
+		var/obj/item/cell/C = A
+		visible_message("[user.name] swaps out the power cell in the [src.name].","You swap out the power cell in the [src] and drop the old one.")
+		to_chat(user, "The new cell contains: [C.charge] power.")
+		mag.loc = get_turf(user)
+		mag = C
+		C.loc = src
+		playsound(src,'sound/machines/click.ogg', 25, 1)
+	else
+		..()
+
+/obj/item/weapon/gun/energy/lasgan/load_into_chamber()
+	if(mag.charge - charge_cost < 0) return
+
+	mag.charge -= charge_cost
+	in_chamber = create_bullet(ammo)
+	return in_chamber
+
+/datum/ammo/energy/lasgan
+	name = "lasbolt"
+	icon_state = "laser"
+	flags_ammo_behavior = AMMO_ENERGY|AMMO_INCENDIARY
+
+/datum/ammo/energy/lasgan/New()
+	..()
+	damage = config.high_hit_damage
+	max_range = config.short_shell_range
+	shell_speed = config.ultra_shell_speed
+	accuracy = config.max_hit_accuracy
+	scatter = 0
