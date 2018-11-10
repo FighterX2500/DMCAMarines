@@ -74,6 +74,15 @@
 	req_tech = list(RESEARCH_XENO_CHEMISTRY)
 	materials = list("metal" = 100, "glass" = 0, "biomass" = 100)
 
+/datum/marine_design/lasergun
+	name = "Experimental Laser Rifle"
+	desc = "Our new breakthrough with XBA-based energy cells opens gates to deadly portable laser weaponry."
+	id = "lasgan"
+	build_path = /obj/item/weapon/gun/energy/lasgan
+	build_type = MARINE_PROTHOLATHE
+	req_tech = list(RESEARCH_XENO_SPITTER, RESEARCH_XENO_LASGUN)
+	materials = list("metal" = 500, "glass" = 0, "biomass" = 0)
+
 /datum/marine_design/disruptorcircuit									//You must REALLY hate xeno, if you creating that
 	name = "Hivelink Disruptor Prototype"
 	desc = "Powerful machinery, what can throw entire Hive chain of command into chaos."
