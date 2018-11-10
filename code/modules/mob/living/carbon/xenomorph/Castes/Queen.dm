@@ -174,7 +174,7 @@
 
 /mob/living/carbon/Xenomorph/Queen/bullet_act(obj/item/projectile/P)
 	. = ..()
-	if(!was_shot)
+	if(!was_shot && stat != DEAD)
 		if(health < 0)
 			if(ticker && ticker.mode)
 				for(var/datum/mind/L in ticker.mode.xenomorphs)
