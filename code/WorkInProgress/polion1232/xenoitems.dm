@@ -86,7 +86,7 @@ Queen thingy - 40
 	name = "Secretory gland"
 	desc = "Strange gland, that secrete high variety of alien fauna"
 	icon_state = "drone"
-	id = list(RESEARCH_XENOSTART, RESEARCH_XENO_BIOLOGY, RESEARCH_XENO_MUSCLES, RESEARCH_XENO_FLORA)
+	id = list(RESEARCH_XENOSTART, RESEARCH_XENO_BIOLOGY, RESEARCH_XENO_MUSCLES, RESEARCH_XENO_FLORA, RESEARCH_XENO_DRONE)
 
 /obj/item/marineResearch/xenomorp/secretor/hivelord
 	name = "Hivelord's bioplasma syntesate"
