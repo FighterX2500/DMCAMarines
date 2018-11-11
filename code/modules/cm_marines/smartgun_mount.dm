@@ -544,7 +544,7 @@
 			if(user.interactee) //Make sure we're not manning two guns at once, tentacle arms.
 				to_chat(user, "You're already manning something!")
 				return
-			if(isSynth(user)
+			if(isSynth(user))
 				to_chat(user, "Your programming restricts operating heavy weaponry.")
 				return
 			if(user.get_active_hand() != null)

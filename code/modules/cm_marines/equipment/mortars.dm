@@ -114,7 +114,7 @@
 		if(user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer < SKILL_ENGINEER_ENGI)
 			to_chat(user, "<span class='warning'>You don't have the training to fire [src].</span>")
 			return
-		if(isSynth(user)
+		if(isSynth(user))
 			to_chat(user, "Your programming restricts operating heavy weaponry.")
 			return
 		if(busy)
