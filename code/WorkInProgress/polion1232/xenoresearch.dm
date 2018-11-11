@@ -180,13 +180,14 @@ Queen thingy - RESEARCH_XENO_QUEEN
 	resdesc = "Spitters are spitting their own XBA at you. They produce it in their glands, but it does not makes it better. But the most facinating about those glands is that they produce XBA of every Xenomorph subspecies."
 	id = RESEARCH_XENO_SPITTER
 	req_tech = list(RESEARCH_XENO_CHEMISTRY)
-/*
-/datum/marineTech/Pheromones
-	name = "Xenomorph Pheromones"
-	desc = "Analysis of very powerful xenomorph pheromones"
-	id = 22
-	req_tech = list(20)
-*/
+
+/datum/marineTech/LaserExperimental
+	name = "Experimental laser weapons"
+	desc = "Possible ways to create portable laser weapons"
+	resdesc = "SR-LG \"Thunder\", our first working portable laser weapon with adequate power cell - our first milestone. Now future is here!"
+	id = RESEARCH_XENO_LASGUN
+	req_tech = list(RESEARCH_XENO_SPITTER)
+	need_item = 0
 
 
 //Xenoflora path//
@@ -224,19 +225,25 @@ Queen thingy - RESEARCH_XENO_QUEEN
 /datum/marineTech/XenoMind
 	name = "Xenomorph Psionics"
 	desc = "Analysis of telepathic connections between members of Xenohive"
-	resdesc = "Psionics are no mistery. Xenomorphs have telepathy, but most of them only recieving signals. But our dear Queeny is center of this network! She is responsible for unity inside the Hive! She is commanding Xenomophs Forces! But NO MORE! And her death will be demise for every xeno that had been controlled by her will!"
+	resdesc = "Psionics now are no mistery. Xenomorphs have telepathy, but most of them only recieving signals. But our dear Queeny is center of this network! She is responsible for unity inside the Hive! She is commanding Xenomophs Forces! But NO MORE! And her death will be demise for every xeno that had been controlled by her will!"
 	id = RESEARCH_XENO_QUEEN
+	time = 60
 	req_tech = list(RESEARCH_XENOSTART, RESEARCH_XENO_BIOLOGY, RESEARCH_XENO_CHEMISTRY)
-/*
+
 /datum/marineTech/Disruptor			// Fun starting here
 	name = "Hivelink disruption"
-	desc = "Using Queen's core as a connection to the Hive, we can theoretically damage their ability to cooperate between members of the Hive by continiously sending echoes to all members"
-	id = 41
-	req_tech = list(40)
-
-/datum/marineTech/Simulator			// "- Absolute DISGUSTING!"- says xenomorph
-	name = "Hivemind simulation"
-	desc = "Hypothethis: if we use Queen's core as a center of another telepathic network, we potentialy can have our own, loyal Hive"
+	desc = "Finding ways to disrupt psionic link between members of the Hive."
+	resdesc = "It was bit of surprise, when we finally get an intresting way to make xenomorphs a little pain. We don't even need Queen's core to create it. Just a little messing with electromagnetic fields and bunch of surplus equipment will make enemy regret."
+	id = RESEARCH_XENO_DISRUPTION
+	time = 120
+	req_tech = list(RESEARCH_XENO_QUEEN)
+	need_item = 0
+/*
+/datum/marineTech/Corruption			// "- Absolute DISGUSTING!"- says xenomorph
+	name = "Hivemind corruption."
+	desc = "Finding ways to twist and create new Hives."
+	resdesc = "Some unorthodox solution for wiping out our enemy is found. We basically creating our own loyal Hive. Let's just hope, that our new \"friends\" can fit in our containment cells."
 	id = 42
-	req_tech = list(41)
+	time = 150
+	req_tech = list(RESEARCH_XENO_DISRUPTION, RESEARCH_XENO_DRONE, RESEARCH_XENO_SACK)
 */

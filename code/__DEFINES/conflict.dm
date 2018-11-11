@@ -84,6 +84,7 @@
 
 #define RESEARCH_XENO_CHEMISTRY 20
 #define RESEARCH_XENO_SPITTER 21
+#define RESEARCH_XENO_LASGUN 22
 
 #define RESEARCH_XENO_FLORA 30
 #define RESEARCH_XENO_WEED 31
@@ -91,4 +92,5 @@
 #define RESEARCH_XENO_DRONE 33
 
 #define RESEARCH_XENO_QUEEN 40
+#define RESEARCH_XENO_DISRUPTION 41
 //=================================================
