@@ -133,6 +133,9 @@
 	in_chamber = create_bullet(ammo)
 	return in_chamber
 
+/obj/item/weapon/gun/energy/tesla/reload_into_chamber(mob/user)			//To not listening for annoying *click*
+	return 1
+
 /obj/item/weapon/gun/energy/tesla/reload(mob/gunner, obj/item/tesla_powerpack/power_pack)
 	if(!(power_pack && power_pack.loc))
 		return
@@ -238,12 +241,14 @@
 // Laser Gun
 /obj/item/weapon/gun/energy/lasgan
 	name = "SR-LG \"Thunder\""
-	desc = "Next-Gen rifle, powered by XBA cells, sends ruinous laser bolt to any enemy on it's path."
+	desc = "First working prototype of \"Laser Gun\"-series of 1st generation laser weapon, deliver death and destruction on its path."
 	icon = 'icons/obj/old_guns/old_guns.dmi'
 	icon_state = "laser"
 	item_state = "FP9000"
 	ammo = /datum/ammo/energy/lasgan
 	fire_sound = 'sound/weapons/laser3.ogg'
+	w_class = 4.0
+
 	var/charge_cost = 100
 	var/obj/item/cell/xba/mag = null
 	flags_gun_features = GUN_INTERNAL_MAG
@@ -260,15 +265,36 @@
 	scatter_unwielded = config.med_scatter_value
 	damage_mult = config.base_hit_damage_mult
 
+/obj/item/weapon/gun/energy/lasgan/update_icon()
+	var/charge = (mag.charge * 100)/mag.maxcharge
+	if(charge == 100)
+		icon_state = "laser100"
+		return
+	if(charge < 100 && charge >= 75)
+		icon_state = "laser75"
+		return
+	if(charge < 75 && charge >= 50)
+		icon_state = "laser50"
+		return
+	if(charge < 50 && charge > 0)
+		icon_state = "laser25"
+		return
+	if(charge == 0)
+		icon_state = "laser0"
+		return
+	return
+
 /obj/item/weapon/gun/energy/lasgan/attackby(var/obj/item/A as obj, mob/user as mob)
-	if(istype(A,/obj/item/cell))
+	if(istype(A,/obj/item/cell/xba))
 		var/obj/item/cell/C = A
+		user.drop_held_item()
 		visible_message("[user.name] swaps out the power cell in the [src.name].","You swap out the power cell in the [src] and drop the old one.")
 		to_chat(user, "The new cell contains: [C.charge] power.")
 		mag.loc = get_turf(user)
 		mag = C
 		C.loc = src
 		playsound(src,'sound/machines/click.ogg', 25, 1)
+		update_icon()
 	else
 		..()
 
@@ -277,7 +303,11 @@
 
 	mag.charge -= charge_cost
 	in_chamber = create_bullet(ammo)
+	update_icon()
 	return in_chamber
+
+/obj/item/weapon/gun/energy/lasgan/reload_into_chamber(mob/user)			//To not listening for annoying *click*
+	return 1
 
 /datum/ammo/energy/lasgan
 	name = "lasbolt"
@@ -291,3 +321,140 @@
 	shell_speed = config.ultra_shell_speed
 	accuracy = config.max_hit_accuracy
 	scatter = 0
+
+/obj/item/weapon/gun/energy/lascannon
+	name = "HG-LG \"Celatid\""
+	desc = "Powerful laser cannon, \"Celatid\" may can only firing one bolt per cell, yet that bolt deliver heavy injures and can kill human in a instance."
+	icon = 'icons/obj/old_guns/old_guns.dmi'
+	icon_state = "lasercannon"
+	item_state = "FP9000"
+	ammo = /datum/ammo/energy/lasgan
+	fire_sound = 'sound/weapons/emitter2.ogg'
+	w_class = 5.0
+
+	var/charge_cost = 20000
+	var/obj/item/cell/xba/shot = null
+	flags_gun_features = GUN_INTERNAL_MAG|GUN_WIELDED_FIRING_ONLY
+
+/obj/item/weapon/gun/energy/lascannon/update_icon()
+	if(shot.charge > 0)
+		icon_state = "lasercannon"
+	else
+		icon_state = "lasercannon0"
+
+/obj/item/weapon/gun/energy/lascannon/New()
+	..()
+	shot = new /obj/item/cell/xba
+	update_icon()
+
+/obj/item/weapon/gun/energy/lascannon/set_gun_config_values()
+	fire_delay = config.max_fire_delay*5
+	accuracy_mult = config.base_hit_accuracy_mult + config.high_hit_accuracy_mult
+	accuracy_mult_unwielded = config.base_hit_accuracy_mult
+	scatter = 0
+	scatter_unwielded = config.med_scatter_value
+	damage_mult = config.base_hit_damage_mult + config.base_hit_damage_mult
+
+/obj/item/weapon/gun/energy/lascannon/reload_into_chamber(mob/user)			//To not listening for annoying *click*
+	return 1
+
+/obj/item/weapon/gun/energy/lascannon/attackby(var/obj/item/A as obj, mob/user as mob)
+	if(istype(A,/obj/item/cell))
+		if(!istype(A,/obj/item/cell/xba))
+			to_chat(user, "This cell contains less charge than needed.")
+			return
+		if(shot)
+			user.drop_held_item()
+			visible_message("[user.name] swaps out the power cell in the [src.name].","You swap out the power cell in the [src] and drop the old one.")
+			shot.loc = get_turf(user)
+			shot = A
+			A.loc = src
+			playsound(src,'sound/machines/click.ogg', 25, 1)
+		else
+			user.drop_held_item()
+			visible_message("[user.name] put new power cell in the [src.name].","You put new power cell in the [src].")
+			shot = A
+			A.loc = src
+		update_icon()
+	else
+		..()
+
+/obj/item/weapon/gun/energy/lascannon/load_into_chamber()
+	if(!istype(shot,/obj/item/cell/xba))		//somehow
+		return
+	if(shot.charge == 0)
+		return
+	shot.charge = 0
+	update_icon()
+	in_chamber = create_bullet(ammo)
+	return in_chamber
+
+/obj/item/weapon/gun/energy/laspistol
+	name = "CP-LG \"PocketShock\""
+	desc = "Much more weaker compare to its older sisters, \"PocketShock\" provides enough self-defense for our marines and even kill lone enemy."
+	icon = 'icons/obj/old_guns/old_guns.dmi'
+	icon_state = "energykill100"
+	item_state = "gun"
+	ammo = /datum/ammo/energy/lasgan
+	fire_sound = 'sound/weapons/laser3.ogg'
+
+	var/charge_cost = 50
+	var/obj/item/cell/xba/mag = null
+	flags_gun_features = GUN_INTERNAL_MAG
+
+/obj/item/weapon/gun/energy/laspistol/New()
+	..()
+	mag = new /obj/item/cell/xba
+	update_icon()
+
+/obj/item/weapon/gun/energy/laspistol/set_gun_config_values()
+	fire_delay = config.max_fire_delay*2
+	accuracy_mult = config.base_hit_accuracy_mult + config.base_hit_accuracy_mult	//small damage but ABSOLUTELY DISGUSTING ACCURACY
+	accuracy_mult_unwielded = config.base_hit_accuracy_mult
+	scatter = 0
+	scatter_unwielded = 0
+	damage_mult = config.base_hit_damage_mult - config.high_hit_damage_mult*2
+
+/obj/item/weapon/gun/energy/laspistol/reload_into_chamber(mob/user)			//To not listening for annoying *click*
+	return 1
+
+/obj/item/weapon/gun/energy/laspistol/update_icon()
+	var/charge = (mag.charge * 100)/mag.maxcharge
+	if(charge <= 100 && charge >= 75)
+		icon_state = "energykill100"
+		return
+	if(charge < 75 && charge >= 50)
+		icon_state = "energykill75"
+		return
+	if(charge < 50 && charge >= 25)
+		icon_state = "energykill50"
+		return
+	if(charge < 25 && charge > 0)
+		icon_state = "energykill25"
+		return
+	if(charge == 0)
+		icon_state = "energykill0"
+		return
+	return
+
+/obj/item/weapon/gun/energy/laspistol/attackby(var/obj/item/A as obj, mob/user as mob)
+	if(istype(A,/obj/item/cell/xba))
+		var/obj/item/cell/C = A
+		user.drop_held_item()
+		visible_message("[user.name] swaps out the power cell in the [src.name].","You swap out the power cell in the [src] and drop the old one.")
+		to_chat(user, "The new cell contains: [C.charge] power.")
+		mag.loc = get_turf(user)
+		mag = C
+		C.loc = src
+		playsound(src,'sound/machines/click.ogg', 25, 1)
+		update_icon()
+	else
+		..()
+
+/obj/item/weapon/gun/energy/laspistol/load_into_chamber()
+	if(mag.charge - charge_cost < 0) return
+
+	mag.charge -= charge_cost
+	in_chamber = create_bullet(ammo)
+	update_icon()
+	return in_chamber

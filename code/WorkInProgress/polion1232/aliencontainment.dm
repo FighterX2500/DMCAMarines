@@ -264,6 +264,48 @@ If chamber connected to the console, you can start research aliens. Just don't b
 				spawn(300)
 					screen = 1.1
 					updateUsrDialog()
+	else if(href_list["harvest"])
+		if(!linked_chamber)
+			updateUsrDialog()
+		else
+			if(!linked_chamber.occupant)
+				return
+			linked_chamber.occupant.xeno_forbid_retract = 1
+			screen = 0.3
+			spawn(300)
+				screen = 1.1
+				if(isXenoCrusher(linked_chamber.occupant))
+					new /obj/item/marineResearch/xenomorp/chitin/crusher(linked_chamber.loc)
+				else
+					new /obj/item/marineResearch/xenomorp/chitin(linked_chamber.loc)
+
+				new /obj/item/marineResearch/xenomorp/muscle(linked_chamber.loc)
+
+				if(isXenoSentinel(linked_chamber.occupant))
+					if(prob(50))
+						new /obj/item/marineResearch/xenomorp/acid_gland(linked_chamber.loc)
+
+				else if(isXenoSpitter(linked_chamber.occupant))
+					if(prob(50))
+						new /obj/item/marineResearch/xenomorp/acid_gland/spitter(linked_chamber.loc)
+
+				else if(isXenoDrone(linked_chamber.occupant))
+					if(prob(50))
+						new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
+
+				else if(isXenoHivelord(linked_chamber.occupant))
+					if(prob(50))
+						new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
+						new /obj/item/marineResearch/xenomorp/secretor/hivelord(linked_chamber.loc)
+						new /obj/item/marineResearch/xenomorp/secretor/hivelord(linked_chamber.loc)
+
+				else if(isXenoQueen(linked_chamber.occupant))
+					if(prob(50))
+						new /obj/item/marineResearch/xenomorp/acid_gland/spitter(linked_chamber.loc)
+						new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
+						new /obj/item/marineResearch/xenomorp/secretor/hivelord(linked_chamber.loc)
+				updateUsrDialog()
+
 	updateUsrDialog()
 
 /obj/machinery/computer/analyze_console/attack_hand(mob/user as mob)
@@ -292,6 +334,9 @@ If chamber connected to the console, you can start research aliens. Just don't b
 		if(0.2)
 			dat += "SYSTEM LOCKED<BR><BR>"
 			dat += "<A href='?src=\ref[src];lock=1.2'>Unlock</A>"
+
+		if(0.3)
+			dat += "Harvesting...<BR><BR>"
 
 		if(1.0)
 			dat += "Main Menu:<BR><BR>"
@@ -334,8 +379,9 @@ If chamber connected to the console, you can start research aliens. Just don't b
 
 		if(2.2)
 			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><HR>"
-			dat += "<A href='?src=\ref[src];scan=1'>[linked_chamber.occupant.name]</A><BR>"
+			dat += "[linked_chamber.occupant.name]: <A href='?src=\ref[src];scan=1'>Scan</A> | <A href='?src=\ref[src];harvest=1'>Harvest Organs</A><BR>"
 		if(2.3)
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><HR>"
 			dat += "ERROR! Internal injures is too severe. Suspected organ removal."
 
 	user << browse("<TITLE>Research and Development Console</TITLE><HR>[dat]", "window=rdconsole;size=575x400")
