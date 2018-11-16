@@ -182,9 +182,9 @@ Queen thingy - RESEARCH_XENO_QUEEN
 	req_tech = list(RESEARCH_XENO_CHEMISTRY)
 
 /datum/marineTech/LaserExperimental
-	name = "Experimental laser weapons"
+	name = "LG-series experimental laser weapons"
 	desc = "Possible ways to create portable laser weapons"
-	resdesc = "SR-LG \"Thunder\", our first working portable laser weapon with adequate power cell - our first milestone. Now future is here!"
+	resdesc = "LG-series (\"Laser Gun\") is our first attempts to create adequite portable beam weapons. SR-LG may be effective rifle, but it still lack of attachments, and HG-LG draining power cells in one shot."
 	id = RESEARCH_XENO_LASGUN
 	req_tech = list(RESEARCH_XENO_SPITTER)
 	need_item = 0
