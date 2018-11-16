@@ -67,7 +67,7 @@
 
 /datum/marine_design/cell
 	name = "XBA-based power cells"
-	desc = "Powerful Xenomoprh acids can be very useful for power cells' production."
+	desc = "Powerful Xenomorph acids can be very useful for power cells' production."
 	id = "cell"
 	build_path = /obj/item/cell/xba
 	build_type = MARINE_PROTHOLATHE
@@ -83,9 +83,18 @@
 	req_tech = list(RESEARCH_XENO_SPITTER, RESEARCH_XENO_LASGUN)
 	materials = list("metal" = 500, "glass" = 0, "biomass" = 1000)
 
+/datum/marine_design/lasercannon
+	name = "Experimental Heavy Portable Laser Cannon"
+	desc = "Our new breakthrough with XBA-based energy cells opens gates to deadly portable laser weaponry."
+	id = "lascan"
+	build_path = /obj/item/weapon/gun/energy/lascannon
+	build_type = MARINE_PROTHOLATHE
+	req_tech = list(RESEARCH_XENO_SPITTER, RESEARCH_XENO_LASGUN)
+	materials = list("metal" = 500, "glass" = 0, "biomass" = 2000)
+
 /datum/marine_design/disruptorcircuit									//You must REALLY hate xeno, if you creating that
 	name = "Hivelink Disruptor Prototype"
-	desc = "Powerful machinery, what can throw entire Hive chain of command into chaos."
+	desc = "Powerful machinery, what can throw entire Hive chain of command into chaos. But we must deply that machine on surface under protection of planetary magnetic field."
 	id = "disruptor"
 	build_path = /obj/item/circuitboard/machine/hive_disruptor
 	build_type = MARINE_PROTHOLATHE
