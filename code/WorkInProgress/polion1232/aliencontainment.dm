@@ -270,6 +270,8 @@ If chamber connected to the console, you can start research aliens. Just don't b
 		else
 			if(!linked_chamber.occupant)
 				return
+			if(linked_chamber.occupant.xeno_forbid_retract == 1)
+				return
 			linked_chamber.occupant.xeno_forbid_retract = 1
 			screen = 0.3
 			spawn(300)
