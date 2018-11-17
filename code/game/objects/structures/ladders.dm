@@ -96,13 +96,15 @@
 			//TODO: Using forceMove is desirable here, but this breaks the pull. If you know how to preserve the pull, this would be nice!
 			if(user.pulling && get_dist(src, user.pulling) <= 2)
 				user.pulling.forceMove(ladder_dest.loc) //Cannot use forceMove method on pulls! Move manually
-				var/mob/living/P = user.pulling
-				P.smokecloak_off()
-				if(isobj(user.pulling))
-					var/obj/O = user.pulling
-					if(O.buckled_mob)
-						O.buckled_mob.forceMove(ladder_dest.loc) //Cannot use forceMove method on pulls! Move manually
-						O.buckled_mob.smokecloak_off()
+				if(istype(/mob/living, user.pulling))
+					var/mob/living/P = user.pulling
+					P.smokecloak_off()
+				else
+					if(isobj(user.pulling))
+						var/obj/O = user.pulling
+						if(O.buckled_mob)
+							O.buckled_mob.forceMove(ladder_dest.loc) //Cannot use forceMove method on pulls! Move manually
+							O.buckled_mob.smokecloak_off()
 			user.forceMove(ladder_dest.loc) //Cannot use forceMove method on pulls! Move manually //Make sure we move before we broadcast the message
 			var/mob/living/M = user
 			M.smokecloak_off()
