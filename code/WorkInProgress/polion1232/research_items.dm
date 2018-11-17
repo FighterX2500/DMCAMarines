@@ -79,6 +79,11 @@
 	icon_state = "scell"
 	maxcharge = 20000
 
+/obj/item/cell/xba/high
+	name = "XBA-based high-capacity power cell"
+	icon_state = "scell"
+	maxcharge = 40000
+
 /obj/item/anti_acid
 	name = "Acid-Kill Spray"
 	desc = "Small sprayer, filled with special mixture of alkalies that can neutralize even xenomorphs' acids."
@@ -384,14 +389,14 @@
 		return
 	if(shot.charge == 0)
 		return
-	shot.charge = 0
+	shot.charge -= charge_cost
 	update_icon()
 	in_chamber = create_bullet(ammo)
 	return in_chamber
 
 /obj/item/weapon/gun/energy/laspistol
 	name = "CP-LG \"PocketShock\""
-	desc = "Much more weaker compare to its older sisters, \"PocketShock\" provides enough self-defense for our marines and even kill lone enemy."
+	desc = "Much more weaker compare to its older sisters, \"PocketShock\" provides enough self-defense for our marines and can even kill lone enemy."
 	icon = 'icons/obj/old_guns/old_guns.dmi'
 	icon_state = "energykill100"
 	item_state = "gun"
