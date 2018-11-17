@@ -86,7 +86,7 @@
 /datum/marine_design/laserpistol
 	name = "Experimental Laser Handgun"
 	desc = "Our new breakthrough with XBA-based energy cells opens gates to deadly portable laser weaponry."
-	id = "lasgan"
+	id = "laspist"
 	build_path = /obj/item/weapon/gun/energy/laspistol
 	build_type = MARINE_PROTHOLATHE
 	req_tech = list(RESEARCH_XENO_LASGUN)

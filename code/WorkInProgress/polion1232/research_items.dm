@@ -263,7 +263,7 @@
 	mag = new /obj/item/cell/xba
 
 /obj/item/weapon/gun/energy/lasgan/set_gun_config_values()
-	fire_delay = config.max_fire_delay
+	fire_delay = config.max_fire_delay + config.med_fire_delay
 	accuracy_mult = config.base_hit_accuracy_mult + config.high_hit_accuracy_mult
 	accuracy_mult_unwielded = config.base_hit_accuracy_mult
 	scatter = 0
@@ -321,7 +321,7 @@
 
 /datum/ammo/energy/lasgan/New()
 	..()
-	damage = config.high_hit_damage
+	damage = config.med_hit_damage
 	max_range = config.short_shell_range
 	shell_speed = config.ultra_shell_speed
 	accuracy = config.max_hit_accuracy
