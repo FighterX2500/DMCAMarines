@@ -40,7 +40,7 @@
 
 /datum/marine_design/biocircuit
 	name = "Biogenerator Prototype"
-	desc = "With understanding Hivelord's metabolism we can potentially have infinite source of Xenomorph biomaterial"
+	desc = "With understanding Hivelord's metabolism we can potentially have infinite source of Xenomorph biomaterial. But we must use internal connetor of our protolathe."
 	id = "hivethingy"
 	build_path = /obj/item/circuitboard/machine/biolathe
 	build_type = MARINE_PROTHOLATHE
@@ -86,7 +86,7 @@
 /datum/marine_design/laserpistol
 	name = "Experimental Laser Handgun"
 	desc = "Our new breakthrough with XBA-based energy cells opens gates to deadly portable laser weaponry."
-	id = "lasgan"
+	id = "laspist"
 	build_path = /obj/item/weapon/gun/energy/laspistol
 	build_type = MARINE_PROTHOLATHE
 	req_tech = list(RESEARCH_XENO_LASGUN)

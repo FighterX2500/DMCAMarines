@@ -270,6 +270,8 @@ If chamber connected to the console, you can start research aliens. Just don't b
 		else
 			if(!linked_chamber.occupant)
 				return
+			if(linked_chamber.occupant.xeno_forbid_retract == 1)
+				return
 			linked_chamber.occupant.xeno_forbid_retract = 1
 			screen = 0.3
 			spawn(300)
@@ -282,28 +284,23 @@ If chamber connected to the console, you can start research aliens. Just don't b
 				new /obj/item/marineResearch/xenomorp/muscle(linked_chamber.loc)
 
 				if(isXenoSentinel(linked_chamber.occupant))
-					if(prob(50))
-						new /obj/item/marineResearch/xenomorp/acid_gland(linked_chamber.loc)
+					new /obj/item/marineResearch/xenomorp/acid_gland(linked_chamber.loc)
 
 				else if(isXenoSpitter(linked_chamber.occupant))
-					if(prob(50))
-						new /obj/item/marineResearch/xenomorp/acid_gland/spitter(linked_chamber.loc)
+					new /obj/item/marineResearch/xenomorp/acid_gland/spitter(linked_chamber.loc)
 
 				else if(isXenoDrone(linked_chamber.occupant))
-					if(prob(50))
-						new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
+					new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
 
 				else if(isXenoHivelord(linked_chamber.occupant))
-					if(prob(50))
-						new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
-						new /obj/item/marineResearch/xenomorp/secretor/hivelord(linked_chamber.loc)
-						new /obj/item/marineResearch/xenomorp/secretor/hivelord(linked_chamber.loc)
+					new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
+					new /obj/item/marineResearch/xenomorp/secretor/hivelord(linked_chamber.loc)
+					new /obj/item/marineResearch/xenomorp/secretor/hivelord(linked_chamber.loc)
 
 				else if(isXenoQueen(linked_chamber.occupant))
-					if(prob(50))
-						new /obj/item/marineResearch/xenomorp/acid_gland/spitter(linked_chamber.loc)
-						new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
-						new /obj/item/marineResearch/xenomorp/secretor/hivelord(linked_chamber.loc)
+					new /obj/item/marineResearch/xenomorp/acid_gland/spitter(linked_chamber.loc)
+					new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
+					new /obj/item/marineResearch/xenomorp/secretor/hivelord(linked_chamber.loc)
 				updateUsrDialog()
 
 	updateUsrDialog()
