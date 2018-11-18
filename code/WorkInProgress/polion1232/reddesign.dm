@@ -40,7 +40,7 @@
 
 /datum/marine_design/biocircuit
 	name = "Biogenerator Prototype"
-	desc = "With understanding Hivelord's metabolism we can potentially have infinite source of Xenomorph biomaterial"
+	desc = "With understanding Hivelord's metabolism we can potentially have infinite source of Xenomorph biomaterial. But we must use internal connetor of our protolathe."
 	id = "hivethingy"
 	build_path = /obj/item/circuitboard/machine/biolathe
 	build_type = MARINE_PROTHOLATHE

@@ -263,7 +263,7 @@
 	mag = new /obj/item/cell/xba
 
 /obj/item/weapon/gun/energy/lasgan/set_gun_config_values()
-	fire_delay = config.max_fire_delay + config.med_fire_delay
+	fire_delay = config.max_fire_delay
 	accuracy_mult = config.base_hit_accuracy_mult + config.high_hit_accuracy_mult
 	accuracy_mult_unwielded = config.base_hit_accuracy_mult
 	scatter = 0
@@ -272,16 +272,16 @@
 
 /obj/item/weapon/gun/energy/lasgan/update_icon()
 	var/charge = (mag.charge * 100)/mag.maxcharge
-	if(charge == 100)
+	if(charge <= 100 && charge >=75)
 		icon_state = "laser100"
 		return
-	if(charge < 100 && charge >= 75)
+	if(charge < 75 && charge >= 50)
 		icon_state = "laser75"
 		return
-	if(charge < 75 && charge >= 50)
+	if(charge < 50 && charge >= 25)
 		icon_state = "laser50"
 		return
-	if(charge < 50 && charge > 0)
+	if(charge < 25 && charge > 0)
 		icon_state = "laser25"
 		return
 	if(charge == 0)
@@ -321,7 +321,7 @@
 
 /datum/ammo/energy/lasgan/New()
 	..()
-	damage = config.med_hit_damage
+	damage = config.high_hit_damage
 	max_range = config.short_shell_range
 	shell_speed = config.ultra_shell_speed
 	accuracy = config.max_hit_accuracy
@@ -358,7 +358,7 @@
 	accuracy_mult_unwielded = config.base_hit_accuracy_mult
 	scatter = 0
 	scatter_unwielded = config.med_scatter_value
-	damage_mult = config.base_hit_damage_mult + config.base_hit_damage_mult
+	damage_mult = config.base_hit_damage_mult + config.base_hit_damage_mult + config.max_hit_damage_mult + config.max_hit_damage_mult
 
 /obj/item/weapon/gun/energy/lascannon/reload_into_chamber(mob/user)			//To not listening for annoying *click*
 	return 1
@@ -415,7 +415,7 @@
 /obj/item/weapon/gun/energy/laspistol/set_gun_config_values()
 	fire_delay = config.max_fire_delay*2
 	accuracy_mult = config.base_hit_accuracy_mult + config.base_hit_accuracy_mult	//small damage but ABSOLUTELY DISGUSTING ACCURACY
-	accuracy_mult_unwielded = config.base_hit_accuracy_mult
+	accuracy_mult_unwielded = config.base_hit_accuracy_mult + config.max_hit_accuracy_mult + config.max_hit_accuracy_mult
 	scatter = 0
 	scatter_unwielded = 0
 	damage_mult = config.base_hit_damage_mult - config.high_hit_damage_mult*2
