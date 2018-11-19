@@ -99,11 +99,25 @@
 			return 1
 		if(max_per_resource["biomass"] <= material_storage["biomass"])
 			to_chat(user, "\red The protolathe's biomass bin is full.")
+			return 1
 		user.drop_held_item()
 		material_storage["biomass"] += 500
 		cdel(O)
 		return 1
 
+	if(istype(O, /obj/item/marineResearch/sampler))
+		var/obj/item/marineResearch/sampler/samp = O
+		if(!samp.filled)
+			to_chat(user, "\red Sampler is empty!")
+			return 1
+		if(max_per_resource["biomass"] <= material_storage["biomass"])
+			to_chat(user, "\red The protolathe's biomass bin is full.")
+			return 1
+		material_storage["biomass"] += 50
+		samp.filled = 0
+		samp.sample = null
+		samp.update_icon()
+		return 1
 
 	if(istype(O,/obj/item/stack/sheet))
 		var/obj/item/stack/sheet/S = O
