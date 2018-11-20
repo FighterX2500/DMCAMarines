@@ -114,6 +114,43 @@ Queen thingy - 40
 	var/filled = 0
 	var/obj/item/marineResearch/xenomorp/weed/sample = null
 
+/obj/item/marineResearch/sampler/update_icon()
+	switch(filled)
+		if(1)
+			if(istype(sample, /obj/item/marineResearch/xenomorp/weed/sack))
+				icon_state = "3"
+				return
+			icon_state = "2_trava"
+		if(0)
+			icon_state = "1"
+	return
+
+/obj/item/marineResearch/sampler/attack_self(mob/user as mob)
+	if(!filled)
+		return
+	if(icon_state != "3")
+		return
+
+	var/turf/T = user.loc
+
+	if(!istype(T))
+		to_chat(user, "<span class='warning'>You can't do that here.</span>")
+		return
+
+	if(!T.is_weedable())
+		to_chat(user, "<span class='warning'>Bad place to start a garden!</span>")
+		return
+
+	if(locate(/obj/effect/alien/weeds/node) in T)
+		to_chat(user, "<span class='warning'>There's a sac here already!</span>")
+		return
+
+	user.visible_message("[user] planted weed sac on the ground.", "You planted weed sac on the ground.")
+	filled = 0
+	sample = null
+	update_icon()
+	new /obj/effect/alien/weeds/node(user.loc, null, null)
+
 // To be placed in Almayer research
 /obj/item/paper/res_note
 	name = "Note about equipment"

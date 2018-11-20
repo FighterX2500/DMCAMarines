@@ -143,6 +143,7 @@
 		if(istype(src, /obj/effect/alien/weeds/node))
 			A.sample = new /obj/item/marineResearch/xenomorp/weed/sack
 			A.icon_state = "3"
+			cdel(src)
 		else
 			A.sample = new /obj/item/marineResearch/xenomorp/weed
 			A.icon_state = "2_trava"

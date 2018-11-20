@@ -76,12 +76,30 @@
 
 /obj/item/cell/xba
 	name = "XBA-based power cell"
-	icon_state = "scell"
+	icon = 'code/WorkInProgress/polion1232/xenobatteries.dmi'
+	icon_state = "Xenobattery_0"
 	maxcharge = 20000
+
+/obj/item/cell/xba/update_icon()
+	var/charge_percentage = charge*100/maxcharge
+	if(charge_percentage <= 100 && charge_percentage >= 75)
+		icon_state = "XenoBattery_Full"
+		return
+	if(charge_percentage < 75 && charge_percentage >= 50)
+		icon_state = "XenoBattery_75"
+		return
+	if(charge_percentage < 50 && charge_percentage >= 25)
+		icon_state = "XenoBattery_50"
+		return
+	if(charge_percentage < 25 && charge_percentage > 0)
+		icon_state = "XenoBattery_25"
+		return
+	if(charge_percentage == 0)
+		icon_state = "XenoBattery_0"
 
 /obj/item/cell/xba/high
 	name = "XBA-based high-capacity power cell"
-	icon_state = "scell"
+	icon_state = "Xenobattery_0"
 	maxcharge = 40000
 
 /obj/item/anti_acid
@@ -168,6 +186,7 @@
 		visible_message("[user.name] swaps out the power cell in the [src.name].","You swap out the power cell in the [src] and drop the old one.")
 		to_chat(user, "The new cell contains: [C.charge] power.")
 		charge_battery.loc = get_turf(user)
+		charge_battery.update_icon()
 		charge_battery = C
 		C.loc = src
 		playsound(src,'sound/machines/click.ogg', 25, 1)
@@ -296,6 +315,7 @@
 		visible_message("[user.name] swaps out the power cell in the [src.name].","You swap out the power cell in the [src] and drop the old one.")
 		to_chat(user, "The new cell contains: [C.charge] power.")
 		mag.loc = get_turf(user)
+		mag.update_icon()
 		mag = C
 		C.loc = src
 		playsound(src,'sound/machines/click.ogg', 25, 1)
@@ -372,6 +392,7 @@
 			user.drop_held_item()
 			visible_message("[user.name] swaps out the power cell in the [src.name].","You swap out the power cell in the [src] and drop the old one.")
 			shot.loc = get_turf(user)
+			shot.update_icon()
 			shot = A
 			A.loc = src
 			playsound(src,'sound/machines/click.ogg', 25, 1)
@@ -449,6 +470,7 @@
 		visible_message("[user.name] swaps out the power cell in the [src.name].","You swap out the power cell in the [src] and drop the old one.")
 		to_chat(user, "The new cell contains: [C.charge] power.")
 		mag.loc = get_turf(user)
+		mag.update_icon()
 		mag = C
 		C.loc = src
 		playsound(src,'sound/machines/click.ogg', 25, 1)

@@ -286,21 +286,24 @@ If chamber connected to the console, you can start research aliens. Just don't b
 				if(isXenoSentinel(linked_chamber.occupant))
 					new /obj/item/marineResearch/xenomorp/acid_gland(linked_chamber.loc)
 
-				else if(isXenoSpitter(linked_chamber.occupant))
+				if(isXenoSpitter(linked_chamber.occupant) || isXenoQueen(linked_chamber.occupant))
 					new /obj/item/marineResearch/xenomorp/acid_gland/spitter(linked_chamber.loc)
 
-				else if(isXenoDrone(linked_chamber.occupant))
+				if(isXenoDrone(linked_chamber.occupant) || isXenoQueen(linked_chamber.occupant))
 					new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
 
-				else if(isXenoHivelord(linked_chamber.occupant))
+				if(isXenoHivelord(linked_chamber.occupant) || isXenoQueen(linked_chamber.occupant))
 					new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
 					new /obj/item/marineResearch/xenomorp/secretor/hivelord(linked_chamber.loc)
 					new /obj/item/marineResearch/xenomorp/secretor/hivelord(linked_chamber.loc)
 
-				else if(isXenoQueen(linked_chamber.occupant))
+				if(isXenoQueen(linked_chamber.occupant) || isXenoQueen(linked_chamber.occupant))
 					new /obj/item/marineResearch/xenomorp/acid_gland/spitter(linked_chamber.loc)
 					new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
 					new /obj/item/marineResearch/xenomorp/secretor/hivelord(linked_chamber.loc)
+
+				if(isXenoQueen(linked_chamber.occupant))
+					new /obj/item/marineResearch/xenomorp/core(linked_chamber.loc)
 				updateUsrDialog()
 
 	updateUsrDialog()
@@ -317,6 +320,8 @@ If chamber connected to the console, you can start research aliens. Just don't b
 				screen = 2.0
 			else if(linked_chamber.occupant == null)
 				screen = 2.1
+			else if(linked_chamber.occupant.xeno_forbid_retract == 1)
+				screen = 2.3
 			else
 				screen = 2.2
 
@@ -379,7 +384,7 @@ If chamber connected to the console, you can start research aliens. Just don't b
 			dat += "[linked_chamber.occupant.name]: <A href='?src=\ref[src];scan=1'>Scan</A> | <A href='?src=\ref[src];harvest=1'>Harvest Organs</A><BR>"
 		if(2.3)
 			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><HR>"
-			dat += "ERROR! Internal injures is too severe. Suspected organ removal."
+			dat += "ERROR! Speciemen internal injures is too severe. Suspected organ removal."
 
 	user << browse("<TITLE>Research and Development Console</TITLE><HR>[dat]", "window=rdconsole;size=575x400")
 	onclose(user, "rdconsole")
