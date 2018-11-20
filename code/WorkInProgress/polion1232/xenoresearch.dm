@@ -186,7 +186,7 @@ Queen thingy - RESEARCH_XENO_QUEEN
 	desc = "Possible ways to create portable laser weapons"
 	resdesc = "LG-series (\"Laser Gun\") is our first attempts to create adequite portable beam weapons. SR-LG may be effective rifle, but it still lack of attachments, and HG-LG draining power cells in one shot."
 	id = RESEARCH_XENO_LASGUN
-	req_tech = list(RESEARCH_XENO_SPITTER)
+	req_tech = list(RESEARCH_XENO_CHEMISTRY)
 	need_item = 0
 
 

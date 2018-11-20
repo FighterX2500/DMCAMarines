@@ -40,7 +40,7 @@
 
 /datum/marine_design/biocircuit
 	name = "Biogenerator Prototype"
-	desc = "With understanding Hivelord's metabolism we can potentially have infinite source of Xenomorph biomaterial"
+	desc = "With understanding Hivelord's metabolism we can potentially have infinite source of Xenomorph biomaterial. But we must use internal connetor of our protolathe."
 	id = "hivethingy"
 	build_path = /obj/item/circuitboard/machine/biolathe
 	build_type = MARINE_PROTHOLATHE
@@ -74,13 +74,31 @@
 	req_tech = list(RESEARCH_XENO_CHEMISTRY)
 	materials = list("metal" = 100, "glass" = 0, "biomass" = 100)
 
+/datum/marine_design/hcell
+	name = "Increased-capacity power cells"
+	desc = "Spitter's acids proven to be much more energy-efficient than standart XBA cells."
+	id = "hcell"
+	build_path = /obj/item/cell/xba/high
+	build_type = MARINE_PROTHOLATHE
+	req_tech = list(RESEARCH_XENO_SPITTER)
+	materials = list("metal" = 100, "glass" = 0, "biomass" = 200)
+
+/datum/marine_design/laserpistol
+	name = "Experimental Laser Handgun"
+	desc = "Our new breakthrough with XBA-based energy cells opens gates to deadly portable laser weaponry."
+	id = "laspist"
+	build_path = /obj/item/weapon/gun/energy/laspistol
+	build_type = MARINE_PROTHOLATHE
+	req_tech = list(RESEARCH_XENO_LASGUN)
+	materials = list("metal" = 100, "glass" = 0, "biomass" = 500)
+
 /datum/marine_design/lasergun
 	name = "Experimental Laser Rifle"
 	desc = "Our new breakthrough with XBA-based energy cells opens gates to deadly portable laser weaponry."
 	id = "lasgan"
 	build_path = /obj/item/weapon/gun/energy/lasgan
 	build_type = MARINE_PROTHOLATHE
-	req_tech = list(RESEARCH_XENO_SPITTER, RESEARCH_XENO_LASGUN)
+	req_tech = list(RESEARCH_XENO_LASGUN)
 	materials = list("metal" = 500, "glass" = 0, "biomass" = 1000)
 
 /datum/marine_design/lasercannon
@@ -90,7 +108,7 @@
 	build_path = /obj/item/weapon/gun/energy/lascannon
 	build_type = MARINE_PROTHOLATHE
 	req_tech = list(RESEARCH_XENO_SPITTER, RESEARCH_XENO_LASGUN)
-	materials = list("metal" = 500, "glass" = 0, "biomass" = 2000)
+	materials = list("metal" = 1000, "glass" = 0, "biomass" = 1500)
 
 /datum/marine_design/disruptorcircuit									//You must REALLY hate xeno, if you creating that
 	name = "Hivelink Disruptor Prototype"
