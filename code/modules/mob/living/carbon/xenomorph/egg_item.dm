@@ -22,7 +22,16 @@
 	if(isXeno(user))
 		to_chat(user, "A queen egg, it needs to be planted on weeds to start growing.")
 		if(hivenumber == XENO_HIVE_CORRUPTED)
-			to_chat(user, "This one appears to have been laid by a corrupted Queen.")
+			to_chat(user, "This one emitting fading psionic roar, full of pain suffering child inside of it. It's horrifyes you")
+
+/obj/item/xeno_egg/attackby(var/obj/item/A as obj, mob/user as mob)
+	if(!istype(A, /obj/item/infector))
+		return
+	user.visible_message("[user] injecting something in [src]","You are commiting crime against nature by injecting that terrible virus inside [src]. Shame.")
+	if(prob(50))										//It can be get out of control
+		hivenumber = XENO_HIVE_CORRUPTED
+	else
+		hivenumber = pick(XENO_HIVE_BETA, XENO_HIVE_ZETA)
 
 /obj/item/xeno_egg/afterattack(atom/target, mob/user, proximity)
 	if(!proximity)

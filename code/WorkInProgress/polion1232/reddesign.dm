@@ -110,11 +110,29 @@
 	req_tech = list(RESEARCH_XENO_SPITTER, RESEARCH_XENO_LASGUN)
 	materials = list("metal" = 1000, "glass" = 0, "biomass" = 1500)
 
+/datum/marine_design/hivecorruption
+	name = "Gene-Agent \"Infector\"."
+	desc = "A crime against the Nature, \"Infector\" is our crowned achievment in Hivemind understanding. Evil and brutal, one injection of this abomination can forever change still not born organism. We just need to make sure that no one, except High Command."
+	id = "corruptor"
+	build_path = /obj/item/infector
+	build_type = MARINE_PROTHOLATHE
+	req_tech = list(RESEARCH_XENO_CORRUPTION)
+	materials = list("metal" = 50, "glass" = 100, "biomass" = 1500)
+
 /datum/marine_design/disruptorcircuit									//You must REALLY hate xeno, if you creating that
 	name = "Hivelink Disruptor Prototype"
 	desc = "Powerful machinery, what can throw entire Hive chain of command into chaos. But we must deply that machine on surface under protection of planetary magnetic field."
 	id = "disruptor"
 	build_path = /obj/item/circuitboard/machine/hive_disruptor
+	build_type = MARINE_PROTHOLATHE
+	req_tech = list(RESEARCH_XENO_DISRUPTION)
+	materials = list("metal" = 0, "glass" = 500, "biomass" = 7500)
+
+/datum/marine_design/controllercircuit									//You must REALLY hate xeno, if you creating that
+	name = "Hivelink Controller Prototype"
+	desc = "Comm. console, that can take control over corrupted hives. If we create this, we will bring dishonor on our souls."
+	id = "controller"
+	build_path = /obj/item/circuitboard/machine/hive_controller
 	build_type = MARINE_PROTHOLATHE
 	req_tech = list(RESEARCH_XENO_DISRUPTION)
 	materials = list("metal" = 0, "glass" = 500, "biomass" = 7500)

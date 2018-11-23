@@ -51,7 +51,12 @@
 			else
 				stat(null,"Slashing of hosts is currently: FORBIDDEN.")
 		else
-			stat(null,"Slashing of hosts is decided by your masters.")
+			if(hive.slashing_allowed == 1)
+				stat(null,"Slashing of masters-like hosts is currently: PERMITTED.")
+			else if(hive.slashing_allowed == 2)
+				stat(null,"Slashing of masters-like hosts is currently: LIMITED.")
+			else
+				stat(null,"Slashing of masters-like hosts is currently: FORBIDDEN.")
 
 		//Very weak <= 1.0, weak <= 2.0, no modifier 2-3, strong <= 3.5, very strong <= 4.5
 		var/msg_holder = ""
@@ -85,7 +90,7 @@
 			if(hive.hive_orders && hive.hive_orders != "")
 				stat(null,"Hive Orders: [fix_rus_stats(hive.hive_orders)]")
 		else
-			stat(null,"Hive Orders: Follow the instructions of your masters")
+			stat(null,"[fix_rus_stats(hive.hive_orders)]")
 
 	return 1
 

@@ -238,12 +238,11 @@ Queen thingy - RESEARCH_XENO_QUEEN
 	time = 120
 	req_tech = list(RESEARCH_XENO_QUEEN)
 	need_item = 0
-/*
+/
 /datum/marineTech/Corruption			// "- Absolute DISGUSTING!"- says xenomorph
 	name = "Hivemind corruption."
 	desc = "Finding ways to twist and create new Hives."
-	resdesc = "Some unorthodox solution for wiping out our enemy is found. We basically creating our own loyal Hive. Let's just hope, that our new \"friends\" can fit in our containment cells."
-	id = 42
+	resdesc = "Some unorthodox solution for wiping out our enemy is found. We basically creating our own loyal Hive. Let's just hope, that our new \"friends\" can fit in our containment cells. But be advised, gene-agent is highly unstable and can cause unpredictable consequences."
+	id = RESEARCH_XENO_CORRUPTION
 	time = 150
-	req_tech = list(RESEARCH_XENO_DISRUPTION, RESEARCH_XENO_DRONE, RESEARCH_XENO_SACK)
-*/
+	req_tech = list(RESEARCH_XENO_DISRUPTION, RESEARCH_XENO_DRONE, RESEARCH_XENO_SACK, RESEARCH_XENO_SPITTER)

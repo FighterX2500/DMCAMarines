@@ -115,6 +115,16 @@
 	..()
 	use_time = max_use
 
+/obj/item/infector				//Something, that every xeno will hate
+	name = "Gene-agent injector"
+	desc = "A small injector"
+	icon = 'icons/obj/old_guns/old_guns.dmi'
+	icon_state = "decloner"
+	item_state = "gun"
+
+
+
+
 /////////////
 // Guns, their ammo datums and ect.
 /////////////
