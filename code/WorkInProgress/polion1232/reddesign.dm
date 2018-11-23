@@ -112,7 +112,7 @@
 
 /datum/marine_design/hivecorruption
 	name = "Gene-Agent \"Infector\"."
-	desc = "A crime against the Nature, \"Infector\" is our crowned achievment in Hivemind understanding. Evil and brutal, one injection of this abomination can forever change still not born organism. We just need to make sure that no one, except High Command."
+	desc = "A crime against the Nature, \"Infector\" is our crowned achievment in Hivemind understanding. Evil and brutal, one injection of this abomination can forever change still not born organism. We just need to make sure that no one, except High Command, will know about our shenanigans here."
 	id = "corruptor"
 	build_path = /obj/item/infector
 	build_type = MARINE_PROTHOLATHE
