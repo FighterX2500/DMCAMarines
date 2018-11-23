@@ -170,12 +170,15 @@
 	var/prefix = ""
 	var/disrupted = 0				//for hive_message
 	var/obj/machinery/hive_disruptor/disruptor = null	//used only when disrupted is 1
+	var/enslaved = 0				//for Corrupted hive
+	var/obj/machinery/computer/hive_controller/console_link = null		//used only whel enslaved is 1
 	var/list/xeno_leader_list = list()
 
 /datum/hive_status/corrupted
 	hivenumber = XENO_HIVE_CORRUPTED
 	prefix = "Corrupted "
 	color = "#00ff80"
+	enslaved = 1
 
 /datum/hive_status/alpha
 	hivenumber = XENO_HIVE_ALPHA

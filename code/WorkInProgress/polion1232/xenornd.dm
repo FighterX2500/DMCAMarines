@@ -43,6 +43,14 @@
 	frame_desc = "Requires 2 Scanning modules."
 	req_components = list(/obj/item/stock_parts/scanning_module = 2)
 
+/obj/item/circuitboard/machine/hive_controller			// Oh, boi
+	name = "Circuit board (Hivelink Communication)"
+	build_path = /obj/machinery/computer/hive_controller
+	origin_tech = null
+	var/hive_signature = XENO_HIVE_CORRUPTED				//What hive will be lisened
+	frame_desc = "Requires 2 Scanning modules."
+	req_components = list(/obj/item/stock_parts/scanning_module = 2)
+
 /obj/machinery/computer/XenoRnD
 	name = "R&D Console"
 	icon = 'code/WorkInProgress/polion1232/polionresearch.dmi'
