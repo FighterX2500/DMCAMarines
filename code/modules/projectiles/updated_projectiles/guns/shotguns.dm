@@ -17,7 +17,7 @@ can cause issues with ammo types getting mixed up during the burst.
 	var/opened_sound = 'sound/weapons/gun_shotgun_open2.ogg'
 	type_of_casings = "shell"
 	accuracy_mult = 1.15
-	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG|GUN_TRIGGER_SAFETY
 	aim_slowdown = SLOWDOWN_ADS_SHOTGUN
 	wield_delay = WIELD_DELAY_NORMAL //Shotguns are really easy to put up to fire, since they are designed for CQC (at least compared to a rifle)
 	gun_skill_category = GUN_SKILL_SHOTGUNS
@@ -159,7 +159,7 @@ can cause issues with ammo types getting mixed up during the burst.
 	attachable_allowed = list(
 						/obj/item/attachable/compensator)
 
-	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG|GUN_TRIGGER_SAFETY
 
 /obj/item/weapon/gun/shotgun/merc/New()
 	..()
@@ -250,7 +250,7 @@ can cause issues with ammo types getting mixed up during the burst.
 						/obj/item/attachable/flashlight,
 						/obj/item/attachable/magnetic_harness)
 
-	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG|GUN_TRIGGER_SAFETY
 
 /obj/item/weapon/gun/shotgun/double/New()
 	..()
@@ -345,7 +345,7 @@ can cause issues with ammo types getting mixed up during the burst.
 	item_state = "sshotgun"
 	flags_equip_slot = SLOT_WAIST
 	attachable_allowed = list()
-	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG|GUN_TRIGGER_SAFETY
 
 /obj/item/weapon/gun/shotgun/double/sawn/New()
 	..()

@@ -1,13 +1,16 @@
-
-
-
 //APCS, HURRAY
 //Read the documentation in cm_transport.dm and multitile.dm before trying to decipher this stuff
 
+//NOT bitflags, just global constant values
+#define "Medical Modification" 1
+#define "Supply Modification" 2
+#define "Command Modification" 3
+
+var/list/free_modules = list("Medical Modification", "Supply Modification", "Command Modification")
 
 /obj/vehicle/multitile/root/cm_transport/apc
-	name = "M550-M APC"
-	desc = "M550-M Armored Personnel Carrier. Combat transport for delivering and supporting infantry. Entrance on the right side."
+	name = "M580 APC"
+	desc = "M580 Armored Personnel Carrier. Combat transport for delivering and supporting infantry. Entrance on the right side."
 
 	icon = 'icons/obj/apcarrier_NS.dmi'
 	icon_state = "apc_base"
@@ -15,14 +18,23 @@
 	pixel_y = -32
 
 	var/named = FALSE
-	var/list/passengers
+	var/passengers = 0
+	var/passengers_max
 	var/mob/gunner
 	var/mob/driver
+	var/cabin_door_busy = FALSE
+	var/special_module_working = FALSE
+	var/special_module_type = null
+	var/tank_crewman_entered = FALSE
+	var/module_role_entered = FALSE
+	var/module_role = null
+	var/obj/structure/vehicle_interior/side_door/interior_side_door
+	var/obj/structure/vehicle_interior/cabin_door/interior_cabin_door
 
 	var/obj/machinery/camera/camera = null	//Yay! Working camera in the apc!
 
-	var/occupant_exiting = 0
 	var/next_sound_play = 0
+
 
 	luminosity = 7
 
@@ -54,8 +66,8 @@
 	R.update_icon()
 
 	R.camera = new /obj/machinery/camera(R)
-	R.camera.network = list("almayer", "apc")	//changed network from military to almayer,because Cams computers on Almayer have this network
-	R.camera.c_tag = "Armored Personnel Carrier �[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
+	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
+	R.camera.c_tag = "APC �[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
 
 	del(src)
 
@@ -90,26 +102,64 @@
 	R.update_icon()
 
 	R.camera = new /obj/machinery/camera(R)
-	R.camera.network = list("almayer", "apc")	//changed network from military to almayer, because Cams computers on Almayer have this network
+	R.camera.network = list("almayer")	//changed network from military to almayer, because Cams computers on Almayer have this network
 	R.camera.c_tag = "Armored Personnel Carrier �[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
 
 	del(src)
 
 
+/obj/effect/multitile_spawner/cm_transport/apc/prebuilt/New()
+
+	var/obj/vehicle/multitile/root/cm_transport/apc/R = new(src.loc)
+	R.dir = EAST
+
+	var/datum/coords/dimensions = new
+	dimensions.x_pos = width
+	dimensions.y_pos = height
+	var/datum/coords/root_pos = new
+	root_pos.x_pos = 1
+	root_pos.y_pos = 1
+
+	//Entrance relative to the root object. The apc spawns with the root centered on the marker
+	var/datum/coords/entr_mark = new
+	entr_mark.x_pos = 0
+	entr_mark.y_pos = -2
+
+	R.load_hitboxes(dimensions, root_pos)
+	R.load_entrance_marker(entr_mark)
+	R.update_icon()
+
+	R.camera = new /obj/machinery/camera(R)
+	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
+	R.camera.c_tag = "Armored Personnel Carrier �[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
+
+	//Manually adding those hardpoints
+	R.add_hardpoint(new /obj/item/apc_hardpoint/primary/dual_cannon)
+	R.add_hardpoint(new /obj/item/apc_hardpoint/secondary/front_cannon)
+	R.add_hardpoint(new /obj/item/apc_hardpoint/support/flare_launcher)
+	R.add_hardpoint(new /obj/item/apc_hardpoint/wheels)
+	R.update_damage_distribs()
+
+	R.healthcheck()
+
+	del(src)
+
 //For the apc, start forcing people out if everything is broken
 /obj/vehicle/multitile/root/cm_transport/apc/handle_all_modules_broken()
 	deactivate_all_hardpoints()
-	var/turf/T = get_turf(entrance)
-	to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle so you dismount!</span>")
-	gunner.Move(T)
-	to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the vehicle so you dismount!</span>")
-	driver.Move(T)
+	var/turf/T = get_turf(multitile_interior_cabin_exit)
+	to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the cabin so you get out!</span>")
+	gunner.forceMove(T)
+	to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the cabin so you get out!</span>")
+	driver.forceMove(T)
 	if(gunner.client)
 		gunner.client.mouse_pointer_icon = initial(gunner.client.mouse_pointer_icon)
 	gunner.unset_interaction()
 	gunner = null
 	driver.unset_interaction()
 	driver = null
+	special_module_working = FALSE
+	camera.status = 0
 
 /obj/vehicle/multitile/root/cm_transport/apc/remove_all_players()
 	deactivate_all_hardpoints()
@@ -159,6 +209,11 @@
 		spawn(20)
 			spamcheck = 0
 		return
+
+/obj/vehicle/multitile/root/cm_transport/apc/examine(var/mob/user)
+	..()
+	if(isXeno(user) && passengers > 0)
+		to_chat(user, "<span class='xenonotice'>You can sense [passengers] hosts inside of the fast metal box, but you can't tell for sure how many of them are alive.</span>")
 
 //little QoL won't be bad, aight?
 /obj/vehicle/multitile/root/cm_transport/apc/verb/megaphone()
@@ -214,26 +269,37 @@
 	return (M == gunner)
 
 /obj/vehicle/multitile/root/cm_transport/apc/handle_harm_attack(var/mob/M)
+	return
 
-	if(M.loc != entrance.loc)	return
-
-	if(!gunner && !driver)
-		to_chat(M, "<span class='warning'>There is no one in the vehicle.</span>")
-		return
-
-	to_chat(M, "<span class='notice'>You start pulling [driver ? driver : gunner] out of their seat.</span>")
-
-	if(!do_after(M, 200, show_busy_icon = BUSY_ICON_HOSTILE))
-		to_chat(M, "<span class='warning'>You stop pulling [driver ? driver : gunner] out of their seat.</span>")
-		return
-
-	if(M.loc != entrance.loc) return
+/obj/vehicle/multitile/root/cm_transport/apc/proc/pulling_out_crew(var/mob/M)
+	var/loc_check = M.loc
 
 	if(!gunner && !driver)
-		to_chat(M, "<span class='warning'>There is no longer anyone in the vehicle.</span>")
+		if(isXeno(M))
+			to_chat(M, "<span class='xenowarning'>There is no one in the cabin.</span>")
+		else
+			to_chat(M, "<span class='warning'>There is no one in the cabin.</span>")
 		return
 
-	M.visible_message("<span class='warning'>[M] pulls [driver ? driver : gunner] out of their seat in [src].</span>",
+	if(isXeno(M))
+		to_chat(M, "<span class='xenonotice'>You start pulling [driver ? driver : gunner] out of their seat.</span>")
+	else
+		to_chat(M, "<span class='notice'>You start pulling [driver ? driver : gunner] out of their seat.</span>")
+
+	if(!do_after(M, 50, show_busy_icon = BUSY_ICON_HOSTILE))
+		if(isXeno(M))
+			to_chat(M, "<span class='xenowarning'>You stop pulling [driver ? driver : gunner] out of their seat.</span>")
+		else
+			to_chat(M, "<span class='warning'>You stop pulling [driver ? driver : gunner] out of their seat.</span>")
+		return
+
+	if(M.loc != loc_check) return
+
+	if(!gunner && !driver)
+		to_chat(M, "<span class='warning'>There is no longer anyone in the cabin.</span>")
+		return
+
+	M.visible_message("<span class='warning'>[M] pulls [driver ? driver : gunner] out of their seat in vehicle cabin.</span>",
 		"<span class='notice'>You pull [driver ? driver : gunner] out of their seat.</span>")
 
 	var/mob/targ
@@ -246,24 +312,275 @@
 		targ = gunner
 		gunner = null
 	to_chat(targ, "<span class='danger'>[M] forcibly drags you out of your seat and dumps you on the ground!</span>")
-	targ.forceMove(entrance.loc)
+	targ.forceMove(multitile_interior_cabin_exit.loc)
 	targ.unset_interaction()
-	targ.KnockDown(7, 1)
+	targ.KnockDown(3, 1)
 
+//12 passengers allowed by default + TC + module role
+/obj/vehicle/multitile/root/cm_transport/apc/handle_interior_entrance(var/mob/living/carbon/M)
 
-//Two seats, gunner and driver
-//Must have the skills to do so
-/obj/vehicle/multitile/root/cm_transport/apc/handle_player_entrance(var/mob/M)
-	var/loc_check = M.loc
-	var/slot = input("Select a seat") in list("Driver", "Gunner")
+	if(special_module_type == null)
+		choose_module(M)
+		return
 
 	if(!M || M.client == null) return
 
-	if(!M.mind || !(!M.mind.cm_skills || M.mind.cm_skills.large_vehicle >= SKILL_LARGE_VEHICLE_TRAINED))
-		to_chat(M, "<span class='notice'>You have no idea how to operate this thing.</span>")
+	if(interior_side_door.side_door_busy)
+		to_chat(M, "<span class='notice'>Someone is in the doorway.</span>")
 		return
 
-	to_chat(M, "<span class='notice'>You start climbing into [src].</span>")
+	var/new_module_role_entered = FALSE
+	var/new_tank_crewman_entered = FALSE
+	var/new_passengers = 0
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		var/obj/item/card/id/I = H.wear_id
+		if(I.rank == "Tank Crewman" && !tank_crewman_entered)
+			new_tank_crewman_entered = TRUE
+		else
+			if(I.rank == module_role && !module_role_entered)
+				new_module_role_entered = TRUE
+			else
+				if(passengers >= passengers_max)
+					to_chat(M, "<span class='warning'>[src] is full.</span>")
+					return
+				else
+					new_passengers++
+	else
+		if(passengers >= passengers_max)
+			to_chat(M, "<span class='warning'>[src] is full.</span>")
+			return
+		else
+			new_passengers++
+	to_chat(M, "<span class='danger'>Check for user done.</span>")
+
+	var/move_pulling = FALSE
+	if(M.pulling && get_dist(entrance, M.pulling) <= 1)
+		move_pulling = TRUE
+		if(isliving(M.pulling))
+			to_chat(M, "<span class='danger'>M.pulling is alive.</span>")
+			var/mob/living/B = M.pulling
+			if(B.buckled)
+				to_chat(M, "<span class='warning'>You can't fit [M.pulling] on the [B.buckled] through a doorway! Try unbuckling [M.pulling] first.</span>")
+				return
+			if(isXeno(M.pulling))
+				to_chat(M, "<span class='warning'>Taking that leaking acid [M.pulling] inside would be a very bad idea.</span>")
+				return
+			if(ishuman(M.pulling))
+				to_chat(M, "<span class='danger'>M.pulling is human</span>")
+				var/mob/living/carbon/human/H = M.pulling
+				var/obj/item/card/id/I = H.wear_id
+				if(I.rank == "Tank Crewman" && !tank_crewman_entered)
+					new_tank_crewman_entered = TRUE
+				else
+					if(I.rank == module_role && !module_role_entered)
+						new_module_role_entered = TRUE
+					else
+						if((passengers + new_passengers + 1) > passengers_max)
+							if((passengers + new_passengers) == passengers_max)
+								to_chat(M, "<span class='warning'>There is a room only for one of you.</span>")
+								return
+							to_chat(M, "<span class='warning'>[src] is full.</span>")
+							return
+						else
+							new_passengers++
+			else
+				if((passengers + new_passengers + 1) > passengers_max)
+					if((passengers + new_passengers) == passengers_max)
+						to_chat(M, "<span class='warning'>There is a room only for one of you.</span>")
+						return
+					to_chat(M, "<span class='warning'>[src] is full.</span>")
+					return
+				else
+					new_passengers++
+		if(isobj(M.pulling))
+			if((istype(M.pulling, /obj/structure) && !istype(M.pulling, /obj/structure/mortar) && !istype(M.pulling, /obj/structure/closet/bodybag)) || (istype(M.pulling, /obj/machinery) && !istype(M.pulling, /obj/machinery/marine_turret_frame) && !istype(M.pulling, /obj/machinery/marine_turret) && !istype(M.pulling, /obj/machinery/m56d_post) && !istype(M.pulling, /obj/machinery/m56d_hmg)))
+				to_chat(M, "<span class='warning'>You can't fit the [M.pulling] through a doorway!</span>")
+				return
+			to_chat(M, "<span class='danger'>M.pulling is object.</span>")
+			var/obj/O = M.pulling
+			if(istype(O, /obj/structure/closet/bodybag))
+				to_chat(M, "<span class='danger'>pulling bodybag.</span>")
+				for(var/mob/living/B in O.contents)
+					if(ishuman(B))
+						var/mob/living/carbon/human/H = B
+						var/obj/item/card/id/I = H.wear_id
+						if(I.rank == "Tank Crewman" && !tank_crewman_entered)
+							new_tank_crewman_entered = TRUE
+						else
+							if(I.rank == module_role && !module_role_entered)
+								new_module_role_entered = TRUE
+							else
+								if((passengers + new_passengers + 1) > passengers_max)
+									if((passengers + new_passengers) == passengers_max)
+										to_chat(M, "<span class='warning'>There is a room only for one of you.</span>")
+										return
+									to_chat(M, "<span class='warning'>[src] is full.</span>")
+									return
+								else
+									new_passengers++
+					else
+						if((passengers + new_passengers + 1) > passengers_max)
+							if((passengers + new_passengers) == passengers_max)
+								to_chat(M, "<span class='warning'>There is a room only for one of you.</span>")
+								return
+							to_chat(M, "<span class='warning'>[src] is full.</span>")
+							return
+						else
+							new_passengers++
+			if(O.buckled_mob)
+				to_chat(M, "<span class='warning'>You can't fit [O.buckled_mob] on the [O] through a doorway! Try unbuckling [M.pulling] first.</span>")
+				return
+
+	interior_side_door.side_door_busy = TRUE
+	visible_message(M, "<span class='notice'>[M] starts climbing into [src].</span>",
+		"<span class='notice'>You start climbing into [src].</span>")
+	if(!do_after(M, 20, needhand = FALSE, show_busy_icon = TRUE))
+		to_chat(M, "<span class='notice'>Something interrupted you while getting in.</span>")
+		interior_side_door.side_door_busy = FALSE
+		return
+
+	if(M.blinded || M.lying || M.buckled || M.anchored)
+		interior_side_door.side_door_busy = FALSE
+		return
+
+	if(M.loc != entrance.loc)
+		to_chat(M, "<span class='notice'>You stop getting in.</span>")
+		interior_side_door.side_door_busy = FALSE
+		return
+
+	if(move_pulling)
+		if(isliving(M.pulling))
+			var/mob/living/P = M.pulling
+			P.forceMove(multitile_interior_exit.loc) //Cannot use forceMove method on pulls! Move manually
+			M.forceMove(multitile_interior_exit.loc)
+			M.start_pulling(P)
+		else
+			var/obj/O = M.pulling
+			O.forceMove(multitile_interior_exit.loc)
+			M.forceMove(multitile_interior_exit.loc)
+			M.start_pulling(O)
+	else
+		M.forceMove(multitile_interior_exit.loc)
+
+	if(new_module_role_entered)
+		module_role_entered = TRUE
+	if(new_tank_crewman_entered)
+		tank_crewman_entered = TRUE
+	passengers += new_passengers
+
+	visible_message(M, "<span class='notice'>[M] climbs into [src].</span>",
+		"<span class='notice'>You climb into [src].</span>")
+	interior_side_door.side_door_busy = FALSE
+
+	return
+
+/obj/vehicle/multitile/root/cm_transport/apc/proc/choose_module(var/mob/user)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		var/obj/item/card/id/I = H.wear_id
+		if(!istype(I) || I.registered_name != H.real_name || I.rank != "Tank Crewman")
+			to_chat(H, "<span class='warning'>[src] door is locked. You need a Tank Crewman to unlock it.</span>")
+			return
+		else
+			if(free_modules != null)
+				special_module_type = input("Select APC Modification") in free_modules
+				switch(special_module_type)
+					if("Medical Modification")
+						name = "M580-M APC"
+						camera.network.Add("apc_1")
+
+						var/area/interior_area = locate(/area/vehicle_interior/apc_1)
+						var/obj/machinery/camera/cam = locate(/obj/machinery/camera/autoname/almayer) in interior_area
+						cam.c_tag = camera.c_tag + " Interior Camera"
+						cam.network.Add("almayer","apc_1")
+						multitile_interior_exit = locate(/obj/effect/landmark/multitile_interior_exit) in interior_area
+						multitile_interior_cabin_exit = locate(/obj/effect/landmark/multitile_interior_cabin_exit) in interior_area
+						interior_side_door = locate(/obj/structure/vehicle_interior/side_door) in interior_area
+						interior_side_door.master = src
+						interior_cabin_door = locate(/obj/structure/vehicle_interior/cabin_door) in interior_area
+						interior_cabin_door.master = src
+						passengers_max = 8
+						module_role = "Doctor"
+
+						free_modules.Remove("Medical Modification")
+						special_module_working = TRUE
+
+					if("Supply Modification")
+						name = "M580-S APC"
+						camera.network.Add("apc_2")
+						var/area/interior_area = locate(/area/vehicle_interior/apc_2)
+						var/obj/machinery/camera/cam = locate(/obj/machinery/camera/autoname/almayer) in interior_area
+						cam.c_tag = camera.c_tag + " Interior Camera"
+						cam.network.Add("almayer","apc_2")
+						multitile_interior_exit = locate(/obj/effect/landmark/multitile_interior_exit) in interior_area
+						multitile_interior_cabin_exit = locate(/obj/effect/landmark/multitile_interior_cabin_exit) in interior_area
+						interior_side_door = locate(/obj/structure/vehicle_interior/side_door) in interior_area
+						interior_side_door.master = src
+						interior_cabin_door = locate(/obj/structure/vehicle_interior/cabin_door) in interior_area
+						interior_cabin_door.master = src
+						var/obj/structure/vehicle_interior/supply_receiver/receiver = locate(/obj/structure/vehicle_interior/supply_receiver) in interior_area
+						receiver.master = src
+						var/turf/T = locate(159, 61, 3)
+						var/obj/machinery/vehicle_interior/supply_sender_control/button = locate(/obj/machinery/vehicle_interior/supply_sender_control) in T.contents
+						button.destination = receiver
+						T = locate(3, 62, 160)
+						var/obj/structure/vehicle_interior/supply_sender/sender = locate(/obj/structure/vehicle_interior/supply_sender) in range(button, 1)
+						button.master = sender
+						passengers_max = 10
+						module_role = "Cargo Technician"
+
+						free_modules.Remove("Supply Modification")
+						special_module_working = TRUE
+
+					if("Command Modification")
+						name = "M580-C APC"
+						camera.network.Add("apc_3")
+
+						var/area/interior_area = locate(/area/vehicle_interior/apc_3)
+						var/obj/machinery/camera/cam = locate(/obj/machinery/camera/autoname/almayer) in interior_area
+						cam.c_tag = camera.c_tag + " Interior Camera"
+						cam.network.Add("almayer","apc_3")
+						multitile_interior_exit = locate(/obj/effect/landmark/multitile_interior_exit) in interior_area
+						multitile_interior_cabin_exit = locate(/obj/effect/landmark/multitile_interior_cabin_exit) in interior_area
+						interior_side_door = locate(/obj/structure/vehicle_interior/side_door) in interior_area
+						interior_side_door.master = src
+						interior_cabin_door = locate(/obj/structure/vehicle_interior/cabin_door) in interior_area
+						interior_cabin_door.master = src
+						passengers_max = 12
+						module_role = "Staff Officer"
+
+						free_modules.Remove("Command Modification")
+						special_module_working = TRUE
+			else
+				to_chat(user, "<span class='danger'>APC is blocked permanently, because 3 APCs were already spawned and activated. Contact admin to delete this APC.</span>")
+				return
+	else
+		to_chat(user, "<span class='warning'>[src] door is locked, you can't get in!</span>")
+		return
+	return
+
+/obj/vehicle/multitile/root/cm_transport/apc/attack_alien(var/mob/living/carbon/Xenomorph/M)
+
+	..()
+
+	if(M.loc == entrance.loc)
+		if(special_module_working == FALSE)
+			handle_xeno_entrance(M)
+			return
+
+/obj/vehicle/multitile/root/cm_transport/apc/handle_player_entrance(var/mob/M)
+
+	var/loc_check = M.loc
+
+	var/slot
+	if(!M.mind || !(!M.mind.cm_skills || M.mind.cm_skills.large_vehicle >= SKILL_LARGE_VEHICLE_TRAINED))
+		slot = "Gunner"
+	else
+		slot = input("Select a seat") in list("Driver", "Gunner")
+	if(!M || M.client == null) return
+
+	to_chat(M, "<span class='notice'>You start climbing into cabin.</span>")
 
 	switch(slot)
 		if("Driver")
@@ -272,7 +589,7 @@
 				to_chat(M, "<span class='notice'>That seat is already taken.</span>")
 				return
 
-			if(!do_after(M, 100, needhand = FALSE, show_busy_icon = TRUE))
+			if(!do_after(M, 30, needhand = FALSE, show_busy_icon = TRUE))
 				to_chat(M, "<span class='notice'>Something interrupted you while getting in.</span>")
 				return
 
@@ -284,11 +601,8 @@
 				to_chat(M, "<span class='notice'>Someone got into that seat before you could.</span>")
 				return
 			driver = M
-			M.Move(src)
-			if(loc_check == entrance.loc)
-				to_chat(M, "<span class='notice'>You enter the driver's seat.</span>")
-			else
-				to_chat(M, "<span class='notice'>You climb onto the apc and enter the driver's seat through an auxiliary top hatchet.</span>")
+			M.forceMove(src)
+			to_chat(M, "<span class='notice'>You enter the driver's seat.</span>")
 
 			M.set_interaction(src)
 			return
@@ -299,7 +613,7 @@
 				to_chat(M, "<span class='notice'>That seat is already taken.</span>")
 				return
 
-			if(!do_after(M, 100, needhand = FALSE, show_busy_icon = TRUE))
+			if(!do_after(M, 30, needhand = FALSE, show_busy_icon = TRUE))
 				to_chat(M, "<span class='notice'>Something interrupted you while getting in.</span>")
 				return
 
@@ -313,19 +627,49 @@
 
 			if(!M.client) return //Disconnected while getting in
 			gunner = M
-			//M.loc = src
-			M.Move(src)
+			M.forceMove(src)
 			deactivate_binos(gunner)
-			if(loc_check == entrance.loc)
-				to_chat(M, "<span class='notice'>You enter the driver's seat.</span>")
-			else
-				to_chat(M, "<span class='notice'>You climb onto the apc and enter the driver's seat through an auxiliary top hatchet.</span>")
+
+			to_chat(M, "<span class='notice'>You enter the gunner's seat.</span>")
 			M.set_interaction(src)
 			if(M.client)
 				M.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
 
-
 			return
+
+/obj/vehicle/multitile/root/cm_transport/apc/handle_xeno_entrance(mob/living/carbon/Xenomorph/X)
+
+	if(special_module_type == null)
+		to_chat(X, "<span class='xenowarning'>[src] door is locked, you can't get in!</span>")
+		return
+
+	if(!X || X.client == null) return
+
+	visible_message(X, "<span class='notice'>[X] starts climbing into [src].</span>",
+		"<span class='xenonotice'>You start climbing into [src].</span>")
+
+	if(cabin_door_busy)
+		to_chat(X, "<span class='xenonotice'>Someone is in the doorway.</span>")
+		return
+
+	cabin_door_busy = TRUE
+	if(!do_after(X, 20, needhand = FALSE, show_busy_icon = TRUE))
+		to_chat(X, "<span class='xenonotice'>Something interrupted you while getting in.</span>")
+		cabin_door_busy = FALSE
+		return
+
+	if(X.loc != entrance.loc)
+		to_chat(X, "<span class='xenonotice'>You stop getting in.</span>")
+		cabin_door_busy = FALSE
+		return
+
+	cabin_door_busy = FALSE
+
+	if(!X.blinded && !X.lying && !X.buckled && !X.anchored)
+		visible_message(X, "<span class='notice'>[X] climbs into [src].</span>",
+		"<span class='xenonotice'>You climb into [src].</span>")
+		X.forceMove(multitile_interior_exit.loc)
+
 
 //Deposits you onto the exit marker
 //TODO: Sometimes when the entrance marker is on the wall or somewhere you can't move to, it still deposits you there
@@ -334,33 +678,31 @@
 
 	if(M != gunner && M != driver) return
 
-	if(occupant_exiting)
-		to_chat(M, "<span class='notice'>Someone is already getting out of the vehicle.</span>")
+	if(cabin_door_busy)
+		to_chat(M, "<span class='notice'>Someone is already getting out of the vehicle cabin.</span>")
 		return
 
-	to_chat(M, "<span class='notice'>You start climbing out of [src].</span>")
+	to_chat(M, "<span class='notice'>You start climbing out of [src] cabin.</span>")
 
-	occupant_exiting = 1
-	sleep(50)
-	occupant_exiting = 0
+	cabin_door_busy = TRUE
+	sleep(30)
+	cabin_door_busy = FALSE
+	var/turf/T = get_turf(interior_cabin_door)
+	T = get_step(T, WEST)
 
-	if(tile_blocked_check(entrance.loc))
-		to_chat(M, "<span class='notice'>Something is blocking you from exiting.</span>")
-		return
+	if(M == gunner)
+		deactivate_all_hardpoints()
+		if(M.client)
+			M.client.mouse_pointer_icon = initial(M.client.mouse_pointer_icon)
+		M.forceMove(T)
+
+		gunner = null
 	else
-		if(M == gunner)
-			deactivate_all_hardpoints()
-			if(M.client)
-				M.client.mouse_pointer_icon = initial(M.client.mouse_pointer_icon)
-			M.Move(entrance.loc)
-
-			gunner = null
-		else
-			if(M == driver)
-				M.Move(entrance.loc)
-				driver = null
-		M.unset_interaction()
-		to_chat(M, "<span class='notice'>You climb out of [src].</span>")
+		if(M == driver)
+			M.forceMove(T)
+			driver = null
+	M.unset_interaction()
+	to_chat(M, "<span class='notice'>You climb out of [src] cabin.</span>")
 
 //No one but the driver can drive
 /obj/vehicle/multitile/root/cm_transport/apc/relaymove(var/mob/user, var/direction)

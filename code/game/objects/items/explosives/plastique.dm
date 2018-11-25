@@ -33,7 +33,7 @@
 	if(user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer < SKILL_ENGINEER_METAL)
 		to_chat(user, "<span class='warning'>You don't seem to know how to use [src]...</span>")
 		return
-	if(istype(target, /obj/structure/ladder) || istype(target, /obj/item) || istype(target, /turf/open))
+	if(istype(target, /obj/structure/ladder) || istype(target, /obj/item) || istype(target, /turf/open) || istype(target, /obj/structure/vehicle_interior))
 		return FALSE
 	if(istype(target, /obj/effect) || istype(target, /obj/machinery) || istype(target, /obj/vehicle))
 		var/obj/O = target
@@ -48,6 +48,11 @@
 		if(!W.damageable)
 			to_chat(user, "<span class='warning'>[W] is much too tough for you to do anything to it with [src]</span>.")
 			return FALSE
+	var/mob/living/carbon/human/H = target
+	if(istype(H))
+		for(var/datum/disease/black_goo/BG in H.viruses)
+			if(BG.stage > 0)
+				return FALSE
 
 	user.visible_message("<span class='warning'>[user] is trying to plant [name] on [target]!</span>",
 	"<span class='warning'>You are trying to plant [name] on [target]!</span>")

@@ -26,7 +26,7 @@
 						/obj/item/attachable/quickfire,
 						/obj/item/attachable/burstfire_assembly)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK //For easy reference.
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY //For easy reference.
 
 	New()
 		..()
@@ -87,7 +87,7 @@
 	origin_tech = "combat=4;materials=3"
 	fire_sound = 'sound/weapons/gun_glock.ogg'
 	current_mag = /obj/item/ammo_magazine/pistol/m1911
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
 	New()
 		..()
@@ -153,7 +153,7 @@
 						/obj/item/attachable/lasersight,
 						/obj/item/attachable/compensator)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
 	New()
 		..() //Pick some variant sprites.
@@ -190,7 +190,7 @@
 						/obj/item/attachable/lasersight,
 						/obj/item/attachable/burstfire_assembly)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
 	New()//Making the gun have an invisible silencer since it's supposed to have one.
 		..()
@@ -214,13 +214,13 @@
 /obj/item/weapon/gun/pistol/c99/russian
 	icon_state = "pk9r"
 	item_state = "pk9r"
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
 /obj/item/weapon/gun/pistol/c99/upp
 	desc = "An updated variant of an old eastern design, dating back to from the 20th century. Commonly found among mercenary companies due to its reliability, but also issued to UPP armed forces. Features an integrated silencer, and chambered in the razor small .22 rounds. This one is usually loaded with the more common .22 hollowpoint rounds and appears to be a UPP model."
 	icon_state = "pk9u"
 	item_state = "pk9u"
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
 /obj/item/weapon/gun/pistol/c99/upp/tranq
 	desc = "An updated variant of an old eastern design, dating back to from the 20th century. Commonly found among mercenary companies due to its reliability, but also issued to UPP armed forces. Features an integrated silencer, and chambered in the razor small .22 rounds. This one is usually loaded with special low-recoil .22 dart rounds, which act as a dangerous tranquilizer."
@@ -238,7 +238,7 @@
 	fire_sound = 'sound/weapons/gun_kt42.ogg'
 	current_mag = /obj/item/ammo_magazine/pistol/automatic
 	attachable_allowed = list()
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
 	New()
 		..()
@@ -275,7 +275,7 @@
 						/obj/item/attachable/lasersight,
 						/obj/item/attachable/burstfire_assembly)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
 	New()
 		..()
@@ -301,7 +301,7 @@
 	current_mag = /obj/item/ammo_magazine/pistol/highpower
 	force = 10
 	attachable_allowed = list()
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
 	New()
 		..()
@@ -418,7 +418,7 @@ It is a modified Beretta 93R, and can fire three round burst or single fire. Whe
 	type_of_casings = null
 	gun_skill_category = GUN_SKILL_PISTOLS
 	attachable_allowed = list()
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_WY_RESTRICTED
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_WY_RESTRICTED|GUN_TRIGGER_SAFETY
 
 /obj/item/weapon/gun/pistol/holdout/set_gun_config_values()
 	fire_delay = config.low_fire_delay
