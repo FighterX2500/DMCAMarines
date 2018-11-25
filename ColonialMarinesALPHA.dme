@@ -1476,6 +1476,7 @@
 #include "code\WorkInProgress\polion1232\aliencontainment.dm"
 #include "code\WorkInProgress\polion1232\autopsys.dm"
 #include "code\WorkInProgress\polion1232\biolathe.dm"
+#include "code\WorkInProgress\polion1232\controller.dm"
 #include "code\WorkInProgress\polion1232\disruptor.dm"
 #include "code\WorkInProgress\polion1232\dissector.dm"
 #include "code\WorkInProgress\polion1232\marineprotolate.dm"

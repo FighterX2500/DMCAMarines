@@ -43,6 +43,14 @@
 	frame_desc = "Requires 2 Scanning modules."
 	req_components = list(/obj/item/stock_parts/scanning_module = 2)
 
+/obj/item/circuitboard/machine/hive_controller			// Oh, boi
+	name = "Circuit board (Hivelink Communication)"
+	build_path = /obj/machinery/computer/hive_controller
+	origin_tech = null
+	var/hive_signature = XENO_HIVE_CORRUPTED				//What hive will be lisened
+	frame_desc = "Requires 2 Scanning modules."
+	req_components = list(/obj/item/stock_parts/scanning_module = 2)
+
 /obj/machinery/computer/XenoRnD
 	name = "R&D Console"
 	icon = 'code/WorkInProgress/polion1232/polionresearch.dmi'
@@ -246,6 +254,7 @@
 				spawn(16)
 					new design.build_path(linked_lathe.loc)
 					screen = 4.1
+					linked_lathe.RefilBio()
 					break
 
 	else if(href_list["print"])
@@ -273,6 +282,7 @@
 							linked_modifyer.loaded_item.armor["bullet"] += 20
 							linked_modifyer.loaded_item.name += " 'Hunter'"
 							linked_modifyer.loaded_item.is_modifyed = 1
+							linked_modifyer.loaded_item.unacidable = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
 							linked_modifyer.icon_state = "bronya_pusta"
@@ -289,6 +299,7 @@
 							linked_modifyer.loaded_item.slowdown += SLOWDOWN_ARMOR_HEAVY
 							linked_modifyer.loaded_item.name += " 'Juggernaut'"
 							linked_modifyer.loaded_item.is_modifyed = 1
+							linked_modifyer.loaded_item.unacidable = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
 							linked_modifyer.icon_state = "bronya_pusta"
@@ -305,6 +316,7 @@
 							linked_modifyer.loaded_item.slowdown = -SLOWDOWN_ARMOR_VERY_LIGHT
 							linked_modifyer.loaded_item.name += " 'Farsight'"
 							linked_modifyer.loaded_item.is_modifyed = 1
+							linked_modifyer.loaded_item.unacidable = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
 							linked_modifyer.icon_state = "bronya_pusta"
@@ -320,6 +332,7 @@
 							linked_modifyer.loaded_item.armor["bullet"] += 10
 							linked_modifyer.loaded_item.name += " 'Bughead'"
 							linked_modifyer.loaded_item.is_modifyed = 1
+							linked_modifyer.loaded_item.unacidable = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
 							linked_modifyer.icon_state = "bronya_pusta"
@@ -335,6 +348,7 @@
 							linked_modifyer.loaded_item.armor["bullet"] += 20
 							linked_modifyer.loaded_item.name += " 'Defender'"
 							linked_modifyer.loaded_item.is_modifyed = 1
+							linked_modifyer.loaded_item.unacidable = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
 							linked_modifyer.icon_state = "bronya_pusta"
@@ -348,6 +362,7 @@
 						spawn(50)
 							linked_modifyer.loaded_item.name += " 'Blackmarsh'"
 							linked_modifyer.loaded_item.is_modifyed = 1				//The most horrifying part of code, shows that there will be no more slowdown on weed
+							linked_modifyer.loaded_item.unacidable = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
 							linked_modifyer.icon_state = "bronya_pusta"

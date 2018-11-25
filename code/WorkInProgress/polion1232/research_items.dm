@@ -76,12 +76,34 @@
 
 /obj/item/cell/xba
 	name = "XBA-based power cell"
-	icon_state = "scell"
+	icon = 'code/WorkInProgress/polion1232/xenobatteries.dmi'
+	icon_state = "Xenobattery_0"
 	maxcharge = 20000
+
+/obj/item/cell/xba/New()
+	..()
+	update_icon()
+
+/obj/item/cell/xba/update_icon()
+	var/charge_percentage = charge*100/maxcharge
+	if(charge_percentage <= 100 && charge_percentage >= 75)
+		icon_state = "XenoBattery_Full"
+		return
+	if(charge_percentage < 75 && charge_percentage >= 50)
+		icon_state = "XenoBattery_75"
+		return
+	if(charge_percentage < 50 && charge_percentage >= 25)
+		icon_state = "XenoBattery_50"
+		return
+	if(charge_percentage < 25 && charge_percentage > 0)
+		icon_state = "XenoBattery_25"
+		return
+	if(charge_percentage == 0)
+		icon_state = "XenoBattery_0"
 
 /obj/item/cell/xba/high
 	name = "XBA-based high-capacity power cell"
-	icon_state = "scell"
+	icon_state = "Xenobattery_0"
 	maxcharge = 40000
 
 /obj/item/anti_acid
@@ -97,9 +119,26 @@
 	..()
 	use_time = max_use
 
+/obj/item/infector				//Something, that every xeno will hate
+	name = "Gene-agent injector"
+	desc = "A small injector"
+	icon = 'icons/obj/old_guns/old_guns.dmi'
+	icon_state = "decloner"
+	item_state = "gun"
+
+
+/*
+										Weapons and bullets
 /////////////
 // Guns, their ammo datums and ect.
 /////////////
+
+
+*/
+
+/////////////
+// Tesla and its powerpack
+////////////
 
 /obj/item/weapon/gun/energy/tesla			//ZZZZZZZZZAP
 	name = "HEW-2 \"Zeus\""
@@ -112,6 +151,7 @@
 	var/charge_cost = 100
 	var/charge = 0			//prepered charge
 	gun_skill_category = GUN_SKILL_SMARTGUN		//Heavy as fuck
+	aim_slowdown = SLOWDOWN_ADS_SPECIALIST
 	flags_gun_features = GUN_INTERNAL_MAG|GUN_WIELDED_FIRING_ONLY
 
 /obj/item/weapon/gun/energy/tesla/set_gun_config_values()
@@ -168,6 +208,7 @@
 		visible_message("[user.name] swaps out the power cell in the [src.name].","You swap out the power cell in the [src] and drop the old one.")
 		to_chat(user, "The new cell contains: [C.charge] power.")
 		charge_battery.loc = get_turf(user)
+		charge_battery.update_icon()
 		charge_battery = C
 		C.loc = src
 		playsound(src,'sound/machines/click.ogg', 25, 1)
@@ -243,7 +284,11 @@
 		if(isXenoQueen(M) || isXenoRavager(target))
 			target.visible_message("<span class='danger'>Tesla discharge was been shrugged off [target.name]'s chitin!</span>", "You felt weird thing, that pokes your chitin")
 
-// Laser Gun
+
+/////////////
+// Laser family
+////////////
+
 /obj/item/weapon/gun/energy/lasgan
 	name = "SR-LG \"Thunder\""
 	desc = "First working prototype of \"Laser Gun\"-series of 1st generation laser weapon, deliver death and destruction on its path."
@@ -253,6 +298,7 @@
 	ammo = /datum/ammo/energy/lasgan
 	fire_sound = 'sound/weapons/laser3.ogg'
 	w_class = 4.0
+	unacidable = 1
 
 	var/charge_cost = 100
 	var/obj/item/cell/xba/mag = null
@@ -296,6 +342,7 @@
 		visible_message("[user.name] swaps out the power cell in the [src.name].","You swap out the power cell in the [src] and drop the old one.")
 		to_chat(user, "The new cell contains: [C.charge] power.")
 		mag.loc = get_turf(user)
+		mag.update_icon()
 		mag = C
 		C.loc = src
 		playsound(src,'sound/machines/click.ogg', 25, 1)
@@ -336,6 +383,7 @@
 	ammo = /datum/ammo/energy/lasgan
 	fire_sound = 'sound/weapons/emitter2.ogg'
 	w_class = 5.0
+	unacidable = 1
 
 	var/charge_cost = 20000
 	var/obj/item/cell/xba/shot = null
@@ -372,6 +420,7 @@
 			user.drop_held_item()
 			visible_message("[user.name] swaps out the power cell in the [src.name].","You swap out the power cell in the [src] and drop the old one.")
 			shot.loc = get_turf(user)
+			shot.update_icon()
 			shot = A
 			A.loc = src
 			playsound(src,'sound/machines/click.ogg', 25, 1)
@@ -402,6 +451,8 @@
 	item_state = "gun"
 	ammo = /datum/ammo/energy/lasgan
 	fire_sound = 'sound/weapons/laser3.ogg'
+	w_class = 2.0
+	unacidable = 1
 
 	var/charge_cost = 50
 	var/obj/item/cell/xba/mag = null
@@ -449,6 +500,7 @@
 		visible_message("[user.name] swaps out the power cell in the [src.name].","You swap out the power cell in the [src] and drop the old one.")
 		to_chat(user, "The new cell contains: [C.charge] power.")
 		mag.loc = get_turf(user)
+		mag.update_icon()
 		mag = C
 		C.loc = src
 		playsound(src,'sound/machines/click.ogg', 25, 1)

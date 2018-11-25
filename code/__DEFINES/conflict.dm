@@ -93,4 +93,5 @@
 
 #define RESEARCH_XENO_QUEEN 40
 #define RESEARCH_XENO_DISRUPTION 41
+#define RESEARCH_XENO_CORRUPTION 42
 //=================================================
