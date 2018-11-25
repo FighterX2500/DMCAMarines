@@ -62,11 +62,11 @@ var/list/apc_dmg_distributions = list(
 	//Changes how much damage the APC takes. Since APC has no armor module, it has some basic resistances
 	var/list/dmg_multipliers = list(
 		"all" = 1.0,	//for when you want to make it invincible
-		"acid" = 0.9,
-		"slash" = 0.8,
+		"acid" = 0.8,
+		"slash" = 0.7,
 		"bullet" = 0.5,
 		"explosive" = 0.9,
-		"blunt" = 0.8,
+		"blunt" = 0.6,
 		"abstract" = 1.0) //abstract for when you just want to hurt it
 
 	//Decisecond cooldowns for the slots
@@ -88,6 +88,12 @@ var/list/apc_dmg_distributions = list(
 		cdel(O, 1) //Delete all of the hitboxes etc
 
 	. = ..()
+
+/obj/vehicle/multitile/root/cm_transport/proc/handle_xeno_entrance(mob/living/carbon/Xenomorph/X)
+	return
+
+/obj/vehicle/multitile/root/cm_transport/proc/reserved_slot_role_check(mob/living/M)
+	return
 
 //What to do if all ofthe installed modules have been broken
 /obj/vehicle/multitile/root/cm_transport/proc/handle_all_modules_broken()
@@ -384,7 +390,6 @@ var/list/apc_dmg_distributions = list(
 			//else
 			//	to_chat(user, "There is a [HP.health <= 0 ? "broken" : "working"] [HP] installed on the [i] hardpoint slot.")
 
-
 //Special armored vic healthcheck that mainly updates the hardpoint states
 /obj/vehicle/multitile/root/cm_transport/healthcheck()
 	health = maxhealth //The APC itself doesn't take damage
@@ -591,8 +596,8 @@ var/list/apc_dmg_distributions = list(
 		var/obj/machinery/autolathe/AL = A
 		AL.visible_message("<span class='danger'>[root] crushes [AL]!</span>")
 		new /obj/item/stack/sheet/metal(AL.loc, 2)
-		new /obj/item/stack/sheet/metal(AL.loc, AL.stored_material["metal"])
-		new /obj/item/stack/sheet/glass(AL.loc, AL.stored_material["glass"])
+		new /obj/item/stack/sheet/metal(AL.loc, round(AL.stored_material["metal"] / 3750))
+		new /obj/item/stack/sheet/glass(AL.loc, round(AL.stored_material["glass"] / 3750))
 		cdel(AL)
 	else if (istype(A, /obj/structure/filingcabinet))
 		var/obj/structure/filingcabinet/FC = A
@@ -862,6 +867,10 @@ var/list/apc_dmg_distributions = list(
 	. = ..()
 
 	if(.)
+		for(var/obj/structure/bed/BD in get_turf(A))
+			if(!istype(BD, /obj/structure/bed/chair/dropship) && !istype(BD, /obj/structure/bed/medevac_stretcher) && !istype(BD, /obj/structure/bed/roller) && !istype(BD, /obj/structure/bed/chair/janicart))
+				BD.visible_message("<span class='danger'>[root] crushes [BD]!</span>")
+				BD.Dispose()
 		for(var/mob/living/M in get_turf(A))
 			//I don't call Bump() otherwise that would encourage trampling for infinite unpunishable damage
 			M.sleeping = 1 //Maintain their lying-down-ness
@@ -1020,23 +1029,21 @@ var/list/apc_dmg_distributions = list(
 		return TRUE
 	for(var/atom/A in T.contents)
 		if(A.density)
-			return TRUE
+			var/mob/living/carbon/M = A
+			if(istype(M) && !(isXenoQueen(M) || isXenoCrusher(M)))
+				return FALSE
+			else
+				return TRUE
 	return FALSE
+
+/obj/vehicle/multitile/root/cm_transport/proc/handle_interior_entrance(var/mob/M)
+	return
 
 //Special case for entering the vehicle without using the verb
 /obj/vehicle/multitile/root/cm_transport/attack_hand(var/mob/user)
 
-	if(user.a_intent == "hurt")
-		handle_harm_attack(user)
-		return
-
 	if(user.loc == entrance.loc)
-		handle_player_entrance(user)
-		return
-
-
-	if(tile_blocked_check(get_turf(entrance)))		//vehicle entrance cannot be blocked to prevent TCs getting in
-		handle_player_entrance(user)
+		handle_interior_entrance(user)
 		return
 
 	. = ..()
@@ -1099,6 +1106,10 @@ var/list/apc_dmg_distributions = list(
 	if(iscrowbar(O)) //Are we trying to remove stuff?
 		uninstall_hardpoint(O, user)
 		update_damage_distribs()
+		return
+
+	if(istype(O, /obj/item/grab) && user.loc == entrance.loc)
+		handle_interior_entrance(user)
 		return
 
 	take_damage_type(O.force * 0.05, "blunt", user) //Melee weapons from people do very little damage
@@ -1225,7 +1236,7 @@ var/list/apc_dmg_distributions = list(
 
 	user.temp_drop_inv_item(HP, 0)
 
-	add_hardpoint(HP, user)
+	add_hardpoint(HP)
 
 //User-orientated proc for taking of hardpoints
 //Again, similar to the above ones
@@ -1278,7 +1289,7 @@ var/list/apc_dmg_distributions = list(
 
 //General proc for putting on hardpoints
 //ALWAYS CALL THIS WHEN ATTACHING HARDPOINTS
-/obj/vehicle/multitile/root/cm_transport/proc/add_hardpoint(var/obj/item/apc_hardpoint/HP, var/mob/user)
+/obj/vehicle/multitile/root/cm_transport/proc/add_hardpoint(var/obj/item/apc_hardpoint/HP)
 
 	HP.owner = src
 	HP.apply_buff()

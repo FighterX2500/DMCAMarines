@@ -1099,17 +1099,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	for(var/obj/item/clothing/mask/facehugger/FG in get_turf(src))
 		FG.Die()
 
-/*	for(var/obj/effect/xenomorph/spray/SR in get_turf(src))
-		if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/standard) && CA.hardpoints[HDPT_TREADS].health > 0)
-			CA.hardpoints[HDPT_TREADS].health -= 10
-			CA.visible_message("<span class='danger'>You hear hissing and smoke from [root]'s treads!</span>")
-			healthcheck()
-			update_icon()
-		else
-			if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/heavy) && CA.hardpoints[HDPT_TREADS].health > 0)
-				CA.hardpoints[HDPT_TREADS].health -= 5
-				healthcheck()
-*/
 	. = ..()
 
 	if(.)

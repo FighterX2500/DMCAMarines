@@ -14,7 +14,7 @@ All of the hardpoints, for the tank and APC
 	var/maxhealth = 0
 	health = 0
 	w_class = 15
-	var/hp_weight = 1	//this is new variable for weight of every single module as a part of new weight system
+	var/hp_weight = 1	//this is new variable for weight of every single module as a part of new tank weight system
 
 	//If we use ammo, put it here
 	var/obj/item/ammo_magazine/ammo_type = null //weapon ammo type to check with the magazine type we are trying to add
@@ -994,8 +994,8 @@ All of the hardpoints, for the tank and APC
 	disp_icon_state = "paladin_armor"
 
 	apply_buff()
-		owner.dmg_multipliers["acid"] = 0.5
-		owner.dmg_multipliers["slash"] = 0.5
+		owner.dmg_multipliers["acid"] = 0.4
+		owner.dmg_multipliers["slash"] = 0.3
 		owner.dmg_multipliers["explosive"] = 0.4
 		owner.dmg_multipliers["blunt"] = 0.4
 		owner.dmg_multipliers["bullet"] = 0.05 //juggernaut is not meant to be just shot, fuck off

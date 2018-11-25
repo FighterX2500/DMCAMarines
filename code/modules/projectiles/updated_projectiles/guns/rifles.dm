@@ -7,7 +7,7 @@
 	flags_equip_slot = SLOT_BACK
 	w_class = 4
 	force = 15
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 	aim_slowdown = SLOWDOWN_ADS_RIFLE
 	wield_delay = WIELD_DELAY_NORMAL
 	gun_skill_category = GUN_SKILL_RIFLES
@@ -64,7 +64,7 @@
 						/obj/item/attachable/scope,
 						/obj/item/attachable/scope/mini)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_TRIGGER_SAFETY
 	starting_attachment_types = list(/obj/item/attachable/attached_gun/grenade)
 
 /obj/item/weapon/gun/rifle/m41a/New()
@@ -98,7 +98,7 @@
 	item_state = "m41a2"
 	origin_tech = "combat=7;materials=5"
 	current_mag = /obj/item/ammo_magazine/rifle/ap
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_WY_RESTRICTED
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_WY_RESTRICTED|GUN_TRIGGER_SAFETY
 
 
 /obj/item/weapon/gun/rifle/m41a/elite/set_gun_config_values()
@@ -130,7 +130,7 @@
 						/obj/item/attachable/attached_gun/flamer,
 						/obj/item/attachable/attached_gun/shotgun)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_TRIGGER_SAFETY
 
 /obj/item/weapon/gun/rifle/m41aMK1/New()
 	..()
@@ -179,7 +179,7 @@
 						/obj/item/attachable/attached_gun/shotgun,
 						/obj/item/attachable/scope/slavic)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
 /obj/item/weapon/gun/rifle/mar40/New()
 	..()
@@ -245,7 +245,7 @@
 						/obj/item/attachable/attached_gun/shotgun
 						)
 
-	flags_gun_features = GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
 /obj/item/weapon/gun/rifle/m16/New()
 	..()
@@ -290,7 +290,7 @@
 						/obj/item/attachable/magnetic_harness,
 						/obj/item/attachable/scope)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_WIELDED_FIRING_ONLY
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_WIELDED_FIRING_ONLY|GUN_TRIGGER_SAFETY
 	gun_skill_category = GUN_SKILL_HEAVY_WEAPONS
 
 	New()
@@ -327,7 +327,7 @@
 	wield_delay = 4
 	//type_of_casings = "cartridge"
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_BURST_ON
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_BURST_ON|GUN_TRIGGER_SAFETY
 
 /obj/item/weapon/gun/rifle/type71/set_gun_config_values()
 	fire_delay = config.high_fire_delay
