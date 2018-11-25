@@ -80,6 +80,10 @@
 	icon_state = "Xenobattery_0"
 	maxcharge = 20000
 
+/obj/item/cell/xba/New()
+	..()
+	update_icon()
+
 /obj/item/cell/xba/update_icon()
 	var/charge_percentage = charge*100/maxcharge
 	if(charge_percentage <= 100 && charge_percentage >= 75)
@@ -123,11 +127,18 @@
 	item_state = "gun"
 
 
-
-
+/*
+										Weapons and bullets
 /////////////
 // Guns, their ammo datums and ect.
 /////////////
+
+
+*/
+
+/////////////
+// Tesla and its powerpack
+////////////
 
 /obj/item/weapon/gun/energy/tesla			//ZZZZZZZZZAP
 	name = "HEW-2 \"Zeus\""
@@ -140,6 +151,7 @@
 	var/charge_cost = 100
 	var/charge = 0			//prepered charge
 	gun_skill_category = GUN_SKILL_SMARTGUN		//Heavy as fuck
+	aim_slowdown = SLOWDOWN_ADS_SPECIALIST
 	flags_gun_features = GUN_INTERNAL_MAG|GUN_WIELDED_FIRING_ONLY
 
 /obj/item/weapon/gun/energy/tesla/set_gun_config_values()
@@ -272,7 +284,11 @@
 		if(isXenoQueen(M) || isXenoRavager(target))
 			target.visible_message("<span class='danger'>Tesla discharge was been shrugged off [target.name]'s chitin!</span>", "You felt weird thing, that pokes your chitin")
 
-// Laser Gun
+
+/////////////
+// Laser family
+////////////
+
 /obj/item/weapon/gun/energy/lasgan
 	name = "SR-LG \"Thunder\""
 	desc = "First working prototype of \"Laser Gun\"-series of 1st generation laser weapon, deliver death and destruction on its path."
@@ -282,6 +298,7 @@
 	ammo = /datum/ammo/energy/lasgan
 	fire_sound = 'sound/weapons/laser3.ogg'
 	w_class = 4.0
+	unacidable = 1
 
 	var/charge_cost = 100
 	var/obj/item/cell/xba/mag = null
@@ -366,6 +383,7 @@
 	ammo = /datum/ammo/energy/lasgan
 	fire_sound = 'sound/weapons/emitter2.ogg'
 	w_class = 5.0
+	unacidable = 1
 
 	var/charge_cost = 20000
 	var/obj/item/cell/xba/shot = null
@@ -433,6 +451,8 @@
 	item_state = "gun"
 	ammo = /datum/ammo/energy/lasgan
 	fire_sound = 'sound/weapons/laser3.ogg'
+	w_class = 2.0
+	unacidable = 1
 
 	var/charge_cost = 50
 	var/obj/item/cell/xba/mag = null

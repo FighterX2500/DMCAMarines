@@ -267,6 +267,7 @@ var/list/squad_colors = list(rgb(230,25,25), rgb(255,195,45), rgb(200,100,200), 
 					/obj/item/explosive/mine,
 					/obj/item/weapon/combat_knife,
 					/obj/item/weapon/gun/smartgun,
+					/obj/item/weapon/gun/energy/tesla,
 					/obj/item/storage/sparepouch)
 
 /obj/item/clothing/suit/storage/marine/smartgunner/New()

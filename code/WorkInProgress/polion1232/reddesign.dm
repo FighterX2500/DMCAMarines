@@ -134,5 +134,5 @@
 	id = "controller"
 	build_path = /obj/item/circuitboard/machine/hive_controller
 	build_type = MARINE_PROTHOLATHE
-	req_tech = list(RESEARCH_XENO_DISRUPTION)
+	req_tech = list(RESEARCH_XENO_CORRUPTION)
 	materials = list("metal" = 0, "glass" = 500, "biomass" = 7500)
