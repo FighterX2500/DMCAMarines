@@ -2516,7 +2516,7 @@
 			if("R: –ации")
 				msgplayer = "\blue <b>«јћ≈“ ј: <font color=red>[usr.key]</font> воспользовался авто-ответом <font color='#009900'>'[choice]'</font>. –ации были изменены: теперь ; позволит говорить в канал отряда, в то время как :z дает доступ в General (ќбщий) канал. ѕолевым медикам доступен медицинский канал через :m (:ь), полевым инженерам доступен Engineering (»нденерный) через :e (:у), а Squad Leader и Acting Squad Leader ( омандир ќтряда и »сполняющий –оль  омандира ќтряда) имеют доступ к командному каналу через :v (:м). (¬ скобках указаны кириллические буквы для каналов, они также работают). ќсмотр своего наушника показывает доступные вам каналы.</b>"
 			if("S: ѕредохранитель")
-				msgplayer = "\blue <b>«јћ≈“ ј: <fond color=red>[usr.key]</font> воспользовался авто-ответом <font color='#009900'>'[choice]'</font>. ƒля того, чтобы переключить предохранитель, используйте (ALT+Click) на оружие в вашей руке. ќсматривание оружия через (SHIFT+Click) покажет информацию о текущем состоянии предохранителя.</b>"
+				msgplayer = "\blue <b>«јћ≈“ ј: <fond color=red>[usr.key]</font> воспользовался авто-ответом <font color='#009900'>'[choice]'</font>. ƒля того, чтобы переключить предохранитель, используйте (ALT+Click) на оружие в вашей руке, либо Toggle Gun Safety во вкладке Weapons. ќсматривание оружия через (SHIFT+Click) покажет информацию о текущем состоянии предохранителя.</b>"
 			if("D: ѕрисоединение ќтключено")
 				msgplayer = "\blue <b>«јћ≈“ ј: <font color=red>[usr.key]</font> воспользовался авто-ответом <font color='#009900'>'[choice]'</font>. јдминистрация отключила присоединение, так как раунд близится к концу. ¬ы можете зайти в Observe (Ќаблюдать), чтобы посмотреть конец раунда и дождаться начала нового.</b>"
 			if("M: ћакросы")
@@ -2548,7 +2548,7 @@
 			if("R: Radios")
 				msgplayer = "\blue <b>NOTICE: <font color=red>[usr.key]</font> is autoresponding with <font color='#009900'>'[choice]'</font>. Radios have been changed, the prefix for all squad marines is now ; to access your squad radio. Squad Medics have access to the medical channel using :m, Engineers have :e and the (acting) Squad Leader has :v for command.  Examine your radio headset to get a listing of the channels you have access to.</b>"
 			if("S: Safety")
-				msgplayer = "\blue <b>NOTICE: <font color=red>[usr.key]</font> is autoresponding with <font color='#009900'>'[choice]'</font>. To toggle gun safety, use (Alt+Click) on the gun in your hands. Examining gun with (SHIFT+Click) will show you current state of gun safety.</b>"
+				msgplayer = "\blue <b>NOTICE: <font color=red>[usr.key]</font> is autoresponding with <font color='#009900'>'[choice]'</font>. To toggle gun safety, use (Alt+Click) on the gun in your hands or Toggle Gun Safety in Weapons tab. Examining gun with (SHIFT+Click) will show you current state of gun safety.</b>"
 			if("D: Joining disabled")
 				msgplayer = "\blue <b>NOTICE: <font color=red>[usr.key]</font> is autoresponding with <font color='#009900'>'[choice]'</font>. A staff member has disabled joining for new players as the current round is coming to an end, you can observe while it ends and wait for a new round to start.</b>"
 			if("M: Macros")
