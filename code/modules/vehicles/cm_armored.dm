@@ -1474,8 +1474,12 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //Similar to repairing stuff, down to the time delay
 /obj/vehicle/multitile/root/cm_armored/proc/install_hardpoint(var/obj/item/hardpoint/HP, var/mob/user)
 
-	if(!user.mind || !(!user.mind.cm_skills || user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI))
+	if(!user.mind || !user.mind.cm_skills || user.mind.cm_skills.engineer < SKILL_ENGINEER_ENGI)
 		to_chat(user, "<span class='warning'>You don't know what to do with [HP] on [src].</span>")
+		return
+
+	if(HP.slot != HDPT_TREADS && user.mind.cm_skills.engineer < SKILL_ENGINEER_MT)
+		to_chat(user, "<span class='warning'>You only know how to remove, install and field repair treads.</span>")
 		return
 
 	if(damaged_hps.Find(HP.slot))
@@ -1514,11 +1518,15 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //Again, similar to the above ones
 /obj/vehicle/multitile/root/cm_armored/proc/uninstall_hardpoint(var/obj/item/O, var/mob/user)
 
-	if(!user.mind || !(!user.mind.cm_skills || user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI))
+	if(!user.mind || !user.mind.cm_skills || user.mind.cm_skills.engineer < SKILL_ENGINEER_ENGI)
 		to_chat(user, "<span class='warning'>You don't know what to do with [O] on [src].</span>")
 		return
 
 	var/slot = input("Select a slot to try and remove") in hardpoints
+
+	if(slot != HDPT_TREADS && user.mind.cm_skills.engineer < SKILL_ENGINEER_MT)
+		to_chat(user, "<span class='warning'>You only know how to remove, install and field repair treads.</span>")
+		return
 
 	var/obj/item/hardpoint/old = hardpoints[slot]
 

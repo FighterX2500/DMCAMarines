@@ -1111,7 +1111,7 @@ All of the hardpoints, for the tank and APC
 /obj/item/hardpoint/treads/attackby(var/obj/item/O, var/mob/user)
 
 	//Need to the what the hell you're doing
-	if(user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer < SKILL_ENGINEER_ENGI)
+	if(!user.mind || !user.mind.cm_skills || user.mind.cm_skills.engineer < SKILL_ENGINEER_ENGI)
 		to_chat(user, "<span class='warning'>You don't know what to do with [O] on [src].</span>")
 		return
 	if(!iswelder(O))
@@ -1137,7 +1137,7 @@ All of the hardpoints, for the tank and APC
 		user.visible_message("<span class='notice'>[user] stops repairing the [src].</span>", "<span class='notice'>You stop repairing the [src].</span>")
 		return
 	WT.remove_fuel(8, user)
-	user.visible_message("<span class='notice'>[user] repairs the [src] as best as possible in field conditions.</span>", "<span class='notice'>You repair the [src] as best as possible in field conditions.</span>")
+	user.visible_message("<span class='notice'>[user] finishes repairing the [src].</span>", "<span class='notice'>You repair the [src] as best as you can in field conditions.</span>")
 
 	src.health = q_health //We repaired it to 25%, good job
 
@@ -1238,8 +1238,8 @@ All of the hardpoints, for the tank and APC
 	icon_state = "quad_rocket"
 	w_class = 10
 	default_ammo = /datum/ammo/rocket/tow //Fun fact, AP rockets seem to be a straight downgrade from normal rockets. Maybe I'm missing something...
-	current_rounds = 2
-	max_rounds = 2
+	current_rounds = 3
+	max_rounds = 3
 	point_cost = 0
 	gun_type = /obj/item/hardpoint/secondary/towlauncher
 
@@ -1483,14 +1483,21 @@ All of the hardpoints, for the tank and APC
 //examine() that tells the player condition of the module
 /obj/item/apc_hardpoint/examine(var/mob/user)
 	..()
-	if((user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
+	if(!istype(src, /obj/item/apc_hardpoint/wheels) && (user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
 		var/cond = round(health * 100 / maxhealth)
 		if (cond > 0)
 			to_chat(user, "Integrity: [cond]%.")
 		else
 			to_chat(user, "Integrity: 0%.")
 
-
+/obj/item/apc_hardpoint/wheels/examine(var/mob/user)
+	..()
+	if((user.mind && user.mind.cm_skills) || isobserver(user))
+		var/cond = round(health * 100 / maxhealth)
+		if (cond > 0)
+			to_chat(user, "Integrity: [cond]%.")
+		else
+			to_chat(user, "Integrity: 0%.")
 
 ////////////////////
 // PRIMARY SLOTS // START
@@ -1723,8 +1730,35 @@ All of the hardpoints, for the tank and APC
 	remove_buff()
 		owner.move_delay = 30
 
+//repairing wheels in field
+/obj/item/apc_hardpoint/wheels/attackby(var/obj/item/O, var/mob/user)
+
+	if(!user.mind || !user.mind.cm_skills)
+		to_chat(user, "<span class='warning'>You don't know what to do with [O] on [src].</span>")
+		return
+	if(!iswrench(O))
+		to_chat(user, "<span class='warning'>That's the wrong tool. Use a wrench.</span>")
+		return
+	var/q_health = round(src.maxhealth * 0.25)
+	if(health >= q_health)
+		to_chat(user, "<span class='warning'>You can't repair [src] more than that in the field.</span>")
+		return
+	user.visible_message("<span class='notice'>[user] starts field repair on the [src].</span>", "<span class='notice'>You start field repair on the [src].</span>")
+
+	if(!do_after(user, 150, TRUE, 5, BUSY_ICON_FRIENDLY))
+		user.visible_message("<span class='notice'>[user] stops repairing the [src].</span>", "<span class='notice'>You stop repairing the [src].</span>")
+		return
+	if(!Adjacent(user))
+		user.visible_message("<span class='notice'>[user] stops repairing the [src].</span>", "<span class='notice'>You stop repairing the [src].</span>")
+		return
+	user.visible_message("<span class='notice'>[user] finishes repairing the [src].</span>", "<span class='notice'>You repair the [src] as best as you can in field conditions.</span>")
+
+	src.health = q_health //We repaired it to 25%, good job
+
+	. = ..()
+
 /////////////////
-// TREAD SLOTS // END
+// WHEELS SLOTS // END
 /////////////////
 
 ///////////////
@@ -1787,30 +1821,3 @@ All of the hardpoints, for the tank and APC
 ///////////////
 // APC HARDPOINTS // END
 ///////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/datum/ammo/flare
