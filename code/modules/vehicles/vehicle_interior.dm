@@ -230,6 +230,7 @@
 	req_one_access_txt = "1;21"
 	anchored = 1
 	unacidable = 1
+	var/busy
 	var/next_use = 0
 	var/obj/structure/vehicle_interior/supply_sender/master
 	var/obj/structure/vehicle_interior/supply_receiver/destination
@@ -244,32 +245,57 @@
 
 	spawn(15)
 		icon_state = "doorctrl0"
+
+	if(busy)
+		src.visible_message("<span class='boldnotice'>Request is being processed, standby.</span>")
+		return
+	busy = TRUE
 	if(!free_modules.Find("Supply Modification") && destination.master.special_module_working || !destination || !master)
 		var/obj/structure/closet/crate/C = locate(/obj/structure/closet/crate) in range(0, master)
 		if(C && !C.opened)
 			var/area/AR = get_area(destination.master)
 			if(AR.ceiling < CEILING_METAL)
 				if(next_use < world.time)
-					src.visible_message("<span class='notice'>Supply Drop Receiver is found. Connection established. Calculating trajectiry... Complete. Sending supply drop.</span>")
-					sleep(20)
-					playsound(destination.master.loc,'sound/effects/bamf.ogg', 50, 1)
-					C.forceMove(get_turf(destination))
-					sleep(20)
-					destination.master.visible_message("<span class='notice'>You notice crate deploing on top of [destination.master].</span>")
-					playsound(master, 'sound/machines/twobeep.ogg', 15, 1)
-					playsound(destination, pick('sound/machines/hydraulics_1.ogg', 'sound/machines/hydraulics_2.ogg'), 40, 1)
+					var/apc_location = destination.master.loc
+					src.visible_message("<span class='notice'>Supply Drop Receiver is found. Connection established. Calculating trajectiry... Complete.</span>")
+					src.visible_message("<span class='boldnotice'>Supply drop is now loading into the launch tube! Stand by!</span>")
+					playsound(master, pick('sound/machines/hydraulics_1.ogg', 'sound/machines/hydraulics_2.ogg'), 40, 1)
+					spawn(100)
+					if(destination.master.loc != apc_location)
+						playsound(destination.master.loc,'sound/effects/bamf.ogg', 50, 1)
+						destination.master.visible_message("\icon[src] <span class='boldnotice'>You notice [C.name] deploing on top of [destination.master] and gets loaded inside.</span>")
+						C.forceMove(get_turf(destination))
+						C.visible_message("\icon[C] <span class='boldnotice'>The [C.name] descends on elevator from [destination.master] roof through a hatch!</span>")
+						playsound(destination, pick('sound/machines/hydraulics_1.ogg', 'sound/machines/hydraulics_2.ogg'), 40, 1)
+						sleep(10)
+						playsound(master, 'sound/machines/twobeep.ogg', 15, 1)
+						src.visible_message("<span class='boldnotice'>Supply Drop Receiver confirmed receiving supply drop.</span>")
+					else
+						playsound(apc_location,'sound/effects/bamf.ogg', 50, 1)
+						C.forceMove(get_turf(apc_location))
+						sleep(10)
+						playsound(master, 'sound/machines/twobeep.ogg', 15, 1)
+						C.visible_message("\icon[C] <span class='boldnotice'>The [C.name] falls from the sky!</span>")
+						src.visible_message("<span class='boldnotice'>Error. Supply Drop Receiver didn't confirm receiving supply drop.</span>")
+					src.visible_message("<span class='boldnotice'>Supply drop launched! Another launch will be available in 2 minutes.</span>")
+
 					next_use = world.time + 1200
+					busy = FALSE
 				else
 					src.visible_message("<span class='warning'>Launch tubes resetting, please, standby.</span>")
+					busy = FALSE
 					return
 			else
 				src.visible_message("<span class='warning'>Unable to calculate trajectory! Receiver must be in open area!</span>")
+				busy = FALSE
 				return
 		else
 			src.visible_message("<span class='warning'>Crate is not prepared for drop.</span>")
+			busy = FALSE
 			return
 	else
 		src.visible_message("<span class='warning'>No active Receiver Pad located!</span>")
+		busy = FALSE
 		return
 
 
