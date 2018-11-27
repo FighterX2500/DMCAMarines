@@ -92,9 +92,6 @@ var/list/apc_dmg_distributions = list(
 /obj/vehicle/multitile/root/cm_transport/proc/handle_xeno_entrance(mob/living/carbon/Xenomorph/X)
 	return
 
-/obj/vehicle/multitile/root/cm_transport/proc/reserved_slot_role_check(mob/living/M)
-	return
-
 //What to do if all ofthe installed modules have been broken
 /obj/vehicle/multitile/root/cm_transport/proc/handle_all_modules_broken()
 	return
@@ -405,6 +402,9 @@ var/list/apc_dmg_distributions = list(
 
 	if(remove_person)
 		handle_all_modules_broken()
+	else
+		if(!luminosity)
+			luminosity = 7
 
 	update_icon()
 
@@ -1119,7 +1119,7 @@ var/list/apc_dmg_distributions = list(
 /obj/vehicle/multitile/root/cm_transport/proc/handle_hardpoint_repair(var/obj/item/O, var/mob/user)
 
 	//Need to the what the hell you're doing
-	if(user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer < SKILL_ENGINEER_MT)
+	if(!user.mind || !user.mind.cm_skills || !user.mind.cm_skills.engineer >= SKILL_ENGINEER_MT)
 		to_chat(user, "<span class='warning'>You don't know what to do with [O] on [src].</span>")
 		return
 
@@ -1203,8 +1203,12 @@ var/list/apc_dmg_distributions = list(
 //Similar to repairing stuff, down to the time delay
 /obj/vehicle/multitile/root/cm_transport/proc/install_hardpoint(var/obj/item/apc_hardpoint/HP, var/mob/user)
 
-	if(!user.mind || !(!user.mind.cm_skills || user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI))
+	if(!user.mind || !user.mind.cm_skills)
 		to_chat(user, "<span class='warning'>You don't know what to do with [HP] on [src].</span>")
+		return
+
+	if(HP.slot != HDPT_WHEELS && user.mind.cm_skills.engineer < SKILL_ENGINEER_MT)
+		to_chat(user, "<span class='warning'>You only know how to remove, install and field repair wheels.</span>")
 		return
 
 	if(damaged_hps.Find(HP.slot))
@@ -1242,11 +1246,15 @@ var/list/apc_dmg_distributions = list(
 //Again, similar to the above ones
 /obj/vehicle/multitile/root/cm_transport/proc/uninstall_hardpoint(var/obj/item/O, var/mob/user)
 
-	if(!user.mind || !(!user.mind.cm_skills || user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI))
+	if(!user.mind || !user.mind.cm_skills)
 		to_chat(user, "<span class='warning'>You don't know what to do with [O] on [src].</span>")
 		return
 
 	var/slot = input("Select a slot to try and remove") in hardpoints
+
+	if(slot != HDPT_WHEELS && user.mind.cm_skills.engineer < SKILL_ENGINEER_MT)
+		to_chat(user, "<span class='warning'>You only know how to remove, install and field repair wheels.</span>")
+		return
 
 	var/obj/item/apc_hardpoint/old = hardpoints[slot]
 

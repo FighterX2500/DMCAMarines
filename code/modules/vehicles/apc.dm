@@ -36,7 +36,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 	var/next_sound_play = 0
 
 
-	luminosity = 7
+	luminosity = 0
 
 /obj/effect/multitile_spawner/cm_transport/apc
 
@@ -158,8 +158,10 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 	gunner = null
 	driver.unset_interaction()
 	driver = null
-	special_module_working = FALSE
+
 	camera.status = 0
+	luminosity = 0
+
 
 /obj/vehicle/multitile/root/cm_transport/apc/remove_all_players()
 	deactivate_all_hardpoints()
@@ -552,6 +554,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 
 						free_modules.Remove("Command Modification")
 						special_module_working = TRUE
+				luminosity = 7
 			else
 				to_chat(user, "<span class='danger'>APC is blocked permanently, because 3 APCs were already spawned and activated. Contact admin to delete this APC.</span>")
 				return
