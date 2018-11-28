@@ -66,7 +66,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 
 	R.camera = new /obj/machinery/camera(R)
 	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
-	R.camera.c_tag = "APC ¹[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
+	R.camera.c_tag = "APC ï¿½[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
 
 	del(src)
 
@@ -102,7 +102,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 
 	R.camera = new /obj/machinery/camera(R)
 	R.camera.network = list("almayer")	//changed network from military to almayer, because Cams computers on Almayer have this network
-	R.camera.c_tag = "Armored Personnel Carrier ¹[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
+	R.camera.c_tag = "Armored Personnel Carrier ï¿½[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
 
 	del(src)
 
@@ -130,7 +130,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 
 	R.camera = new /obj/machinery/camera(R)
 	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
-	R.camera.c_tag = "Armored Personnel Carrier ¹[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
+	R.camera.c_tag = "Armored Personnel Carrier ï¿½[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
 
 	//Manually adding those hardpoints
 	R.add_hardpoint(new /obj/item/apc_hardpoint/primary/dual_cannon)

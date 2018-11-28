@@ -403,6 +403,9 @@ var/list/apc_dmg_distributions = list(
 
 	if(remove_person)
 		handle_all_modules_broken()
+	else
+		if(!luminosity)
+			luminosity = 7
 
 	update_icon()
 
