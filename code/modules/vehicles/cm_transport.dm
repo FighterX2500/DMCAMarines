@@ -6,6 +6,7 @@
 #define HDPT_SUPPORT "support"
 #define HDPT_WHEELS "wheels"
 
+
 //Percentages of what hardpoints take what damage, e.g. armor takes 37.5% of the damage
 var/list/apc_dmg_distributions = list(
 	HDPT_PRIMARY = 0.35,
@@ -448,7 +449,7 @@ var/list/apc_dmg_distributions = list(
 /obj/vehicle/multitile/hitbox/cm_transport
 	name = "Armored Vehicle"
 	desc = "Get inside to operate the vehicle."
-	luminosity = 7
+	luminosity = 1
 	throwpass = 1 //You can lob nades over APCs, and there's some dumb check somewhere that requires this
 	var/lastsound = 0
 
@@ -1199,6 +1200,9 @@ var/list/apc_dmg_distributions = list(
 
 	HP.try_add_clip(AM, user)
 
+/obj/vehicle/multitile/root/cm_transport/proc/fix_special_module()
+	return
+
 //Putting on hardpoints
 //Similar to repairing stuff, down to the time delay
 /obj/vehicle/multitile/root/cm_transport/proc/install_hardpoint(var/obj/item/apc_hardpoint/HP, var/mob/user)
@@ -1239,6 +1243,9 @@ var/list/apc_dmg_distributions = list(
 	user.visible_message("<span class='notice'>[user] installs \the [HP] on [src].</span>", "<span class='notice'>You install \the [HP] on [src].</span>")
 
 	user.temp_drop_inv_item(HP, 0)
+	if(HP.health > 0)
+		fix_special_module()
+
 
 	add_hardpoint(HP)
 

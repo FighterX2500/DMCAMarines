@@ -1654,18 +1654,18 @@ All of the hardpoints, for the tank and APC
 		var/turf/S
 		var/right_dir
 		var/left_dir
-		F = get_step(src.loc, src.dir)
-		F = get_step(F, src.dir)
-		F = get_step(F, src.dir)
-		F = get_step(F, src.dir)
-		F = get_step(F, src.dir)
-		F = get_step(F, src.dir)
-		F = get_step(F, src.dir)
-		left_dir = turn(src.dir, -90)
+		F = get_step(owner.loc, owner.dir)
+		F = get_step(F, owner.dir)
+		F = get_step(F, owner.dir)
+		F = get_step(F, owner.dir)
+		F = get_step(F, owner.dir)
+		F = get_step(F, owner.dir)
+		F = get_step(F, owner.dir)
+		left_dir = turn(owner.dir, -90)
 		S = get_step(F, left_dir)
 		S = get_step(S, left_dir)
 		S = get_step(S, left_dir)
-		right_dir = turn(src.dir, 90)
+		right_dir = turn(owner.dir, 90)
 		F = get_step(F, right_dir)
 		F = get_step(F, right_dir)
 		F = get_step(F, right_dir)
@@ -1674,13 +1674,13 @@ All of the hardpoints, for the tank and APC
 		next_use = world.time + owner.cooldowns["secondary"] * owner.misc_ratios["secd_cool"]
 		var/obj/item/projectile/P = new
 		P.generate_bullet(new A.default_ammo)
-		P.fire_at(F, src, src, 8, P.ammo.shell_speed)
+		P.fire_at(F, owner, src, 8, P.ammo.shell_speed)
 		playsound(get_turf(src), 'sound/weapons/gun_flare.ogg', 60, 1)
 		A.current_rounds--
 		sleep (10)
 		var/obj/item/projectile/G = new
 		G.generate_bullet(new A.default_ammo)
-		G.fire_at(S, src, src, 8, G.ammo.shell_speed)
+		G.fire_at(S, owner, src, 8, G.ammo.shell_speed)
 		playsound(get_turf(src), 'sound/weapons/gun_flare.ogg', 60, 1)
 		A.current_rounds--
 
