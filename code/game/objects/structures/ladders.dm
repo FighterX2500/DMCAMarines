@@ -94,35 +94,42 @@
 	if(do_after(user, 20, FALSE, 5, BUSY_ICON_GENERIC))
 		if(!user.is_mob_incapacitated() && get_dist(user, src) <= 1 && !user.blinded && !user.lying && !user.buckled && !user.anchored)
 			//TODO: Using forceMove is desirable here, but this breaks the pull. If you know how to preserve the pull, this would be nice!
-			if(user.pulling && get_dist(src, user.pulling) <= 2)
-				//user.pulling.loc = ladder_dest.loc //Cannot use forceMove method on pulls! Move manually
-				if(isliving(user.pulling))
-					var/mob/living/P = user.pulling
-					if(P.buckled)
-						to_chat(user, "<span class='warning'>You can't climb [ladder_dir_name] [src] with unfolded [P.buckled]!</span>")
-						busy = 0
-						return
-					else
-						P.smokecloak_off()
+			if(user.pulling)
+				if(get_dist(src, user.pulling) <= 2)
+					//user.pulling.loc = ladder_dest.loc //Cannot use forceMove method on pulls! Move manually
+					if(isliving(user.pulling))
+						var/mob/living/P = user.pulling
+						if(P.buckled)
+							to_chat(user, "<span class='warning'>You can't climb [ladder_dir_name] [src] with unfolded [P.buckled]!</span>")
+							busy = 0
+							return
+						else
+							P.smokecloak_off()
 
-						P.forceMove(ladder_dest.loc) //Cannot use forceMove method on pulls! Move manually
-						user.forceMove(ladder_dest.loc)
-						user.start_pulling(P)
-				else
-					if(istype(user.pulling, /obj/structure/bed/roller))
-						to_chat(user, "<span class='warning'>You can't climb [ladder_dir_name] [src] with unfolded [user.pulling]!</span>")
-						busy = 0
-						return
-					var/obj/O = user.pulling
-					if(istype(O, /obj/structure/closet/bodybag))
-						var/obj/structure/closet/bodybag/B = O
-						if(B.roller_buckled)
+							P.forceMove(ladder_dest.loc) //Cannot use forceMove method on pulls! Move manually
+							user.forceMove(ladder_dest.loc)
+							user.start_pulling(P)
+					else
+						if(istype(user.pulling, /obj/structure/bed/roller))
 							to_chat(user, "<span class='warning'>You can't climb [ladder_dir_name] [src] with unfolded [user.pulling]!</span>")
 							busy = 0
 							return
-					O.forceMove(ladder_dest.loc)
-					user.forceMove(ladder_dest.loc)
-					user.start_pulling(O)
+						var/obj/O = user.pulling
+						if(istype(O, /obj/structure/closet/bodybag))
+							var/obj/structure/closet/bodybag/B = O
+							if(B.roller_buckled)
+								to_chat(user, "<span class='warning'>You can't climb [ladder_dir_name] [src] with unfolded [user.pulling]!</span>")
+								busy = 0
+								return
+						O.forceMove(ladder_dest.loc)
+						user.forceMove(ladder_dest.loc)
+						user.start_pulling(O)
+				else
+					to_chat(user, "<span class='warning'>[user.pulling] is too far from ladder!</span>")
+					busy = 0
+					return
+			else
+				user.forceMove(ladder_dest.loc)
 			var/mob/living/M = user
 			M.smokecloak_off()
 			visible_message("<span class='notice'>[user] climbs [ladder_dir_name] [src].</span>") //Hack to give a visible message to the people here without duplicating user message
