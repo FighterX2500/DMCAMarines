@@ -6,7 +6,7 @@
 #define "Supply Modification" 2
 #define "Command Modification" 3
 
-var/list/free_modules = list("Medical Modification", "Supply Modification", "Command Modification")
+var/list/free_modules = list("Medical Modification", "Supply Modification")//, "Command Modification")
 
 /obj/vehicle/multitile/root/cm_transport/apc
 	name = "M580 APC"
@@ -35,8 +35,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 
 	var/next_sound_play = 0
 
-
-	luminosity = 0
+	luminosity = 2
 
 /obj/effect/multitile_spawner/cm_transport/apc
 
@@ -158,10 +157,16 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 	gunner = null
 	driver.unset_interaction()
 	driver = null
+	special_module_working = FALSE
 
 	camera.status = 0
-	luminosity = 0
+	SetLuminosity(2)
 
+/obj/vehicle/multitile/root/cm_transport/apc/fix_special_module()
+	if(!special_module_working)
+		special_module_working = TRUE
+		if(luminosity == 2)
+			SetLuminosity(7)
 
 /obj/vehicle/multitile/root/cm_transport/apc/remove_all_players()
 	deactivate_all_hardpoints()
@@ -214,8 +219,18 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 
 /obj/vehicle/multitile/root/cm_transport/apc/examine(var/mob/user)
 	..()
-	if(isXeno(user) && passengers > 0)
-		to_chat(user, "<span class='xenonotice'>You can sense [passengers] hosts inside of the fast metal box, but you can't tell for sure how many of them are alive.</span>")
+	if(isXeno(user))
+		var/count = passengers
+		if(tank_crewman_entered)
+			count++
+		if(module_role_entered)
+			count++
+		if(count == 1)
+			to_chat(user, "<span class='xenonotice'>You can sense [passengers] host inside of the fast metal box, but you can't tell for sure if they are alive.</span>")
+			return
+		if(count > 1)
+			to_chat(user, "<span class='xenonotice'>You can sense [passengers] hosts inside of the fast metal box, but you can't tell for sure how many of them are alive.</span>")
+			return
 
 //little QoL won't be bad, aight?
 /obj/vehicle/multitile/root/cm_transport/apc/verb/megaphone()
@@ -337,10 +352,10 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/obj/item/card/id/I = H.wear_id
-		if(I.rank == "Tank Crewman" && !tank_crewman_entered)
+		if(I && I.rank == "Tank Crewman" && !tank_crewman_entered)
 			new_tank_crewman_entered = TRUE
 		else
-			if(I.rank == module_role && !module_role_entered)
+			if(I && I.rank == module_role && !module_role_entered)
 				new_module_role_entered = TRUE
 			else
 				if(passengers >= passengers_max)
@@ -348,19 +363,20 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 					return
 				else
 					new_passengers++
+					to_chat(M, "<span class='debuginfo'>new passengers = [new_passengers].</span>")
 	else
 		if(passengers >= passengers_max)
 			to_chat(M, "<span class='warning'>[src] is full.</span>")
 			return
 		else
 			new_passengers++
-	to_chat(M, "<span class='danger'>Check for user done.</span>")
+	//to_chat(M, "<span class='danger'>Check for user done.</span>")
 
 	var/move_pulling = FALSE
 	if(M.pulling && get_dist(entrance, M.pulling) <= 1)
 		move_pulling = TRUE
 		if(isliving(M.pulling))
-			to_chat(M, "<span class='danger'>M.pulling is alive.</span>")
+			to_chat(M, "<span class='debuginfo'>M.pulling is alive.</span>")
 			var/mob/living/B = M.pulling
 			if(B.buckled)
 				to_chat(M, "<span class='warning'>You can't fit [M.pulling] on the [B.buckled] through a doorway! Try unbuckling [M.pulling] first.</span>")
@@ -369,15 +385,18 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 				to_chat(M, "<span class='warning'>Taking that leaking acid [M.pulling] inside would be a very bad idea.</span>")
 				return
 			if(ishuman(M.pulling))
-				to_chat(M, "<span class='danger'>M.pulling is human</span>")
+				to_chat(M, "<span class='debuginfo'>M.pulling is human</span>")
 				var/mob/living/carbon/human/H = M.pulling
 				var/obj/item/card/id/I = H.wear_id
-				if(I.rank == "Tank Crewman" && !tank_crewman_entered)
+				if(I && I.rank == "Tank Crewman" && !tank_crewman_entered)
 					new_tank_crewman_entered = TRUE
+					to_chat(M, "<span class='debuginfo'>pulling tank crewman.</span>")
 				else
-					if(I.rank == module_role && !module_role_entered)
+					if(I && I.rank == module_role && !module_role_entered)
 						new_module_role_entered = TRUE
+						to_chat(M, "<span class='debuginfo'>pulling [module_role].</span>")
 					else
+						to_chat(M, "<span class='debuginfo'>pulling general human.</span>")
 						if((passengers + new_passengers + 1) > passengers_max)
 							if((passengers + new_passengers) == passengers_max)
 								to_chat(M, "<span class='warning'>There is a room only for one of you.</span>")
@@ -386,6 +405,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 							return
 						else
 							new_passengers++
+							to_chat(M, "<span class='debuginfo'>new passengers = [new_passengers].</span>")
 			else
 				if((passengers + new_passengers + 1) > passengers_max)
 					if((passengers + new_passengers) == passengers_max)
@@ -399,18 +419,19 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 			if((istype(M.pulling, /obj/structure) && !istype(M.pulling, /obj/structure/mortar) && !istype(M.pulling, /obj/structure/closet/bodybag)) || (istype(M.pulling, /obj/machinery) && !istype(M.pulling, /obj/machinery/marine_turret_frame) && !istype(M.pulling, /obj/machinery/marine_turret) && !istype(M.pulling, /obj/machinery/m56d_post) && !istype(M.pulling, /obj/machinery/m56d_hmg)))
 				to_chat(M, "<span class='warning'>You can't fit the [M.pulling] through a doorway!</span>")
 				return
-			to_chat(M, "<span class='danger'>M.pulling is object.</span>")
+			to_chat(M, "<span class='debuginfo'>M.pulling is object.</span>")
 			var/obj/O = M.pulling
 			if(istype(O, /obj/structure/closet/bodybag))
-				to_chat(M, "<span class='danger'>pulling bodybag.</span>")
+				to_chat(M, "<span class='debuginfo'>pulling bodybag.</span>")
 				for(var/mob/living/B in O.contents)
 					if(ishuman(B))
+						to_chat(M, "<span class='debuginfo'>contains human.</span>")
 						var/mob/living/carbon/human/H = B
 						var/obj/item/card/id/I = H.wear_id
-						if(I.rank == "Tank Crewman" && !tank_crewman_entered)
+						if(I && I.rank == "Tank Crewman" && !tank_crewman_entered)
 							new_tank_crewman_entered = TRUE
 						else
-							if(I.rank == module_role && !module_role_entered)
+							if(I && I.rank == module_role && !module_role_entered)
 								new_module_role_entered = TRUE
 							else
 								if((passengers + new_passengers + 1) > passengers_max)
@@ -422,14 +443,15 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 								else
 									new_passengers++
 					else
-						if((passengers + new_passengers + 1) > passengers_max)
-							if((passengers + new_passengers) == passengers_max)
-								to_chat(M, "<span class='warning'>There is a room only for one of you.</span>")
+						if(!isXeno(B))
+							if((passengers + new_passengers + 1) > passengers_max)
+								if((passengers + new_passengers) == passengers_max)
+									to_chat(M, "<span class='warning'>There is a room only for one of you.</span>")
+									return
+								to_chat(M, "<span class='warning'>[src] is full.</span>")
 								return
-							to_chat(M, "<span class='warning'>[src] is full.</span>")
-							return
-						else
-							new_passengers++
+							else
+								new_passengers++
 			if(O.buckled_mob)
 				to_chat(M, "<span class='warning'>You can't fit [O.buckled_mob] on the [O] through a doorway! Try unbuckling [M.pulling] first.</span>")
 				return
@@ -487,6 +509,10 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 		else
 			if(free_modules != null)
 				special_module_type = input("Select APC Modification") in free_modules
+				if(user.loc != entrance.loc)
+					to_chat(H, "<span class='warning'>You moved away from [src].</span>")
+					special_module_type = null
+					return
 				switch(special_module_type)
 					if("Medical Modification")
 						name = "M580-M APC"
@@ -506,7 +532,6 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 						module_role = "Doctor"
 
 						free_modules.Remove("Medical Modification")
-						special_module_working = TRUE
 
 					if("Supply Modification")
 						name = "M580-S APC"
@@ -533,7 +558,6 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 						module_role = "Cargo Technician"
 
 						free_modules.Remove("Supply Modification")
-						special_module_working = TRUE
 
 					if("Command Modification")
 						name = "M580-C APC"
@@ -553,8 +577,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 						module_role = "Staff Officer"
 
 						free_modules.Remove("Command Modification")
-						special_module_working = TRUE
-				luminosity = 7
+				fix_special_module()
 			else
 				to_chat(user, "<span class='danger'>APC is blocked permanently, because 3 APCs were already spawned and activated. Contact admin to delete this APC.</span>")
 				return
@@ -568,7 +591,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 	..()
 
 	if(M.loc == entrance.loc)
-		if(special_module_working == FALSE)
+		if(!special_module_working)
 			handle_xeno_entrance(M)
 			return
 
@@ -644,6 +667,10 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 
 	if(special_module_type == null)
 		to_chat(X, "<span class='xenowarning'>[src] door is locked, you can't get in!</span>")
+		return
+
+	if(X.t_squish_level > 2)
+		to_chat(X, "<span class='xenowarning'>[src] door way is too small for you, you can't fit through!</span>")
 		return
 
 	if(!X || X.client == null) return

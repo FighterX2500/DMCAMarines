@@ -35,34 +35,39 @@
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		var/obj/item/card/id/I = H.wear_id
-		if(I.rank == "Tank Crewman" && master.tank_crewman_entered)
+		if(I && I.rank == "Tank Crewman" && master.tank_crewman_entered)
 			remove_tank_crewman_entered = TRUE
 		else
-			if(I.rank == master.module_role && master.module_role_entered)
+			if(I && I.rank == master.module_role && master.module_role_entered)
 				remove_module_role_entered = TRUE
 			else
 				passengers_left++
 	else
 		if(!isXeno(user))
 			passengers_left++
+		else
+			var/mob/living/carbon/Xenomorph/X = user
+			if(X.t_squish_level > 2)
+				to_chat(X, "<span class='xenowarning'>The doorway is to0 small for you, you can't get out! You are doomed.</span>")
+				return
 
 	var/move_pulling = FALSE
 	if(user.pulling && get_dist(src, user.pulling) <= 2)
 		move_pulling = TRUE
 		if(isliving(user.pulling))
-			to_chat(user, "<span class='danger'>user.pulling is alive.</span>")
+			to_chat(user, "<span class='debuginfo'>user.pulling is alive.</span>")
 			var/mob/living/B = user.pulling
 			if(B.buckled)
 				to_chat(user, "<span class='warning'>You can't fit [user.pulling] on the [B.buckled] through a doorway! Try unbuckling [user.pulling] first.</span>")
 				return
 			if(ishuman(user.pulling))
-				to_chat(user, "<span class='danger'>user.pulling is human</span>")
+				to_chat(user, "<span class='debuginfo'>user.pulling is human</span>")
 				var/mob/living/carbon/human/H = user.pulling
 				var/obj/item/card/id/I = H.wear_id
-				if(I.rank == "Tank Crewman" && master.tank_crewman_entered)
+				if(I && I.rank == "Tank Crewman" && master.tank_crewman_entered)
 					remove_tank_crewman_entered = TRUE
 				else
-					if(I.rank == master.module_role && master.module_role_entered)
+					if(I && I.rank == master.module_role && master.module_role_entered)
 						remove_module_role_entered = TRUE
 					else
 						passengers_left++
@@ -73,18 +78,18 @@
 			if((istype(user.pulling, /obj/structure) && !istype(user.pulling, /obj/structure/mortar) && !istype(user.pulling, /obj/structure/closet/bodybag)) || (istype(user.pulling, /obj/machinery) && !istype(user.pulling, /obj/machinery/marine_turret_frame) && !istype(user.pulling, /obj/machinery/marine_turret) && !istype(user.pulling, /obj/machinery/m56d_post) && !istype(user.pulling, /obj/machinery/m56d_hmg)))
 				to_chat(user, "<span class='warning'>You can't fit the [user.pulling] through a doorway!</span>")
 				return
-			to_chat(user, "<span class='danger'>user.pulling is object.</span>")
+			to_chat(user, "<span class='debuginfo'>user.pulling is object.</span>")
 			var/obj/O = user.pulling
 			if(istype(O, /obj/structure/closet/bodybag))
-				to_chat(user, "<span class='danger'>pulling bodybag.</span>")
+				to_chat(user, "<span class='debuginfo'>pulling bodybag.</span>")
 				for(var/mob/living/B in O.contents)
 					if(ishuman(B))
 						var/mob/living/carbon/human/H = B
 						var/obj/item/card/id/I = H.wear_id
-						if(I.rank == "Tank Crewman" && master.tank_crewman_entered)
+						if(I && I.rank == "Tank Crewman" && master.tank_crewman_entered)
 							remove_tank_crewman_entered = TRUE
 						else
-							if(I.rank == master.module_role && master.module_role_entered)
+							if(I && I.rank == master.module_role && master.module_role_entered)
 								remove_module_role_entered = TRUE
 							else
 								passengers_left++
