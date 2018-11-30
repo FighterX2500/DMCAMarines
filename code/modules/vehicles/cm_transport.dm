@@ -175,6 +175,12 @@ var/list/apc_dmg_distributions = list(
 	if(!can_use_hp(usr))
 		return
 
+	var/mob/living/carbon/human/M = usr
+	var/obj/item/card/id/I = M.wear_id
+	if(I && I.rank == "Synthetic" && I.registered_name == M.real_name)
+		to_chat(usr, "<span class='notice'>Your programm doesn't allow operating [src] weapons.</span>")
+		return
+
 	var/list/slots = get_activatable_hardpoints()
 
 	if(!slots.len)
@@ -186,12 +192,6 @@ var/list/apc_dmg_distributions = list(
 	var/obj/item/apc_hardpoint/HP = hardpoints[slot]
 	if(!HP)
 		to_chat(usr, "<span class='warning'>There's nothing installed on that hardpoint.</span>")
-
-	var/mob/living/carbon/human/M = usr
-	var/obj/item/card/id/I = M.wear_id
-	if(I.rank == "Synthetic" && I.registered_name == M.real_name)
-		to_chat(usr, "<span class='notice'>Your programm doesn't allow operating APC weapons.</span>")
-		return
 
 	deactivate_binos(usr)
 	active_hp = slot
@@ -405,7 +405,7 @@ var/list/apc_dmg_distributions = list(
 		handle_all_modules_broken()
 	else
 		if(!luminosity)
-			luminosity = 7
+			SetLuminosity(7)
 
 	update_icon()
 
@@ -941,6 +941,9 @@ var/list/apc_dmg_distributions = list(
 
 	. = ..(P)
 
+/obj/vehicle/multitile/root/cm_transport/proc/interior_concussion(var/strength)
+	return
+
 //Differentiates between damage types from different bullets
 //Applies a linear transformation to bullet damage that will generally decrease damage done
 /obj/vehicle/multitile/root/cm_transport/bullet_act(var/obj/item/projectile/P)
@@ -961,16 +964,19 @@ var/list/apc_dmg_distributions = list(
 		dam_type = "explosive"
 		take_damage_type(P.damage * (1.2 + P.ammo.penetration/100), dam_type, P.firer)
 		healthcheck()
+		interior_concussion(3)
 		return
 	if(istype(P, /datum/ammo/rocket/tow))
 		dam_type = "explosive"
 		take_damage_type(P.damage * (1.5 + P.ammo.penetration/100), dam_type, P.firer)
 		healthcheck()
+		interior_concussion(3)
 		return
 	if(istype(P, /datum/ammo/rocket/ltb))
 		dam_type = "explosive"
 		take_damage_type(P.damage * (3 + P.ammo.penetration/100), dam_type, P.firer)
 		healthcheck()
+		interior_concussion(2)
 		return
 
 	take_damage_type(P.damage * (0.75 + P.ammo.penetration/100), dam_type, P.firer)
@@ -985,10 +991,12 @@ var/list/apc_dmg_distributions = list(
 		if(1.0)
 			take_damage_type(rand(100, 150), "explosive")
 			take_damage_type(rand(20, 40), "slash")
+			interior_concussion(4)
 
 		if(2.0)
 			take_damage_type(rand(60,80), "explosive")
 			take_damage_type(rand(10, 15), "slash")
+			interior_concussion(3)
 
 		if(3.0)
 			take_damage_type(rand(20, 25), "explosive")
@@ -1035,6 +1043,12 @@ var/list/apc_dmg_distributions = list(
 				return FALSE
 			else
 				return TRUE
+			if(istype(A, /obj/structure))
+				var/obj/structure/S = A
+				if(S.climbable)
+					return FALSE
+				else
+					return TRUE
 	return FALSE
 
 /obj/vehicle/multitile/root/cm_transport/proc/handle_interior_entrance(var/mob/M)
@@ -1068,6 +1082,7 @@ var/list/apc_dmg_distributions = list(
 			return
 
 		take_damage_type(100, "blunt", C)
+		interior_concussion(1)
 
 //Redistributes damage ratios based off of what things are attached (no armor means the armor doesn't mitigate any damage)
 /obj/vehicle/multitile/root/cm_transport/proc/update_damage_distribs()

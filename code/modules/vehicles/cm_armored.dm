@@ -301,6 +301,12 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	if(!can_use_hp(usr))
 		return
 
+	var/mob/living/carbon/human/M = usr
+	var/obj/item/card/id/I = M.wear_id
+	if(I && I.rank == "Synthetic" && I.registered_name == M.real_name)
+		to_chat(usr, "<span class='notice'>Your programm doesn't allow operating tank weapons.</span>")
+		return
+
 	var/list/slots = get_activatable_hardpoints()
 
 	if(!slots.len)
@@ -312,12 +318,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	var/obj/item/hardpoint/HP = hardpoints[slot]
 	if(!HP)
 		to_chat(usr, "<span class='warning'>There's nothing installed on that hardpoint.</span>")
-
-	var/mob/living/carbon/human/M = usr
-	var/obj/item/card/id/I = M.wear_id
-	if(I.rank == "Synthetic" && I.registered_name == M.real_name)
-		to_chat(usr, "<span class='notice'>Your programm doesn't allow operating tank weapons.</span>")
-		return
 
 	deactivate_binos(usr)
 	active_hp = slot

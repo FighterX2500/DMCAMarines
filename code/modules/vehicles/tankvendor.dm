@@ -8,6 +8,7 @@
 	layer = BELOW_OBJ_LAYER
 	use_power = 1
 	idle_power_usage = 20
+	var/return_timer = 12000
 
 	var/list/vendor_role = list()
 
@@ -97,6 +98,71 @@
 
 	user.set_interaction(src)
 	ui_interact(user)
+
+/obj/machinery/vehicle_vendor/tank_vendor_ui/attackby(obj/item/W, mob/user)
+
+//	if(..())
+//		return
+
+	if(stat & (BROKEN|NOPOWER))
+		return
+
+	if(!ishuman(user))
+		return
+
+	var/mob/living/carbon/human/H = user
+	var/obj/item/card/id/I = H.wear_id
+	if(!istype(I)) //not wearing an ID
+		to_chat(H, "<span class='warning'>Access denied. No ID card detected</span>")
+		return
+
+	if(I.registered_name != H.real_name)
+		to_chat(H, "<span class='warning'>Wrong ID card owner detected.</span>")
+		return
+
+	if(!vendor_role.Find(I.rank))
+		to_chat(H, "<span class='warning'>This machine isn't for you.</span>")
+		return
+
+	if(world.time > return_timer)
+		to_chat(H, "<span class='warning'>Operation has begun, you can't swap modules anymore.</span>")
+		return
+
+	if(istype(W, /obj/item/hardpoint/primary))
+		if(aval_tank_mod.Find("primary"))
+			to_chat(H, "<span class='warning'>Can't accept this. Module from \"Primary\" category wasn't taken yet.</span>")
+			return
+		aval_tank_mod.Add("primary")
+
+	if(istype(W, /obj/item/hardpoint/secondary))
+		if(aval_tank_mod.Find("secondary"))
+			to_chat(H, "<span class='warning'>Can't accept this. Module from \"Secondary\" category wasn't taken yet.</span>")
+			return
+		aval_tank_mod.Add("secondary")
+
+	if(istype(W, /obj/item/hardpoint/support))
+		if(aval_tank_mod.Find("support"))
+			to_chat(H, "<span class='warning'>Can't accept this. Module from \"Support\" category wasn't taken yet.</span>")
+			return
+		aval_tank_mod.Add("support")
+
+	if(istype(W, /obj/item/hardpoint/armor))
+		if(aval_tank_mod.Find("armor"))
+			to_chat(H, "<span class='warning'>Can't accept this. Module from \"Armor\" category wasn't taken yet.</span>")
+			return
+		aval_tank_mod.Add("armor")
+
+	if(istype(W, /obj/item/hardpoint/treads))
+		if(aval_tank_mod.Find("treads"))
+			to_chat(H, "<span class='warning'>Can't accept this. Module from \"Treads\" category wasn't taken yet.</span>")
+			return
+		aval_tank_mod.Add("treads")
+
+	user.temp_drop_inv_item(W, 0)
+	cdel(W)
+	to_chat(user, "<span class='notice'>With a clank you insert the [W.name] into the vendor.</span>")
+	return
+
 
 /obj/machinery/vehicle_vendor/tank_vendor_ui/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 0)
 
@@ -243,7 +309,7 @@
 	return
 
 /obj/machinery/vehicle_vendor/module_repair_station/attackby(var/obj/item/O, var/mob/user)
-	if(istype(O, /obj/item/hardpoint) || istype(O, /obj/item/apc_hardpoint))
+	if(istype(O, /obj/item/hardpoint))
 		if(HP == null)
 			src.HP = O
 			O.Move(src)
