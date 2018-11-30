@@ -16,7 +16,16 @@
 	var/obj/vehicle/multitile/root/cm_transport/apc/master
 	var/side_door_busy = FALSE
 
+/obj/structure/vehicle_interior/side_door/examine(var/mob/user)
+	..()
+	if(isobserver(user) && get_dist(src, user) <= 2)
+		user.forceMove(master.entrance.loc)
+
 /obj/structure/vehicle_interior/side_door/proc/activate(mob/user)
+
+	if(master.z != 1)
+		if(master.special_module_type == "Command Modification")
+			master.interior_tcomms.hard_switch_off()
 
 	if(user.loc != master.multitile_interior_exit.loc)
 		return
@@ -48,7 +57,7 @@
 		else
 			var/mob/living/carbon/Xenomorph/X = user
 			if(X.t_squish_level > 2)
-				to_chat(X, "<span class='xenowarning'>The doorway is to0 small for you, you can't get out! You are doomed.</span>")
+				to_chat(X, "<span class='xenowarning'>The doorway is too small for you, you can't get out! You are doomed.</span>")
 				return
 
 	var/move_pulling = FALSE
@@ -103,7 +112,7 @@
 	side_door_busy = TRUE
 	visible_message(user, "<span class='notice'>[user] starts climbing out of [src].</span>",
 		"<span class='notice'>You start climbing out of [src].</span>")
-	if(!do_after(user, 20, needhand = FALSE, show_busy_icon = TRUE))
+	if(!do_after(user, 15, needhand = FALSE, show_busy_icon = TRUE))
 		to_chat(user, "<span class='notice'>Something interrupted you while getting out.</span>")
 		side_door_busy = FALSE
 		return
@@ -182,6 +191,17 @@
 	activate(X)
 	return
 
+/obj/structure/vehicle_interior/side_door/verb/use_side_door()
+	set name = "Use Side Door"
+	set category = "Vehicle"
+	set src in range(1)
+	if(usr.loc != master.multitile_interior_exit.loc)
+		return
+	if(isobserver(usr))
+		to_chat(usr, "<span class='warning'>This is not for you, just click on the [src].</span>")
+		return
+	activate(usr)
+
 /obj/structure/vehicle_interior/cabin_door
 	name = "Cabin Door"
 	desc = "It opens and closes."
@@ -232,7 +252,7 @@
 	name = "Send Supply Drop"
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "doorctrl0"
-	req_one_access_txt = "1;21"
+	req_one_access_txt = "2;21"
 	anchored = 1
 	unacidable = 1
 	var/busy
@@ -324,6 +344,142 @@
 	return
 
 
+
+/obj/machinery/vehicle_interior/tcomms_receiver
+	name = "Telecommunication Receiver"
+	icon = 'icons/obj/stationobjs.dmi'
+	icon_state = "broadcast receiver_off"
+	req_one_access_txt = "2;7;11"
+	anchored = 1
+	unacidable = 1
+	var/online = 0
+	var/obj/vehicle/multitile/root/cm_transport/apc/master
+	var/obj/machinery/telecomms/relay/preset/station/prison/tcomms_sphere
+	var/obj/machinery/telecomms/relay/preset/ice_colony/tcomms_tower
+	var/obj/structure/vehicle_interior/tcomms_hub/sidekick
+
+/obj/machinery/vehicle_interior/tcomms_receiver/proc/hard_switch_off()
+	if(map_tag == MAP_LV_624)
+		return
+	if(tcomms_sphere)
+		tcomms_sphere.use_power = 1
+		tcomms_sphere.stat = 2
+		tcomms_sphere.on = 0
+	else
+		if(tcomms_tower)
+			tcomms_tower.use_power = 1
+			tcomms_tower.stat = 2
+			tcomms_tower.on = 0
+		else
+			src.visible_message("\icon[src] <span class='warning'>No link found. Contact High Command's Technical Division for advice.</span>")
+			return
+	icon_state = "broadcast receiver_off"
+	playsound(src, 'sound/machines/buzz-sigh.ogg', 15, 1)
+	src.visible_message("\icon[src] <span class='warning'>Critical erro...BZZZZT.</span>")
+	online = 0
+
+	sidekick.icon_state = "hub_off"
+
+/obj/machinery/vehicle_interior/tcomms_receiver/proc/switch_comms(var/on, var/mob/living/carbon/human/H)
+
+	if(on)
+
+		if(map_tag == MAP_LV_624)
+			src.visible_message("\icon[src] <span class='notice'>Area of Operations is covered by Almayer. [master] Telecommunication equipment is disabled for this operation.</span>")
+			return
+
+		if(!master.special_module_working)
+			src.visible_message("\icon[src] <span class='warning'>[master.name] is too damaged, Tcomms module is offline, do repairs first!</span>")
+			return
+
+		if(!H.mind || !H.mind.cm_skills || H.mind.cm_skills.engineer < SKILL_ENGINEER_ENGI)
+			to_chat(H, "<span class='warning'>You have no idea how to configure [src] so you decide not to touch it.</span>")
+			return
+
+		if(master.z != 1)
+			to_chat(H, "<span class='warning'>You are too far from area of operations, there is no use of switching it on right now.</span>")
+			return
+		add_fingerprint(H)
+
+		src.visible_message("\icon[src] <span class='notice'>Deploying antenna. Receiving parameters. Adjusting relay sensors. Establishing connection...</span>")
+
+		if(!do_after(H, 50, needhand = TRUE, show_busy_icon = TRUE))
+			to_chat(H, "<span class='warning'>You stop configuring [src].</span>")
+			return
+
+		if(tcomms_sphere)
+			tcomms_sphere.use_power = 0
+			tcomms_sphere.stat = 0
+			tcomms_sphere.on = 1
+		else
+			if(tcomms_tower)
+				tcomms_tower.use_power = 0
+				tcomms_tower.stat = 0
+				tcomms_tower.on = 1
+			else
+				src.visible_message("\icon[src] <span class='notice'>Unable to establish link. Contact High Command's Technical Division for advice.</span>")
+				return
+
+		icon_state = "broadcast receiver"
+		playsound(src, 'sound/machines/twobeep.ogg', 15, 1)
+		src.visible_message("\icon[src] <span class='notice'>Connection established. Telecommunications module online.</span>")
+		online = 1
+
+		sidekick.icon_state = "hub"
+		return
+	else
+		if(map_tag == MAP_LV_624)
+			return
+
+		if(!H.mind || !H.mind.cm_skills || H.mind.cm_skills.engineer < SKILL_ENGINEER_ENGI)
+			to_chat(H, "<span class='warning'>You have no idea how to safely turn [src] off so you decide not to touch it.</span>")
+			return
+
+		add_fingerprint(H)
+		src.visible_message("\icon[src] <span class='notice'>Dropping connection... Switching off relay sensors. Resetting parameters. Folding antenna.</span>")
+
+		if(!do_after(H, 20, needhand = TRUE, show_busy_icon = TRUE))
+			to_chat(H, "<span class='warning'>You stop switching off [src].</span>")
+			return
+
+		if(tcomms_sphere)
+			tcomms_sphere.use_power = 1
+			tcomms_sphere.stat = 2
+			tcomms_sphere.on = 0
+		else
+			if(tcomms_tower)
+				tcomms_tower.use_power = 1
+				tcomms_tower.stat = 2
+				tcomms_tower.on = 0
+			else
+				src.visible_message("\icon[src] <span class='warning'>Unable to cut link. Contact High Command's Technical Division for advice.</span>")
+				return
+
+		icon_state = "broadcast receiver_off"
+		playsound(src, 'sound/machines/twobeep.ogg', 15, 1)
+		src.visible_message("\icon[src] <span class='notice'>Connection dropped. Telecommunications module offline.</span>")
+		online = 0
+
+		sidekick.icon_state = "hub_off"
+
+/obj/machinery/vehicle_interior/tcomms_receiver/attack_hand(mob/user)
+
+	if(online)
+		switch_comms(FALSE, user)
+	else
+		switch_comms(TRUE, user)
+
+/obj/machinery/vehicle_interior/tcomms_receiver/attack_alien(var/mob/living/carbon/Xenomorph/X)
+	if(online)
+		hard_switch_off()
+	return
+
+/obj/structure/vehicle_interior/tcomms_hub
+	name = "Telecommunication Hub"
+	icon = 'icons/obj/stationobjs.dmi'
+	icon_state = "hub_off"
+	anchored = 1
+	unacidable = 1
 
 
 // interior walls

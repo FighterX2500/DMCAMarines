@@ -1728,7 +1728,7 @@ All of the hardpoints, for the tank and APC
 		owner.move_delay = 2.5
 
 	remove_buff()
-		owner.move_delay = 30
+		owner.move_delay = 50
 
 //repairing wheels in field
 /obj/item/apc_hardpoint/wheels/attackby(var/obj/item/O, var/mob/user)
