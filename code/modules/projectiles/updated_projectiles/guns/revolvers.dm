@@ -18,7 +18,7 @@
 	var/russian_roulette = 0 //God help you if you do this.
 	var/catchworking = TRUE
 	type_of_casings = "bullet"
-	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG|GUN_TRIGGER_SAFETY
 	wield_delay = WIELD_DELAY_VERY_FAST //If you modify your revolver to be two-handed, it will still be fast to aim
 	gun_skill_category = GUN_SKILL_PISTOLS
 	movement_acc_penalty_mult = 3
@@ -314,7 +314,7 @@
 	force = 8
 	attachable_allowed = list(/obj/item/attachable/compensator)
 
-	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG|GUN_TRIGGER_SAFETY
 
 	New()
 		..()
@@ -342,7 +342,7 @@
 	fire_sound = 'sound/weapons/gun_pistol_medium.ogg'
 	current_mag = /obj/item/ammo_magazine/internal/revolver/small
 	force = 6
-	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG|GUN_TRIGGER_SAFETY
 
 /obj/item/weapon/gun/revolver/small/New()
 	..()
@@ -380,7 +380,7 @@
 						/obj/item/attachable/quickfire,
 						/obj/item/attachable/compensator)
 
-	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG|GUN_TRIGGER_SAFETY
 
 /obj/item/weapon/gun/revolver/mateba/New()
 	..()

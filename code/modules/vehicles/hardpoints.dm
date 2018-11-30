@@ -14,7 +14,7 @@ All of the hardpoints, for the tank and APC
 	var/maxhealth = 0
 	health = 0
 	w_class = 15
-	var/hp_weight = 1	//this is new variable for weight of every single module as a part of new weight system
+	var/hp_weight = 1	//this is new variable for weight of every single module as a part of new tank weight system
 
 	//If we use ammo, put it here
 	var/obj/item/ammo_magazine/ammo_type = null //weapon ammo type to check with the magazine type we are trying to add
@@ -994,8 +994,8 @@ All of the hardpoints, for the tank and APC
 	disp_icon_state = "paladin_armor"
 
 	apply_buff()
-		owner.dmg_multipliers["acid"] = 0.5
-		owner.dmg_multipliers["slash"] = 0.5
+		owner.dmg_multipliers["acid"] = 0.4
+		owner.dmg_multipliers["slash"] = 0.3
 		owner.dmg_multipliers["explosive"] = 0.4
 		owner.dmg_multipliers["blunt"] = 0.4
 		owner.dmg_multipliers["bullet"] = 0.05 //juggernaut is not meant to be just shot, fuck off
@@ -1111,7 +1111,7 @@ All of the hardpoints, for the tank and APC
 /obj/item/hardpoint/treads/attackby(var/obj/item/O, var/mob/user)
 
 	//Need to the what the hell you're doing
-	if(user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer < SKILL_ENGINEER_ENGI)
+	if(!user.mind || !user.mind.cm_skills || user.mind.cm_skills.engineer < SKILL_ENGINEER_ENGI)
 		to_chat(user, "<span class='warning'>You don't know what to do with [O] on [src].</span>")
 		return
 	if(!iswelder(O))
@@ -1137,7 +1137,7 @@ All of the hardpoints, for the tank and APC
 		user.visible_message("<span class='notice'>[user] stops repairing the [src].</span>", "<span class='notice'>You stop repairing the [src].</span>")
 		return
 	WT.remove_fuel(8, user)
-	user.visible_message("<span class='notice'>[user] repairs the [src] as best as possible in field conditions.</span>", "<span class='notice'>You repair the [src] as best as possible in field conditions.</span>")
+	user.visible_message("<span class='notice'>[user] finishes repairing the [src].</span>", "<span class='notice'>You repair the [src] as best as you can in field conditions.</span>")
 
 	src.health = q_health //We repaired it to 25%, good job
 
@@ -1238,8 +1238,8 @@ All of the hardpoints, for the tank and APC
 	icon_state = "quad_rocket"
 	w_class = 10
 	default_ammo = /datum/ammo/rocket/tow //Fun fact, AP rockets seem to be a straight downgrade from normal rockets. Maybe I'm missing something...
-	current_rounds = 2
-	max_rounds = 2
+	current_rounds = 3
+	max_rounds = 3
 	point_cost = 0
 	gun_type = /obj/item/hardpoint/secondary/towlauncher
 
@@ -1483,14 +1483,21 @@ All of the hardpoints, for the tank and APC
 //examine() that tells the player condition of the module
 /obj/item/apc_hardpoint/examine(var/mob/user)
 	..()
-	if((user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
+	if(!istype(src, /obj/item/apc_hardpoint/wheels) && (user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
 		var/cond = round(health * 100 / maxhealth)
 		if (cond > 0)
 			to_chat(user, "Integrity: [cond]%.")
 		else
 			to_chat(user, "Integrity: 0%.")
 
-
+/obj/item/apc_hardpoint/wheels/examine(var/mob/user)
+	..()
+	if((user.mind && user.mind.cm_skills) || isobserver(user))
+		var/cond = round(health * 100 / maxhealth)
+		if (cond > 0)
+			to_chat(user, "Integrity: [cond]%.")
+		else
+			to_chat(user, "Integrity: 0%.")
 
 ////////////////////
 // PRIMARY SLOTS // START
@@ -1647,18 +1654,18 @@ All of the hardpoints, for the tank and APC
 		var/turf/S
 		var/right_dir
 		var/left_dir
-		F = get_step(src.loc, src.dir)
-		F = get_step(F, src.dir)
-		F = get_step(F, src.dir)
-		F = get_step(F, src.dir)
-		F = get_step(F, src.dir)
-		F = get_step(F, src.dir)
-		F = get_step(F, src.dir)
-		left_dir = turn(src.dir, -90)
+		F = get_step(owner.loc, owner.dir)
+		F = get_step(F, owner.dir)
+		F = get_step(F, owner.dir)
+		F = get_step(F, owner.dir)
+		F = get_step(F, owner.dir)
+		F = get_step(F, owner.dir)
+		F = get_step(F, owner.dir)
+		left_dir = turn(owner.dir, -90)
 		S = get_step(F, left_dir)
 		S = get_step(S, left_dir)
 		S = get_step(S, left_dir)
-		right_dir = turn(src.dir, 90)
+		right_dir = turn(owner.dir, 90)
 		F = get_step(F, right_dir)
 		F = get_step(F, right_dir)
 		F = get_step(F, right_dir)
@@ -1667,13 +1674,13 @@ All of the hardpoints, for the tank and APC
 		next_use = world.time + owner.cooldowns["secondary"] * owner.misc_ratios["secd_cool"]
 		var/obj/item/projectile/P = new
 		P.generate_bullet(new A.default_ammo)
-		P.fire_at(F, src, src, 8, P.ammo.shell_speed)
+		P.fire_at(F, owner, src, 8, P.ammo.shell_speed)
 		playsound(get_turf(src), 'sound/weapons/gun_flare.ogg', 60, 1)
 		A.current_rounds--
 		sleep (10)
 		var/obj/item/projectile/G = new
 		G.generate_bullet(new A.default_ammo)
-		G.fire_at(S, src, src, 8, G.ammo.shell_speed)
+		G.fire_at(S, owner, src, 8, G.ammo.shell_speed)
 		playsound(get_turf(src), 'sound/weapons/gun_flare.ogg', 60, 1)
 		A.current_rounds--
 
@@ -1723,8 +1730,35 @@ All of the hardpoints, for the tank and APC
 	remove_buff()
 		owner.move_delay = 30
 
+//repairing wheels in field
+/obj/item/apc_hardpoint/wheels/attackby(var/obj/item/O, var/mob/user)
+
+	if(!user.mind || !user.mind.cm_skills)
+		to_chat(user, "<span class='warning'>You don't know what to do with [O] on [src].</span>")
+		return
+	if(!iswrench(O))
+		to_chat(user, "<span class='warning'>That's the wrong tool. Use a wrench.</span>")
+		return
+	var/q_health = round(src.maxhealth * 0.25)
+	if(health >= q_health)
+		to_chat(user, "<span class='warning'>You can't repair [src] more than that in the field.</span>")
+		return
+	user.visible_message("<span class='notice'>[user] starts field repair on the [src].</span>", "<span class='notice'>You start field repair on the [src].</span>")
+
+	if(!do_after(user, 150, TRUE, 5, BUSY_ICON_FRIENDLY))
+		user.visible_message("<span class='notice'>[user] stops repairing the [src].</span>", "<span class='notice'>You stop repairing the [src].</span>")
+		return
+	if(!Adjacent(user))
+		user.visible_message("<span class='notice'>[user] stops repairing the [src].</span>", "<span class='notice'>You stop repairing the [src].</span>")
+		return
+	user.visible_message("<span class='notice'>[user] finishes repairing the [src].</span>", "<span class='notice'>You repair the [src] as best as you can in field conditions.</span>")
+
+	src.health = q_health //We repaired it to 25%, good job
+
+	. = ..()
+
 /////////////////
-// TREAD SLOTS // END
+// WHEELS SLOTS // END
 /////////////////
 
 ///////////////
@@ -1787,30 +1821,3 @@ All of the hardpoints, for the tank and APC
 ///////////////
 // APC HARDPOINTS // END
 ///////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/datum/ammo/flare

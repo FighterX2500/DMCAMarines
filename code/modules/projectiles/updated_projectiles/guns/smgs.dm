@@ -15,7 +15,7 @@
 						/obj/item/attachable/flashlight,
 						/obj/item/attachable/magnetic_harness)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 	gun_skill_category = GUN_SKILL_SMGS
 
 	New()
@@ -51,7 +51,7 @@
 						/obj/item/attachable/burstfire_assembly,
 						/obj/item/attachable/magnetic_harness)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_TRIGGER_SAFETY
 
 /obj/item/weapon/gun/smg/m39/New()
 	select_gamemode_skin(/obj/item/weapon/gun/smg/m39, list(MAP_ICE_COLONY = "m39b2") )
@@ -82,7 +82,7 @@
 	item_state = "m39b2"
 	origin_tech = "combat=6;materials=5"
 	current_mag = /obj/item/ammo_magazine/smg/m39/ap
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_WY_RESTRICTED
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_WY_RESTRICTED|GUN_TRIGGER_SAFETY
 
 /obj/item/weapon/gun/smg/m39/elite/set_gun_config_values()
 	fire_delay = config.low_fire_delay
@@ -153,7 +153,7 @@
 						/obj/item/attachable/magnetic_harness,
 						/obj/item/attachable/scope)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
 	New()
 		..()
@@ -183,7 +183,7 @@
 	origin_tech = "combat=3;materials=2"
 	fire_sound = 'sound/weapons/gun_skorpion.ogg'
 	current_mag = /obj/item/ammo_magazine/smg/skorpion
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
 	New()
 		..()
@@ -220,7 +220,7 @@
 	attachable_allowed = list(
 						/obj/item/attachable/flashlight)
 
-	flags_gun_features = GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
 	New()
 		..()
@@ -252,7 +252,7 @@
 	origin_tech = "combat=3;materials=2"
 	fire_sound = 'sound/weapons/uzi.ogg'
 	current_mag = /obj/item/ammo_magazine/smg/uzi
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
 	New()
 		..()
@@ -289,7 +289,7 @@
 						/obj/item/attachable/lasersight,
 						/obj/item/attachable/scope)
 
-	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
 	New()
 		..()

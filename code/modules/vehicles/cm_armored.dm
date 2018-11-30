@@ -1099,17 +1099,6 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	for(var/obj/item/clothing/mask/facehugger/FG in get_turf(src))
 		FG.Die()
 
-/*	for(var/obj/effect/xenomorph/spray/SR in get_turf(src))
-		if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/standard) && CA.hardpoints[HDPT_TREADS].health > 0)
-			CA.hardpoints[HDPT_TREADS].health -= 10
-			CA.visible_message("<span class='danger'>You hear hissing and smoke from [root]'s treads!</span>")
-			healthcheck()
-			update_icon()
-		else
-			if(istype(CA.hardpoints[HDPT_TREADS], /obj/item/hardpoint/treads/heavy) && CA.hardpoints[HDPT_TREADS].health > 0)
-				CA.hardpoints[HDPT_TREADS].health -= 5
-				healthcheck()
-*/
 	. = ..()
 
 	if(.)
@@ -1485,8 +1474,12 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //Similar to repairing stuff, down to the time delay
 /obj/vehicle/multitile/root/cm_armored/proc/install_hardpoint(var/obj/item/hardpoint/HP, var/mob/user)
 
-	if(!user.mind || !(!user.mind.cm_skills || user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI))
+	if(!user.mind || !user.mind.cm_skills || user.mind.cm_skills.engineer < SKILL_ENGINEER_ENGI)
 		to_chat(user, "<span class='warning'>You don't know what to do with [HP] on [src].</span>")
+		return
+
+	if(HP.slot != HDPT_TREADS && user.mind.cm_skills.engineer < SKILL_ENGINEER_MT)
+		to_chat(user, "<span class='warning'>You only know how to remove, install and field repair treads.</span>")
 		return
 
 	if(damaged_hps.Find(HP.slot))
@@ -1525,11 +1518,15 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 //Again, similar to the above ones
 /obj/vehicle/multitile/root/cm_armored/proc/uninstall_hardpoint(var/obj/item/O, var/mob/user)
 
-	if(!user.mind || !(!user.mind.cm_skills || user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI))
+	if(!user.mind || !user.mind.cm_skills || user.mind.cm_skills.engineer < SKILL_ENGINEER_ENGI)
 		to_chat(user, "<span class='warning'>You don't know what to do with [O] on [src].</span>")
 		return
 
 	var/slot = input("Select a slot to try and remove") in hardpoints
+
+	if(slot != HDPT_TREADS && user.mind.cm_skills.engineer < SKILL_ENGINEER_MT)
+		to_chat(user, "<span class='warning'>You only know how to remove, install and field repair treads.</span>")
+		return
 
 	var/obj/item/hardpoint/old = hardpoints[slot]
 

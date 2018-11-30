@@ -6,6 +6,7 @@
 #define HDPT_SUPPORT "support"
 #define HDPT_WHEELS "wheels"
 
+
 //Percentages of what hardpoints take what damage, e.g. armor takes 37.5% of the damage
 var/list/apc_dmg_distributions = list(
 	HDPT_PRIMARY = 0.35,
@@ -62,11 +63,11 @@ var/list/apc_dmg_distributions = list(
 	//Changes how much damage the APC takes. Since APC has no armor module, it has some basic resistances
 	var/list/dmg_multipliers = list(
 		"all" = 1.0,	//for when you want to make it invincible
-		"acid" = 0.9,
-		"slash" = 0.8,
+		"acid" = 0.8,
+		"slash" = 0.7,
 		"bullet" = 0.5,
 		"explosive" = 0.9,
-		"blunt" = 0.8,
+		"blunt" = 0.6,
 		"abstract" = 1.0) //abstract for when you just want to hurt it
 
 	//Decisecond cooldowns for the slots
@@ -88,6 +89,9 @@ var/list/apc_dmg_distributions = list(
 		cdel(O, 1) //Delete all of the hitboxes etc
 
 	. = ..()
+
+/obj/vehicle/multitile/root/cm_transport/proc/handle_xeno_entrance(mob/living/carbon/Xenomorph/X)
+	return
 
 //What to do if all ofthe installed modules have been broken
 /obj/vehicle/multitile/root/cm_transport/proc/handle_all_modules_broken()
@@ -384,7 +388,6 @@ var/list/apc_dmg_distributions = list(
 			//else
 			//	to_chat(user, "There is a [HP.health <= 0 ? "broken" : "working"] [HP] installed on the [i] hardpoint slot.")
 
-
 //Special armored vic healthcheck that mainly updates the hardpoint states
 /obj/vehicle/multitile/root/cm_transport/healthcheck()
 	health = maxhealth //The APC itself doesn't take damage
@@ -400,6 +403,9 @@ var/list/apc_dmg_distributions = list(
 
 	if(remove_person)
 		handle_all_modules_broken()
+	else
+		if(!luminosity)
+			luminosity = 7
 
 	update_icon()
 
@@ -443,7 +449,7 @@ var/list/apc_dmg_distributions = list(
 /obj/vehicle/multitile/hitbox/cm_transport
 	name = "Armored Vehicle"
 	desc = "Get inside to operate the vehicle."
-	luminosity = 7
+	luminosity = 1
 	throwpass = 1 //You can lob nades over APCs, and there's some dumb check somewhere that requires this
 	var/lastsound = 0
 
@@ -591,8 +597,8 @@ var/list/apc_dmg_distributions = list(
 		var/obj/machinery/autolathe/AL = A
 		AL.visible_message("<span class='danger'>[root] crushes [AL]!</span>")
 		new /obj/item/stack/sheet/metal(AL.loc, 2)
-		new /obj/item/stack/sheet/metal(AL.loc, AL.stored_material["metal"])
-		new /obj/item/stack/sheet/glass(AL.loc, AL.stored_material["glass"])
+		new /obj/item/stack/sheet/metal(AL.loc, round(AL.stored_material["metal"] / 3750))
+		new /obj/item/stack/sheet/glass(AL.loc, round(AL.stored_material["glass"] / 3750))
 		cdel(AL)
 	else if (istype(A, /obj/structure/filingcabinet))
 		var/obj/structure/filingcabinet/FC = A
@@ -862,6 +868,10 @@ var/list/apc_dmg_distributions = list(
 	. = ..()
 
 	if(.)
+		for(var/obj/structure/bed/BD in get_turf(A))
+			if(!istype(BD, /obj/structure/bed/chair/dropship) && !istype(BD, /obj/structure/bed/medevac_stretcher) && !istype(BD, /obj/structure/bed/roller) && !istype(BD, /obj/structure/bed/chair/janicart))
+				BD.visible_message("<span class='danger'>[root] crushes [BD]!</span>")
+				BD.Dispose()
 		for(var/mob/living/M in get_turf(A))
 			//I don't call Bump() otherwise that would encourage trampling for infinite unpunishable damage
 			M.sleeping = 1 //Maintain their lying-down-ness
@@ -1020,23 +1030,21 @@ var/list/apc_dmg_distributions = list(
 		return TRUE
 	for(var/atom/A in T.contents)
 		if(A.density)
-			return TRUE
+			var/mob/living/carbon/M = A
+			if(istype(M) && !(isXenoQueen(M) || isXenoCrusher(M)))
+				return FALSE
+			else
+				return TRUE
 	return FALSE
+
+/obj/vehicle/multitile/root/cm_transport/proc/handle_interior_entrance(var/mob/M)
+	return
 
 //Special case for entering the vehicle without using the verb
 /obj/vehicle/multitile/root/cm_transport/attack_hand(var/mob/user)
 
-	if(user.a_intent == "hurt")
-		handle_harm_attack(user)
-		return
-
 	if(user.loc == entrance.loc)
-		handle_player_entrance(user)
-		return
-
-
-	if(tile_blocked_check(get_turf(entrance)))		//vehicle entrance cannot be blocked to prevent TCs getting in
-		handle_player_entrance(user)
+		handle_interior_entrance(user)
 		return
 
 	. = ..()
@@ -1101,6 +1109,10 @@ var/list/apc_dmg_distributions = list(
 		update_damage_distribs()
 		return
 
+	if(istype(O, /obj/item/grab) && user.loc == entrance.loc)
+		handle_interior_entrance(user)
+		return
+
 	take_damage_type(O.force * 0.05, "blunt", user) //Melee weapons from people do very little damage
 
 	. = ..()
@@ -1108,7 +1120,7 @@ var/list/apc_dmg_distributions = list(
 /obj/vehicle/multitile/root/cm_transport/proc/handle_hardpoint_repair(var/obj/item/O, var/mob/user)
 
 	//Need to the what the hell you're doing
-	if(user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer < SKILL_ENGINEER_MT)
+	if(!user.mind || !user.mind.cm_skills || !user.mind.cm_skills.engineer >= SKILL_ENGINEER_MT)
 		to_chat(user, "<span class='warning'>You don't know what to do with [O] on [src].</span>")
 		return
 
@@ -1188,12 +1200,19 @@ var/list/apc_dmg_distributions = list(
 
 	HP.try_add_clip(AM, user)
 
+/obj/vehicle/multitile/root/cm_transport/proc/fix_special_module()
+	return
+
 //Putting on hardpoints
 //Similar to repairing stuff, down to the time delay
 /obj/vehicle/multitile/root/cm_transport/proc/install_hardpoint(var/obj/item/apc_hardpoint/HP, var/mob/user)
 
-	if(!user.mind || !(!user.mind.cm_skills || user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI))
+	if(!user.mind || !user.mind.cm_skills)
 		to_chat(user, "<span class='warning'>You don't know what to do with [HP] on [src].</span>")
+		return
+
+	if(HP.slot != HDPT_WHEELS && user.mind.cm_skills.engineer < SKILL_ENGINEER_MT)
+		to_chat(user, "<span class='warning'>You only know how to remove, install and field repair wheels.</span>")
 		return
 
 	if(damaged_hps.Find(HP.slot))
@@ -1224,18 +1243,25 @@ var/list/apc_dmg_distributions = list(
 	user.visible_message("<span class='notice'>[user] installs \the [HP] on [src].</span>", "<span class='notice'>You install \the [HP] on [src].</span>")
 
 	user.temp_drop_inv_item(HP, 0)
+	if(HP.health > 0)
+		fix_special_module()
 
-	add_hardpoint(HP, user)
+
+	add_hardpoint(HP)
 
 //User-orientated proc for taking of hardpoints
 //Again, similar to the above ones
 /obj/vehicle/multitile/root/cm_transport/proc/uninstall_hardpoint(var/obj/item/O, var/mob/user)
 
-	if(!user.mind || !(!user.mind.cm_skills || user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI))
+	if(!user.mind || !user.mind.cm_skills)
 		to_chat(user, "<span class='warning'>You don't know what to do with [O] on [src].</span>")
 		return
 
 	var/slot = input("Select a slot to try and remove") in hardpoints
+
+	if(slot != HDPT_WHEELS && user.mind.cm_skills.engineer < SKILL_ENGINEER_MT)
+		to_chat(user, "<span class='warning'>You only know how to remove, install and field repair wheels.</span>")
+		return
 
 	var/obj/item/apc_hardpoint/old = hardpoints[slot]
 
@@ -1278,7 +1304,7 @@ var/list/apc_dmg_distributions = list(
 
 //General proc for putting on hardpoints
 //ALWAYS CALL THIS WHEN ATTACHING HARDPOINTS
-/obj/vehicle/multitile/root/cm_transport/proc/add_hardpoint(var/obj/item/apc_hardpoint/HP, var/mob/user)
+/obj/vehicle/multitile/root/cm_transport/proc/add_hardpoint(var/obj/item/apc_hardpoint/HP)
 
 	HP.owner = src
 	HP.apply_buff()

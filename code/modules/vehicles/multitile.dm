@@ -50,24 +50,20 @@ Vehicles are placed on the map by a spawner or admin verb
 	master.handle_player_entrance(usr)
 
 //Remnant of vehicle interiors
-/*
-/obj/effect/landmark/multitile_exit
+
+/obj/effect/landmark/multitile_interior_exit
 	name = "Landmark"
 	desc = "Marker for the exit of the interior"
 
 	invisibility = 101
-
 	var/obj/vehicle/multitile/root/master
-*/
 
-/*
-/obj/effect/landmark/multitile_exit/verb/exit_multitile(var/mob/M)
-	set category = "Object"
-	set name = "Exit Vehicle"
-	set src in master
+/obj/effect/landmark/multitile_interior_cabin_exit
+	name = "Landmark"
+	desc = "Marker for the exit from the vehicle into interior"
 
-	master.handle_player_exit(M)
-*/
+	invisibility = 101
+	var/obj/vehicle/multitile/root/master
 
 //Super super generic, doesn't really need to exist
 /obj/vehicle/multitile
@@ -93,7 +89,8 @@ Vehicles are placed on the map by a spawner or admin verb
 	var/old_dir
 
 	var/obj/effect/multitile_entrance/entrance
-	//var/obj/effect/landmark/multitile_exit/exit
+	var/obj/effect/landmark/multitile_interior_exit
+	var/obj/effect/landmark/multitile_interior_cabin_exit
 
 	//Objects that move in accordance with this one
 	//Objects indexed by /datum/coords
@@ -102,15 +99,6 @@ Vehicles are placed on the map by a spawner or admin verb
 
 	//list of turfs that the vehicle was in before
 	var/list/old_locs = list()
-
-	//list of idle passengers in the vehicle
-	//used for any type of APC
-	var/list/idle_passengers = list()
-	var/max_idle_passengers = 0
-
-
-	//Another remnant of vehicle interiors
-	//var/list/interior_data = list()
 
 	var/base_icon_type = "" //e.g. "tank" or "apc", used to assign icons to the hitboxes
 

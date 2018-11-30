@@ -243,7 +243,7 @@
 	return
 
 /obj/machinery/vehicle_vendor/module_repair_station/attackby(var/obj/item/O, var/mob/user)
-	if(istype(O, /obj/item/hardpoint))
+	if(istype(O, /obj/item/hardpoint) || istype(O, /obj/item/apc_hardpoint))
 		if(HP == null)
 			src.HP = O
 			O.Move(src)
