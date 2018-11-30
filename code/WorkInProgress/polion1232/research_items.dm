@@ -137,6 +137,29 @@
 */
 
 /////////////
+// Grenades
+////////////
+// Tesla grenade
+/*
+/obj/item/explosive/grenade/tesla			//"P-p-please...*sniff*... no more!"@Crushers Gang
+	name = "T-1 Shock grenade"
+	desc = "An old, M40 HEDP grenade, which explosive guts were been replaced by miniature overcharged HEW MKI battery. An explosion cause muscle contraction to any organic and semi-organic lifeforms."
+	icon_state = "training_grenade"
+	det_time = 30
+	item_state = "grenade"
+	dangerous = 1
+	underslug_launchable = TRUE
+
+/obj/item/explosive/grenade/tesla/prime()
+	spawn(0)
+		playsound(loc, 'sound/items/teslagrenade.ogg', 80, 0, 7)
+		for(var/mob/living/target in oview(2))
+			if(isYautja(target))
+				continue					// They don't give a fuck
+			target.apply_effects(2,2)
+		cdel(src)
+*/
+/////////////
 // Tesla and its powerpack
 ////////////
 
@@ -205,6 +228,7 @@
 /obj/item/tesla_powerpack/attackby(var/obj/item/A as obj, mob/user as mob)
 	if(istype(A,/obj/item/cell))
 		var/obj/item/cell/C = A
+		user.drop_held_item()
 		visible_message("[user.name] swaps out the power cell in the [src.name].","You swap out the power cell in the [src] and drop the old one.")
 		to_chat(user, "The new cell contains: [C.charge] power.")
 		charge_battery.loc = get_turf(user)
@@ -363,7 +387,7 @@
 
 /datum/ammo/energy/lasgan
 	name = "lasbolt"
-	icon_state = "laser"
+	icon_state = "heavylaser"
 	flags_ammo_behavior = AMMO_ENERGY|AMMO_INCENDIARY
 
 /datum/ammo/energy/lasgan/New()
