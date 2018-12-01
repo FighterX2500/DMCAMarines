@@ -1563,8 +1563,8 @@ All of the hardpoints, for the tank and APC
 	max_angle = 80
 
 	apply_buff()
-		owner.cooldowns["secondary"] = 2.5
-		owner.accuracies["secondary"] = 0.7
+		owner.cooldowns["secondary"] = 1
+		owner.accuracies["secondary"] = 0.6
 
 	is_ready()
 		if(world.time < next_use)
