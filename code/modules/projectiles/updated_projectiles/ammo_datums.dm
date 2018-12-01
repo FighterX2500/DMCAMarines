@@ -826,6 +826,17 @@
 	penetration= config.low_armor_penetration
 	shrapnel_chance = config.med_shrapnel_chance
 
+/datum/ammo/bullet/front_cannon
+	name = "frontcannon bullet"
+	icon_state = "bullet" //Red bullets to indicate friendly fire restriction
+	flags_ammo_behavior = AMMO_BALLISTIC
+
+/datum/ammo/bullet/front_cannon/New()
+	..()
+	accurate_range = config.short_shell_range
+	damage = config.llow_hit_damage
+	penetration = config.low_armor_penetration
+
 /*
 //================================================
 					Rocket Ammo

@@ -15,6 +15,7 @@
 	dir = 8
 	var/obj/vehicle/multitile/root/cm_transport/apc/master
 	var/side_door_busy = FALSE
+	var/locked = FALSE
 
 /obj/structure/vehicle_interior/side_door/examine(var/mob/user)
 	..()
@@ -23,9 +24,8 @@
 
 /obj/structure/vehicle_interior/side_door/proc/activate(mob/user)
 
-	if(master.z != 1)
-		if(master.special_module_type == "Command Modification")
-			master.interior_tcomms.hard_switch_off()
+	if(master.z != 1 && master.special_module_type == "Command Modification" && master.interior_tcomms.online)
+		master.interior_tcomms.hard_switch_off()
 
 	if(user.loc != master.multitile_interior_exit.loc)
 		return
@@ -56,7 +56,7 @@
 			passengers_left++
 		else
 			var/mob/living/carbon/Xenomorph/X = user
-			if(X.t_squish_level > 2)
+			if(X.t_squish_level > 1)
 				to_chat(X, "<span class='xenowarning'>The doorway is too small for you, you can't get out! You are doomed.</span>")
 				return
 
@@ -342,7 +342,6 @@
 
 /obj/structure/bed/chair/comfy/black/apc/attackby(obj/item/W, mob/user)
 	return
-
 
 
 /obj/machinery/vehicle_interior/tcomms_receiver

@@ -32,6 +32,8 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 	var/obj/structure/vehicle_interior/side_door/interior_side_door
 	var/obj/structure/vehicle_interior/cabin_door/interior_cabin_door
 	var/obj/machinery/vehicle_interior/tcomms_receiver/interior_tcomms
+	var/obj/machinery/camera/interior_cam
+	var/mob/camera_user
 
 	var/obj/machinery/camera/camera = null	//Yay! Working camera in the apc!
 
@@ -135,10 +137,10 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 	R.camera.c_tag = "Armored Personnel Carrier ¹[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
 
 	//Manually adding those hardpoints
-	R.add_hardpoint(new /obj/item/apc_hardpoint/primary/dual_cannon)
-	R.add_hardpoint(new /obj/item/apc_hardpoint/secondary/front_cannon)
-	R.add_hardpoint(new /obj/item/apc_hardpoint/support/flare_launcher)
-	R.add_hardpoint(new /obj/item/apc_hardpoint/wheels)
+	R.add_hardpoint(new /obj/item/hardpoint/apc/primary/dual_cannon)
+	R.add_hardpoint(new /obj/item/hardpoint/apc/secondary/front_cannon)
+	R.add_hardpoint(new /obj/item/hardpoint/apc/support/flare_launcher)
+	R.add_hardpoint(new /obj/item/hardpoint/apc/wheels)
 	R.update_damage_distribs()
 
 	R.healthcheck()
@@ -256,6 +258,36 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 	if(usr != gunner && usr != driver)
 		return
 	use_megaphone(usr)
+
+/obj/vehicle/multitile/root/cm_transport/apc/verb/use_interior_camera()
+	set name = "Use Interior Camera"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
+	set src in view(0)
+	if(usr != gunner && usr != driver)
+		return
+	access_camera(usr)
+
+/obj/vehicle/multitile/root/cm_transport/apc/proc/access_camera(var/mob/living/M)
+
+	if(camera_user)
+		if(camera_user == M)
+			return
+		else
+			to_chat(M, "<span class='warning'>Camera is being used by another cabin crewman!</span>")
+			return
+	else
+		camera_user = M
+		M.reset_view(interior_cam)
+		to_chat(M, "<span class='notice'>You move closer and take a look into interior camera monitor.</span>")
+		M.unset_interaction()
+		if(gunner)
+			deactivate_all_hardpoints()
+		sleep(30)
+		M.set_interaction(src)
+		M.reset_view(null)
+		camera_user = null
+		to_chat(M, "<span class='notice'>You move away from interior camera monitor.</span>")
+		return
 
 /*
 //Built in smoke launcher system verb.
@@ -549,6 +581,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 						interior_side_door.master = src
 						interior_cabin_door = locate(/obj/structure/vehicle_interior/cabin_door) in interior_area
 						interior_cabin_door.master = src
+						interior_cam = locate(/obj/machinery/camera/autoname/almayer) in interior_area
 						passengers_max = 8
 						module_role = "Doctor"
 
@@ -567,6 +600,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 						interior_side_door.master = src
 						interior_cabin_door = locate(/obj/structure/vehicle_interior/cabin_door) in interior_area
 						interior_cabin_door.master = src
+						interior_cam = locate(/obj/machinery/camera/autoname/almayer) in interior_area
 						var/obj/structure/vehicle_interior/supply_receiver/receiver = locate(/obj/structure/vehicle_interior/supply_receiver) in interior_area
 						receiver.master = src
 						var/turf/T = locate(159, 61, 3)
@@ -597,6 +631,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 						interior_tcomms = locate(/obj/machinery/vehicle_interior/tcomms_receiver) in interior_area
 						interior_tcomms.sidekick = locate(/obj/structure/vehicle_interior/tcomms_hub) in interior_area
 						interior_tcomms.master = src
+						interior_cam = locate(/obj/machinery/camera/autoname/almayer) in interior_area
 						switch(map_tag)
 							if(MAP_PRISON_STATION)
 								var/turf/T = get_turf(locate(232,104,1))
@@ -719,18 +754,18 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 		to_chat(X, "<span class='xenowarning'>[src] door is locked, you can't get in!</span>")
 		return
 
-	if(X.t_squish_level > 2)
+	if(X.t_squish_level > 1)
 		to_chat(X, "<span class='xenowarning'>[src] door way is too small for you, you can't fit through!</span>")
 		return
 
 	if(!X || X.client == null) return
 
-	visible_message(X, "<span class='notice'>[X] starts climbing into [src].</span>",
-		"<span class='xenonotice'>You start climbing into [src].</span>")
-
 	if(cabin_door_busy)
 		to_chat(X, "<span class='xenonotice'>Someone is in the doorway.</span>")
 		return
+
+	visible_message(X, "<span class='notice'>[X] starts climbing into [src].</span>",
+		"<span class='xenonotice'>You start climbing into [src].</span>")
 
 	cabin_door_busy = TRUE
 	if(!do_after(X, 20, needhand = FALSE, show_busy_icon = TRUE))

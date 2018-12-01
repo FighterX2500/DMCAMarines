@@ -117,11 +117,11 @@
 	R.load_entrance_marker(entr_mark)
 
 	//Manually adding those hardpoints
-	R.add_hardpoint(new /obj/item/hardpoint/primary/cannon/upp, R.hardpoints[HDPT_PRIMARY])
-	R.add_hardpoint(new /obj/item/hardpoint/secondary/m56cupola/upp, R.hardpoints[HDPT_SECDGUN])
-	R.add_hardpoint(new /obj/item/hardpoint/support/artillery_module/upp, R.hardpoints[HDPT_SUPPORT])
-	R.add_hardpoint(new /obj/item/hardpoint/armor/ballistic/upp, R.hardpoints[HDPT_ARMOR])
-	R.add_hardpoint(new /obj/item/hardpoint/treads/standard/upp, R.hardpoints[HDPT_TREADS])
+	R.add_hardpoint(new /obj/item/hardpoint/tank/primary/cannon/upp, R.hardpoints[HDPT_PRIMARY])
+	R.add_hardpoint(new /obj/item/hardpoint/tank/secondary/m56cupola/upp, R.hardpoints[HDPT_SECDGUN])
+	R.add_hardpoint(new /obj/item/hardpoint/tank/support/artillery_module/upp, R.hardpoints[HDPT_SUPPORT])
+	R.add_hardpoint(new /obj/item/hardpoint/tank/armor/ballistic/upp, R.hardpoints[HDPT_ARMOR])
+	R.add_hardpoint(new /obj/item/hardpoint/tank/treads/standard/upp, R.hardpoints[HDPT_TREADS])
 	R.update_damage_distribs()
 
 	R.color = "#c2b678"
@@ -520,8 +520,8 @@
 
 	//Someone remind me to fix this fucking snow code --MadSnailDisease
 	//The check is made here since the snowplow won't fit on the APC
-	if(. && istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow) && direction == dir)
-		var/obj/item/hardpoint/armor/snowplow/SP = hardpoints[HDPT_ARMOR]
+	if(. && istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/tank/armor/snowplow) && direction == dir)
+		var/obj/item/hardpoint/tank/armor/snowplow/SP = hardpoints[HDPT_ARMOR]
 		if(SP.health > 0)
 			for(var/datum/coords/C in linked_objs)
 				var/turf/T = locate(src.x + C.x_pos, src.y + C.y_pos, src.z + C.z_pos)
@@ -569,7 +569,7 @@
 
 	. = ..(deg, user, force)
 
-	if(. && istype(hardpoints[HDPT_SUPPORT], /obj/item/hardpoint/support/artillery_module) && gunner && gunner.client)
+	if(. && istype(hardpoints[HDPT_SUPPORT], /obj/item/hardpoint/tank/support/artillery_module) && gunner && gunner.client)
 		var/client/C = gunner.client
 		var/old_x = C.pixel_x
 		var/old_y = C.pixel_y
