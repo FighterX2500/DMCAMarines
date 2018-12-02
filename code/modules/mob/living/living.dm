@@ -210,10 +210,6 @@
 
 	. = ..()
 
-	if (do_bump_delay)
-		. += 10
-		do_bump_delay = 0
-
 	if (drowsyness > 0)
 		. += 6
 
@@ -260,15 +256,21 @@
 		if(isXeno(L) && !isXenoLarva(L)) //Handling pushing Xenos in general, but big Xenos and Preds can still push small Xenos
 			var/mob/living/carbon/Xenomorph/X = L
 			if((has_species(src, "Human") && X.mob_size == MOB_SIZE_BIG) || (isXeno(src) && X.mob_size == MOB_SIZE_BIG))
-				if(!isXeno(src) && client)
-					do_bump_delay = 1
 				now_pushing = 0
 				return
 
 		if(isXeno(src) && !isXenoLarva(src) && ishuman(L)) //We are a Xenomorph and pushing a human
 			var/mob/living/carbon/Xenomorph/X = src
-			if(has_species(L, "Human") && X.mob_size == MOB_SIZE_BIG)
-				L.do_bump_delay = 1
+			if(has_species(L, "Human") && (X.tier == 3 || X.tier == 0))
+				var/mob/living/carbon/human/H = L
+				var/turf/T = H.loc
+				var/facing = pick(turn(src.dir, - 90), turn(src.dir, 90))
+				T = get_step(T, facing)
+				H.throw_at(T, 1, 1, src, 0)
+				H.drop_held_item()
+				H.swap_hand()
+				H.drop_held_item()
+				H.swap_hand()
 
 		if(L.pulledby && L.pulledby != src && L.is_mob_restrained())
 			if(!(world.time % 5))

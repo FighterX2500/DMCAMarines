@@ -94,15 +94,17 @@ should be listed in the changelog upon commit though. Thanks. -->
 
 
 <div class='commit sansserif'>
-	<h2 class='date'>November 30 2018</h2>
+	<h2 class='date'>December 02 2018</h2>
 	<h3 class='author'>jeser updated:</h3>
 	<ul class='changes bgimages16'>
-		<li class=rscadd'>Модули и боеприпасы APCтеперь доступны к заказу в отделе снабжения. | APC modules and ammunition is available in Requisitions for ordering.</li>
-		<li class=rscadd'>Новый верб Use Interior Camera позволяет сидящим в кабине на пару секунд глянуть что происходит в интерьере. | New Use Interior Camera verb allows to take a quick look what is going on in interior for a few seconds for those in cabin.</li>
-		<li class=rscadd'>Станция починки модулей теперь также может чинить модули APC. | Modules repair station now also accepts APC modules.</li>
-		<li class=tweak'>Изменены углы стрельбы оружия APC, изменены характеристики фронтальной пушки. | Changed arc of fire for APC weapons, fronal cannon has new stats.</li>
-		<li class=wip'>Экспериментальное изменение в интерьере APC касательно телекоммов во всех модулях. | Experimental change in APC interior regarding tcomms of all modules.</li>
-		<li class=bugfix'>Исправлен баг с возвращением модулей в танк вендор. | FIxed bug with exchanging module taken in tank vendor.</li>
+		<li class='rscadd'>Добавлены новые варианты авто-ответов. | New auto-response vairants were added.</li>
+		<li class='bugfix'>Исправлены ссылки в авто-ответах. | Fixed links in auto-responses.</li>
+		<li class='wip'>Убрана абузная так называемая "антибодиблок" система, вместо нее введена новая экспериментальная механика только для Т3 и Королевы. | So called "antibodyblock" system that was abused by aliens got removed. Instead, new experimental system was implemented, that works only for T3 and the Queen.</li>
+		<li class='tweak'>Немного подкорректированы эффекты для мобов в интерьере при сильном внешнем воздействии на APC. | Effects on mobs in interior due heavy damage applied to APC were tweaked.</li>
+		<li class='rcadd'>Из APC теперь нельзя вылезать до полной остановки. | Can't exit APC until it's fully stoped.</li>
+		<li class='bugfix'>Исправлена возможность крупных ксенов залезать в APC.| Fixed big aliens being able to enter APC.</li>
+		<li class='bugfix'>Исправлены стены у коммандной модификации APC. | Fixed walls for APC command modification.</li>
+		<li class='bugfix'>Исправлен выход из APC в стену во время движения. | Fixed exiting APC into a wall in movement.</li>
 	</ul>
 </div>
 
@@ -111,13 +113,27 @@ should be listed in the changelog upon commit though. Thanks. -->
 	<h2 class='date'>November 30 2018</h2>
 	<h3 class='author'>jeser updated:</h3>
 	<ul class='changes bgimages16'>
-		<li class=rscadd'>Добавлен верб для выхода из APC, появляющийся во вкладке Vehicle, когда моб подходит вплотную к боковой двери. Лярвы так же могут им пользоваться.  | Added new veb to exit APC, that will appear in new Vehicle tab once mob will be rightin front of side door. Larvas also can use it to escape.</li>
-		<li class=rscadd'>Для того, чтобы зайти гостом в интерьер APC, необходимо быть на расстоянии не больше 1 тайла от APC и нажать на него. Для выхода из интерьера необходимо нажать на боковую дверь, будучи недалеко от нее. | In order to enter APC interior as a ghost, you need to be within 1 tile from APC and click on APC. To exit interior, click on side door, while being close to it.</li>
-		<li class=bugfix'>Исправлено отсутствие замедления при сломанных колесах APC. | Fixed broken wheels not affecting APC speed.</li>
-		<li class=bugfix'>Исправлена возможность синтетика стрелять из оржия APC. | Fixed synthetic being able to use APC weaponry.</li>
-		<li class=bugfix'>Исправлено поведение при поломке всех модулей APC. | Fixed APC behaviour in case all module being broken.</li>
-		<li class=bugfix'>Исправлено многократный выбор модуля при нескольких нажатиях на APC. | Fixed multiple choice of modules when clicking on APC several times.</li>
-		<li class=bugfix'>Исправлены настройки доступа в вендорах внутри APC. | Fixed accesses for vendors in APC.</li>
+		<li class='rscadd'>Модули и боеприпасы APCтеперь доступны к заказу в отделе снабжения. | APC modules and ammunition is available in Requisitions for ordering.</li>
+		<li class='rscadd'>Новый верб Use Interior Camera позволяет сидящим в кабине на пару секунд глянуть что происходит в интерьере. | New Use Interior Camera verb allows to take a quick look what is going on in interior for a few seconds for those in cabin.</li>
+		<li class='rscadd'>Станция починки модулей теперь также может чинить модули APC. | Modules repair station now also accepts APC modules.</li>
+		<li class='tweak'>Изменены углы стрельбы оружия APC, изменены характеристики фронтальной пушки. | Changed arc of fire for APC weapons, fronal cannon has new stats.</li>
+		<li class='wip'>Экспериментальное изменение в интерьере APC касательно телекоммов во всех модулях. | Experimental change in APC interior regarding tcomms of all modules.</li>
+		<li class='bugfix'>Исправлен баг с возвращением модулей в танк вендор. | FIxed bug with exchanging module taken in tank vendor.</li>
+	</ul>
+</div>
+
+
+<div class='commit sansserif'>
+	<h2 class='date'>November 30 2018</h2>
+	<h3 class='author'>jeser updated:</h3>
+	<ul class='changes bgimages16'>
+		<li class='rscadd'>Добавлен верб для выхода из APC, появляющийся во вкладке Vehicle, когда моб подходит вплотную к боковой двери. Лярвы так же могут им пользоваться.  | Added new veb to exit APC, that will appear in new Vehicle tab once mob will be rightin front of side door. Larvas also can use it to escape.</li>
+		<li class='rscadd'>Для того, чтобы зайти гостом в интерьер APC, необходимо быть на расстоянии не больше 1 тайла от APC и нажать на него. Для выхода из интерьера необходимо нажать на боковую дверь, будучи недалеко от нее. | In order to enter APC interior as a ghost, you need to be within 1 tile from APC and click on APC. To exit interior, click on side door, while being close to it.</li>
+		<li class='bugfix'>Исправлено отсутствие замедления при сломанных колесах APC. | Fixed broken wheels not affecting APC speed.</li>
+		<li class='bugfix'>Исправлена возможность синтетика стрелять из оржия APC. | Fixed synthetic being able to use APC weaponry.</li>
+		<li class='bugfix'>Исправлено поведение при поломке всех модулей APC. | Fixed APC behaviour in case all module being broken.</li>
+		<li class='bugfix'>Исправлено многократный выбор модуля при нескольких нажатиях на APC. | Fixed multiple choice of modules when clicking on APC several times.</li>
+		<li class='bugfix'>Исправлены настройки доступа в вендорах внутри APC. | Fixed accesses for vendors in APC.</li>
 		<li class='rscadd'>Был реализован функционал командного модуля и был активирован его выбор для ТСов. | Tcomms module was implemented and Command Modification is available for choosing now.</li>
 		<li class='rscadd'>Были добавлены эффекты для мобов в интерьере при сильных взрывах рядом с APC, попаданиях в него ракет и снарядов, а так же при таране крашером. Ездить непристегнутым - плохо! | New effects for mobs in APC interior were implemented for next situations: powerful explosions near APC, hitting APC with rockets, cannon shells and crusher charing into APC. Drive buckled, drive safely.</li>
 		<li class='tweak'>В течении 20 минут серверного времени можно вернуть взятые танковые модули и взять другой модуль из этой же категории. | During first 20 minutes of server time you can exchange taken tank hardpoint modules for other of same category.</li>

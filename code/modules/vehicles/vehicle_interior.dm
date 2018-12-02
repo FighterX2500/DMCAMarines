@@ -31,11 +31,15 @@
 		return
 
 	if(master.tile_blocked_check(get_turf(master.entrance)))
-		to_chat(user, "<span class='notice'>Something blocks the door and you can't get out.</span>")
+		to_chat(user, "<span class='warning'>Something blocks the door and you can't get out!</span>")
+		return
+
+	if(world.time < master.next_move)
+		to_chat(user, "<span class='warning'>[master] hasn't fully stopped yet!</span>")
 		return
 
 	if(side_door_busy)
-		to_chat(user, "<span class='notice'>Someone is in the doorway.</span>")
+		to_chat(user, "<span class='warning'>Someone is in the doorway.</span>")
 		return
 
 	var/remove_module_role_entered = FALSE
@@ -56,7 +60,7 @@
 			passengers_left++
 		else
 			var/mob/living/carbon/Xenomorph/X = user
-			if(X.t_squish_level > 1)
+			if(X.t_squish_level > 2 || X.tier > 2)
 				to_chat(X, "<span class='xenowarning'>The doorway is too small for you, you can't get out! You are doomed.</span>")
 				return
 
@@ -115,6 +119,14 @@
 	if(!do_after(user, 15, needhand = FALSE, show_busy_icon = TRUE))
 		to_chat(user, "<span class='notice'>Something interrupted you while getting out.</span>")
 		side_door_busy = FALSE
+		return
+
+	if(world.time < master.next_move)
+		to_chat(user, "<span class='warning'>[master] hasn't fully stopped yet!</span>")
+		return
+
+	if(master.tile_blocked_check(get_turf(master.entrance)))
+		to_chat(user, "<span class='warning'>Something blocks the door and you can't get out!</span>")
 		return
 
 	if(user.blinded || user.lying || user.buckled || user.anchored)

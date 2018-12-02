@@ -1039,16 +1039,18 @@ var/list/apc_dmg_distributions = list(
 	for(var/atom/A in T.contents)
 		if(A.density)
 			var/mob/living/carbon/M = A
-			if(istype(M) && !(isXenoQueen(M) || isXenoCrusher(M)))
-				return FALSE
-			else
-				return TRUE
+			if(istype(M))
+				if(isXenoQueen(M) || isXenoCrusher(M))
+					return TRUE
+				else
+					return FALSE
 			if(istype(A, /obj/structure))
 				var/obj/structure/S = A
 				if(S.climbable)
 					return FALSE
 				else
 					return TRUE
+			return TRUE
 	return FALSE
 
 /obj/vehicle/multitile/root/cm_transport/proc/handle_interior_entrance(var/mob/M)

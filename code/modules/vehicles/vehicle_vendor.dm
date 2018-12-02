@@ -406,7 +406,7 @@
 			prod_available = TRUE
 
 								//place in main list, name with Relative Weight, available or not, color.
-		display_list += list(list("prod_index" = i, "prod_name" = p_name, "prod_available" = prod_available, "prod_color" = myprod[5]))
+		display_list += list(list("prod_index" = i, "prod_name" = p_name, "prod_available" = prod_available, "prod_color" = myprod[4]))
 
 
 	var/list/data = list(
@@ -417,7 +417,7 @@
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 
 	if (!ui)
-		ui = new(user, src, ui_key, "tank_vendor.tmpl", name , 600, 700)
+		ui = new(user, src, ui_key, "apc_vendor.tmpl", name , 600, 700)
 		ui.set_initial_data(data)
 		ui.open()
 		ui.set_auto_update(1)

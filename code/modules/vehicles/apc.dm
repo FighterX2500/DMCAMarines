@@ -278,11 +278,11 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 	else
 		camera_user = M
 		M.reset_view(interior_cam)
-		to_chat(M, "<span class='notice'>You move closer and take a look into interior camera monitor.</span>")
+		to_chat(M, "<span class='notice'>You move closer and take a quick look into interior camera monitor.</span>")
 		M.unset_interaction()
 		if(gunner)
 			deactivate_all_hardpoints()
-		sleep(30)
+		sleep(10)
 		M.set_interaction(src)
 		M.reset_view(null)
 		camera_user = null
@@ -754,7 +754,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 		to_chat(X, "<span class='xenowarning'>[src] door is locked, you can't get in!</span>")
 		return
 
-	if(X.t_squish_level > 1)
+	if(X.t_squish_level > 2 || X.tier > 2)
 		to_chat(X, "<span class='xenowarning'>[src] door way is too small for you, you can't fit through!</span>")
 		return
 
@@ -844,13 +844,14 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 				if(1)
 					playsound(interior_side_door,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
 					shake_camera(M, 10, 1)
-					if(!M.buckled && prob(25))
+					if(!M.buckled && prob(35))
 						M.KnockDown(1)
+						M.apply_damage(rand(0, 1), BRUTE)
 				if(2)
 					playsound(interior_side_door, pick('sound/effects/Explosion2.ogg', 'sound/effects/Explosion1.ogg'), vol = 20, sound_range = 10)
 					playsound(interior_side_door,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
 					shake_camera(M, 20, 1)
-					if(!M.buckled && prob(50))
+					if(!M.buckled && prob(65))
 						M.KnockDown(2)
 					M.apply_damage(rand(0, 2), BRUTE)
 					M.apply_damage(rand(0, 2), BURN)
@@ -858,7 +859,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 					playsound(interior_side_door, pick('sound/effects/Explosion2.ogg', 'sound/effects/Explosion1.ogg'), vol = 20, sound_range = 10)
 					playsound(interior_side_door,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
 					shake_camera(M, 30, 1)
-					if(!M.buckled && prob(75))
+					if(!M.buckled && prob(85))
 						M.KnockDown(3)
 					M.apply_damage(rand(2, 4), BRUTE)
 					M.apply_damage(rand(2, 4), BURN)
@@ -868,8 +869,10 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 					shake_camera(M, 40, 1)
 					if(!M.buckled)
 						M.KnockDown(4)
-					M.apply_damage(rand(4, 6), BRUTE)
-					M.apply_damage(rand(4, 6), BURN)
+					else
+						M.KnockDown(2)
+					M.apply_damage(rand(3, 7), BRUTE)
+					M.apply_damage(rand(3, 7), BURN)
 
 
 /obj/vehicle/multitile/hitbox/cm_transport/apc/Bump(var/atom/A)
