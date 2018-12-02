@@ -2,11 +2,7 @@
 All of the hardpoints, for the tank and APC
 */
 
-
 /obj/item/hardpoint
-
-	var/slot //What slot do we attach to?
-	var/obj/vehicle/multitile/root/cm_armored/owner //Who do we work for?
 
 	icon = 'icons/obj/hardpoint_modules.dmi'
 	icon_state = "tires" //Placeholder
@@ -14,7 +10,6 @@ All of the hardpoints, for the tank and APC
 	var/maxhealth = 0
 	health = 0
 	w_class = 15
-	var/hp_weight = 1	//this is new variable for weight of every single module as a part of new tank weight system
 
 	//If we use ammo, put it here
 	var/obj/item/ammo_magazine/ammo_type = null //weapon ammo type to check with the magazine type we are trying to add
@@ -29,41 +24,52 @@ All of the hardpoints, for the tank and APC
 	var/point_cost = 0
 
 	var/list/clips = list()
-	var/max_clips = 1 //1 so they can reload their backups and actually reload once
+	var/max_clips = 1
 
 //changed how ammo works. No more AMMO obj, we take what we need straight from first obj in CLIPS list (ex-backup_clips) and work with it.
 //Every ammo mag now has CURRENT_AMMO value, also it is possible now to unload ALL mags from the gun, not only backup clips.
 
+
+/obj/item/hardpoint/tank
+
+	var/slot //What slot do we attach to?
+	var/obj/vehicle/multitile/root/cm_armored/owner //Who do we work for?
+
+	icon = 'icons/obj/hardpoint_modules.dmi'
+	icon_state = "tires" //Placeholder
+
+	var/hp_weight = 1	//this is new variable for weight of every single module as a part of new tank weight system
+
 //Called on attaching, for weapons sets the actual cooldowns
-/obj/item/hardpoint/proc/apply_buff()
+/obj/item/hardpoint/tank/proc/apply_buff()
 	return
 
 //Called when removing, resets cooldown lengths, move delay, etc
-/obj/item/hardpoint/proc/remove_buff()
+/obj/item/hardpoint/tank/proc/remove_buff()
 	return
 
 //Called when you want to activate the hardpoint, such as a gun
 //This can also be used for some type of temporary buff, up to you
-/obj/item/hardpoint/proc/active_effect(var/turf/T)
+/obj/item/hardpoint/tank/proc/active_effect(var/turf/T)
 	return
 
-/obj/item/hardpoint/proc/deactivate()
+/obj/item/hardpoint/tank/proc/deactivate()
 	var/obj/vehicle/multitile/root/cm_armored/tank/C = owner
 	if(C.gunner.client)
 		C.gunner.client.mouse_pointer_icon = initial(C.gunner.client.mouse_pointer_icon)
 	return
 
-/obj/item/hardpoint/proc/livingmob_interact(var/mob/living/M)
+/obj/item/hardpoint/tank/proc/livingmob_interact(var/mob/living/M)
 	return
 
 //If our cooldown has elapsed
-/obj/item/hardpoint/proc/is_ready()
+/obj/item/hardpoint/tank/proc/is_ready()
 	if(owner.z == 2 || owner.z == 3)
 		to_chat(usr, "<span class='warning'>Don't fire here, you'll blow a hole in the ship!</span>")
 		return 0
 	return 1
 
-/obj/item/hardpoint/proc/try_add_clip(var/obj/item/ammo_magazine/A, var/mob/user)
+/obj/item/hardpoint/tank/proc/try_add_clip(var/obj/item/ammo_magazine/A, var/mob/user)
 
 	if(max_clips == 0)
 		to_chat(user, "<span class='warning'>This module does not have room for additional ammo.</span>")
@@ -91,7 +97,7 @@ All of the hardpoints, for the tank and APC
 	return 1
 
 //Returns the image object to overlay onto the root object
-/obj/item/hardpoint/proc/get_icon_image(var/x_offset, var/y_offset, var/new_dir)
+/obj/item/hardpoint/tank/proc/get_icon_image(var/x_offset, var/y_offset, var/new_dir)
 
 	var/icon_suffix = "NS"
 	var/icon_state_suffix = "0"
@@ -106,7 +112,7 @@ All of the hardpoints, for the tank and APC
 
 	return image(icon = "[disp_icon]_[icon_suffix]", icon_state = "[disp_icon_state]_[icon_state_suffix]", pixel_x = x_offset, pixel_y = y_offset)
 
-/obj/item/hardpoint/proc/firing_arc(var/atom/A)
+/obj/item/hardpoint/tank/proc/firing_arc(var/atom/A)
 	var/turf/T = get_turf(A)
 	var/dx = T.x - owner.x
 	var/dy = T.y - owner.y
@@ -125,25 +131,25 @@ All of the hardpoints, for the tank and APC
 	return abs(angle) <= max_angle
 
 //Delineating between slots
-/obj/item/hardpoint/primary
+/obj/item/hardpoint/tank/primary
 	slot = HDPT_PRIMARY
 	is_activatable = 1
 
-/obj/item/hardpoint/secondary
+/obj/item/hardpoint/tank/secondary
 	slot = HDPT_SECDGUN
 	is_activatable = 1
 
-/obj/item/hardpoint/support
+/obj/item/hardpoint/tank/support
 	slot = HDPT_SUPPORT
 
-/obj/item/hardpoint/armor
+/obj/item/hardpoint/tank/armor
 	slot = HDPT_ARMOR
 
-/obj/item/hardpoint/treads
+/obj/item/hardpoint/tank/treads
 	slot = HDPT_TREADS
 
 //examine() that tells the player condition of the module
-/obj/item/hardpoint/examine(var/mob/user)
+/obj/item/hardpoint/tank/examine(var/mob/user)
 	..()
 	if((user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
 		var/cond = round(health * 100 / maxhealth)
@@ -158,7 +164,7 @@ All of the hardpoints, for the tank and APC
 // USCM
 ////////////////////
 
-/obj/item/hardpoint/primary/cannon
+/obj/item/hardpoint/tank/primary/cannon
 	name = "M5 LTB Cannon"
 	desc = "A primary 86mm cannon for tank that shoots explosive rounds."
 
@@ -206,7 +212,7 @@ All of the hardpoints, for the tank and APC
 		playsound(get_turf(src), pick('sound/weapons/tank_cannon_fire1.ogg', 'sound/weapons/tank_cannon_fire2.ogg'), 60, 1)
 		A.current_rounds--
 
-/obj/item/hardpoint/primary/autocannon
+/obj/item/hardpoint/tank/primary/autocannon
 	name = "M21 Autocannon"
 	desc = "A primary light autocannon for tank. Designed for light scout tank. Shoots 30mm light HE rounds. Fire rate was reduced with adding IFF support."
 
@@ -252,7 +258,7 @@ All of the hardpoints, for the tank and APC
 		playsound(get_turf(src), 'sound/weapons/tank_autocannon_fire1.ogg', 60, 1)
 		A.current_rounds--
 
-/obj/item/hardpoint/primary/minigun
+/obj/item/hardpoint/tank/primary/minigun
 	name = "M74 LTAA-AP Minigun"
 	desc = "It's a minigun, what is not clear? Just go pew-pew-pew."
 
@@ -332,7 +338,7 @@ All of the hardpoints, for the tank and APC
 ////////////////////
 // UPP // START
 ////////////////////
-/obj/item/hardpoint/primary/cannon/upp
+/obj/item/hardpoint/tank/primary/cannon/upp
 	name = "Type 43 Cannon"
 	desc = "A primary 86mm cannon for tank that shoots explosive rounds."
 	point_cost = 0
@@ -355,7 +361,7 @@ All of the hardpoints, for the tank and APC
 		playsound(get_turf(src), pick('sound/weapons/tank_cannon_fire1.ogg', 'sound/weapons/tank_cannon_fire2.ogg'), 60, 1)
 		A.current_rounds--
 
-/obj/item/hardpoint/primary/autocannon/upp
+/obj/item/hardpoint/tank/primary/autocannon/upp
 	name = "Type 41 Autocannon"
 	desc = "A primary light autocannon for tank. Designed for light scout tank. Shoots 30mm HE rounds."
 	point_cost = 0
@@ -388,7 +394,7 @@ All of the hardpoints, for the tank and APC
 /////////////////////
 // USCM // START
 /////////////////////
-/obj/item/hardpoint/secondary/flamer
+/obj/item/hardpoint/tank/secondary/flamer
 	name = "M7 \"Dragon\" Flamethrower Unit"
 	desc = "A secondary weapon for tank. Don't let it fool you, it's not your ordinary flamer, this thing literally shoots fireballs. No kidding."
 
@@ -436,7 +442,7 @@ All of the hardpoints, for the tank and APC
 		playsound(get_turf(src), 'sound/weapons/tank_flamethrower.ogg', 60, 1)
 		A.current_rounds--
 
-/obj/item/hardpoint/secondary/towlauncher
+/obj/item/hardpoint/tank/secondary/towlauncher
 	name = "M8-2 TOW Launcher"
 	desc = "A secondary weapon for tank that shoots powerful AP rockets. Deals heavy damage, but only on direct hits."
 
@@ -483,7 +489,7 @@ All of the hardpoints, for the tank and APC
 		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
 		A.current_rounds--
 
-/obj/item/hardpoint/secondary/m56cupola
+/obj/item/hardpoint/tank/secondary/m56cupola
 	name = "M56 \"Cupola\""
 	desc = "A secondary weapon for tank. Refitted M56 has higher accuracy and rate of fire. Compatible with IFF system."
 
@@ -531,7 +537,7 @@ All of the hardpoints, for the tank and APC
 		playsound(get_turf(src), pick(list('sound/weapons/gun_smartgun1.ogg', 'sound/weapons/gun_smartgun2.ogg', 'sound/weapons/gun_smartgun3.ogg')), 60, 1)
 		A.current_rounds--
 
-/obj/item/hardpoint/secondary/grenade_launcher
+/obj/item/hardpoint/tank/secondary/grenade_launcher
 	name = "M92 Grenade Launcher"
 	desc = "A secondary weapon for tank that shoots HEDP grenades further than you see. No, seriously, that's how it works."
 
@@ -584,7 +590,7 @@ All of the hardpoints, for the tank and APC
 // UPP // START
 /////////////////////
 
-/obj/item/hardpoint/secondary/flamer/upp
+/obj/item/hardpoint/tank/secondary/flamer/upp
 	name = "Type 04 Flamethrower"
 	desc = "A secondary weapon for tank. Don't let it fool you, it's not your ordinary flamer, this thing literally shoots fireballs. Not kidding."
 	point_cost = 0
@@ -608,7 +614,7 @@ All of the hardpoints, for the tank and APC
 		playsound(get_turf(src), 'sound/weapons/tank_flamethrower.ogg', 60, 1)
 		A.current_rounds--
 
-/obj/item/hardpoint/secondary/towlauncher/upp
+/obj/item/hardpoint/tank/secondary/towlauncher/upp
 	name = "Type 05 PTRK"
 	desc = "A secondary weapon for tank that shoots powerful AP rockets. Deals heavy damage, but only on direct hits."
 	point_cost = 0
@@ -631,7 +637,7 @@ All of the hardpoints, for the tank and APC
 		P.fire_at(T, owner, src, P.ammo.max_range, P.ammo.shell_speed)
 		A.current_rounds--
 
-/obj/item/hardpoint/secondary/m56cupola/upp
+/obj/item/hardpoint/tank/secondary/m56cupola/upp
 	name = "Type 01 PKT"
 	desc = "A secondary weapon for tank. Heavy-hitting machine gun."
 	point_cost = 0
@@ -655,7 +661,7 @@ All of the hardpoints, for the tank and APC
 		playsound(get_turf(src), pick(list('sound/weapons/gun_smartgun1.ogg', 'sound/weapons/gun_smartgun2.ogg', 'sound/weapons/gun_smartgun3.ogg')), 60, 1)
 		A.current_rounds--
 
-/obj/item/hardpoint/secondary/grenade_launcher/upp
+/obj/item/hardpoint/tank/secondary/grenade_launcher/upp
 	name = "Type 02 AGS"
 	point_cost = 0
 	color = "#c2b678"
@@ -688,7 +694,7 @@ All of the hardpoints, for the tank and APC
 // USCM // START
 ///////////////////
 //Slauncher was built in tank.
-/obj/item/hardpoint/support/smoke_launcher
+/obj/item/hardpoint/tank/support/smoke_launcher
 	name = "M75 Smoke Deploy System"
 	desc = "Launches smoke forward to obscure vision."
 
@@ -753,7 +759,7 @@ All of the hardpoints, for the tank and APC
 
 		return image(icon = "[disp_icon]_[icon_suffix]", icon_state = "[disp_icon_state]_[icon_state_suffix]", pixel_x = x_offset, pixel_y = y_offset)
 
-/obj/item/hardpoint/support/weapons_sensor
+/obj/item/hardpoint/tank/support/weapons_sensor
 	name = "M40 Integrated Weapons Sensor Array"
 	desc = "Improves the accuracy and fire rate of all installed weapons. Actually more useful than you may think."
 
@@ -785,7 +791,7 @@ All of the hardpoints, for the tank and APC
 		owner.misc_ratios["secd_acc"] = 1.0
 		owner.misc_ratios["supp_acc"] = 1.0
 
-/obj/item/hardpoint/support/overdrive_enhancer
+/obj/item/hardpoint/tank/support/overdrive_enhancer
 	name = "M103 Overdrive Enhancer"
 	desc = "Pimp your ride. Increases the movement and turn speed of the vehicle it's attached to."
 
@@ -805,7 +811,7 @@ All of the hardpoints, for the tank and APC
 	remove_buff()
 		owner.misc_ratios.["OD_buff"] = FALSE
 
-/obj/item/hardpoint/support/artillery_module
+/obj/item/hardpoint/tank/support/artillery_module
 	name = "M6 Artillery Module"
 	desc = "A bunch of enhanced optics and targeting computers. Greatly increases range of view of a gunner. Also adds structures visibility even in complete darkness."
 
@@ -878,12 +884,12 @@ All of the hardpoints, for the tank and APC
 // UPP // START
 ///////////////////
 
-/obj/item/hardpoint/support/weapons_sensor/upp
+/obj/item/hardpoint/tank/support/weapons_sensor/upp
 	name = "Type 31 Weapons Modernisation Kit"
 	point_cost = 0
 	color = "#c2b678"
 
-/obj/item/hardpoint/support/artillery_module/upp
+/obj/item/hardpoint/tank/support/artillery_module/upp
 	name = "Type 33 Artillery Module"
 	point_cost = 0
 	color = "#c2b678"
@@ -896,7 +902,7 @@ All of the hardpoints, for the tank and APC
 // ARMOR SLOTS // START
 /////////////////
 
-/obj/item/hardpoint/armor/ballistic
+/obj/item/hardpoint/tank/armor/ballistic
 	name = "M65-B Armor"
 	desc = "Standard tank armor. Middle ground in everything, from damage resistance to weight."
 
@@ -924,7 +930,7 @@ All of the hardpoints, for the tank and APC
 		owner.dmg_multipliers["blunt"] = 0.9
 		owner.dmg_multipliers["bullet"] = 0.67
 
-/obj/item/hardpoint/armor/caustic
+/obj/item/hardpoint/tank/armor/caustic
 	name = "M70 \"Caustic\" Armor"
 	desc = "Special set of tank armor. Purpose: reduce vehicle parts degradation in hostile surroundings on planets with unstable and highly corrosive atmosphere."
 
@@ -950,7 +956,7 @@ All of the hardpoints, for the tank and APC
 		owner.dmg_multipliers["explosive"] = 1.0
 		owner.dmg_multipliers["bullet"] = 0.67
 
-/obj/item/hardpoint/armor/concussive
+/obj/item/hardpoint/tank/armor/concussive
 	name = "M66-LC Armor"
 	desc = "Light armor, designed for recon type of tank loadouts. Offers less protection in exchange for better maneuverability. After initial tests resistance to blunt damage was increased due to drivers driving into walls."
 
@@ -979,7 +985,7 @@ All of the hardpoints, for the tank and APC
 		owner.dmg_multipliers["blunt"] = 0.9
 		owner.dmg_multipliers["bullet"] = 0.67
 
-/obj/item/hardpoint/armor/paladin
+/obj/item/hardpoint/tank/armor/paladin
 	name = "M90 \"Paladin\" Armor"
 	desc = "Heavy armor for heavy tank. Converts your tank into what an essentially is a slowly moving bunker. High resistance to almost all types of damage."
 
@@ -1007,7 +1013,7 @@ All of the hardpoints, for the tank and APC
 		owner.dmg_multipliers["blunt"] = 0.9
 		owner.dmg_multipliers["bullet"] = 0.67
 
-/obj/item/hardpoint/armor/snowplow
+/obj/item/hardpoint/tank/armor/snowplow
 	name = "M37 \"Snowplow\" Armor"
 	desc = "Special set of tank armor, equipped with multipurpose front \"snowplow\". Designed to remove snow and demine minefields. As a result armor has high explosion damage resistance in front, while offering low protection from other types of damage."
 
@@ -1048,7 +1054,7 @@ All of the hardpoints, for the tank and APC
 // UPP // START
 /////////////////
 
-/obj/item/hardpoint/armor/ballistic/upp
+/obj/item/hardpoint/tank/armor/ballistic/upp
 	name = "Type 50 MBT Armor"
 	desc = "Standard UPP tank armor. Offers some decent explosion protection."
 	point_cost = 0
@@ -1072,7 +1078,7 @@ All of the hardpoints, for the tank and APC
 // TREAD SLOTS // START
 /////////////////
 
-/obj/item/hardpoint/treads/standard
+/obj/item/hardpoint/tank/treads/standard
 	name = "M2 Tank Treads"
 	desc = "Standard tank treads. Suprisingly, greatly improves vehicle moving speed."
 
@@ -1090,7 +1096,7 @@ All of the hardpoints, for the tank and APC
 		return null //Handled in update_icon()
 
 
-/obj/item/hardpoint/treads/heavy
+/obj/item/hardpoint/tank/treads/heavy
 	name = "M2-R Tank Treads"
 	desc = "Heavily reinforced tank treads. Three times heavier but can endure more damage. Has special protective layer akin to M70 armor."
 
@@ -1108,7 +1114,7 @@ All of the hardpoints, for the tank and APC
 		return null //Handled in update_icon()
 
 //repairing treads in field
-/obj/item/hardpoint/treads/attackby(var/obj/item/O, var/mob/user)
+/obj/item/hardpoint/tank/treads/attackby(var/obj/item/O, var/mob/user)
 
 	//Need to the what the hell you're doing
 	if(!user.mind || !user.mind.cm_skills || user.mind.cm_skills.engineer < SKILL_ENGINEER_ENGI)
@@ -1150,7 +1156,7 @@ All of the hardpoints, for the tank and APC
 // UPP // START
 /////////////////
 
-/obj/item/hardpoint/treads/standard/upp
+/obj/item/hardpoint/tank/treads/standard/upp
 	name = "Type 07 Tank Treads"
 	desc = "Standard UPP tank treads. They look quite tough."
 	point_cost = 0
@@ -1182,7 +1188,7 @@ All of the hardpoints, for the tank and APC
 	current_rounds = 4
 	max_rounds = 4
 	point_cost = 0
-	gun_type = /obj/item/hardpoint/primary/cannon
+	gun_type = /obj/item/hardpoint/tank/primary/cannon
 
 	update_icon()
 		icon_state = "ltbcannon_[current_rounds]"
@@ -1197,7 +1203,7 @@ All of the hardpoints, for the tank and APC
 	current_rounds = 40
 	max_rounds = 40
 	point_cost = 0
-	gun_type = /obj/item/hardpoint/primary/autocannon
+	gun_type = /obj/item/hardpoint/tank/primary/autocannon
 
 	update_icon()
 		if(current_rounds >0)
@@ -1215,7 +1221,7 @@ All of the hardpoints, for the tank and APC
 	current_rounds = 300
 	max_rounds = 300
 	point_cost = 0
-	gun_type = /obj/item/hardpoint/primary/minigun
+	gun_type = /obj/item/hardpoint/tank/primary/minigun
 
 
 /obj/item/ammo_magazine/tank/flamer
@@ -1228,7 +1234,7 @@ All of the hardpoints, for the tank and APC
 	current_rounds = 120
 	max_rounds = 120
 	point_cost = 0
-	gun_type = /obj/item/hardpoint/secondary/flamer
+	gun_type = /obj/item/hardpoint/tank/secondary/flamer
 
 
 /obj/item/ammo_magazine/tank/towlauncher
@@ -1241,7 +1247,7 @@ All of the hardpoints, for the tank and APC
 	current_rounds = 3
 	max_rounds = 3
 	point_cost = 0
-	gun_type = /obj/item/hardpoint/secondary/towlauncher
+	gun_type = /obj/item/hardpoint/tank/secondary/towlauncher
 
 
 /obj/item/ammo_magazine/tank/m56_cupola
@@ -1254,7 +1260,7 @@ All of the hardpoints, for the tank and APC
 	current_rounds = 500
 	max_rounds = 500
 	point_cost = 0
-	gun_type = /obj/item/hardpoint/secondary/m56cupola
+	gun_type = /obj/item/hardpoint/tank/secondary/m56cupola
 
 
 /obj/item/ammo_magazine/tank/tank_glauncher
@@ -1267,7 +1273,7 @@ All of the hardpoints, for the tank and APC
 	current_rounds = 20
 	max_rounds = 20
 	point_cost = 0
-	gun_type = /obj/item/hardpoint/secondary/grenade_launcher
+	gun_type = /obj/item/hardpoint/tank/secondary/grenade_launcher
 
 	update_icon()
 		if(current_rounds >= max_rounds)
@@ -1288,7 +1294,7 @@ All of the hardpoints, for the tank and APC
 	current_rounds = 10
 	max_rounds = 10
 	point_cost = 0
-	//gun_type = /obj/item/hardpoint/support/smoke_launcher
+	//gun_type = /obj/item/hardpoint/tank/support/smoke_launcher
 
 	update_icon()
 		icon_state = "slauncher_[current_rounds <= 0 ? "0" : "1"]"
@@ -1300,39 +1306,39 @@ All of the hardpoints, for the tank and APC
 
 /obj/item/ammo_magazine/tank/ltb_cannon/upp
 	name = "Type 43 Cannon Magazine"
-	gun_type = /obj/item/hardpoint/primary/cannon/upp
+	gun_type = /obj/item/hardpoint/tank/primary/cannon/upp
 	point_cost = 0
 	color = "#c2b678"
 
 /obj/item/ammo_magazine/tank/autocannon/upp
 	name = "Type 41 Autocannon Magazine"
 	default_ammo = /datum/ammo/rocket/autocannon/upp
-	gun_type = /obj/item/hardpoint/primary/autocannon/upp
+	gun_type = /obj/item/hardpoint/tank/primary/autocannon/upp
 	point_cost = 0
 	color = "#c2b678"
 
 /obj/item/ammo_magazine/tank/m56_cupola/upp
 	name = "Type 01 PKT Magazine"
 	default_ammo = /datum/ammo/bullet/smartgun/lethal
-	gun_type = /obj/item/hardpoint/secondary/m56cupola/upp
+	gun_type = /obj/item/hardpoint/tank/secondary/m56cupola/upp
 	point_cost = 0
 	color = "#c2b678"
 
 /obj/item/ammo_magazine/tank/flamer/upp
 	name = "Type 04 Flamethrower Tank"
-	gun_type = /obj/item/hardpoint/secondary/flamer/upp
+	gun_type = /obj/item/hardpoint/tank/secondary/flamer/upp
 	point_cost = 0
 	color = "#c2b678"
 
 /obj/item/ammo_magazine/tank/towlauncher/upp
 	name = "Type 05 PTRK Magazine"
-	gun_type = /obj/item/hardpoint/secondary/towlauncher/upp
+	gun_type = /obj/item/hardpoint/tank/secondary/towlauncher/upp
 	point_cost = 0
 	color = "#c2b678"
 
 /obj/item/ammo_magazine/tank/tank_glauncher/upp
 	name = "Type 02 AGS Magazine"
-	gun_type = /obj/item/hardpoint/secondary/grenade_launcher/upp
+	gun_type = /obj/item/hardpoint/tank/secondary/grenade_launcher/upp
 	point_cost = 0
 	color = "#c2b678"
 ///////////////
@@ -1345,7 +1351,7 @@ All of the hardpoints, for the tank and APC
 //							APC HARDPOINTS // START
 ////////////////////////////////////////////////////////////////////////////
 
-/obj/item/apc_hardpoint
+/obj/item/hardpoint/apc
 
 	var/slot //What slot do we attach to?
 	var/obj/vehicle/multitile/root/cm_transport/owner //Who do we work for?
@@ -1353,58 +1359,36 @@ All of the hardpoints, for the tank and APC
 	icon = 'icons/obj/hardpoint_modules.dmi'
 	icon_state = "tires" //Placeholder
 
-	var/maxhealth = 0
-	health = 0
-	w_class = 15
-
-	//If we use ammo, put it here
-	var/obj/item/ammo_magazine/ammo_type = null //weapon ammo type to check with the magazine type we are trying to add
-
-	//Strings, used to get the overlay for the armored vic
-	var/disp_icon //This also differentiates tank vs apc vs other
-	var/disp_icon_state
-
-	var/next_use = 0
-	var/is_activatable = 0
-	var/max_angle = 180
-	var/point_cost = 0
-
-	var/list/clips = list()
-	var/max_clips = 1 //1 so they can reload their backups and actually reload once
-
-//changed how ammo works. No more AMMO obj, we take what we need straight from first obj in CLIPS list (ex-backup_clips) and work with it.
-//Every ammo mag now has CURRENT_AMMO value, also it is possible now to unload ALL mags from the gun, not only backup clips.
-
 //Called on attaching, for weapons sets the actual cooldowns
-/obj/item/apc_hardpoint/proc/apply_buff()
+/obj/item/hardpoint/apc/proc/apply_buff()
 	return
 
 //Called when removing, resets cooldown lengths, move delay, etc
-/obj/item/apc_hardpoint/proc/remove_buff()
+/obj/item/hardpoint/apc/proc/remove_buff()
 	return
 
 //Called when you want to activate the hardpoint, such as a gun
 //This can also be used for some type of temporary buff, up to you
-/obj/item/apc_hardpoint/proc/active_effect(var/turf/T)
+/obj/item/hardpoint/apc/proc/active_effect(var/turf/T)
 	return
 
-/obj/item/apc_hardpoint/proc/deactivate()
+/obj/item/hardpoint/apc/proc/deactivate()
 	var/obj/vehicle/multitile/root/cm_transport/apc/C = owner
 	if(C.gunner.client)
 		C.gunner.client.mouse_pointer_icon = initial(C.gunner.client.mouse_pointer_icon)
 	return
 
-/obj/item/apc_hardpoint/proc/livingmob_interact(var/mob/living/M)
+/obj/item/hardpoint/apc/proc/livingmob_interact(var/mob/living/M)
 	return
 
 //If our cooldown has elapsed
-/obj/item/apc_hardpoint/proc/is_ready()
+/obj/item/hardpoint/apc/proc/is_ready()
 	if(owner.z == 2 || owner.z == 3)
 		to_chat(usr, "<span class='warning'>Don't fire here, you'll blow a hole in the ship!</span>")
 		return 0
 	return 1
 
-/obj/item/apc_hardpoint/proc/try_add_clip(var/obj/item/ammo_magazine/apc/A, var/mob/user)
+/obj/item/hardpoint/apc/proc/try_add_clip(var/obj/item/ammo_magazine/apc/A, var/mob/user)
 
 	if(max_clips == 0)
 		to_chat(user, "<span class='warning'>This module does not have room for additional ammo.</span>")
@@ -1432,7 +1416,7 @@ All of the hardpoints, for the tank and APC
 	return 1
 
 //Returns the image object to overlay onto the root object
-/obj/item/apc_hardpoint/proc/get_icon_image(var/x_offset, var/y_offset, var/new_dir)
+/obj/item/hardpoint/apc/proc/get_icon_image(var/x_offset, var/y_offset, var/new_dir)
 
 	var/icon_suffix = "NS"
 	var/icon_state_suffix = "0"
@@ -1447,7 +1431,7 @@ All of the hardpoints, for the tank and APC
 
 	return image(icon = "[disp_icon]_[icon_suffix]", icon_state = "[disp_icon_state]_[icon_state_suffix]", pixel_x = x_offset, pixel_y = y_offset)
 
-/obj/item/apc_hardpoint/proc/firing_arc(var/atom/A)
+/obj/item/hardpoint/apc/proc/firing_arc(var/atom/A)
 	var/turf/T = get_turf(A)
 	var/dx = T.x - owner.x
 	var/dy = T.y - owner.y
@@ -1466,31 +1450,31 @@ All of the hardpoints, for the tank and APC
 	return abs(angle) <= max_angle
 
 //Delineating between slots
-/obj/item/apc_hardpoint/primary
+/obj/item/hardpoint/apc/primary
 	slot = HDPT_PRIMARY
 	is_activatable = 1
 
-/obj/item/apc_hardpoint/secondary
+/obj/item/hardpoint/apc/secondary
 	slot = HDPT_SECDGUN
 	is_activatable = 1
 
-/obj/item/apc_hardpoint/support
+/obj/item/hardpoint/apc/support
 	slot = HDPT_SUPPORT
 
-/obj/item/apc_hardpoint/wheels
+/obj/item/hardpoint/apc/wheels
 	slot = HDPT_WHEELS
 
 //examine() that tells the player condition of the module
-/obj/item/apc_hardpoint/examine(var/mob/user)
+/obj/item/hardpoint/apc/examine(var/mob/user)
 	..()
-	if(!istype(src, /obj/item/apc_hardpoint/wheels) && (user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
+	if(!istype(src, /obj/item/hardpoint/apc/wheels) && (user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer >= SKILL_ENGINEER_ENGI) || isobserver(user))
 		var/cond = round(health * 100 / maxhealth)
 		if (cond > 0)
 			to_chat(user, "Integrity: [cond]%.")
 		else
 			to_chat(user, "Integrity: 0%.")
 
-/obj/item/apc_hardpoint/wheels/examine(var/mob/user)
+/obj/item/hardpoint/apc/wheels/examine(var/mob/user)
 	..()
 	if((user.mind && user.mind.cm_skills) || isobserver(user))
 		var/cond = round(health * 100 / maxhealth)
@@ -1505,7 +1489,7 @@ All of the hardpoints, for the tank and APC
 // USCM
 ////////////////////
 
-/obj/item/apc_hardpoint/primary/dual_cannon
+/obj/item/hardpoint/apc/primary/dual_cannon
 	name = "M78 Dual Cannon"
 	desc = "A primary 45mm dual cannon for APC."
 
@@ -1521,7 +1505,7 @@ All of the hardpoints, for the tank and APC
 	ammo_type = new /obj/item/ammo_magazine/apc/dual_cannon
 
 	max_clips = 3
-	max_angle = 45
+	max_angle = 100
 
 	apply_buff()
 		owner.cooldowns["primary"] = 8
@@ -1561,7 +1545,7 @@ All of the hardpoints, for the tank and APC
 /////////////////////
 // USCM // START
 /////////////////////
-/obj/item/apc_hardpoint/secondary/front_cannon
+/obj/item/hardpoint/apc/secondary/front_cannon
 	name = "M26 Frontal Cannon"
 	desc = "A secondary frontal cannon for APC."
 
@@ -1576,11 +1560,11 @@ All of the hardpoints, for the tank and APC
 
 	ammo_type = new /obj/item/ammo_magazine/apc/front_cannon
 	max_clips = 2
-	max_angle = 90
+	max_angle = 80
 
 	apply_buff()
-		owner.cooldowns["secondary"] = 4
-		owner.accuracies["secondary"] = 0.7
+		owner.cooldowns["secondary"] = 1
+		owner.accuracies["secondary"] = 0.6
 
 	is_ready()
 		if(world.time < next_use)
@@ -1617,7 +1601,7 @@ All of the hardpoints, for the tank and APC
 ///////////////////
 // USCM // START
 ///////////////////
-/obj/item/apc_hardpoint/support/flare_launcher
+/obj/item/hardpoint/apc/support/flare_launcher
 	name = "M9 Flare Launcher System"
 	desc = "Launches flares forward light up the area."
 
@@ -1708,7 +1692,7 @@ All of the hardpoints, for the tank and APC
 // WHEELS SLOTS // START
 /////////////////
 
-/obj/item/apc_hardpoint/wheels
+/obj/item/hardpoint/apc/wheels
 	name = "M3 APC Wheels Kit"
 	desc = "Standard armored APC wheels. Suprisingly, greatly improves vehicle moving speed."
 
@@ -1731,7 +1715,7 @@ All of the hardpoints, for the tank and APC
 		owner.move_delay = 50
 
 //repairing wheels in field
-/obj/item/apc_hardpoint/wheels/attackby(var/obj/item/O, var/mob/user)
+/obj/item/hardpoint/apc/wheels/attackby(var/obj/item/O, var/mob/user)
 
 	if(!user.mind || !user.mind.cm_skills)
 		to_chat(user, "<span class='warning'>You don't know what to do with [O] on [src].</span>")
@@ -1780,7 +1764,7 @@ All of the hardpoints, for the tank and APC
 	current_rounds = 30
 	max_rounds = 30
 	point_cost = 0
-	gun_type = /obj/item/apc_hardpoint/primary/dual_cannon
+	gun_type = /obj/item/hardpoint/apc/primary/dual_cannon
 
 	update_icon()
 		if(current_rounds >0)
@@ -1789,20 +1773,20 @@ All of the hardpoints, for the tank and APC
 			icon_state = "autocannon_0"
 
 /obj/item/ammo_magazine/apc/front_cannon
-	name = "M26 Frontal Cannon"
+	name = "M26 Frontal Cannon Magazine"
 	desc = "A secondary armament cannon magazine"
 	caliber = "10x28mm" //Correlates to smartguns
 	icon_state = "big_ammo_box"
 	w_class = 12
-	default_ammo = /datum/ammo/bullet/smartgun/lethal
-	current_rounds = 300
-	max_rounds = 300
+	default_ammo = /datum/ammo/bullet/front_cannon
+	current_rounds = 400
+	max_rounds = 400
 	point_cost = 0
-	gun_type = /obj/item/apc_hardpoint/secondary/front_cannon
+	gun_type = /obj/item/hardpoint/apc/secondary/front_cannon
 
 
 /obj/item/ammo_magazine/apc/flare_launcher
-	name = "Flare Launcher System Magazine"
+	name = "M9 Flare Launcher System Magazine"
 	desc = "A flare launcher system magazine"
 	caliber = "flare"
 	icon_state = "slauncher_1"
@@ -1811,7 +1795,7 @@ All of the hardpoints, for the tank and APC
 	current_rounds = 10
 	max_rounds = 10
 	point_cost = 0
-	gun_type = /obj/item/apc_hardpoint/support/flare_launcher
+	gun_type = /obj/item/hardpoint/apc/support/flare_launcher
 
 	update_icon()
 		icon_state = "slauncher_[current_rounds <= 0 ? "0" : "1"]"
