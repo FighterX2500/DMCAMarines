@@ -423,8 +423,8 @@
 			new /obj/item/ammo_magazine/flamer_tank/large(src)
 			new /obj/item/ammo_magazine/flamer_tank/large/B(src)
 			new /obj/item/ammo_magazine/flamer_tank/large/X(src)
-			new /obj/item/tool/extinguisher/mini(src)
-			new /obj/item/tool/extinguisher/mini(src)
+			new /obj/item/tool/extinguisher/pyro(src)
+			new /obj/item/tool/extinguisher/pyro(src)
 
 
 

@@ -124,7 +124,7 @@
 
 	New()
 		..()
-		reagents.add_reagent("nutriment", 9)
+		reagents.add_reagent("nutriment", 21)
 		bitesize = 3
 
 /obj/item/reagent_container/food/snacks/mre_pack/meal2
@@ -134,8 +134,8 @@
 
 	New()
 		..()
-		reagents.add_reagent("nutriment", 9)
-		bitesize = 2
+		reagents.add_reagent("nutriment", 21)
+		bitesize = 3
 
 /obj/item/reagent_container/food/snacks/mre_pack/meal3
 	name = "USCM Prepared Meal (pasta)"
@@ -144,7 +144,7 @@
 
 	New()
 		..()
-		reagents.add_reagent("nutriment", 9)
+		reagents.add_reagent("nutriment", 21)
 		bitesize = 3
 
 /obj/item/reagent_container/food/snacks/mre_pack/meal4
@@ -154,8 +154,8 @@
 
 	New()
 		..()
-		reagents.add_reagent("nutriment", 8)
-		bitesize = 1
+		reagents.add_reagent("nutriment", 21)
+		bitesize = 3
 
 /obj/item/reagent_container/food/snacks/mre_pack/meal5
 	name = "USCM Prepared Meal (chicken)"
@@ -164,7 +164,7 @@
 
 	New()
 		..()
-		reagents.add_reagent("nutriment", 10)
+		reagents.add_reagent("nutriment", 21)
 		bitesize = 3
 
 /obj/item/reagent_container/food/snacks/mre_pack/meal6
