@@ -37,7 +37,7 @@ var/list/apc_dmg_distributions = list(
 
 	//Below are vars that can be affected by hardpoints, generally used as ratios or decisecond timers
 
-	move_delay = 2 //no or broken wheels speed delay will be 30, otherwise -
+	move_delay = 50 //no or broken wheels speed delay will be 30, otherwise -
 	unacidable = 1
 	var/active_hp
 	var/vehicle_class = WEIGHT_LIGHT
