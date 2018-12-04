@@ -252,7 +252,7 @@
 // The actual Machinegun itself, going to borrow some stuff from current sentry code to make sure it functions. Also because they're similiar.
 /obj/machinery/m56d_hmg
 	name = "M56D mounted smartgun"
-	desc = "A deployable, mounted smartgun. While it is capable of taking the same rounds as the M56, it fires specialized tungsten rounds for increased armor penetration.<span class='notice'> !!DANGER: M56D DOES NOT HAVE IFF FEATURES!!</span>"
+	desc = "A deployable, mounted smartgun. While it is capable of taking the same rounds as the M56, it fires specialized tungsten rounds for increased armor penetration.\n<span class='notice'>  Use (ctrl-click) to shoot in bursts.</span>\n<span class='notice'> !!DANGER: M56D DOES NOT HAVE IFF FEATURES!!</span>"
 	icon = 'icons/turf/whiskeyoutpost.dmi'
 	icon_state = "M56D"
 	anchored = 1
@@ -430,6 +430,7 @@
 	if(!burst_fire && target && !last_fired)
 		fire_shot()
 
+	burst_fire = 0
 	target = null
 
 /obj/machinery/m56d_hmg/proc/fire_shot() //Bang Bang
@@ -495,7 +496,10 @@
 	if(get_dist(target,src.loc) > 15)
 		return 0
 
-	if(mods["middle"] || mods["shift"] || mods["alt"] || mods["ctrl"])	return 0
+	if(mods["middle"] || mods["shift"] || mods["alt"])	return 0
+
+	if(mods["ctrl"])
+		burst_fire = 1
 
 	var/angle = get_dir(src,target)
 	//we can only fire in a 90 degree cone
@@ -576,18 +580,12 @@
 /obj/machinery/m56d_hmg/clicked(var/mob/user, var/list/mods) //Making it possible to toggle burst fire. Perhaps have altclick be the safety on the gun?
 	if (isobserver(user)) return
 
-	if (mods["ctrl"])
-		if(operator != user) return //only the operatore can toggle fire mode
-		burst_fire = !burst_fire
-		to_chat(user, "<span class='notice'>You set [src] to [burst_fire ? "burst fire" : "single fire"] mode.</span>")
-		playsound(src.loc, 'sound/items/Deconstruct.ogg', 25, 1)
-		return 1
 	return ..()
 
 /obj/machinery/m56d_hmg/mg_turret //Our mapbound version with stupid amounts of ammo.
 	name = "M56D Smartgun Nest"
-	desc = "A M56D smartgun mounted upon a small reinforced post with sandbags to provide a small machinegun nest for all your defense purpose needs.<span class='notice'>!!DANGER: M56D DOES NOT HAVE IFF FEATURES!!</span>"
-	burst_fire = 1
+	desc = "A M56D smartgun mounted upon a small reinforced post with sandbags to provide a small machinegun nest for all your defense purpose needs.\n<span class='notice'>  Use (ctrl-click) to shoot in bursts.</span>\n<span class='notice'> !!DANGER: M56D DOES NOT HAVE IFF FEATURES!!</span>"
+	burst_fire = 0
 	fire_delay = 2
 	rounds = 1500
 	rounds_max = 1500

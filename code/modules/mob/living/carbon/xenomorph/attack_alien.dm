@@ -29,20 +29,8 @@
 				playsound(loc, 'sound/weapons/alien_claw_block.ogg', 25, 1) //Feedback
 				return FALSE
 
-			if(!Adjacent(M)) //Logic!
-				return
-
-			if(stat == DEAD)
-				if(status_flags & XENO_HOST)
-					for(var/obj/item/alien_embryo/embryo in src)
-						if(embryo.hivenumber == M.hivenumber)
-							M.start_pulling(src)
-				else
-					if(!isXenoQueen(M))
-						to_chat(M, "<span class='warning'>This host is dead and presents no interest to you.</span>")
-						return
-					else
-						M.start_pulling(src)
+			if(Adjacent(M)) //Logic!
+				M.start_pulling(src)
 
 		if("hurt")
 			var/datum/hive_status/hive
