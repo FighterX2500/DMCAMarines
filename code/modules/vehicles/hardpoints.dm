@@ -4,7 +4,7 @@ All of the hardpoints, for the tank and APC
 
 /obj/item/hardpoint
 
-	icon = 'icons/obj/hardpoint_modules.dmi'
+	icon = 'icons/obj/multitile_vehicle/hardpoint_modules.dmi'
 	icon_state = "tires" //Placeholder
 
 	var/maxhealth = 0
@@ -35,7 +35,7 @@ All of the hardpoints, for the tank and APC
 	var/slot //What slot do we attach to?
 	var/obj/vehicle/multitile/root/cm_armored/owner //Who do we work for?
 
-	icon = 'icons/obj/hardpoint_modules.dmi'
+	icon = 'icons/obj/multitile_vehicle/hardpoint_modules.dmi'
 	icon_state = "tires" //Placeholder
 
 	var/hp_weight = 1	//this is new variable for weight of every single module as a part of new tank weight system
@@ -1356,7 +1356,7 @@ All of the hardpoints, for the tank and APC
 	var/slot //What slot do we attach to?
 	var/obj/vehicle/multitile/root/cm_transport/owner //Who do we work for?
 
-	icon = 'icons/obj/hardpoint_modules.dmi'
+	icon = 'icons/obj/multitile_vehicle/hardpoint_modules.dmi'
 	icon_state = "tires" //Placeholder
 
 //Called on attaching, for weapons sets the actual cooldowns

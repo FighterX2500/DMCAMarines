@@ -490,9 +490,9 @@ datum/game_mode/proc/initialize_special_clamps()
 	var/list/survivor_types
 	switch(map_tag)
 		if(MAP_PRISON_STATION)
-			survivor_types = list("Scientist","Doctor","Corporate","Security","Prisoner","Prisoner","Prisoner")
+			survivor_types = list("Scientist","Doctor","Corporate","Security","Prisoner","Prisoner","CLF Agent")
 		if(MAP_LV_624,MAP_BIG_RED)
-			survivor_types = list("Assistant","Civilian","Scientist","Doctor","Chef","Botanist","Atmos Tech","Chaplain","Miner","Salesman","Colonial Marshall")
+			survivor_types = list("Assistant","Civilian","Scientist","Doctor","Chef","Botanist","Atmos Tech","Chaplain","Miner","Salesman","Colonial Marshall","CLF Agent","UPP Agent")
 		if(MAP_ICE_COLONY)
 			survivor_types = list("Scientist","Doctor","Salesman","Security")
 		else
@@ -616,6 +616,132 @@ datum/game_mode/proc/initialize_special_clamps()
 			H.equip_to_slot_or_del(new /obj/item/weapon/gun/revolver/cmb(H), WEAR_L_HAND)
 			H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/sec(H), WEAR_BACK)
 			ghost.set_cm_skills(/datum/skills/civilian/survivor/marshall)
+		if("UPP Agent") //UPP Agent
+			H.mind.special_role = "UPP Agent"
+			id_assignment = pick("Assistant","Civilian","Doctor","Atmos Tech","Chaplain","Miner")
+			switch(id_assignment)
+				if("Assistant")
+					H.equip_to_slot_or_del(new /obj/item/clothing/under/colonist(H), WEAR_BODY)
+					H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), WEAR_FEET)
+					H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/norm(H), WEAR_BACK)
+					H.equip_to_slot_or_del(new /obj/item/weapon/gun/pistol/holdout(H), WEAR_L_HAND)
+					H.equip_to_slot_or_del(new /obj/item/ammo_magazine/pistol/holdout(H.back), WEAR_IN_BACK)
+					H.equip_to_slot_or_del(new /obj/item/ammo_magazine/pistol/holdout(H.back), WEAR_IN_BACK)
+					H.equip_to_slot_or_del(new /obj/item/storage/firstaid/adv(H.back), WEAR_IN_BACK)
+					H.equip_to_slot_or_del(new /obj/item/disk(H.back), WEAR_IN_BACK)
+				if("Civilian")
+					H.equip_to_slot_or_del(new /obj/item/clothing/under/pj/red(H), WEAR_BODY)
+					H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), WEAR_FEET)
+					H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/norm(H), WEAR_BACK)
+					H.equip_to_slot_or_del(new /obj/item/weapon/gun/smg/skorpion/upp(H), WEAR_L_HAND)
+					H.equip_to_slot_or_del(new /obj/item/ammo_magazine/smg/skorpion(H.back), WEAR_IN_BACK)
+					H.equip_to_slot_or_del(new /obj/item/ammo_magazine/smg/skorpion(H.back), WEAR_IN_BACK)
+					H.equip_to_slot_or_del(new /obj/item/storage/firstaid/adv(H.back), WEAR_IN_BACK)
+					H.equip_to_slot_or_del(new /obj/item/disk(H.back), WEAR_IN_BACK)
+				if("Doctor")
+					H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/medical(H), WEAR_BODY)
+					H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), WEAR_FEET)
+					H.equip_to_slot_or_del(new /obj/item/storage/belt/medical(H), WEAR_WAIST)
+					H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/med(H), WEAR_BACK)
+					H.equip_to_slot_or_del(new /obj/item/storage/firstaid/adv(H.back), WEAR_IN_BACK)
+					H.equip_to_slot_or_del(new /obj/item/weapon/gun/pistol/c99/upp/tranq(H), WEAR_L_HAND)
+					H.equip_to_slot_or_del(new /obj/item/ammo_magazine/pistol/c99t(H.back), WEAR_IN_BACK)
+					H.equip_to_slot_or_del(new /obj/item/tool/crowbar(H.back), WEAR_IN_BACK)
+					H.equip_to_slot_or_del(new /obj/item/disk(H.back), WEAR_IN_BACK)
+				if("Atmos Tech")
+					H.equip_to_slot_or_del(new /obj/item/clothing/under/colonist(H), WEAR_BODY)
+					H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), WEAR_FEET)
+					H.equip_to_slot_or_del(new /obj/item/storage/belt/utility/full(H), WEAR_L_HAND)
+					H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/eng(H), WEAR_BACK)
+					H.equip_to_slot_or_del(new /obj/item/weapon/gun/shotgun/pump/cmb(H), WEAR_R_HAND)
+					H.equip_to_slot_or_del(new /obj/item/ammo_magazine/shotgun/incendiary(H.back), WEAR_IN_BACK)
+					H.equip_to_slot_or_del(new /obj/item/disk(H.back), WEAR_IN_BACK)
+				if("Miner")
+					H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/miner(H), WEAR_BODY)
+					H.equip_to_slot_or_del(new /obj/item/tool/pickaxe(H), WEAR_L_HAND)
+					H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), WEAR_FEET)
+					H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/norm(H), WEAR_BACK)
+					H.equip_to_slot_or_del(new /obj/item/device/flashlight/lantern(H.back), WEAR_IN_BACK)
+					H.equip_to_slot_or_del(new /obj/item/storage/firstaid(H.back), WEAR_IN_BACK)
+					H.equip_to_slot_or_del(new /obj/item/tool/crowbar(H.back), WEAR_IN_BACK)
+					H.equip_to_slot_or_del(new /obj/item/disk(H.back), WEAR_IN_BACK)
+			ghost.set_cm_skills(/datum/skills/civilian/survivor/upp_agent)
+			ticker.mode.traitors += ghost
+		if("CLF Agent") //CLF Agent
+			H.mind.special_role = "CLF Agent"
+			if(map_tag == MAP_PRISON_STATION)
+				if(prob(50))
+					H.equip_to_slot_or_del(new /obj/item/clothing/under/color/orange(H), WEAR_BODY)
+					H.equip_to_slot_or_del(new /obj/item/clothing/shoes/orange(H), WEAR_FEET)
+				else
+					id_assignment = pick("Doctor","Civilian")
+					if(id_assignment == "Doctor")
+						H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/medical(H), WEAR_BODY)
+						H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), WEAR_FEET)
+						H.equip_to_slot_or_del(new /obj/item/storage/belt/medical(H), WEAR_WAIST)
+						H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/med(H), WEAR_BACK)
+						H.equip_to_slot_or_del(new /obj/item/storage/firstaid/adv(H.back), WEAR_IN_BACK)
+						H.equip_to_slot_or_del(new /obj/item/weapon/gun/pistol/kt42(H), WEAR_R_HAND)
+						H.equip_to_slot_or_del(new /obj/item/ammo_magazine/pistol/automatic(H.back), WEAR_IN_BACK)
+						H.equip_to_slot_or_del(new /obj/item/ammo_magazine/pistol/automatic(H.back), WEAR_IN_BACK)
+						H.equip_to_slot_or_del(new /obj/item/tool/crowbar(H.back), WEAR_IN_BACK)
+					if(id_assignment == "Civilian")
+						H.equip_to_slot_or_del(new /obj/item/clothing/under/pj/red(H), WEAR_BODY)
+						H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), WEAR_FEET)
+						H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/norm(H), WEAR_BACK)
+						H.equip_to_slot_or_del(new /obj/item/storage/firstaid(H.back), WEAR_IN_BACK)
+						H.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/mar40/carbine(H), WEAR_R_HAND)
+						H.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/mar40(H.back), WEAR_IN_BACK)
+						H.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/mar40(H.back), WEAR_IN_BACK)
+						H.equip_to_slot_or_del(new /obj/item/tool/crowbar(H.back), WEAR_IN_BACK)
+						H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/bulletproof(H), WEAR_JACKET)
+			else
+				id_assignment = pick("Chaplain", "Miner", "Botanist", "Chef", "Civilian")
+				switch(id_assignment)
+					if("Civilian")
+						H.equip_to_slot_or_del(new /obj/item/clothing/under/pj/red(H), WEAR_BODY)
+						H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), WEAR_FEET)
+						H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/norm(H), WEAR_BACK)
+						H.equip_to_slot_or_del(new /obj/item/storage/firstaid(H.back), WEAR_IN_BACK)
+						H.equip_to_slot_or_del(new /obj/item/weapon/gun/smg/p90(H), WEAR_R_HAND)
+						H.equip_to_slot_or_del(new /obj/item/ammo_magazine/smg/p90(H.back), WEAR_IN_BACK)
+						H.equip_to_slot_or_del(new /obj/item/ammo_magazine/smg/p90(H.back), WEAR_IN_BACK)
+						H.equip_to_slot_or_del(new /obj/item/tool/crowbar(H.back), WEAR_IN_BACK)
+						H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/militia(H), WEAR_JACKET)
+					if("Miner")
+						H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/miner(H), WEAR_BODY)
+						H.equip_to_slot_or_del(new /obj/item/tool/pickaxe(H), WEAR_L_HAND)
+						H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), WEAR_FEET)
+						H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/norm(H), WEAR_BACK)
+						H.equip_to_slot_or_del(new /obj/item/device/flashlight/lantern(H.back), WEAR_IN_BACK)
+						H.equip_to_slot_or_del(new /obj/item/storage/firstaid(H.back), WEAR_IN_BACK)
+						H.equip_to_slot_or_del(new /obj/item/tool/crowbar(H.back), WEAR_IN_BACK)
+					if("Botanist")
+						H.equip_to_slot_or_del(new /obj/item/clothing/under/colonist(H), WEAR_BODY)
+						H.equip_to_slot_or_del(new /obj/item/clothing/suit/apron(H), WEAR_JACKET)
+						H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), WEAR_FEET)
+						H.equip_to_slot_or_del(new /obj/item/tool/hatchet(H), WEAR_L_HAND)
+						H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/norm(H), WEAR_BACK)
+						H.equip_to_slot_or_del(new /obj/item/storage/firstaid(H.back), WEAR_IN_BACK)
+						H.equip_to_slot_or_del(new /obj/item/tool/crowbar(H.back), WEAR_IN_BACK)
+					if("Chef")
+						H.equip_to_slot_or_del(new /obj/item/clothing/under/colonist(H), WEAR_BODY)
+						H.equip_to_slot_or_del(new /obj/item/clothing/suit/chef(H), WEAR_JACKET)
+						H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), WEAR_FEET)
+						H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/norm(H), WEAR_BACK)
+						H.equip_to_slot_or_del(new /obj/item/tool/kitchen/rollingpin(H), WEAR_L_HAND)
+						H.equip_to_slot_or_del(new /obj/item/storage/firstaid(H.back), WEAR_IN_BACK)
+						H.equip_to_slot_or_del(new /obj/item/tool/crowbar(H.back), WEAR_IN_BACK)
+					if("Chaplain")
+						H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/chaplain(H), WEAR_BODY)
+						H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), WEAR_FEET)
+						H.equip_to_slot_or_del(new /obj/item/storage/backpack/satchel/norm(H), WEAR_BACK)
+						H.equip_to_slot_or_del(new /obj/item/storage/bible/booze(H.back), WEAR_IN_BACK)
+						H.equip_to_slot_or_del(new /obj/item/weapon/gun/shotgun/double/sawn(H), WEAR_WAIST)
+						H.equip_to_slot_or_del(new /obj/item/ammo_magazine/shotgun/buckshot(H), WEAR_L_HAND)
+						H.equip_to_slot_or_del(new /obj/item/tool/crowbar(H.back), WEAR_IN_BACK)
+			ghost.set_cm_skills(/datum/skills/civilian/survivor/clf_agent)
+			ticker.mode.traitors += ghost
 
 	if(map_tag == MAP_ICE_COLONY)
 		H.equip_to_slot_or_del(new /obj/item/clothing/head/ushanka(H), WEAR_HEAD)
@@ -691,6 +817,30 @@ datum/game_mode/proc/initialize_special_clamps()
 	return 1
 
 /datum/game_mode/proc/tell_survivor_story()
+	var/clf_story = {"	You are a CLF agent, sent to this facility in order to establish trustful contacts with locals. Your final goal was to recruit as many people as possible for you cause.\n
+					You spent nearly half a local year here and your careful attempts to recruit people were fruitless so far, though, you made good friends with few people.\n
+					You were going to appointment with one of your friends, when you saw people running away from the place you were heading to, screaming and yelling.\n
+					The Colony Marshal, {name}, made an announcement that the hostile lifeforms killed many, and that everyone should hide or stay behind closed doors.\n
+					You were there when the alien lifeforms broke into the mess hall and dragged away the others. It was a terrible sight, and you have tried avoid large open areas since.\n
+					You tried your best to hide, and you have seen the creatures travel through the underground tunnels and ventilation shafts. They seem to like the dark.\n
+					After few days, you stumbled upon bloodied dictophone. You took it with you to your safe place and decided to listen through tape. It was recorded by some science assistant.\n
+					The more you listened, the stronger the anger was inside you. It was their fault. W-Y scientists discovered these monsters and started breeding and studying them. Until they break out.\n
+					Sounds of the tape attracted alien lifreforms, so you had to escape your safe place. Sadly, the tape was destroyed during the flight. And now, everyone you knew are dead.\n
+					You know that colony managed to send distress signal, which means that damn marines, W-Y hounds, are coming. You can't let them have any of that research data.\n
+					You were ideological freedom fighter, but now... it became personal. You will avenge your friends. You will be ready to meet your enemies.\n\n
+					\red OOC info: 1. Your goal is to sabotage marines operation. 2. You are not allowed to harm civillians (medbay staff, other survivors), except for self-defense. Non-lethal permanent removal from round is also forbidden.\n
+				"}
+	var/upp_story = {"	You are a UPP agent. You were sent here to investigate troubling reports about new bioweapon being created by Weyland-Yutani Company.\n
+					You've managed to gather some data on your disc within few weeks. Unfortunately, you also happened to see yourself results of using this bioweapon.\n
+					You were packing your luggage, preparing to leave on the shuttle leaving in an hour, when the Colony Marshal, {name}, made an announcement that the hostile lifeforms killed many.\n
+					Despite announcement saying that everyone should hide or stay behind closed doors, you went outside and ran to landing zone. You are still not sure, whether you were lucky or not.\n
+					As soon as you reached landing zone, you heard shrieaks and screams, that made your blood freeze. You saw monsters trying to get inside the shuttle while it was taking off.\n
+					You returned to your place as fast as you can and grabbed anything useful. Since then you tried your best to hide, and you have seen the creatures travel through the underground tunnels and ventilation shafts.\n
+					You know that colony managed to send distress signal, which means that USCM is coming sooner or later. You are not expecting warm welcome if they find out who you are, but you have no choice.\n
+					You need to get the disc to your homeland. You have no doubts how important that is. You need to get out alive from this planet. You will do anything for this. You must get out. At any costs...\n\n
+					\red OOC info: 1. Your goal is to stay alive and to evacuate disc (either stay on Almayer or evac on pods). 2. You are not allowed to harm civillians (medbay staff, other survivors), except for self-defense. Non-lethal permanent removal from round is also forbidden.\n
+
+				"}
 	var/list/survivor_story = list(
 								"You watched as a larva burst from the chest of your friend, {name}. You tried to capture the alien thing, but it escaped through the ventilation.",
 								"{name} was attacked by a facehugging alien, which impregnated them with an alien lifeform. {name}'s chest exploded in gore as some creature escaped.",
@@ -730,6 +880,22 @@ datum/game_mode/proc/initialize_special_clamps()
 
 		random_name = pick(random_name(FEMALE),random_name(MALE))
 
+		if(survivor.special_role == "CLF Agent")
+			story = clf_story
+			var/temp_story = "<b>Your story thus far</b>: " + replacetext(story, "{name}", "[random_name]")
+			to_chat(survivor.current, temp_story)
+			survivor.memory += temp_story
+			survivor.special_role = "Survivor"
+			current_survivors -= survivor
+			return 1
+		if(survivor.special_role == "UPP Agent")
+			story = upp_story
+			var/temp_story = "<b>Your story thus far</b>: " + replacetext(story, "{name}", "[random_name]")
+			to_chat(survivor.current, temp_story)
+			survivor.memory += temp_story
+			survivor.special_role = "Survivor"
+			current_survivors -= survivor
+			return 1
 		if(current_survivors.len > 1) //If we have another survivor to pick from.
 			if(survivor_multi_story.len) //Unlikely.
 				var/datum/mind/another_survivor = pick(current_survivors - survivor) // We don't want them to be picked twice.

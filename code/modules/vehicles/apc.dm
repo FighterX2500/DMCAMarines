@@ -12,7 +12,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 	name = "M580 APC"
 	desc = "M580 Armored Personnel Carrier. Combat transport for delivering and supporting infantry. Entrance on the right side."
 
-	icon = 'icons/obj/apcarrier_NS.dmi'
+	icon = 'icons/obj/multitile_vehicle/apcarrier_NS.dmi'
 	icon_state = "apc_base"
 	pixel_x = -32
 	pixel_y = -32
@@ -70,7 +70,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 
 	R.camera = new /obj/machinery/camera(R)
 	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
-	R.camera.c_tag = "Armored Personnel Carrier ¹[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
+	R.camera.c_tag = "Armored Personnel Carrier ï¿½[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
 
 	del(src)
 
@@ -106,7 +106,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 
 	R.camera = new /obj/machinery/camera(R)
 	R.camera.network = list("almayer")	//changed network from military to almayer, because Cams computers on Almayer have this network
-	R.camera.c_tag = "Armored Personnel Carrier ¹[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
+	R.camera.c_tag = "Armored Personnel Carrier ï¿½[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
 
 	del(src)
 
@@ -134,7 +134,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 
 	R.camera = new /obj/machinery/camera(R)
 	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
-	R.camera.c_tag = "Armored Personnel Carrier ¹[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
+	R.camera.c_tag = "Armored Personnel Carrier ï¿½[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
 
 	//Manually adding those hardpoints
 	R.add_hardpoint(new /obj/item/hardpoint/apc/primary/dual_cannon)
@@ -254,17 +254,15 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 /obj/vehicle/multitile/root/cm_transport/apc/verb/megaphone()
 	set name = "Use Megaphone"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
-	if(usr != gunner && usr != driver)
-		return
+	set src = usr.loc
+
 	use_megaphone(usr)
 
 /obj/vehicle/multitile/root/cm_transport/apc/verb/use_interior_camera()
 	set name = "Use Interior Camera"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
-	if(usr != gunner && usr != driver)
-		return
+	set src = usr.loc
+
 	access_camera(usr)
 
 /obj/vehicle/multitile/root/cm_transport/apc/proc/access_camera(var/mob/living/M)
@@ -294,10 +292,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 /obj/vehicle/multitile/root/cm_transport/apc/verb/smoke_cover()
 	set name = "Activate Smoke Deploy System"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
-
-	if(usr != gunner && usr != driver)
-		return
+	set src = usr.loc
 
 	if(smoke_ammo_current)
 		to_chat(usr, "<span class='warning'>You activate Smoke Deploy System!</span>")
@@ -312,10 +307,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 /obj/vehicle/multitile/root/cm_transport/apc/verb/name_apc()
 	set name = "Name The APC (Single Use)"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
-
-	if(usr != gunner && usr != driver)
-		return
+	set src = usr.loc
 
 	if(named)
 		to_chat(usr, "<span class='warning'>APC was already named!</span>")
