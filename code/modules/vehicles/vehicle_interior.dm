@@ -123,10 +123,12 @@
 
 	if(world.time < master.next_move)
 		to_chat(user, "<span class='warning'>[master] hasn't fully stopped yet!</span>")
+		side_door_busy = FALSE
 		return
 
 	if(master.tile_blocked_check(get_turf(master.entrance)))
 		to_chat(user, "<span class='warning'>Something blocks the door and you can't get out!</span>")
+		side_door_busy = FALSE
 		return
 
 	if(user.blinded || user.lying || user.buckled || user.anchored)

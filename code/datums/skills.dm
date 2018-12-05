@@ -40,6 +40,24 @@
 	firearms = SKILL_FIREARMS_UNTRAINED
 	melee_weapons = SKILL_MELEE_WEAK
 
+/datum/skills/civilian/survivor/clf_agent
+	name = "CLF Agent"
+	firearms = SKILL_FIREARMS_DEFAULT
+	cqc = SKILL_CQC_DEFAULT
+	melee_weapons = SKILL_MELEE_DEFAULT
+	engineer = SKILL_ENGINEER_ENGI
+	construction = SKILL_CONSTRUCTION_METAL
+	medical = SKILL_MEDICAL_MEDIC
+
+/datum/skills/civilian/survivor/upp_agent
+	name = "UPP Agent"
+	firearms = SKILL_FIREARMS_DEFAULT
+	cqc = SKILL_CQC_TRAINED
+	melee_weapons = SKILL_MELEE_TRAINED
+	engineer = SKILL_ENGINEER_ENGI
+	construction = SKILL_CONSTRUCTION_METAL
+	medical = SKILL_MEDICAL_MEDIC
+	police = SKILL_POLICE_FLASH
 
 /datum/skills/civilian/survivor
 	name = "Survivor"

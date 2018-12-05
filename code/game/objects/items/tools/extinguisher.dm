@@ -30,6 +30,14 @@
 	max_water = 30
 	sprite_name = "miniFE"
 
+/obj/item/tool/extinguisher/pyro
+	name = "military fire extinguisher"
+	desc = "A light and compact military fibreglass-framed model fire extinguisher. Despite small size, contains a lot of water."
+	max_water = 50
+	icon_state = "pyroFE0"
+	item_state = "pyroFE"
+	sprite_name = "pyroFE"
+
 /obj/item/tool/extinguisher/New()
 	var/datum/reagents/R = new/datum/reagents(max_water)
 	reagents = R

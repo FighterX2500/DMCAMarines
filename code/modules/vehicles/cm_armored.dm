@@ -296,7 +296,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/root/cm_armored/verb/switch_active_hp()
 	set name = "Change Active Weapon"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
+	set src = usr.loc
 
 	if(!can_use_hp(usr))
 		return
@@ -384,7 +384,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/root/cm_armored/verb/tank_status()
 	set name = "Check Vehicle Status"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
+	set src = usr.loc
 
 	var/obj/item/hardpoint/tank/HP1 = hardpoints[HDPT_ARMOR]
 	var/obj/item/hardpoint/tank/HP2 = hardpoints[HDPT_TREADS]
@@ -429,8 +429,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	to_chat(usr, "<span class='warning'>Vehicle Status:</span><br>")
 	to_chat(usr, "<span class='warning'>Overall vehicle integrity: [tank_health] percent.</span>")
 	to_chat(usr, "<span class='warning'>M75 Smoke Deploy System: [smoke_ammo_current / 2] uses left.</span>")
-	if(!can_use_hp(usr))
-		return
+
 	if(HP5 == null || HP5.health <= 0)
 		to_chat(usr, "<span class='warning'>Primary weapon: Unavailable.</span>")
 	else
@@ -449,7 +448,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/root/cm_armored/verb/reload_hp()
 	set name = "Reload Weapon"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
+	set src = usr.loc
 
 	if(!can_use_hp(usr)) return
 
@@ -601,12 +600,12 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	if(dir in list(NORTH, SOUTH))
 		pixel_x = -32
 		pixel_y = -48
-		icon = 'icons/obj/tank_NS.dmi'
+		icon = 'icons/obj/multitile_vehicle/tank_NS.dmi'
 
 	else if(dir in list(EAST, WEST))
 		pixel_x = -48
 		pixel_y = -32
-		icon = 'icons/obj/tank_EW.dmi'
+		icon = 'icons/obj/multitile_vehicle/tank_EW.dmi'
 
 	//Basic iteration that snags the overlay from the hardpoint module object
 	var/i

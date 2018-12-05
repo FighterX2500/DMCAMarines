@@ -2524,7 +2524,7 @@
 			if("M: ћакросы")
 				msgplayer = "\blue <b>«јћ≈“ ј: <font color=red>[usr.key]</font> воспользовался авто-ответом <font color='#009900'>'[choice]'</font>. ƒля настройки макроса, нажмите правой кнопкой на самую верхнюю часть клиента игры, выберите Clien -> Macros. —оздание макроса для unique-action позволит нормально пользоваться стандартным дробовиком морпехов; макрос на resist поможет быстрей начать сопротивляться в некоторых ситуациях. ƒля более подробной информации посетите эту <font color='#009900'><a href='http://cm.ss13.ru/index.php?title=Macros'>ссылку</a></font>.</b>"
 			if("IC Issue")
-				msgplayer = "\blue <b>NOTICE: <font color=red>[usr.key]</font> is autoresponding with <font color='#009900'>'[choice]'</font>. This issue has been deemed an IC (In-Character) issue, and will not be handled by staff. In case it's relevant, you may wish to ask your <a href='http://cm-ss13.com/wiki/Rank'>Chain Of Command</a> about your issue if you believe <a href='https://tgstation13.org/wiki/Space_Law'>Space Law</a> has been broken.</b>"
+				msgplayer = "\blue <b>NOTICE: <font color=red>[usr.key]</font> is autoresponding with <font color='#009900'>'[choice]'</font>. This issue has been deemed an IC (In-Character) issue, and will not be handled by staff. In case it's relevant, you may wish to ask your <a href='http://wiki.ss13marines.ru/index.php?title=Rank'>Chain Of Command</a> about your issue if you believe <a href='http://wiki.ss13marines.ru/index.php?title=Marine_Law'>Marine Law</a> has been broken.</b>"
 			if("Being Handled")
 				msgplayer = "\blue <b>NOTICE: <font color=red>[usr.key]</font> is autoresponding with <font color='#009900'>'[choice]'</font>. The issue is already being dealt with.</b>"
 			if("Fixed")

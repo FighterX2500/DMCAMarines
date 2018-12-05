@@ -8,7 +8,8 @@
 
 		if(icon)
 			msg += "\icon[icon] "
-		msg += "<EM>[src.name]</EM>!\n"
+
+		msg += "<EM>Tall Host</EM>!\n"
 
 		if(species.flags & IS_SYNTHETIC)
 			msg += "<span style='font-weight: bold; color: purple;'>You sense this creature is not organic.</span>\n"

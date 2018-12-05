@@ -12,7 +12,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 	name = "M580 APC"
 	desc = "M580 Armored Personnel Carrier. Combat transport for delivering and supporting infantry. Entrance on the right side."
 
-	icon = 'icons/obj/apcarrier_NS.dmi'
+	icon = 'icons/obj/multitile_vehicle/apcarrier_NS.dmi'
 	icon_state = "apc_base"
 	pixel_x = -32
 	pixel_y = -32
@@ -70,7 +70,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 
 	R.camera = new /obj/machinery/camera(R)
 	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
-	R.camera.c_tag = "Armored Personnel Carrier ¹[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
+	R.camera.c_tag = "Armored Personnel Carrier ï¿½[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
 
 	del(src)
 
@@ -106,7 +106,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 
 	R.camera = new /obj/machinery/camera(R)
 	R.camera.network = list("almayer")	//changed network from military to almayer, because Cams computers on Almayer have this network
-	R.camera.c_tag = "Armored Personnel Carrier ¹[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
+	R.camera.c_tag = "Armored Personnel Carrier ï¿½[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
 
 	del(src)
 
@@ -134,7 +134,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 
 	R.camera = new /obj/machinery/camera(R)
 	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
-	R.camera.c_tag = "Armored Personnel Carrier ¹[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
+	R.camera.c_tag = "Armored Personnel Carrier ï¿½[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
 
 	//Manually adding those hardpoints
 	R.add_hardpoint(new /obj/item/hardpoint/apc/primary/dual_cannon)
@@ -254,17 +254,15 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 /obj/vehicle/multitile/root/cm_transport/apc/verb/megaphone()
 	set name = "Use Megaphone"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
-	if(usr != gunner && usr != driver)
-		return
+	set src = usr.loc
+
 	use_megaphone(usr)
 
 /obj/vehicle/multitile/root/cm_transport/apc/verb/use_interior_camera()
 	set name = "Use Interior Camera"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
-	if(usr != gunner && usr != driver)
-		return
+	set src = usr.loc
+
 	access_camera(usr)
 
 /obj/vehicle/multitile/root/cm_transport/apc/proc/access_camera(var/mob/living/M)
@@ -294,10 +292,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 /obj/vehicle/multitile/root/cm_transport/apc/verb/smoke_cover()
 	set name = "Activate Smoke Deploy System"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
-
-	if(usr != gunner && usr != driver)
-		return
+	set src = usr.loc
 
 	if(smoke_ammo_current)
 		to_chat(usr, "<span class='warning'>You activate Smoke Deploy System!</span>")
@@ -312,10 +307,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 /obj/vehicle/multitile/root/cm_transport/apc/verb/name_apc()
 	set name = "Name The APC (Single Use)"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
-
-	if(usr != gunner && usr != driver)
-		return
+	set src = usr.loc
 
 	if(named)
 		to_chat(usr, "<span class='warning'>APC was already named!</span>")
@@ -838,34 +830,67 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 
 
 /obj/vehicle/multitile/root/cm_transport/apc/interior_concussion(var/strength)
-	for(var/mob/living/carbon/M in interior_area)
-		if(!M.stat)
-			switch(strength)
-				if(1)
-					playsound(interior_side_door,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+	switch(strength)
+		if(1)
+			playsound(interior_side_door,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			for(var/mob/living/carbon/M in interior_area)
+				if(!M.stat)
 					shake_camera(M, 10, 1)
 					if(!M.buckled && prob(35))
 						M.KnockDown(1)
 						M.apply_damage(rand(0, 1), BRUTE)
-				if(2)
-					playsound(interior_side_door, pick('sound/effects/Explosion2.ogg', 'sound/effects/Explosion1.ogg'), vol = 20, sound_range = 10)
-					playsound(interior_side_door,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			playsound(src,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			if(gunner)
+				shake_camera(gunner, 10, 1)
+			if(driver)
+				shake_camera(driver, 10, 1)
+		if(2)
+			playsound(interior_side_door, pick('sound/effects/Explosion2.ogg', 'sound/effects/Explosion1.ogg'), vol = 20, sound_range = 10)
+			playsound(interior_side_door,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			for(var/mob/living/carbon/M in interior_area)
+				if(!M.stat)
 					shake_camera(M, 20, 1)
 					if(!M.buckled && prob(65))
 						M.KnockDown(2)
 					M.apply_damage(rand(0, 2), BRUTE)
 					M.apply_damage(rand(0, 2), BURN)
-				if(3)
-					playsound(interior_side_door, pick('sound/effects/Explosion2.ogg', 'sound/effects/Explosion1.ogg'), vol = 20, sound_range = 10)
-					playsound(interior_side_door,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			playsound(src,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			if(gunner)
+				var/mob/living/carbon/human/H = gunner
+				shake_camera(gunner, 20, 1)
+				H.apply_damage(rand(0, 1), BRUTE)
+				H.apply_damage(rand(0, 1), BURN)
+			if(driver)
+				var/mob/living/carbon/human/H = driver
+				shake_camera(H, 20, 1)
+				H.apply_damage(rand(0, 1), BRUTE)
+				H.apply_damage(rand(0, 1), BURN)
+		if(3)
+			playsound(interior_side_door, pick('sound/effects/Explosion2.ogg', 'sound/effects/Explosion1.ogg'), vol = 20, sound_range = 10)
+			playsound(interior_side_door,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			for(var/mob/living/carbon/M in interior_area)
+				if(!M.stat)
 					shake_camera(M, 30, 1)
 					if(!M.buckled && prob(85))
 						M.KnockDown(3)
 					M.apply_damage(rand(2, 4), BRUTE)
 					M.apply_damage(rand(2, 4), BURN)
-				if(4)
-					playsound(interior_side_door, pick('sound/effects/Explosion2.ogg', 'sound/effects/Explosion1.ogg'), vol = 20, sound_range = 10)
-					playsound(interior_side_door,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			playsound(src,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			if(gunner)
+				var/mob/living/carbon/human/H = gunner
+				shake_camera(gunner, 30, 1)
+				H.apply_damage(rand(1, 3), BRUTE)
+				H.apply_damage(rand(1, 3), BURN)
+			if(driver)
+				var/mob/living/carbon/human/H = driver
+				shake_camera(driver, 30, 1)
+				H.apply_damage(rand(1, 3), BRUTE)
+				H.apply_damage(rand(1, 3), BURN)
+		if(4)
+			playsound(interior_side_door, pick('sound/effects/Explosion2.ogg', 'sound/effects/Explosion1.ogg'), vol = 20, sound_range = 10)
+			playsound(interior_side_door,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			for(var/mob/living/carbon/M in interior_area)
+				if(!M.stat)
 					shake_camera(M, 40, 1)
 					if(!M.buckled)
 						M.KnockDown(4)
@@ -873,7 +898,17 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 						M.KnockDown(2)
 					M.apply_damage(rand(3, 7), BRUTE)
 					M.apply_damage(rand(3, 7), BURN)
-
+			playsound(src,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			if(gunner)
+				var/mob/living/carbon/human/H = gunner
+				shake_camera(gunner, 40, 1)
+				H.apply_damage(rand(2, 6), BRUTE)
+				H.apply_damage(rand(2, 6), BURN)
+			if(driver)
+				var/mob/living/carbon/human/H = driver
+				shake_camera(driver, 40, 1)
+				H.apply_damage(rand(2, 6), BRUTE)
+				H.apply_damage(rand(2, 6), BURN)
 
 /obj/vehicle/multitile/hitbox/cm_transport/apc/Bump(var/atom/A)
 	. = ..()

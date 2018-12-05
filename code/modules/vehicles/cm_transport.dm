@@ -37,7 +37,7 @@ var/list/apc_dmg_distributions = list(
 
 	//Below are vars that can be affected by hardpoints, generally used as ratios or decisecond timers
 
-	move_delay = 2 //no or broken wheels speed delay will be 30, otherwise -
+	move_delay = 50 //no or broken wheels speed delay will be 30, otherwise -
 	unacidable = 1
 	var/active_hp
 	var/vehicle_class = WEIGHT_LIGHT
@@ -170,7 +170,7 @@ var/list/apc_dmg_distributions = list(
 /obj/vehicle/multitile/root/cm_transport/verb/switch_active_hp()
 	set name = "Change Active Weapon"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
+	set src = usr.loc
 
 	if(!can_use_hp(usr))
 		return
@@ -211,7 +211,7 @@ var/list/apc_dmg_distributions = list(
 /obj/vehicle/multitile/root/cm_transport/verb/apc_status()
 	set name = "Check Vehicle Status"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
+	set src = usr.loc
 
 	var/obj/item/hardpoint/apc/HP1 = hardpoints[HDPT_WHEELS]
 	var/obj/item/hardpoint/apc/HP2 = hardpoints[HDPT_SUPPORT]
@@ -250,8 +250,7 @@ var/list/apc_dmg_distributions = list(
 
 	to_chat(usr, "<span class='warning'>Vehicle Status:</span><br>")
 	to_chat(usr, "<span class='warning'>Overall vehicle integrity: [apc_health] percent.</span>")
-	if(!can_use_hp(usr))
-		return
+
 	if(HP4 == null || HP4.health <= 0)
 		to_chat(usr, "<span class='warning'>Primary weapon: Unavailable.</span>")
 	else
@@ -270,7 +269,7 @@ var/list/apc_dmg_distributions = list(
 /obj/vehicle/multitile/root/cm_transport/verb/reload_hp()
 	set name = "Reload Weapon"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
+	set src = usr.loc
 
 	if(!can_use_hp(usr)) return
 
@@ -420,12 +419,12 @@ var/list/apc_dmg_distributions = list(
 	if(dir in list(NORTH, SOUTH))
 		pixel_x = -32
 		pixel_y = -48
-		icon = 'icons/obj/apcarrier_NS.dmi'
+		icon = 'icons/obj/multitile_vehicle/apcarrier_NS.dmi'
 
 	else if(dir in list(EAST, WEST))
 		pixel_x = -48
 		pixel_y = -32
-		icon = 'icons/obj/apcarrier_EW.dmi'
+		icon = 'icons/obj/multitile_vehicle/apcarrier_EW.dmi'
 
 	//Basic iteration that snags the overlay from the hardpoint module object
 	var/i
