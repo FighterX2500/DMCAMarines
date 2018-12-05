@@ -443,7 +443,7 @@ All of the hardpoints, for the tank and APC
 		A.current_rounds--
 
 /obj/item/hardpoint/tank/secondary/towlauncher
-	name = "M8-2 TOW Launcher"
+	name = "M8-3 TOW Launcher"
 	desc = "A secondary weapon for tank that shoots powerful AP rockets. Deals heavy damage, but only on direct hits."
 
 	maxhealth = 500
@@ -1238,7 +1238,7 @@ All of the hardpoints, for the tank and APC
 
 
 /obj/item/ammo_magazine/tank/towlauncher
-	name = "M8-2 TOW Launcher Magazine"
+	name = "M8-3 TOW Launcher Magazine"
 	desc = "A secondary armament rocket magazine"
 	caliber = "rocket" //correlates to any rocket mags
 	icon_state = "quad_rocket"

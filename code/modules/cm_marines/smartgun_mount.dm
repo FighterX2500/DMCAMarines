@@ -264,7 +264,8 @@
 	var/rounds_max = 700
 	var/fire_delay = 4 //Gotta have rounds down quick.
 	var/last_fired = 0
-	var/burst_fire = 0 //0 is non-burst mode, 1 is burst.
+	var/burst_fire = FALSE//0 is non-burst mode, 1 is burst.
+	var/burst_fire_toggled = FALSE
 	var/safety = 0 //Weapon safety, 0 is weapons hot, 1 is safe.
 	var/health = 200
 	var/health_max = 200 //Why not just give it sentry-tier health for now.
@@ -429,8 +430,9 @@
 
 	if(!burst_fire && target && !last_fired)
 		fire_shot()
-
-	burst_fire = 0
+	if(burst_fire_toggled)
+		burst_fire = !burst_fire
+		burst_fire_toggled = FALSE
 	target = null
 
 /obj/machinery/m56d_hmg/proc/fire_shot() //Bang Bang
@@ -485,7 +487,11 @@
 	if(user.get_active_hand())
 		to_chat(usr, "<span class='warning'>You need a free hand to shoot the [src].</span>")
 		return 0
-
+	var/turf/T = get_turf(src)
+	if(!T.Adjacent(user))
+		to_chat(usr, "<span class='warning'>Something is between you and [src].</span>")
+		user.unset_interaction()
+		return 0
 	target = A
 	if(!istype(target))
 		return 0
@@ -496,10 +502,11 @@
 	if(get_dist(target,src.loc) > 15)
 		return 0
 
-	if(mods["middle"] || mods["shift"] || mods["alt"])	return 0
+	if(mods["middle"] || mods["shift"] || mods["ctrl"])	return 0
 
-	if(mods["ctrl"])
-		burst_fire = 1
+	if(mods["alt"])
+		burst_fire = !burst_fire
+		burst_fire_toggled = TRUE
 
 	var/angle = get_dir(src,target)
 	//we can only fire in a 90 degree cone
@@ -580,12 +587,21 @@
 /obj/machinery/m56d_hmg/clicked(var/mob/user, var/list/mods) //Making it possible to toggle burst fire. Perhaps have altclick be the safety on the gun?
 	if (isobserver(user)) return
 
+	if(mods["ctrl"])
+		if(operator != user)
+			return
+		to_chat(user, "<span class='notice'>You set [src] to [burst_fire ? "burst_fire" : "single_fire"] mode.</span>")
+		playsound(src.loc, 'sound/items/Deconstruct.ogg',25,1)
+		burst_fire = !burst_fire
+		return 1
+
 	return ..()
 
 /obj/machinery/m56d_hmg/mg_turret //Our mapbound version with stupid amounts of ammo.
 	name = "M56D Smartgun Nest"
 	desc = "A M56D smartgun mounted upon a small reinforced post with sandbags to provide a small machinegun nest for all your defense purpose needs.\n<span class='notice'>  Use (ctrl-click) to shoot in bursts.</span>\n<span class='notice'> !!DANGER: M56D DOES NOT HAVE IFF FEATURES!!</span>"
-	burst_fire = 0
+	burst_fire = FALSE
+	burst_fire_toggled = FALSE
 	fire_delay = 2
 	rounds = 1500
 	rounds_max = 1500
