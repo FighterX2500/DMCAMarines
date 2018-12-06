@@ -140,6 +140,7 @@
 // Grenades
 ////////////
 // Tesla grenade
+/*
 /obj/item/explosive/grenade/tesla			//"P-p-please...*sniff*... no more!"@Crushers Gang
 	name = "T-1 Shock grenade"
 	desc = "An old, M40 HEDP grenade, which explosive guts were been replaced by miniature overcharged HEW MKI battery. An explosion cause muscle contraction to any organic and semi-organic lifeforms."
@@ -176,7 +177,7 @@
 	..()
 	for(var/nade = 1 to storage_slots)
 		new /obj/item/explosive/grenade/tesla(src)
-
+*/
 /////////////
 // Tesla and its powerpack
 ////////////
@@ -185,7 +186,8 @@
 	name = "HEW-2 \"Zeus\""
 	//name = "ESW MKIV \"Paralyzer\""		//
 	desc = "The actual firearm in 2-piece HEW(Heavy Electrical Weapon) system MKII. Being civilian-grade gun system, primary used by scientific divisions, that gun can still be useful for USCM in limited numbers."
-	icon_state = "m56"
+	icon = 'code/WorkInProgress/polion1232/teslagun.dmi'
+	icon_state = "stun"
 	item_state = "m56"
 	ammo = /datum/ammo/energy/tesla
 	fire_sound = 'sound/weapons/Tesla.ogg'
@@ -194,6 +196,15 @@
 	gun_skill_category = GUN_SKILL_SMARTGUN		//Heavy as fuck
 	aim_slowdown = SLOWDOWN_ADS_SPECIALIST
 	flags_gun_features = GUN_INTERNAL_MAG|GUN_WIELDED_FIRING_ONLY
+
+/obj/item/weapon/gun/energy/tesla/update_icon()
+	if(charge)
+		icon_state = "stun"
+		return
+	else
+		icon_state = "stun1"
+		return
+	icon_state = "stun"
 
 /obj/item/weapon/gun/energy/tesla/set_gun_config_values()
 	fire_delay = config.max_fire_delay * 2
