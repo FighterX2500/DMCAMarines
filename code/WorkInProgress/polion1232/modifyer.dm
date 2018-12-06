@@ -16,8 +16,8 @@
 
 /obj/machinery/r_n_d/modifyer
 	name = "Equipment Modification Unit"
-	icon = 'code/WorkInProgress/polion1232/polionresearch.dmi'
-	icon_state = "bronya_pusta"
+	icon = 'code/WorkInProgress/polion1232/rnd.dmi'
+	icon_state = "mod_unit"
 	var/obj/item/clothing/loaded_item = null // Because armor and helmet too different
 	// var/obj/item/marineResearch/xenomorp = null // In future, you will use alien pieces for modification
 
@@ -26,10 +26,16 @@
 	active_power_usage = 2500
 
 /obj/machinery/r_n_d/modifyer/update_icon()
-	if(!loaded_item)
-		icon_state = "bronya_pusta"
-	else
-		icon_state = "bronya_est"
+	if(istype(loaded_item, /obj/item/clothing/suit/storage/marine))
+		icon_state = "mod_unit_armor"
+		return
+	if(istype(loaded_item, /obj/item/clothing/suit/storage/marine))
+		icon_state = "mod_unit_armor"
+		return
+	if(istype(loaded_item, /obj/item/clothing/suit/storage/marine))
+		icon_state = "mod_unit_armor"
+		return
+	icon_state = "mod_unit"
 
 /obj/machinery/r_n_d/modifyer/New()
 	..()
@@ -87,7 +93,7 @@
 		user.drop_held_item()
 		O.loc = src
 		to_chat(user, "\blue You add the [O.name] to the machine!")
-		icon_state = "bronya_est"
+		update_icon()
 		return 1
 	else
 		to_chat(user, "\red Can't do anything with that!")

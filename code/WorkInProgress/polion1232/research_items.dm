@@ -140,7 +140,6 @@
 // Grenades
 ////////////
 // Tesla grenade
-/*
 /obj/item/explosive/grenade/tesla			//"P-p-please...*sniff*... no more!"@Crushers Gang
 	name = "T-1 Shock grenade"
 	desc = "An old, M40 HEDP grenade, which explosive guts were been replaced by miniature overcharged HEW MKI battery. An explosion cause muscle contraction to any organic and semi-organic lifeforms."
@@ -152,13 +151,32 @@
 
 /obj/item/explosive/grenade/tesla/prime()
 	spawn(0)
+		if(prob(20))
+			visible_message("[src] just sparks a little, creaks and falls apart.","What was that?")
+			cdel(src)
+			return
 		playsound(loc, 'sound/items/teslagrenade.ogg', 80, 0, 7)
-		for(var/mob/living/target in oview(2))
+		for(var/mob/living/target in range(2))
 			if(isYautja(target))
 				continue					// They don't give a fuck
-			target.apply_effects(2,2)
+			target.apply_effects(4,4)
 		cdel(src)
-*/
+
+// box for tesla grenade
+/obj/item/storage/box/tesla_box
+	name = "T-1 Shock grenade box"
+	desc = "A secure box holding 25 T-1 shock grenades with haphazardly cleansed \"M40 HEDP\" label. Stuns opponents in near distance."
+	icon_state = "nade_placeholder"
+	w_class = 4
+	storage_slots = 25
+	max_storage_space = 50
+	can_hold = list("/obj/item/explosive/grenade/tesla")
+
+/obj/item/storage/box/tesla_box/New()
+	..()
+	for(var/nade = 1 to storage_slots)
+		new /obj/item/explosive/grenade/tesla(src)
+
 /////////////
 // Tesla and its powerpack
 ////////////
