@@ -690,7 +690,7 @@
 		if(!current_mag.current_rounds) to_chat(user, "<span class='warning'>[src] is already empty!</span>")
 		else 							to_chat(user, "<span class='warning'>It would be too much trouble to unload [src] now. Should have thought ahead!</span>")
 
-//Adding in the rocket backblast. The tile behind the specialist gets blasted hard enough to down and slightly wound anyone
+//Adding in the rocket backblast. The tile behind the specialist gets blasted hard enough to down and wound anyone
 /obj/item/weapon/gun/launcher/rocket/apply_bullet_effects(obj/item/projectile/projectile_to_fire, mob/user, i = 1, reflex = 0)
 
 	var/backblast_loc = get_turf(get_step(user.loc, turn(user.dir, 180)))
@@ -698,8 +698,10 @@
 	smoke.start()
 	for(var/mob/living/carbon/C in backblast_loc)
 		if(!C.lying) //Have to be standing up to get the fun stuff
-			C.adjustBruteLoss(15) //The shockwave hurts, quite a bit. It can knock unarmored targets unconscious in real life
-			C.Stun(4) //For good measure
+			step_away(C, user, 0)
+			C.adjustBruteLoss(30) //The shockwave hurts, quite a bit. It can knock unarmored targets unconscious in real life
+			C.adjustFireLoss(15)
+			C.KnockDown(2) //For good measure
 			C.emote("pain")
 
 		..()
@@ -709,7 +711,7 @@
 
 /obj/item/weapon/gun/launcher/rocket/m57a4
 	name = "M57-A4 'Lightning Bolt' quad thermobaric launcher"
-	desc = "The M57-A4 'Lightning Bolt' is posssibly the most destructive man-portable weapon ever made. It is a 4-barreled missile launcher capable of burst-firing 4 thermobaric missiles. Enough said."
+	desc = "The M57-A4 'Lightning Bolt' is possibly the most destructive man-portable weapon ever made. It is a 4-barreled missile launcher capable of burst-firing 4 thermobaric missiles. Enough said."
 	icon_state = "m57a4"
 	item_state = "m57a4"
 	origin_tech = "combat=7;materials=5"

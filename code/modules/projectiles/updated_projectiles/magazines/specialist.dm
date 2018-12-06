@@ -120,6 +120,55 @@
 		else
 			to_chat(user, "Not with a missile inside!")
 
+
+	attack(mob/living/carbon/human/M, mob/living/carbon/human/user, def_zone)
+
+		var/obj/item/weapon/gun/launcher/in_hand
+		if(!istype(M) || get_dist(user, M) > 1)
+			return
+		if(!M.mind || !M.mind.cm_skills || M.mind.cm_skills.firearms < SKILL_FIREARMS_DEFAULT)
+			to_chat(user, "<span class='warning'>You were never trained to reload [in_hand].</span>")
+			return
+		in_hand = M.get_active_hand()
+		if(!in_hand || !istype(in_hand) || in_hand.name != "M5 RPG (Wielded)")
+			in_hand = M.get_inactive_hand()
+			if(!in_hand || !istype(in_hand) || in_hand.name != "M5 RPG (Wielded)")
+				to_chat(user, "<span class='warning'>RPG operator should wield RPG in both hands in order to reload.</span>")
+				return
+		if(M.dir != user.dir || M.loc != get_step(user, user.dir))
+			to_chat(user, "<span class='warning'>You should be right behind [M] in order to reload.</span>")
+			return
+
+		if(in_hand.current_mag.current_rounds > 0)
+			to_chat(user, "<span class='warning'>[in_hand] is already loaded!</span>")
+			return
+
+		if(user)
+			to_chat(user, "<span class='notice'>You begin reloading [M]'s [in_hand]. Hold still...</span>")
+			if(do_after(user,(in_hand.current_mag.reload_delay / 2), TRUE, 5, BUSY_ICON_FRIENDLY))
+				if(get_dist(user, M) > 1)
+					return
+				if(M.dir != user.dir || M.loc != get_step(user, user.dir))
+					to_chat(user, "<span class='warning'>You should be right behind [M] in order to reload.</span>")
+					return
+				user.drop_inv_item_on_ground(src)
+				in_hand.replace_ammo(user,src)
+				in_hand.current_mag.current_rounds = in_hand.current_mag.max_rounds
+				src.current_rounds = 0
+				to_chat(user, "<span class='notice'>You load [src] into [M]'s [in_hand].</span>")
+				if(in_hand.reload_sound) playsound(M, in_hand.reload_sound, 25, 1)
+				else playsound(M,'sound/machines/click.ogg', 25, 1)
+			else
+				to_chat(user, "<span class='warning'>Your reload was interrupted!</span>")
+				return
+		else
+			src.loc = get_turf(in_hand)
+			in_hand.replace_ammo(,src)
+			in_hand.current_mag.current_rounds = in_hand.current_mag.max_rounds
+			src.current_rounds = 0
+		src.update_icon()
+		return 1
+
 	update_icon()
 		overlays.Cut()
 		if(current_rounds <= 0)

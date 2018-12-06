@@ -658,6 +658,9 @@ and you're good to go.
 			flags_gun_features &= ~GUN_BURST_FIRING
 			return
 
+		if(istype(src, /obj/item/weapon/gun/launcher/rocket))
+			user.say(pick("BACKBLAST AREA CLEAR!", "CLEAR BACKBLAST AREA!", "FIRING!", "FIRING ROCKET LAUNCHER!", "WATCH OUT!", "MISSILE AWAY!", "WATCH OUT BEHIND THERE!"))
+
 		if(get_turf(target) != get_turf(user))
 			simulate_recoil(recoil_comp, user, target)
 
