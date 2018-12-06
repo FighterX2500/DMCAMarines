@@ -6,13 +6,13 @@
 #define "Supply Modification" 2
 #define "Command Modification" 3
 
-var/list/free_modules = list("Medical Modification", "Supply Modification")//, "Command Modification")
+var/list/free_modules = list("Medical Modification", "Supply Modification", "Command Modification")
 
 /obj/vehicle/multitile/root/cm_transport/apc
 	name = "M580 APC"
 	desc = "M580 Armored Personnel Carrier. Combat transport for delivering and supporting infantry. Entrance on the right side."
 
-	icon = 'icons/obj/apcarrier_NS.dmi'
+	icon = 'icons/obj/multitile_vehicle/apcarrier_NS.dmi'
 	icon_state = "apc_base"
 	pixel_x = -32
 	pixel_y = -32
@@ -28,8 +28,12 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 	var/tank_crewman_entered = FALSE
 	var/module_role_entered = FALSE
 	var/module_role = null
+	var/turf/interior_area
 	var/obj/structure/vehicle_interior/side_door/interior_side_door
 	var/obj/structure/vehicle_interior/cabin_door/interior_cabin_door
+	var/obj/machinery/vehicle_interior/tcomms_receiver/interior_tcomms
+	var/obj/machinery/camera/interior_cam
+	var/mob/camera_user
 
 	var/obj/machinery/camera/camera = null	//Yay! Working camera in the apc!
 
@@ -66,7 +70,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 
 	R.camera = new /obj/machinery/camera(R)
 	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
-	R.camera.c_tag = "APC �[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
+	R.camera.c_tag = "Armored Personnel Carrier �[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
 
 	del(src)
 
@@ -133,31 +137,40 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 	R.camera.c_tag = "Armored Personnel Carrier �[rand(1,10)]" //ARMORED to be at the start of cams list, numbers in case of events with multiple vehicles
 
 	//Manually adding those hardpoints
-	R.add_hardpoint(new /obj/item/apc_hardpoint/primary/dual_cannon)
-	R.add_hardpoint(new /obj/item/apc_hardpoint/secondary/front_cannon)
-	R.add_hardpoint(new /obj/item/apc_hardpoint/support/flare_launcher)
-	R.add_hardpoint(new /obj/item/apc_hardpoint/wheels)
+	R.add_hardpoint(new /obj/item/hardpoint/apc/primary/dual_cannon)
+	R.add_hardpoint(new /obj/item/hardpoint/apc/secondary/front_cannon)
+	R.add_hardpoint(new /obj/item/hardpoint/apc/support/flare_launcher)
+	R.add_hardpoint(new /obj/item/hardpoint/apc/wheels)
 	R.update_damage_distribs()
 
 	R.healthcheck()
 
 	del(src)
 
+/obj/vehicle/multitile/root/cm_transport/apc/Dispose()
+	if(special_module_type)
+		free_modules.Add(special_module_type)
+
+	. = ..()
+
 //For the apc, start forcing people out if everything is broken
 /obj/vehicle/multitile/root/cm_transport/apc/handle_all_modules_broken()
 	deactivate_all_hardpoints()
-	var/turf/T = get_turf(multitile_interior_cabin_exit)
-	to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the cabin so you get out!</span>")
-	gunner.forceMove(T)
-	to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the cabin so you get out!</span>")
-	driver.forceMove(T)
-	if(gunner.client)
-		gunner.client.mouse_pointer_icon = initial(gunner.client.mouse_pointer_icon)
-	gunner.unset_interaction()
-	gunner = null
-	driver.unset_interaction()
-	driver = null
+	if(gunner)
+		to_chat(gunner, "<span class='danger'>You cannot breath in all the smoke inside the cabin so you get out!</span>")
+		gunner.forceMove(multitile_interior_cabin_exit.loc)
+		gunner.unset_interaction()
+		gunner = null
+		if(gunner.client)
+			gunner.client.mouse_pointer_icon = initial(gunner.client.mouse_pointer_icon)
+	if(driver)
+		to_chat(driver, "<span class='danger'>You cannot breath in all the smoke inside the cabin so you get out!</span>")
+		driver.forceMove(multitile_interior_cabin_exit.loc)
+		driver.unset_interaction()
+		driver = null
 	special_module_working = FALSE
+	if(special_module_type == "Command Modification")
+		interior_tcomms.hard_switch_off()
 
 	camera.status = 0
 	SetLuminosity(2)
@@ -165,17 +178,20 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 /obj/vehicle/multitile/root/cm_transport/apc/fix_special_module()
 	if(!special_module_working)
 		special_module_working = TRUE
+		if(special_module_type == "Command Modification")
+			interior_tcomms.hard_switch_off()
+		camera.status = 1
 		if(luminosity == 2)
 			SetLuminosity(7)
 
 /obj/vehicle/multitile/root/cm_transport/apc/remove_all_players()
 	deactivate_all_hardpoints()
-	if(!entrance) //Something broke, uh oh
+	if(!multitile_interior_cabin_exit) //Something broke, uh oh
 		if(gunner) gunner.loc = src.loc
 		if(driver) driver.loc = src.loc
 	else
-		if(gunner) gunner.forceMove(entrance.loc)
-		if(driver) driver.forceMove(entrance.loc)
+		if(gunner) gunner.forceMove(multitile_interior_cabin_exit.loc)
+		if(driver) driver.forceMove(multitile_interior_cabin_exit.loc)
 
 	if(gunner.client)
 		gunner.client.mouse_pointer_icon = initial(gunner.client.mouse_pointer_icon)
@@ -226,30 +242,57 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 		if(module_role_entered)
 			count++
 		if(count == 1)
-			to_chat(user, "<span class='xenonotice'>You can sense [passengers] host inside of the fast metal box, but you can't tell for sure if they are alive.</span>")
+			to_chat(user, "<span class='xenonotice'>You can sense [count] host inside of the fast metal box, but you can't tell for sure if they are alive.</span>")
 			return
 		if(count > 1)
-			to_chat(user, "<span class='xenonotice'>You can sense [passengers] hosts inside of the fast metal box, but you can't tell for sure how many of them are alive.</span>")
+			to_chat(user, "<span class='xenonotice'>You can sense [count] hosts inside of the fast metal box, but you can't tell for sure how many of them are alive.</span>")
 			return
+	if(special_module_type && isobserver(user) && get_dist(src, user) <= 2)
+		user.forceMove(multitile_interior_exit.loc)
 
 //little QoL won't be bad, aight?
 /obj/vehicle/multitile/root/cm_transport/apc/verb/megaphone()
 	set name = "Use Megaphone"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
-	if(usr != gunner && usr != driver)
-		return
+	set src = usr.loc
+
 	use_megaphone(usr)
+
+/obj/vehicle/multitile/root/cm_transport/apc/verb/use_interior_camera()
+	set name = "Use Interior Camera"
+	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
+	set src = usr.loc
+
+	access_camera(usr)
+
+/obj/vehicle/multitile/root/cm_transport/apc/proc/access_camera(var/mob/living/M)
+
+	if(camera_user)
+		if(camera_user == M)
+			return
+		else
+			to_chat(M, "<span class='warning'>Camera is being used by another cabin crewman!</span>")
+			return
+	else
+		camera_user = M
+		M.reset_view(interior_cam)
+		to_chat(M, "<span class='notice'>You move closer and take a quick look into interior camera monitor.</span>")
+		M.unset_interaction()
+		if(gunner)
+			deactivate_all_hardpoints()
+		sleep(10)
+		M.set_interaction(src)
+		M.reset_view(null)
+		camera_user = null
+		to_chat(M, "<span class='notice'>You move away from interior camera monitor.</span>")
+		return
 
 /*
 //Built in smoke launcher system verb.
 /obj/vehicle/multitile/root/cm_transport/apc/verb/smoke_cover()
 	set name = "Activate Smoke Deploy System"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
-
-	if(usr != gunner && usr != driver)
-		return
+	set src = usr.loc
 
 	if(smoke_ammo_current)
 		to_chat(usr, "<span class='warning'>You activate Smoke Deploy System!</span>")
@@ -264,10 +307,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 /obj/vehicle/multitile/root/cm_transport/apc/verb/name_apc()
 	set name = "Name The APC (Single Use)"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
-
-	if(usr != gunner && usr != driver)
-		return
+	set src = usr.loc
 
 	if(named)
 		to_chat(usr, "<span class='warning'>APC was already named!</span>")
@@ -500,11 +540,14 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 	return
 
 /obj/vehicle/multitile/root/cm_transport/apc/proc/choose_module(var/mob/user)
+
+	special_module_type = 10
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		var/obj/item/card/id/I = H.wear_id
 		if(!istype(I) || I.registered_name != H.real_name || I.rank != "Tank Crewman")
 			to_chat(H, "<span class='warning'>[src] door is locked. You need a Tank Crewman to unlock it.</span>")
+			special_module_type = null
 			return
 		else
 			if(free_modules != null)
@@ -513,12 +556,14 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 					to_chat(H, "<span class='warning'>You moved away from [src].</span>")
 					special_module_type = null
 					return
+
 				switch(special_module_type)
+
 					if("Medical Modification")
 						name = "M580-M APC"
 						camera.network.Add("apc_1")
 
-						var/area/interior_area = locate(/area/vehicle_interior/apc_1)
+						interior_area = locate(/area/vehicle_interior/apc_1)
 						var/obj/machinery/camera/cam = locate(/obj/machinery/camera/autoname/almayer) in interior_area
 						cam.c_tag = camera.c_tag + " Interior Camera"
 						cam.network.Add("almayer","apc_1")
@@ -528,6 +573,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 						interior_side_door.master = src
 						interior_cabin_door = locate(/obj/structure/vehicle_interior/cabin_door) in interior_area
 						interior_cabin_door.master = src
+						interior_cam = locate(/obj/machinery/camera/autoname/almayer) in interior_area
 						passengers_max = 8
 						module_role = "Doctor"
 
@@ -536,7 +582,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 					if("Supply Modification")
 						name = "M580-S APC"
 						camera.network.Add("apc_2")
-						var/area/interior_area = locate(/area/vehicle_interior/apc_2)
+						interior_area = locate(/area/vehicle_interior/apc_2)
 						var/obj/machinery/camera/cam = locate(/obj/machinery/camera/autoname/almayer) in interior_area
 						cam.c_tag = camera.c_tag + " Interior Camera"
 						cam.network.Add("almayer","apc_2")
@@ -546,6 +592,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 						interior_side_door.master = src
 						interior_cabin_door = locate(/obj/structure/vehicle_interior/cabin_door) in interior_area
 						interior_cabin_door.master = src
+						interior_cam = locate(/obj/machinery/camera/autoname/almayer) in interior_area
 						var/obj/structure/vehicle_interior/supply_receiver/receiver = locate(/obj/structure/vehicle_interior/supply_receiver) in interior_area
 						receiver.master = src
 						var/turf/T = locate(159, 61, 3)
@@ -563,7 +610,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 						name = "M580-C APC"
 						camera.network.Add("apc_3")
 
-						var/area/interior_area = locate(/area/vehicle_interior/apc_3)
+						interior_area = locate(/area/vehicle_interior/apc_3)
 						var/obj/machinery/camera/cam = locate(/obj/machinery/camera/autoname/almayer) in interior_area
 						cam.c_tag = camera.c_tag + " Interior Camera"
 						cam.network.Add("almayer","apc_3")
@@ -573,6 +620,34 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 						interior_side_door.master = src
 						interior_cabin_door = locate(/obj/structure/vehicle_interior/cabin_door) in interior_area
 						interior_cabin_door.master = src
+						interior_tcomms = locate(/obj/machinery/vehicle_interior/tcomms_receiver) in interior_area
+						interior_tcomms.sidekick = locate(/obj/structure/vehicle_interior/tcomms_hub) in interior_area
+						interior_tcomms.master = src
+						interior_cam = locate(/obj/machinery/camera/autoname/almayer) in interior_area
+						switch(map_tag)
+							if(MAP_PRISON_STATION)
+								var/turf/T = get_turf(locate(232,104,1))
+								interior_tcomms.tcomms_sphere = locate(/obj/machinery/telecomms/relay/preset/station/prison) in T.contents
+								if(interior_tcomms.tcomms_sphere)
+									to_chat(H, "<span class='debuginfo'>relay linked.</span>")
+								else
+									to_chat(H, "<span class='debuginfo'>error: relay not found.</span>")
+							if(MAP_BIG_RED)
+								var/turf/T = get_turf(locate(16,202,1))
+								interior_tcomms.tcomms_tower = locate(/obj/machinery/telecomms/relay/preset/ice_colony) in T.contents
+								if(interior_tcomms.tcomms_tower)
+									to_chat(H, "<span class='debuginfo'>relay linked.</span>")
+								else
+									to_chat(H, "<span class='debuginfo'>error: relay not found.</span>")
+							if(MAP_ICE_COLONY)
+								var/turf/T = get_turf(locate(18,180,1))
+								interior_tcomms.tcomms_tower = locate(/obj/machinery/telecomms/relay/preset/ice_colony) in T.contents
+								if(interior_tcomms.tcomms_tower)
+									to_chat(H, "<span class='debuginfo'>relay linked.</span>")
+								else
+									to_chat(H, "<span class='debuginfo'>error: relay not found.</span>")
+							if(MAP_LV_624)
+								to_chat(user, "<span class='notice'>Area of Operations is covered by Almayer. [src] Telecommunication equipment is disabled for this operation.</span>")
 						passengers_max = 12
 						module_role = "Staff Officer"
 
@@ -580,9 +655,11 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 				fix_special_module()
 			else
 				to_chat(user, "<span class='danger'>APC is blocked permanently, because 3 APCs were already spawned and activated. Contact admin to delete this APC.</span>")
+				special_module_type = null
 				return
 	else
 		to_chat(user, "<span class='warning'>[src] door is locked, you can't get in!</span>")
+		special_module_type = null
 		return
 	return
 
@@ -669,18 +746,18 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 		to_chat(X, "<span class='xenowarning'>[src] door is locked, you can't get in!</span>")
 		return
 
-	if(X.t_squish_level > 2)
+	if(X.t_squish_level > 2 || X.tier > 2)
 		to_chat(X, "<span class='xenowarning'>[src] door way is too small for you, you can't fit through!</span>")
 		return
 
 	if(!X || X.client == null) return
 
-	visible_message(X, "<span class='notice'>[X] starts climbing into [src].</span>",
-		"<span class='xenonotice'>You start climbing into [src].</span>")
-
 	if(cabin_door_busy)
 		to_chat(X, "<span class='xenonotice'>Someone is in the doorway.</span>")
 		return
+
+	visible_message(X, "<span class='notice'>[X] starts climbing into [src].</span>",
+		"<span class='xenonotice'>You start climbing into [src].</span>")
 
 	cabin_door_busy = TRUE
 	if(!do_after(X, 20, needhand = FALSE, show_busy_icon = TRUE))
@@ -751,6 +828,87 @@ var/list/free_modules = list("Medical Modification", "Supply Modification")//, "
 
 	. = ..(deg, user, force)
 
+
+/obj/vehicle/multitile/root/cm_transport/apc/interior_concussion(var/strength)
+	switch(strength)
+		if(1)
+			playsound(interior_side_door,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			for(var/mob/living/carbon/M in interior_area)
+				if(!M.stat)
+					shake_camera(M, 10, 1)
+					if(!M.buckled && prob(35))
+						M.KnockDown(1)
+						M.apply_damage(rand(0, 1), BRUTE)
+			playsound(src,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			if(gunner)
+				shake_camera(gunner, 10, 1)
+			if(driver)
+				shake_camera(driver, 10, 1)
+		if(2)
+			playsound(interior_side_door, pick('sound/effects/Explosion2.ogg', 'sound/effects/Explosion1.ogg'), vol = 20, sound_range = 10)
+			playsound(interior_side_door,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			for(var/mob/living/carbon/M in interior_area)
+				if(!M.stat)
+					shake_camera(M, 20, 1)
+					if(!M.buckled && prob(65))
+						M.KnockDown(2)
+					M.apply_damage(rand(0, 2), BRUTE)
+					M.apply_damage(rand(0, 2), BURN)
+			playsound(src,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			if(gunner)
+				var/mob/living/carbon/human/H = gunner
+				shake_camera(gunner, 20, 1)
+				H.apply_damage(rand(0, 1), BRUTE)
+				H.apply_damage(rand(0, 1), BURN)
+			if(driver)
+				var/mob/living/carbon/human/H = driver
+				shake_camera(H, 20, 1)
+				H.apply_damage(rand(0, 1), BRUTE)
+				H.apply_damage(rand(0, 1), BURN)
+		if(3)
+			playsound(interior_side_door, pick('sound/effects/Explosion2.ogg', 'sound/effects/Explosion1.ogg'), vol = 20, sound_range = 10)
+			playsound(interior_side_door,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			for(var/mob/living/carbon/M in interior_area)
+				if(!M.stat)
+					shake_camera(M, 30, 1)
+					if(!M.buckled && prob(85))
+						M.KnockDown(3)
+					M.apply_damage(rand(2, 4), BRUTE)
+					M.apply_damage(rand(2, 4), BURN)
+			playsound(src,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			if(gunner)
+				var/mob/living/carbon/human/H = gunner
+				shake_camera(gunner, 30, 1)
+				H.apply_damage(rand(1, 3), BRUTE)
+				H.apply_damage(rand(1, 3), BURN)
+			if(driver)
+				var/mob/living/carbon/human/H = driver
+				shake_camera(driver, 30, 1)
+				H.apply_damage(rand(1, 3), BRUTE)
+				H.apply_damage(rand(1, 3), BURN)
+		if(4)
+			playsound(interior_side_door, pick('sound/effects/Explosion2.ogg', 'sound/effects/Explosion1.ogg'), vol = 20, sound_range = 10)
+			playsound(interior_side_door,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			for(var/mob/living/carbon/M in interior_area)
+				if(!M.stat)
+					shake_camera(M, 40, 1)
+					if(!M.buckled)
+						M.KnockDown(4)
+					else
+						M.KnockDown(2)
+					M.apply_damage(rand(3, 7), BRUTE)
+					M.apply_damage(rand(3, 7), BURN)
+			playsound(src,'sound/effects/metal_crash.ogg', vol = 20, sound_range = 10)
+			if(gunner)
+				var/mob/living/carbon/human/H = gunner
+				shake_camera(gunner, 40, 1)
+				H.apply_damage(rand(2, 6), BRUTE)
+				H.apply_damage(rand(2, 6), BURN)
+			if(driver)
+				var/mob/living/carbon/human/H = driver
+				shake_camera(driver, 40, 1)
+				H.apply_damage(rand(2, 6), BRUTE)
+				H.apply_damage(rand(2, 6), BURN)
 
 /obj/vehicle/multitile/hitbox/cm_transport/apc/Bump(var/atom/A)
 	. = ..()

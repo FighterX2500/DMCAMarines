@@ -6,7 +6,7 @@
 	name = "M46 \"Stingray\" Tank"
 	desc = "M46 \"Stingray\" Modular Multipurpose Tank. A giant piece of armor, was made as a budget version of a tank specifically for USCM. Supports installing different types of modules and weapons, allowing technicians to refit tank for any type of operation. Has inbuilt M75 Smoke Deploy System. Entrance in the back."
 
-	icon = 'icons/obj/tank_NS.dmi'
+	icon = 'icons/obj/multitile_vehicle/tank_NS.dmi'
 	icon_state = "tank_base"
 	pixel_x = -32
 	pixel_y = -32
@@ -117,11 +117,11 @@
 	R.load_entrance_marker(entr_mark)
 
 	//Manually adding those hardpoints
-	R.add_hardpoint(new /obj/item/hardpoint/primary/cannon/upp, R.hardpoints[HDPT_PRIMARY])
-	R.add_hardpoint(new /obj/item/hardpoint/secondary/m56cupola/upp, R.hardpoints[HDPT_SECDGUN])
-	R.add_hardpoint(new /obj/item/hardpoint/support/artillery_module/upp, R.hardpoints[HDPT_SUPPORT])
-	R.add_hardpoint(new /obj/item/hardpoint/armor/ballistic/upp, R.hardpoints[HDPT_ARMOR])
-	R.add_hardpoint(new /obj/item/hardpoint/treads/standard/upp, R.hardpoints[HDPT_TREADS])
+	R.add_hardpoint(new /obj/item/hardpoint/tank/primary/cannon/upp, R.hardpoints[HDPT_PRIMARY])
+	R.add_hardpoint(new /obj/item/hardpoint/tank/secondary/m56cupola/upp, R.hardpoints[HDPT_SECDGUN])
+	R.add_hardpoint(new /obj/item/hardpoint/tank/support/artillery_module/upp, R.hardpoints[HDPT_SUPPORT])
+	R.add_hardpoint(new /obj/item/hardpoint/tank/armor/ballistic/upp, R.hardpoints[HDPT_ARMOR])
+	R.add_hardpoint(new /obj/item/hardpoint/tank/treads/standard/upp, R.hardpoints[HDPT_TREADS])
 	R.update_damage_distribs()
 
 	R.color = "#c2b678"
@@ -206,7 +206,7 @@
 		for(var/mob/dead/observer/O in (range(7,src)))
 			O.show_message("<B>Tank</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2)
 		for(var/mob/living/carbon/Xenomorph/X in (range(7,src)))
-			X.show_message("Some loud tallhost noises heard from the metal turtle, but you can't understand it.")
+			X.show_message("Some loud tallhost noises can be heard from the metal turtle, but you can't understand them.")
 
 		spamcheck = 1
 		spawn(20)
@@ -217,19 +217,15 @@
 /obj/vehicle/multitile/root/cm_armored/tank/verb/megaphone()
 	set name = "Use Megaphone"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
-	if(usr != gunner && usr != driver)
-		return
+	set src = usr.loc
+
 	use_megaphone(usr)
 
 //Built in smoke launcher system verb.
 /obj/vehicle/multitile/root/cm_armored/tank/verb/smoke_cover()
 	set name = "Activate Smoke Deploy System"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
-
-	if(usr != gunner && usr != driver)
-		return
+	set src = usr.loc
 
 	if(smoke_ammo_current)
 		to_chat(usr, "<span class='warning'>You activate Smoke Deploy System!</span>")
@@ -243,10 +239,7 @@
 /obj/vehicle/multitile/root/cm_armored/tank/verb/name_tank()
 	set name = "Name The Tank (Single Use)"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
-
-	if(usr != gunner && usr != driver)
-		return
+	set src = usr.loc
 
 	if(named)
 		to_chat(usr, "<span class='warning'>Tank was already named!</span>")
@@ -265,10 +258,8 @@
 /obj/vehicle/multitile/root/cm_armored/tank/verb/switch_seats()
 	set name = "Swap Seats"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
+	set src = usr.loc
 
-	if(usr != gunner && usr != driver)
-		return
 	var/answer = alert(usr, "Are you sure you want to swap seats?", , "Yes", "No") //added confirmation window
 	if(answer == "No")
 		return
@@ -520,8 +511,8 @@
 
 	//Someone remind me to fix this fucking snow code --MadSnailDisease
 	//The check is made here since the snowplow won't fit on the APC
-	if(. && istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/armor/snowplow) && direction == dir)
-		var/obj/item/hardpoint/armor/snowplow/SP = hardpoints[HDPT_ARMOR]
+	if(. && istype(hardpoints[HDPT_ARMOR], /obj/item/hardpoint/tank/armor/snowplow) && direction == dir)
+		var/obj/item/hardpoint/tank/armor/snowplow/SP = hardpoints[HDPT_ARMOR]
 		if(SP.health > 0)
 			for(var/datum/coords/C in linked_objs)
 				var/turf/T = locate(src.x + C.x_pos, src.y + C.y_pos, src.z + C.z_pos)
@@ -569,7 +560,7 @@
 
 	. = ..(deg, user, force)
 
-	if(. && istype(hardpoints[HDPT_SUPPORT], /obj/item/hardpoint/support/artillery_module) && gunner && gunner.client)
+	if(. && istype(hardpoints[HDPT_SUPPORT], /obj/item/hardpoint/tank/support/artillery_module) && gunner && gunner.client)
 		var/client/C = gunner.client
 		var/old_x = C.pixel_x
 		var/old_y = C.pixel_y

@@ -37,7 +37,7 @@ var/list/apc_dmg_distributions = list(
 
 	//Below are vars that can be affected by hardpoints, generally used as ratios or decisecond timers
 
-	move_delay = 2 //no or broken wheels speed delay will be 30, otherwise -
+	move_delay = 50 //no or broken wheels speed delay will be 30, otherwise -
 	unacidable = 1
 	var/active_hp
 	var/vehicle_class = WEIGHT_LIGHT
@@ -100,7 +100,7 @@ var/list/apc_dmg_distributions = list(
 /obj/vehicle/multitile/root/cm_transport/proc/deactivate_all_hardpoints()
 	var/list/slots = get_activatable_hardpoints()
 	for(var/slot in slots)
-		var/obj/item/apc_hardpoint/HP = hardpoints[slot]
+		var/obj/item/hardpoint/apc/HP = hardpoints[slot]
 		if(!HP) continue
 		HP.deactivate()
 
@@ -150,7 +150,7 @@ var/list/apc_dmg_distributions = list(
 		to_chat(user, "<span class='warning'>Please select an active hardpoint first.</span>")
 		return
 
-	var/obj/item/apc_hardpoint/HP = hardpoints[active_hp]
+	var/obj/item/hardpoint/apc/HP = hardpoints[active_hp]
 
 	if(!HP)
 		return
@@ -170,9 +170,15 @@ var/list/apc_dmg_distributions = list(
 /obj/vehicle/multitile/root/cm_transport/verb/switch_active_hp()
 	set name = "Change Active Weapon"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
+	set src = usr.loc
 
 	if(!can_use_hp(usr))
+		return
+
+	var/mob/living/carbon/human/M = usr
+	var/obj/item/card/id/I = M.wear_id
+	if(I && I.rank == "Synthetic" && I.registered_name == M.real_name)
+		to_chat(usr, "<span class='notice'>Your programm doesn't allow operating [src] weapons.</span>")
 		return
 
 	var/list/slots = get_activatable_hardpoints()
@@ -183,15 +189,9 @@ var/list/apc_dmg_distributions = list(
 
 	var/slot = input("Select a slot.") in slots
 
-	var/obj/item/apc_hardpoint/HP = hardpoints[slot]
+	var/obj/item/hardpoint/apc/HP = hardpoints[slot]
 	if(!HP)
 		to_chat(usr, "<span class='warning'>There's nothing installed on that hardpoint.</span>")
-
-	var/mob/living/carbon/human/M = usr
-	var/obj/item/card/id/I = M.wear_id
-	if(I.rank == "Synthetic" && I.registered_name == M.real_name)
-		to_chat(usr, "<span class='notice'>Your programm doesn't allow operating APC weapons.</span>")
-		return
 
 	deactivate_binos(usr)
 	active_hp = slot
@@ -211,12 +211,12 @@ var/list/apc_dmg_distributions = list(
 /obj/vehicle/multitile/root/cm_transport/verb/apc_status()
 	set name = "Check Vehicle Status"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
+	set src = usr.loc
 
-	var/obj/item/apc_hardpoint/HP1 = hardpoints[HDPT_WHEELS]
-	var/obj/item/apc_hardpoint/HP2 = hardpoints[HDPT_SUPPORT]
-	var/obj/item/apc_hardpoint/HP3 = hardpoints[HDPT_SECDGUN]
-	var/obj/item/apc_hardpoint/HP4 = hardpoints[HDPT_PRIMARY]
+	var/obj/item/hardpoint/apc/HP1 = hardpoints[HDPT_WHEELS]
+	var/obj/item/hardpoint/apc/HP2 = hardpoints[HDPT_SUPPORT]
+	var/obj/item/hardpoint/apc/HP3 = hardpoints[HDPT_SECDGUN]
+	var/obj/item/hardpoint/apc/HP4 = hardpoints[HDPT_PRIMARY]
 	var divider = 0
 	var apc_health = 0
 	//if(HP1 != null && HP2 != null && HP3 != null && HP4 != null && HP5 != null))
@@ -250,8 +250,7 @@ var/list/apc_dmg_distributions = list(
 
 	to_chat(usr, "<span class='warning'>Vehicle Status:</span><br>")
 	to_chat(usr, "<span class='warning'>Overall vehicle integrity: [apc_health] percent.</span>")
-	if(!can_use_hp(usr))
-		return
+
 	if(HP4 == null || HP4.health <= 0)
 		to_chat(usr, "<span class='warning'>Primary weapon: Unavailable.</span>")
 	else
@@ -270,7 +269,7 @@ var/list/apc_dmg_distributions = list(
 /obj/vehicle/multitile/root/cm_transport/verb/reload_hp()
 	set name = "Reload Weapon"
 	set category = "Vehicle"	//changed verb category to new one, because Object category is bad.
-	set src in view(0)
+	set src = usr.loc
 
 	if(!can_use_hp(usr)) return
 
@@ -287,7 +286,7 @@ var/list/apc_dmg_distributions = list(
 
 	var/slot = input("Select a slot.") in slots
 
-	var/obj/item/apc_hardpoint/HP = hardpoints[slot]
+	var/obj/item/hardpoint/apc/HP = hardpoints[slot]
 	if(HP.clips.len < 1)
 		to_chat(usr, "<span class='warning'>[HP.name] has no clips left in it!</span>")
 		return
@@ -309,7 +308,7 @@ var/list/apc_dmg_distributions = list(
 	var/list/slots = list()
 	if(hardpoints.len)
 		for(var/slot in hardpoints)
-			var/obj/item/apc_hardpoint/HP = hardpoints[slot]
+			var/obj/item/hardpoint/apc/HP = hardpoints[slot]
 			if(!HP) continue
 			if(HP.health <= 0) continue
 			if(!HP.is_activatable) continue
@@ -349,7 +348,7 @@ var/list/apc_dmg_distributions = list(
 
 //Returns 1 or 0 if the slot in question has a broken installed hardpoint or not
 /obj/vehicle/multitile/root/cm_transport/proc/is_slot_damaged(var/slot)
-	var/obj/item/apc_hardpoint/HP = hardpoints[slot]
+	var/obj/item/hardpoint/apc/HP = hardpoints[slot]
 
 	if(!HP) return 0
 
@@ -359,7 +358,7 @@ var/list/apc_dmg_distributions = list(
 /obj/vehicle/multitile/root/cm_transport/examine(var/mob/user)
 	..()
 	for(var/i in hardpoints)
-		var/obj/item/apc_hardpoint/HP = hardpoints[i]
+		var/obj/item/hardpoint/apc/HP = hardpoints[i]
 		if(!HP)
 			to_chat(user, "There is nothing installed on the [i] hardpoint slot.")
 		else
@@ -394,7 +393,7 @@ var/list/apc_dmg_distributions = list(
 	var/i
 	var/remove_person = 1 //Whether or not to call handle_all_modules_broken()
 	for(i in hardpoints)
-		var/obj/item/apc_hardpoint/H = hardpoints[i]
+		var/obj/item/hardpoint/apc/H = hardpoints[i]
 		if(!H) continue
 		if(H.health <= 0)
 			H.remove_buff()
@@ -405,7 +404,7 @@ var/list/apc_dmg_distributions = list(
 		handle_all_modules_broken()
 	else
 		if(!luminosity)
-			luminosity = 7
+			SetLuminosity(7)
 
 	update_icon()
 
@@ -420,17 +419,17 @@ var/list/apc_dmg_distributions = list(
 	if(dir in list(NORTH, SOUTH))
 		pixel_x = -32
 		pixel_y = -48
-		icon = 'icons/obj/apcarrier_NS.dmi'
+		icon = 'icons/obj/multitile_vehicle/apcarrier_NS.dmi'
 
 	else if(dir in list(EAST, WEST))
 		pixel_x = -48
 		pixel_y = -32
-		icon = 'icons/obj/apcarrier_EW.dmi'
+		icon = 'icons/obj/multitile_vehicle/apcarrier_EW.dmi'
 
 	//Basic iteration that snags the overlay from the hardpoint module object
 	var/i
 	for(i in hardpoints)
-		var/obj/item/apc_hardpoint/H = hardpoints[i]
+		var/obj/item/hardpoint/apc/H = hardpoints[i]
 
 		if(i == HDPT_WHEELS && (!H || H.health <= 0)) //Treads not installed or broken
 			var/image/I = image(icon, icon_state = "damaged_hardpt_[i]")
@@ -861,7 +860,7 @@ var/list/apc_dmg_distributions = list(
 	for(var/obj/item/clothing/mask/facehugger/FG in get_turf(src))
 		FG.Die()
 	for(var/obj/effect/xenomorph/spray/SR in get_turf(src))
-		if(istype(CA.hardpoints[HDPT_WHEELS], /obj/item/apc_hardpoint/wheels) && CA.hardpoints[HDPT_WHEELS].health > 0)
+		if(istype(CA.hardpoints[HDPT_WHEELS], /obj/item/hardpoint/apc/wheels) && CA.hardpoints[HDPT_WHEELS].health > 0)
 			CA.hardpoints[HDPT_WHEELS].health -= 10
 			healthcheck()
 
@@ -925,7 +924,7 @@ var/list/apc_dmg_distributions = list(
 /obj/vehicle/multitile/root/cm_transport/proc/take_damage_type(var/damage, var/type, var/atom/attacker)
 	var/i
 	for(i in hardpoints)
-		var/obj/item/apc_hardpoint/HP = hardpoints[i]
+		var/obj/item/hardpoint/apc/HP = hardpoints[i]
 		if(!istype(HP)) continue
 		HP.health -= damage * dmg_distribs[i] * get_dmg_multi(type)
 
@@ -940,6 +939,9 @@ var/list/apc_dmg_distributions = list(
 		return 0
 
 	. = ..(P)
+
+/obj/vehicle/multitile/root/cm_transport/proc/interior_concussion(var/strength)
+	return
 
 //Differentiates between damage types from different bullets
 //Applies a linear transformation to bullet damage that will generally decrease damage done
@@ -961,16 +963,19 @@ var/list/apc_dmg_distributions = list(
 		dam_type = "explosive"
 		take_damage_type(P.damage * (1.2 + P.ammo.penetration/100), dam_type, P.firer)
 		healthcheck()
+		interior_concussion(3)
 		return
 	if(istype(P, /datum/ammo/rocket/tow))
 		dam_type = "explosive"
 		take_damage_type(P.damage * (1.5 + P.ammo.penetration/100), dam_type, P.firer)
 		healthcheck()
+		interior_concussion(3)
 		return
 	if(istype(P, /datum/ammo/rocket/ltb))
 		dam_type = "explosive"
 		take_damage_type(P.damage * (3 + P.ammo.penetration/100), dam_type, P.firer)
 		healthcheck()
+		interior_concussion(2)
 		return
 
 	take_damage_type(P.damage * (0.75 + P.ammo.penetration/100), dam_type, P.firer)
@@ -985,10 +990,12 @@ var/list/apc_dmg_distributions = list(
 		if(1.0)
 			take_damage_type(rand(100, 150), "explosive")
 			take_damage_type(rand(20, 40), "slash")
+			interior_concussion(4)
 
 		if(2.0)
 			take_damage_type(rand(60,80), "explosive")
 			take_damage_type(rand(10, 15), "slash")
+			interior_concussion(3)
 
 		if(3.0)
 			take_damage_type(rand(20, 25), "explosive")
@@ -1031,10 +1038,18 @@ var/list/apc_dmg_distributions = list(
 	for(var/atom/A in T.contents)
 		if(A.density)
 			var/mob/living/carbon/M = A
-			if(istype(M) && !(isXenoQueen(M) || isXenoCrusher(M)))
-				return FALSE
-			else
-				return TRUE
+			if(istype(M))
+				if(isXenoQueen(M) || isXenoCrusher(M))
+					return TRUE
+				else
+					return FALSE
+			if(istype(A, /obj/structure))
+				var/obj/structure/S = A
+				if(S.climbable)
+					return FALSE
+				else
+					return TRUE
+			return TRUE
 	return FALSE
 
 /obj/vehicle/multitile/root/cm_transport/proc/handle_interior_entrance(var/mob/M)
@@ -1068,12 +1083,13 @@ var/list/apc_dmg_distributions = list(
 			return
 
 		take_damage_type(100, "blunt", C)
+		interior_concussion(1)
 
 //Redistributes damage ratios based off of what things are attached (no armor means the armor doesn't mitigate any damage)
 /obj/vehicle/multitile/root/cm_transport/proc/update_damage_distribs()
 	dmg_distribs = apc_dmg_distributions.Copy() //Assume full installs
 	for(var/slot in hardpoints)
-		var/obj/item/apc_hardpoint/HP = hardpoints[slot]
+		var/obj/item/hardpoint/apc/HP = hardpoints[slot]
 		if(!HP) dmg_distribs[slot] = 0.0 //Remove empty slots' damage mitigation
 	var/acc = 0
 	for(var/slot in dmg_distribs)
@@ -1088,8 +1104,8 @@ var/list/apc_dmg_distributions = list(
 //Special cases abound, handled below or in subclasses
 /obj/vehicle/multitile/root/cm_transport/attackby(var/obj/item/O, var/mob/user)
 
-	if(istype(O, /obj/item/apc_hardpoint)) //Are we trying to install stuff?
-		var/obj/item/apc_hardpoint/HP = O
+	if(istype(O, /obj/item/hardpoint/apc)) //Are we trying to install stuff?
+		var/obj/item/hardpoint/apc/HP = O
 		install_hardpoint(HP, user)
 		update_damage_distribs()
 		return
@@ -1131,7 +1147,7 @@ var/list/apc_dmg_distributions = list(
 	//Pick what to repair
 	var/slot = input("Select a slot to try and repair") in damaged_hps
 
-	var/obj/item/apc_hardpoint/old = hardpoints[slot] //Is there something there already?
+	var/obj/item/hardpoint/apc/old = hardpoints[slot] //Is there something there already?
 
 	if(old) //If so, fuck you get it outta here
 		to_chat(user, "<span class='warning'>Please remove the attached hardpoint module first.</span>")
@@ -1192,7 +1208,7 @@ var/list/apc_dmg_distributions = list(
 	//Instead of using MT skills for these procs and TC skills for operation
 	//Oh but wait then the MTs would be able to drive fuck that
 	var/slot = input("Select a slot to try and refill") in hardpoints
-	var/obj/item/apc_hardpoint/HP = hardpoints[slot]
+	var/obj/item/hardpoint/apc/HP = hardpoints[slot]
 
 	if(!HP)
 		to_chat(user, "<span class='warning'>There is nothing installed on that slot.</span>")
@@ -1205,7 +1221,7 @@ var/list/apc_dmg_distributions = list(
 
 //Putting on hardpoints
 //Similar to repairing stuff, down to the time delay
-/obj/vehicle/multitile/root/cm_transport/proc/install_hardpoint(var/obj/item/apc_hardpoint/HP, var/mob/user)
+/obj/vehicle/multitile/root/cm_transport/proc/install_hardpoint(var/obj/item/hardpoint/apc/HP, var/mob/user)
 
 	if(!user.mind || !user.mind.cm_skills)
 		to_chat(user, "<span class='warning'>You don't know what to do with [HP] on [src].</span>")
@@ -1219,7 +1235,7 @@ var/list/apc_dmg_distributions = list(
 		to_chat(user, "<span class='warning'>You need to fix the hardpoint first.</span>")
 		return
 
-	var/obj/item/apc_hardpoint/old = hardpoints[HP.slot]
+	var/obj/item/hardpoint/apc/old = hardpoints[HP.slot]
 
 	if(old)
 		to_chat(user, "<span class='warning'>Remove the previous hardpoint module first.</span>")
@@ -1263,7 +1279,7 @@ var/list/apc_dmg_distributions = list(
 		to_chat(user, "<span class='warning'>You only know how to remove, install and field repair wheels.</span>")
 		return
 
-	var/obj/item/apc_hardpoint/old = hardpoints[slot]
+	var/obj/item/hardpoint/apc/old = hardpoints[slot]
 
 	if(!old)
 		to_chat(user, "<span class='warning'>There is nothing installed there.</span>")
@@ -1304,7 +1320,7 @@ var/list/apc_dmg_distributions = list(
 
 //General proc for putting on hardpoints
 //ALWAYS CALL THIS WHEN ATTACHING HARDPOINTS
-/obj/vehicle/multitile/root/cm_transport/proc/add_hardpoint(var/obj/item/apc_hardpoint/HP)
+/obj/vehicle/multitile/root/cm_transport/proc/add_hardpoint(var/obj/item/hardpoint/apc/HP)
 
 	HP.owner = src
 	HP.apply_buff()
@@ -1316,7 +1332,7 @@ var/list/apc_dmg_distributions = list(
 
 //General proc for taking off hardpoints
 //ALWAYS CALL THIS WHEN REMOVING HARDPOINTS
-/obj/vehicle/multitile/root/cm_transport/proc/remove_hardpoint(var/obj/item/apc_hardpoint/old, var/mob/user)
+/obj/vehicle/multitile/root/cm_transport/proc/remove_hardpoint(var/obj/item/hardpoint/apc/old, var/mob/user)
 	if(user)
 		old.loc = user.loc
 	else
