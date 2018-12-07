@@ -425,7 +425,7 @@
 				last_fired = 1
 			spawn(fire_delay)
 				last_fired = 0
-		else burst_fire = FALSE
+		else burst_fire = 0
 		is_bursting = 0
 
 	if(!burst_fire && target && !last_fired)
@@ -487,8 +487,7 @@
 	if(user.get_active_hand())
 		to_chat(usr, "<span class='warning'>You need a free hand to shoot the [src].</span>")
 		return 0
-	var/turf/T = get_turf(src)
-	if(!T.Adjacent(user))
+	if(!Adjacent(user))
 		to_chat(usr, "<span class='warning'>Something is between you and [src].</span>")
 		user.unset_interaction()
 		return 0
