@@ -95,8 +95,8 @@
 /obj/machinery/container
 	name = "Speciemen Analyze Chamber"
 	desc = "Standart pressure chamber for all your biology needs"
-	icon = 'icons/Marine/alien_autopsy.dmi'
-	icon_state = "tank_empty"
+	icon = 'code/WorkInProgress/polion1232/rnd.dmi'
+	icon_state = "analyzer_chamber"
 	var/mob/living/carbon/Xenomorph/occupant = null
 	var/obj/machinery/computer/analyze_console/linked_console = null
 
@@ -106,9 +106,9 @@
 
 /obj/machinery/container/update_icon()
 	if(occupant)
-		icon_state = "tank_alien"
+		icon_state = "analyzer_chamber_full"
 		return
-	icon_state = "tank_empty"
+	icon_state = "analyzer_chamber"
 
 /obj/machinery/container/attackby(obj/item/W, mob/living/user)
 	if(istype(W, /obj/item/grab))
@@ -176,8 +176,8 @@ If chamber connected to the console, you can start research aliens. Just don't b
 
 /obj/machinery/computer/analyze_console
 	name = "Speciemen Analyze Console"
-	icon = 'icons/obj/mainframe.dmi'
-	icon_state = "aimainframe"
+	icon = 'code/WorkInProgress/polion1232/polionresearch.dmi'
+	icon_state = "r_on"
 	circuit = /obj/item/circuitboard/machine/analyze_console
 
 	var/datum/species_collection/files = null
@@ -185,6 +185,12 @@ If chamber connected to the console, you can start research aliens. Just don't b
 	var/screen = 1.0
 	var/errored = 0
 	req_access = list(ACCESS_MARINE_RESEARCH)
+
+/obj/machinery/computer/analyze_console/update_icon()
+	if(stat & NOPOWER || stat & BROKEN)
+		icon_state = "r_off"
+		return
+	icon_state = "r_on"
 
 /obj/machinery/computer/analyze_console/New()
 	..()

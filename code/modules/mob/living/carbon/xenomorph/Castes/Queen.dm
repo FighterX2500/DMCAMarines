@@ -86,7 +86,14 @@
 		)
 
 /mob/living/carbon/Xenomorph/Queen/Corrupted
+	var/message_delay = 0					//Do not sabotage your masters, young lady!
 	hivenumber = XENO_HIVE_CORRUPTED
+	inherent_verbs = list(
+		/mob/living/carbon/Xenomorph/proc/claw_toggle,
+		/mob/living/carbon/Xenomorph/Queen/proc/set_orders,
+		/mob/living/carbon/Xenomorph/Queen/proc/hive_Message,
+		/mob/living/carbon/Xenomorph/Queen/Corrupted/proc/masters_Message
+		)
 
 /mob/living/carbon/Xenomorph/Queen/Alpha
 	hivenumber = XENO_HIVE_ALPHA
@@ -296,6 +303,45 @@
 	log_admin("[queensWord]")
 	message_admins("[key_name_admin(src)] has created a Word of the Queen report.", 1)
 
+
+/mob/living/carbon/Xenomorph/Queen/Corrupted/proc/masters_Message()
+	set name = "Send message to your masters."
+	set desc = "Allows you to communicate with your Fathers."
+	set category = "Alien"
+
+	if(hivenumber != XENO_HIVE_CORRUPTED)
+		return
+
+	if(stat)
+		to_chat(src, "<span class='warning'>You can't do that now.</span>")
+		return
+
+	if(message_delay)
+		to_chat(src, "<span class='warning'>You can't do that now.</span>")
+		return
+
+	var/datum/hive_status/hive
+	if(hivenumber && hivenumber <= hive_datum.len)
+		hive = hive_datum[hivenumber]
+	else return
+
+	if(!hive.enslaved)
+		to_chat(src, "<span class='warning'>SOMETHING GONE HORRIBLY WRONG! ASK POLION1232 FOR ADVISE!</span>")
+		return
+
+	if(!hive.console_link)
+		to_chat(src, "<span class='xenodanger'>You sence no Fathers' precence in your psionic link. You feel abandoned...</span>")
+		return
+
+	spawn(300)
+		message_delay = 0
+	message_delay = 1
+
+	var/message = input(src, "This message will be sended to Fathers.", "Daughter asks Fathers", "")
+	if(!message)
+		return
+	hive.console_link.sub_unit_message = sanitize(message)
+	hive.console_link.visible_message("[src] buzzes. Command Sub-Unit sent a message.","You hear buzzing")
 
 /mob/living/carbon/Xenomorph/proc/claw_toggle()
 	set name = "Permit/Disallow Slashing"
