@@ -34,7 +34,7 @@
 							list("M74 LTAA-AP Minigun", 3, /obj/item/hardpoint/tank/primary/minigun, "primary", "black"),
 							list("SECONDARY WEAPON", null, null, null, null),
 							list("M56 \"Cupola\"", 2, /obj/item/hardpoint/tank/secondary/m56cupola, "secondary", "orange"),
-							list("M8-2 TOW Launcher", 2, /obj/item/hardpoint/tank/secondary/towlauncher, "secondary", "black"),
+							list("M8-3 TOW Launcher", 2, /obj/item/hardpoint/tank/secondary/towlauncher, "secondary", "black"),
 							list("M7 \"Dragon\" Flamethrower Unit", 2, /obj/item/hardpoint/tank/secondary/flamer, "secondary", "black"),
 							list("M92 Grenade Launcher", 2, /obj/item/hardpoint/tank/secondary/grenade_launcher, "secondary", "black"),
 							list("SUPPORT MODULE", null, null, null, null),

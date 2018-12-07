@@ -1366,7 +1366,7 @@
 
 				<h1><a name="Secondary"><B>Secondary Weaponry</B></a></h1>
 				<li><I>M56 "Cupola".</I> 2RW. Refitted M56 has higher accuracy and rate of fire. Compatible with IFF system.</li>
-				<li><I>M8-2 TOW Launcher.</I> 2RW. Shoots powerful AP rockets. Deals heavy damage, but only on direct hits.</li>
+				<li><I>M8-3 TOW Launcher.</I> 2RW. Shoots powerful AP rockets. Deals heavy damage, but only on direct hits.</li>
 				<li><I>M7 "Dragon" Flamethrower Unit.</I> 2RW. Don't let it fool you, it's not your ordinary flamer, this thing literally shoots fireballs. No kidding.</li>
 				<li><I>M92 Grenade Launcher.</I> 2RW. Shoots HEDP grenades further than you see. No, seriously, that's how it works.</li><BR><BR>
 
@@ -1447,7 +1447,7 @@
 
 				<h1><a name="Secondary_ru"><B>ƒополнительные ќружейные ћодули</B></a></h1>
 				<li><I>M56 "Cupola".</I> 2RW. ћодернизированный ћ56, точнее и скорострельней. ѕоддерживает IFF систему.</li>
-				<li><I>M8-2 TOW Launcher.</I> 2RW. ѕ“”–, хорошо пробивает бронированные и не очень цели. Ќо только в случае прямоого попадания, в противном случае толку немного.</li>
+				<li><I>M8-3 TOW Launcher.</I> 2RW. ѕ“”–, хорошо пробивает бронированные и не очень цели. Ќо только в случае прямоого попадания, в противном случае толку немного.</li>
 				<li><I>M7 "Dragon" Flamethrower Unit.</I> 2RW. Ќе дайте себя обмануть, это не нормальный огнемет. Ёта штука испускает огненные шары. Ѕуквально.</li>
 				<li><I>M92 Grenade Launcher.</I> 2RW. ќтправляет в полет HEDP гранаты дальше видимости стрелка. —ерьезно, оно так и работает.</li><BR><BR>
 
