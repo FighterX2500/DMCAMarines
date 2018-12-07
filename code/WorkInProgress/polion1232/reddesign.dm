@@ -19,7 +19,16 @@
 	build_type = MARINE_PROTHOLATHE
 	req_tech = list(RESEARCH_XENOSTART)
 	materials = list("metal" = 500, "glass" = 0, "biomass" = 0)
-
+/*
+/datum/marine_design/stun_grenades
+	name = "M40 HEDP to T-1 grenade retrofit"
+	desc = "Custom-built shock grenades with limited area of effect and occasional malfunctions."
+	id = "teslanades"
+	build_path = /obj/item/storage/box/tesla_box
+	build_type = MARINE_PROTHOLATHE
+	req_tech = list(RESEARCH_XENO_MUSCLES)
+	materials = list("metal" = 1500, "glass" = 1500, "biomass" = 0)
+*/
 /datum/marine_design/anti_weed
 	name = "Plant-B-Gone military-grade sprinkler"
 	desc = "Common pesticide had been found useful against Xenoflora of all kind."

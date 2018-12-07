@@ -53,8 +53,8 @@
 
 /obj/machinery/computer/XenoRnD
 	name = "R&D Console"
-	icon = 'code/WorkInProgress/polion1232/polionresearch.dmi'
-	icon_state = "r_on"
+	icon = 'code/WorkInProgress/polion1232/rnd.dmi'
+	icon_state = "w-y_console"
 	//icon_state = "rdcomp"  //Temp till i figure out what the shit is going on with the icon file.
 	circuit = /obj/item/circuitboard/computer/XenoRnD
 
@@ -72,10 +72,12 @@
 	req_access = list(ACCESS_MARINE_RESEARCH)
 
 /obj/machinery/computer/XenoRnD/update_icon()
-	if(stat & NOPOWER || stat & BROKEN)
-		icon_state = "r_off"
+	if(stat & NOPOWER)
+		icon_state = "w-y_console_off"
+	else if(stat & BROKEN)
+		icon_state = "w-y_console_b"
 	else
-		icon_state = "r_on"
+		icon_state = "w-y_console"
 
 /obj/machinery/computer/XenoRnD/proc/CallTechName(var/ID) // //A simple helper proc to find the name of a tech with a given ID.
 	var/datum/marineTech/tech
@@ -285,7 +287,6 @@
 							linked_modifyer.loaded_item.unacidable = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
-							linked_modifyer.icon_state = "bronya_pusta"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
 							linked_modifyer.busy = 0
@@ -302,7 +303,6 @@
 							linked_modifyer.loaded_item.unacidable = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
-							linked_modifyer.icon_state = "bronya_pusta"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
 							linked_modifyer.busy = 0
@@ -319,7 +319,6 @@
 							linked_modifyer.loaded_item.unacidable = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
-							linked_modifyer.icon_state = "bronya_pusta"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
 							linked_modifyer.busy = 0
@@ -335,7 +334,6 @@
 							linked_modifyer.loaded_item.unacidable = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
-							linked_modifyer.icon_state = "bronya_pusta"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
 							linked_modifyer.busy = 0
@@ -351,7 +349,6 @@
 							linked_modifyer.loaded_item.unacidable = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
-							linked_modifyer.icon_state = "bronya_pusta"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
 							linked_modifyer.busy = 0
@@ -365,11 +362,11 @@
 							linked_modifyer.loaded_item.unacidable = 1
 							linked_modifyer.loaded_item.loc = linked_modifyer.loc
 							linked_modifyer.loaded_item = null
-							linked_modifyer.icon_state = "bronya_pusta"
 							use_power(linked_modifyer.active_power_usage)
 							screen = 1.0
 							linked_modifyer.busy = 0
 							updateUsrDialog()
+				linked_modifyer.update_icon()
 	updateUsrDialog()
 	return
 
