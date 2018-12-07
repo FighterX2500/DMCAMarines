@@ -425,7 +425,7 @@
 				last_fired = 1
 			spawn(fire_delay)
 				last_fired = 0
-		else burst_fire = 0
+		else burst_fire = FALSE
 		is_bursting = 0
 
 	if(!burst_fire && target && !last_fired)
