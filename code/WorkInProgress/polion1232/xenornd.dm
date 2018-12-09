@@ -291,6 +291,7 @@
 							screen = 1.0
 							linked_modifyer.busy = 0
 							updateUsrDialog()
+							linked_modifyer.update_icon()
 					if("juggernaut")
 						screen = 0.3
 						linked_modifyer.busy = 1
@@ -307,6 +308,7 @@
 							screen = 1.0
 							linked_modifyer.busy = 0
 							updateUsrDialog()
+							linked_modifyer.update_icon()
 					if("farsight")
 						screen = 0.3
 						linked_modifyer.busy = 1
@@ -323,6 +325,7 @@
 							screen = 1.0
 							linked_modifyer.busy = 0
 							updateUsrDialog()
+							linked_modifyer.update_icon()
 					if("bughead")
 						screen = 0.3
 						linked_modifyer.busy = 1
@@ -338,6 +341,7 @@
 							screen = 1.0
 							linked_modifyer.busy = 0
 							updateUsrDialog()
+							linked_modifyer.update_icon()
 					if("defender")
 						screen = 0.3
 						linked_modifyer.busy = 1
@@ -353,6 +357,7 @@
 							screen = 1.0
 							linked_modifyer.busy = 0
 							updateUsrDialog()
+							linked_modifyer.update_icon()
 					if("blackmarsh")
 						screen = 0.3
 						linked_modifyer.busy = 1
@@ -366,7 +371,7 @@
 							screen = 1.0
 							linked_modifyer.busy = 0
 							updateUsrDialog()
-				linked_modifyer.update_icon()
+							linked_modifyer.update_icon()
 	updateUsrDialog()
 	return
 
