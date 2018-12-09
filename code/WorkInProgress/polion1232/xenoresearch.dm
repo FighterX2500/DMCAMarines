@@ -157,6 +157,13 @@ Queen thingy - RESEARCH_XENO_QUEEN
 	id = RESEARCH_XENO_MUSCLES
 	req_tech = list(RESEARCH_XENO_BIOLOGY)
 
+/datum/marineTech/BioArmor
+	name = "Chitin Armor."
+	desc = "Possible solutions in chitin armor assemble."
+	resdesc = "Natural armor of Xenomorph race is something miraculous. It can withstand tremendous damage and regenerate itself. We have enough equipment to bolt in some imitation of this armor."
+	id = RESEARCH_XENO_ARMOR
+	req_tech = list(RESEARCH_CRUSHER_PLATING, RESEARCH_XENO_MUSCLES)
+
 /datum/marineTech/hivelord
 	name = "Hivelord metabolism"
 	desc = "Detailed analysis of Hivelords' metabolism shows, that their organism very energy-efficent"
