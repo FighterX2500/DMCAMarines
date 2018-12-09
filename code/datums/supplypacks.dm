@@ -498,7 +498,7 @@ Tank Hardpoint Modules (and their ammo)
 	group = "Tank Hardpoint Modules"
 
 /datum/supply_packs/towlauncher
-	name = "M8-2 TOW Launcher Assembly (x1)"
+	name = "M8-3 TOW Launcher Assembly (x1)"
 	contains = list(/obj/item/hardpoint/tank/secondary/towlauncher)
 	cost = RO_PRICE_T_PRICY
 	containertype = /obj/structure/closet/crate/weapon
@@ -682,7 +682,7 @@ Tank Hardpoint Modules (and their ammo)
 	group = "Tank Hardpoint Modules"
 
 /datum/supply_packs/tank_towlauncher_ammo
-	name = "M8-2 TOW Launcher Magazines (x3)"
+	name = "M8-3 TOW Launcher Magazines (x3)"
 	contains = list(/obj/item/ammo_magazine/tank/towlauncher,
 					/obj/item/ammo_magazine/tank/towlauncher,
 					/obj/item/ammo_magazine/tank/towlauncher
