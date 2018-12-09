@@ -810,7 +810,7 @@ and you're good to go.
 				return
 
 		if(flags_gun_features & GUN_TRIGGER_SAFETY)
-			to_chat(user, "<span class='warning'>The safety is on!</span>")
+			to_chat(user, "<span class='danger'>THE SAFETY IS ON!</span>\n<span class='notice'>((Switch it off with alt-clicking weapon in active hand))</span>")
 			return
 
 		if((flags_gun_features & GUN_WIELDED_FIRING_ONLY) && !(flags_item & WIELDED)) //If we're not holding the weapon with both hands when we should.

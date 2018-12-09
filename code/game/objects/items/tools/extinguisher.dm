@@ -33,9 +33,13 @@
 /obj/item/tool/extinguisher/pyro
 	name = "military fire extinguisher"
 	desc = "A light and compact military fibreglass-framed model fire extinguisher. Despite small size, contains a lot of water."
-	max_water = 50
 	icon_state = "pyroFE0"
 	item_state = "pyroFE"
+	hitsound = null.
+	throwforce = 2
+	w_class = 2.0
+	force = 3.0
+	max_water = 50
 	sprite_name = "pyroFE"
 
 /obj/item/tool/extinguisher/New()
