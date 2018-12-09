@@ -140,7 +140,6 @@
 // Grenades
 ////////////
 // Tesla grenade
-/*
 /obj/item/explosive/grenade/tesla			//"P-p-please...*sniff*... no more!"@Crushers Gang
 	name = "T-1 Shock grenade"
 	desc = "An old, M40 HEDP grenade, which explosive guts were been replaced by miniature overcharged HEW MKI battery. An explosion cause muscle contraction to any organic and semi-organic lifeforms."
@@ -157,9 +156,15 @@
 			cdel(src)
 			return
 		playsound(loc, 'sound/items/teslagrenade.ogg', 80, 0, 7)
-		for(var/mob/living/target in range(2))
+		for(var/mob/living/target in view(4,src))
 			if(isYautja(target))
 				continue					// They don't give a fuck
+			if(isXeno(target))
+				var/mob/living/carbon/Xenomorph/xeno = target
+				xeno.adjust_stagger(5)
+				to_chat(xeno, "<span class='danger'>Your entire body shaken!</span>")
+				continue
+			to_chat(target, "<span class='danger'>You feel like electricity goes through your muscles!</span>")
 			target.apply_effects(4,4)
 		cdel(src)
 
@@ -177,7 +182,6 @@
 	..()
 	for(var/nade = 1 to storage_slots)
 		new /obj/item/explosive/grenade/tesla(src)
-*/
 /////////////
 // Tesla and its powerpack
 ////////////
@@ -568,3 +572,41 @@
 	in_chamber = create_bullet(ammo)
 	update_icon()
 	return in_chamber
+
+
+
+
+/*
+										Weapons and bullets
+/////////////
+// Armors
+/////////////
+
+
+*/
+/obj/item/clothing/suit/knight
+	name = "X-0 \"Dark Knight\" Chitin Armor"
+	desc = "Suprisingly light compare to B18 armor, this haphazardly created armor using various alien chitin parts can easily protect its wearer from any kind of xenoclaws, but overall protection is somewhat underwhelming."
+	icon = 'code/WorkInProgress/polion1232/alien_armor.dmi'
+	icon_state = "alien_armor"
+	item_state = "alien_armor"
+	flags_atom = CONDUCT
+	flags_armor_protection = UPPER_TORSO|LOWER_TORSO|ARMS|HANDS|LEGS|FEET
+	flags_cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS|HANDS|LEGS|FEET
+	flags_heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS|HANDS|LEGS|FEET
+	min_cold_protection_temperature = ARMOR_min_cold_protection_temperature
+	max_heat_protection_temperature = ARMOR_max_heat_protection_temperature
+	blood_overlay_type = "armor"
+	armor = list(melee = 98, bullet = 40, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
+	siemens_coefficient = 0.7
+	slowdown = SLOWDOWN_ARMOR_MEDIUM
+
+/obj/item/clothing/head/helmet/knight
+	name = "X-0 \"Shadowknight\" Chitin Helmet"
+	desc = "Made for CQC, \"Knightframe\" helmet can easily delfect any sharped object, and give some bullet protection, but others type of damage can make a short work out of marine."
+	icon = 'code/WorkInProgress/polion1232/alien_armor.dmi'
+	icon_state = "alien_helmet"
+	item_state = "alien_helmet"
+	armor = list(melee = 98, bullet = 45, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
+	flags_inventory = COVEREYES|BLOCKSHARPOBJ|COVERMOUTH
+	flags_inv_hide = HIDEEARS|HIDEEYES|HIDEALLHAIR|HIDEMASK|HIDEFACE

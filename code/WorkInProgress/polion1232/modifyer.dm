@@ -29,11 +29,11 @@
 	if(istype(loaded_item, /obj/item/clothing/suit/storage/marine))
 		icon_state = "mod_unit_armor"
 		return
-	if(istype(loaded_item, /obj/item/clothing/suit/storage/marine))
-		icon_state = "mod_unit_armor"
+	if(istype(loaded_item, /obj/item/clothing/head/helmet/marine))
+		icon_state = "mod_unit_head"
 		return
-	if(istype(loaded_item, /obj/item/clothing/suit/storage/marine))
-		icon_state = "mod_unit_armor"
+	if(istype(loaded_item, /obj/item/clothing/shoes/marine))
+		icon_state = "mod_unit_shoes"
 		return
 	icon_state = "mod_unit"
 

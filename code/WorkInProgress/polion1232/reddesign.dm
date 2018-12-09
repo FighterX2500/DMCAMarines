@@ -19,7 +19,7 @@
 	build_type = MARINE_PROTHOLATHE
 	req_tech = list(RESEARCH_XENOSTART)
 	materials = list("metal" = 500, "glass" = 0, "biomass" = 0)
-/*
+
 /datum/marine_design/stun_grenades
 	name = "M40 HEDP to T-1 grenade retrofit"
 	desc = "Custom-built shock grenades with limited area of effect and occasional malfunctions."
@@ -28,7 +28,7 @@
 	build_type = MARINE_PROTHOLATHE
 	req_tech = list(RESEARCH_XENO_MUSCLES)
 	materials = list("metal" = 1500, "glass" = 1500, "biomass" = 0)
-*/
+
 /datum/marine_design/anti_weed
 	name = "Plant-B-Gone military-grade sprinkler"
 	desc = "Common pesticide had been found useful against Xenoflora of all kind."
@@ -46,6 +46,24 @@
 	build_type = MARINE_PROTHOLATHE
 	req_tech = list(RESEARCH_XENO_SPITTER)
 	materials = list("metal" = 500, "glass" = 0, "biomass" = 0)
+
+/datum/marine_design/knight
+	name = "Chitin armor prototype"
+	desc = "Powerful armor, that has been haphazardly bolted in gives marines more chances of survival."
+	id = "carmor"
+	build_path = /obj/item/clothing/suit/knight
+	build_type = MARINE_PROTHOLATHE
+	req_tech = list(RESEARCH_XENO_ARMOR)
+	materials = list("metal" = 7500, "glass" = 0, "biomass" = 7500)
+
+/datum/marine_design/helmknight
+	name = "Chitin helmet prototype"
+	desc = "Powerful helmet, that has been haphazardly bolted in gives marines more chances of survival."
+	id = "chelmet"
+	build_path = /obj/item/clothing/head/helmet/knight
+	build_type = MARINE_PROTHOLATHE
+	req_tech = list(RESEARCH_XENO_ARMOR)
+	materials = list("metal" = 0, "glass" = 0, "biomass" = 1500)
 
 /datum/marine_design/biocircuit
 	name = "Biogenerator Prototype"
