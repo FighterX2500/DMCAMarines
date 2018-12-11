@@ -61,6 +61,8 @@
 	..()
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
+		if(istype(H.wear_suit, /obj/item/clothing/suit/knight) && istype(H.head, /obj/item/clothing/head/helmet/knight))
+			return
 		if(!H.lying)
 			to_chat(H, "<span class='danger'>Your feet scald and burn! Argh!</span>")
 			H.emote("pain")

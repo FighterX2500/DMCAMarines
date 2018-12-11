@@ -35,36 +35,42 @@ datum/marineResearch/proc/TechMakeReq(datum/marineTech/tech)
 datum/marineResearch/proc/TechMakeReqInDiss(tech) // Just for checking when about to dissected
 	var fl = 1
 	for(var/datum/marineTech/possible in possible_tech)
-		if(tech == possible.id && possible.need_item)
-			for(var/T in possible.req_tech)
-				fl = 0
-				for(var/datum/marineTech/known in known_tech)
-					if(T == known.id)
-						fl = 1
+		if(tech != possible.id)
+			continue
+		if(!possible.need_item)
+			continue
+		for(var/T in possible.req_tech)
+			fl = 0
+			for(var/datum/marineTech/known in known_tech)
+				if(T == known.id)
+					fl = 1
 			return fl
 
 datum/marineResearch/proc/AddToAvail(obj/item/marineResearch/xenomorp/A)
 	for(var/datum/marineTech/teches in possible_tech)
-		if(!Check_tech(teches.id))
-			for(var/tech in A.id)
-				if(tech == teches.id)
-					if(TechMakeReq(teches))
-						available_tech += teches
-						possible_tech -= teches
+		if(Check_tech(teches.id))
+			continue
+		for(var/tech in A.id)
+			if(tech != teches.id)
+				continue
+			if(TechMakeReq(teches))
+				available_tech += teches
+				possible_tech -= teches
 	return
 
 datum/marineResearch/proc/CheckAvail()
 	var/fl = 1
 	for(var/datum/marineTech/possible in possible_tech)
-		if(!possible.need_item)
-			for(var/id in possible.req_tech)
-				fl = 0
-				for(var/datum/marineTech/known in known_tech)
-					if(known.id == id)
-						fl = 1
-			if(fl == 1)
-				available_tech += possible
-				possible_tech -= possible
+		if(possible.need_item)
+			continue
+		for(var/id in possible.req_tech)
+			fl = 0
+			for(var/datum/marineTech/known in known_tech)
+				if(known.id == id)
+					fl = 1
+		if(fl == 1)
+			available_tech += possible
+			possible_tech -= possible
 	return
 
 datum/marineResearch/proc/CheckDesigns()
