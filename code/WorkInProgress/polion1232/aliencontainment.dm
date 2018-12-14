@@ -1,3 +1,24 @@
+#define CONTAINMENT_LARVA 0
+
+#define CONTAINMENT_SENTINEL 10
+#define CONTAINMENT_SPITTER 11
+
+#define CONTAINMENT_RUNNER 20
+#define CONTAINMENT_LURKER 21
+#define CONTAINMENT_RAVAGER 22
+
+#define CONTAINMENT_DEFENDER 30
+#define CONTAINMENT_WARRIOR 31
+#define CONTAINMENT_CRUSHER 32
+#define CONTAINMENT_PRAETORIAN 33
+
+#define CONTAINMENT_DRONE 40
+#define CONTAINMENT_CARRIER 41
+#define CONTAINMENT_HIVELORD 42
+
+#define CONTAINMENT_QUEEN 50
+
+
 ///// Holder for species /////
 /datum/species_collection
 	var/list/known_species = list()
@@ -15,6 +36,12 @@
 			return
 	return
 
+/datum/species_collection/proc/CheckXeno(id)
+	for(var/datum/alienspecies/specie in known_species)
+		if(specie.id == id)
+			return 1
+	return 0
+
 ///// List of species /////
 /datum/alienspecies
 	var/name = "name"					// Name of species
@@ -24,72 +51,72 @@
 /datum/alienspecies/larva
 	name = "Xenomorph Larva"
 	desc = "An intresting worm-like creature recently found by our troops. Completely harmless, this thing can evolve in numerous sub-species of Xenomorph race. Our forces can kill it with bare hands."
-	id = 0
+	id = CONTAINMENT_LARVA
 
 /datum/alienspecies/sentinel
 	name = "Xenomorph Sentinel"
 	desc = "Relatively weak on close-combat, but highly dangerous on distance - Sentinels forms fire-support squadrons (or packs, to be exact) of Xenomorph Forces. They actively use covers and sniping or troops with dangerous toxins. But they can be negated by using suppresion fire and grenades."
-	id = 10
+	id = CONTAINMENT_SENTINEL
 
 /datum/alienspecies/spitter
 	name = "Xenomorph Spitter"
 	desc = "Main medium-range fire troopers, Spitters dangerous for any lone marine and forms main obstacle of soldiers' advance. They neurotoxins and acids make very hard to push Xenomorph lines, but due their fragility, they can be very fast outgunned."
-	id = 11
+	id = CONTAINMENT_SPITTER
 
 /datum/alienspecies/runner
 	name = "Xenomorph Runner"
 	desc = "Fast and agile - Runners' role in the Hive are scout and hit&run missions. Lone marine, if not prepered for assault, can be easily taken down by Runner, but pair of marines can defend themselves without injures."
-	id = 20
+	id = CONTAINMENT_RUNNER
 
 /datum/alienspecies/lurker
 	name = "Xenomorph Lurker"
 	desc = "Dwellers in the dark, stealh and menancing - Lurkers are assasins, that dwells through alien ranks, capable tear apart any human being with ease. Chameleons, that devastating our supply lines on operative zone, slaughtering every lone marine on sight - Lurkers are foes, whom we fear the most."
-	id = 21
+	id = CONTAINMENT_LURKER
 
 /datum/alienspecies/ravager
 	name = "Xenomorph Ravager"
 	desc = "Ravagers are shock troopers with enough strengh to mow down any marine in their vicinity. They can be even called AT infantry, because they are capable tear down or Longsteeds. We recommend use of high-caliber weapons and AP rounds to deal with those horrific creatures, and don't waste napalm on them."
-	id = 22
+	id = CONTAINMENT_RAVAGER
 
 /datum/alienspecies/defender
 	name = "Xenomorph Defender"
 	desc = "Forming main defense lines of the Hive - Defenders are tough and powerful foes. Their only purpose is protection of the Hive. This creature is too ordinary, and small team equipped with AP weapons will make short work out of Defenders."
-	id = 30
+	id = CONTAINMENT_DEFENDER
 
 /datum/alienspecies/warrior
 	name = "Xenomorph Warrior"
 	desc = "Warriors are standart troopers in every engagement. Strong and durable, those creatures never hunt lone marines. Instead entire squad will engage with small pack of Warriors. They are unintresting on academic research, but marines should be aware to never engage Warriors in close combat or alone."
-	id = 31
+	id = CONTAINMENT_WARRIOR
 
 /datum/alienspecies/crusher
 	name = "Xenomorph Crusher"
 	desc = "Ponderous and staggering, Crushers are the most durable of all sub-species. They are very strong too, but can use them on fullpower only to crush enemy with all weight. Their chitin is flammable and AP bullets still can pierce their thick chitin."
-	id = 32
+	id = CONTAINMENT_CRUSHER
 
 /datum/alienspecies/praetorian
 	name = "Xenomorph Praetorian"
 	desc = "We not exactly sure of what Praetorians suppose to do. They are strong, can spill acid, spit neurotoxins and spread pheromones. But they can be hardly found without some other xenomorph with. We suggest, that marines should report about any activity of Praetorians on operative area and fight them with cautious."
-	id = 33
+	id = CONTAINMENT_PRAETORIAN
 
 /datum/alienspecies/drone
 	name = "Xenomorph Drone"
 	desc = "Common builders of the Hive - Drones are very weak and pathetic foes. But their work is vital for the Hive. They build, they reinforce and they creating obstacles on marines advance. Lone marine can shot down any Drone with ease, but they can tackle our troopers pretty strong."
-	id = 40
+	id = CONTAINMENT_DRONE
 
 /datum/alienspecies/carrier
 	name = "Xenomorph Carrier"
 	desc = "Carriers are very weak without their 'armament', but once they aquare facehuggers, marines should use long-range weapon to deal with them. Otherwise, they are unintresting, but we recieve unverified reports, that Carriers place some kind of traps."
-	id = 41
+	id = CONTAINMENT_CARRIER
 
 /datum/alienspecies/hivelord
 	name = "Xenomorph Hivelord"
 	desc = "Fasinating creature of efficent metabolism and building capabilities - Hivelords are rare xenomorph. Dwelling deep in the Hive, they are doing vital work. They resin are more thicker ar fast-deployable, but they combat abilities is somewhat underwhelming. We suggest to hunt down any of these creatures to prevent Hive spread."
-	id = 42
+	id = CONTAINMENT_HIVELORD
 
 /datum/alienspecies/queen
 	name = "Xenomorph Queen"
 	desc = "If lone marine took down this insidious and powerful creature - he is some kind of superhuman no less. If Queen arrives on the battlefield, marines are doomed, if they haven't any heavy armament and earplugs. Strong, durable, smart and highly dangerous - Queen are the main component of the Hive. if we got one in our laboratory - the victory almost in our hands."
-	id = 50
+	id = CONTAINMENT_QUEEN
 
 //// Research Stuff ////
 /obj/machinery/container
@@ -239,33 +266,33 @@ If chamber connected to the console, you can start research aliens. Just don't b
 						updateUsrDialog()
 						return
 				if(isXenoLarva(linked_chamber.occupant))
-					files.AddToKnown(0)
+					files.AddToKnown(CONTAINMENT_LARVA)
 				else if(isXenoSentinel(linked_chamber.occupant))
-					files.AddToKnown(10)
+					files.AddToKnown(CONTAINMENT_SENTINEL)
 				else if(isXenoSpitter(linked_chamber.occupant))
-					files.AddToKnown(11)
+					files.AddToKnown(CONTAINMENT_SPITTER)
 				else if(isXenoRunner(linked_chamber.occupant))
-					files.AddToKnown(20)
+					files.AddToKnown(CONTAINMENT_RUNNER)
 				else if(isXenoHunter(linked_chamber.occupant))
-					files.AddToKnown(21)
+					files.AddToKnown(CONTAINMENT_LURKER)
 				else if(isXenoRavager(linked_chamber.occupant))
-					files.AddToKnown(22)
+					files.AddToKnown(CONTAINMENT_RAVAGER)
 				else if(isXenoDefender(linked_chamber.occupant))
-					files.AddToKnown(30)
+					files.AddToKnown(CONTAINMENT_DEFENDER)
 				else if(isXenoWarrior(linked_chamber.occupant))
-					files.AddToKnown(31)
+					files.AddToKnown(CONTAINMENT_WARRIOR)
 				else if(isXenoCrusher(linked_chamber.occupant))
-					files.AddToKnown(32)
+					files.AddToKnown(CONTAINMENT_CRUSHER)
 				else if(isXenoPraetorian(linked_chamber.occupant))
-					files.AddToKnown(33)
+					files.AddToKnown(CONTAINMENT_PRAETORIAN)
 				else if(isXenoDrone(linked_chamber.occupant))
-					files.AddToKnown(40)
+					files.AddToKnown(CONTAINMENT_DRONE)
 				else if(isXenoCarrier(linked_chamber.occupant))
-					files.AddToKnown(41)
+					files.AddToKnown(CONTAINMENT_CARRIER)
 				else if(isXenoHivelord(linked_chamber.occupant))
-					files.AddToKnown(42)
+					files.AddToKnown(CONTAINMENT_HIVELORD)
 				else if(isXenoQueen(linked_chamber.occupant))
-					files.AddToKnown(50)
+					files.AddToKnown(CONTAINMENT_QUEEN)
 				screen = 0.1
 				spawn(300)
 					screen = 1.1
@@ -284,26 +311,39 @@ If chamber connected to the console, you can start research aliens. Just don't b
 				screen = 1.1
 				if(isXenoCrusher(linked_chamber.occupant))
 					new /obj/item/marineResearch/xenomorp/chitin/crusher(linked_chamber.loc)
+					if(files.CheckXeno(CONTAINMENT_CRUSHER))
+						new /obj/item/marineResearch/xenomorp/chitin/crusher(linked_chamber.loc)
 				else
 					new /obj/item/marineResearch/xenomorp/chitin(linked_chamber.loc)
+					if(files.CheckXeno(CONTAINMENT_RUNNER) && files.CheckXeno(CONTAINMENT_LURKER) && files.CheckXeno(CONTAINMENT_RAVAGER))
+						new /obj/item/marineResearch/xenomorp/chitin(linked_chamber.loc)
 
 				new /obj/item/marineResearch/xenomorp/muscle(linked_chamber.loc)
+				if(files.CheckXeno(CONTAINMENT_RUNNER) || files.CheckXeno(CONTAINMENT_LURKER) || files.CheckXeno(CONTAINMENT_RAVAGER))
+					new /obj/item/marineResearch/xenomorp/chitin(linked_chamber.loc)
 
 				if(isXenoSentinel(linked_chamber.occupant))
 					new /obj/item/marineResearch/xenomorp/acid_gland(linked_chamber.loc)
 
 				if(isXenoSpitter(linked_chamber.occupant) || isXenoQueen(linked_chamber.occupant))
 					new /obj/item/marineResearch/xenomorp/acid_gland/spitter(linked_chamber.loc)
+					if(isXenoQueen(linked_chamber.occupant) && files.CheckXeno(CONTAINMENT_SPITTER))
+						new /obj/item/marineResearch/xenomorp/acid_gland/spitter(linked_chamber.loc)
 
 				if(isXenoDrone(linked_chamber.occupant) || isXenoQueen(linked_chamber.occupant))
 					new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
+					if(isXenoQueen(linked_chamber.occupant) && files.CheckXeno(CONTAINMENT_DRONE))
+						new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
 
 				if(isXenoHivelord(linked_chamber.occupant) || isXenoQueen(linked_chamber.occupant))
 					new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
 					new /obj/item/marineResearch/xenomorp/secretor/hivelord(linked_chamber.loc)
-					new /obj/item/marineResearch/xenomorp/secretor/hivelord(linked_chamber.loc)
+					if(isXenoHivelord(linked_chamber.occupant) && files.CheckXeno(CONTAINMENT_DRONE))
+						new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
+					if((isXenoQueen(linked_chamber.occupant) || isXenoHivelord(linked_chamber.occupant)) && files.CheckXeno(CONTAINMENT_HIVELORD))
+						new /obj/item/marineResearch/xenomorp/secretor/hivelord(linked_chamber.loc)
 
-				if(isXenoQueen(linked_chamber.occupant) || isXenoQueen(linked_chamber.occupant))
+				if(isXenoQueen(linked_chamber.occupant))
 					new /obj/item/marineResearch/xenomorp/acid_gland/spitter(linked_chamber.loc)
 					new /obj/item/marineResearch/xenomorp/secretor(linked_chamber.loc)
 					new /obj/item/marineResearch/xenomorp/secretor/hivelord(linked_chamber.loc)
@@ -394,3 +434,23 @@ If chamber connected to the console, you can start research aliens. Just don't b
 
 	user << browse("<TITLE>Research and Development Console</TITLE><HR>[dat]", "window=rdconsole;size=575x400")
 	onclose(user, "rdconsole")
+
+#undef CONTAINMENT_LARVA
+
+#undef CONTAINMENT_SENTINEL
+#undef CONTAINMENT_SPITTER
+
+#undef CONTAINMENT_RUNNER
+#undef CONTAINMENT_LURKER
+#undef CONTAINMENT_RAVAGER
+
+#undef CONTAINMENT_DEFENDER
+#undef CONTAINMENT_WARRIOR
+#undef CONTAINMENT_CRUSHER
+#undef CONTAINMENT_PRAETORIAN
+
+#undef CONTAINMENT_DRONE
+#undef CONTAINMENT_CARRIER
+#undef CONTAINMENT_HIVELORD
+
+#undef CONTAINMENT_QUEEN
