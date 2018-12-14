@@ -276,7 +276,7 @@
 	var/is_bursting = 0.
 	var/icon_full = "M56D" // Put this system in for other MGs or just other mounted weapons in general, future proofing.
 	var/icon_empty = "M56D_e" //Empty
-	var/zoom = 0 // 0 is it doesn't zoom, 1 is that it zooms.
+	var/view_tile_offset = 3	//this is amount of tiles we shift our vision for
 
 	New()
 		ammo = ammo_list[ammo] //dunno how this works but just sliding this in from sentry-code.
@@ -539,10 +539,18 @@
 	var/mob/living/carbon/human/user = usr //this is us
 	src.add_fingerprint(usr)
 	if((over_object == user && (in_range(src, user) || locate(src) in user))) //Make sure its on ourselves
+		if(!Adjacent(user))
+			to_chat(usr, "<span class='warning'>Something is between you and [src].</span>")
+			return
 		if(user.interactee == src)
 			user.unset_interaction()
 			visible_message("\icon[src] <span class='notice'>[user] decided to let someone else have a go </span>")
 			to_chat(usr, "<span class='notice'>You decided to let someone else have a go on the MG </span>")
+			return
+		var/turf/T = get_turf(src)
+		T = get_step(T, turn(src.dir, 180))
+		if(get_turf(user) != T)
+			to_chat(usr, "<span class='warning'>You should be behind [src] to man it!</span>")
 			return
 		if(operator) //If there is already a operator then they're manning it.
 			if(operator.interactee == null)
@@ -568,14 +576,27 @@
 
 /obj/machinery/m56d_hmg/on_set_interaction(mob/user)
 	flags_atom |= RELAY_CLICK
-	if(zoom)
-		user.client.change_view(12)
+	switch(src.dir)
+		if(NORTH)
+			user.client.pixel_x = 0
+			user.client.pixel_y = view_tile_offset * 32
+		if(SOUTH)
+			user.client.pixel_x = 0
+			user.client.pixel_y = -1 * view_tile_offset * 32
+		if(EAST)
+			user.client.pixel_x = view_tile_offset * 32
+			user.client.pixel_y = 0
+		if(WEST)
+			user.client.pixel_x = -1 * view_tile_offset * 32
+			user.client.pixel_y = 0
 	operator = user
 
 /obj/machinery/m56d_hmg/on_unset_interaction(mob/user)
 	flags_atom &= ~RELAY_CLICK
-	if(zoom && user.client)
+	if(user.client)
 		user.client.change_view(world.view)
+		user.client.pixel_x = 0
+		user.client.pixel_y = 0
 	if(operator == user)
 		operator = null
 
@@ -608,4 +629,4 @@
 	icon = 'icons/turf/whiskeyoutpost.dmi'
 	icon_full = "towergun"
 	icon_empty = "towergun"
-	zoom = 1
+	view_tile_offset = 6
