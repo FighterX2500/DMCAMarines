@@ -577,7 +577,7 @@
 
 
 /*
-										Weapons and bullets
+										Suits and other
 /////////////
 // Armors
 /////////////
@@ -586,7 +586,7 @@
 */
 /obj/item/clothing/suit/knight
 	name = "X-0 \"Dark Knight\" Chitin Armor"
-	desc = "Suprisingly light compare to B18 armor, this haphazardly created armor using various alien chitin parts can easily protect its wearer from any kind of xenoclaws, but overall protection is somewhat underwhelming."
+	desc = "Suprisingly light compare to B18 armor, this haphazardly created armor using various alien chitin parts can protect its wearer against splattered acid, but acid projectiles is still hazardous."
 	icon = 'code/WorkInProgress/polion1232/alien_armor.dmi'
 	icon_state = "alien_armor"
 	item_state = "alien_armor"
@@ -597,16 +597,18 @@
 	min_cold_protection_temperature = ARMOR_min_cold_protection_temperature
 	max_heat_protection_temperature = ARMOR_max_heat_protection_temperature
 	blood_overlay_type = "armor"
-	armor = list(melee = 98, bullet = 40, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 85, bullet = 40, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 0.7
 	slowdown = SLOWDOWN_ARMOR_MEDIUM
+	unacidable = 1
 
 /obj/item/clothing/head/helmet/knight
 	name = "X-0 \"Shadowknight\" Chitin Helmet"
-	desc = "Made for CQC, \"Knightframe\" helmet can easily delfect any sharped object, and give some bullet protection, but others type of damage can make a short work out of marine."
+	desc = "Made for CQC and against hazard enviroment, \"Shadowknight\" helmet can easily delfect any sharped object, and give some bullet protection, but others type of damage can make a short work out of marine."
 	icon = 'code/WorkInProgress/polion1232/alien_armor.dmi'
 	icon_state = "alien_helmet"
 	item_state = "alien_helmet"
-	armor = list(melee = 98, bullet = 45, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 90, bullet = 45, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
 	flags_inventory = COVEREYES|BLOCKSHARPOBJ|COVERMOUTH
 	flags_inv_hide = HIDEEARS|HIDEEYES|HIDEALLHAIR|HIDEMASK|HIDEFACE
+	unacidable = 1
