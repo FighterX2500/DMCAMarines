@@ -93,6 +93,41 @@
 
 	del(src)
 
+/obj/effect/multitile_spawner/cm_armored/tank/prebuilt/New()
+
+	var/obj/vehicle/multitile/root/cm_armored/tank/R = new(src.loc)
+	R.dir = EAST
+
+	var/datum/coords/dimensions = new
+	dimensions.x_pos = width
+	dimensions.y_pos = height
+	var/datum/coords/root_pos = new
+	root_pos.x_pos = 1
+	root_pos.y_pos = 1
+
+	//Entrance relative to the root object. The tank spawns with the root centered on the marker
+	var/datum/coords/entr_mark = new
+	entr_mark.x_pos = -2
+	entr_mark.y_pos = 0
+
+	//Manually adding those hardpoints
+	R.add_hardpoint(new /obj/item/hardpoint/tank/primary/cannon, R.hardpoints[HDPT_PRIMARY])
+	R.add_hardpoint(new /obj/item/hardpoint/tank/secondary/m56cupola, R.hardpoints[HDPT_SECDGUN])
+	R.add_hardpoint(new /obj/item/hardpoint/tank/support/artillery_module, R.hardpoints[HDPT_SUPPORT])
+	R.add_hardpoint(new /obj/item/hardpoint/tank/armor/ballistic, R.hardpoints[HDPT_ARMOR])
+	R.add_hardpoint(new /obj/item/hardpoint/tank/treads/standard, R.hardpoints[HDPT_TREADS])
+	R.update_damage_distribs()
+
+	R.load_hitboxes(dimensions, root_pos)
+	R.load_entrance_marker(entr_mark)
+	R.healthcheck()
+
+	R.camera = new /obj/machinery/camera(R)
+	R.camera.network = list("almayer")	//changed network from military to almayer,because Cams computers on Almayer have this network
+	R.camera.c_tag = "Armored Vehicle ¹[rand(1,10)]" //ARMORED VEHICLE to be at the start of cams list, numbers in case of events with multiple tanks and for APC
+
+	del(src)
+
 
 /obj/effect/multitile_spawner/cm_armored/tank/upp/New()
 
