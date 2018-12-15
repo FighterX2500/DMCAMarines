@@ -958,6 +958,9 @@
 		smoke.set_up(1, get_turf(P))
 		smoke.start()
 
+/datum/ammo/rocket/tow/m8_1_tow
+	name = "TOW emplacement rocket"
+
 /datum/ammo/rocket/ltb
 	name = "cannon round"
 	icon_state = "ltb"
