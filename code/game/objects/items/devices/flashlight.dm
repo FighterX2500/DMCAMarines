@@ -86,6 +86,13 @@
 	else
 		..()
 
+/obj/item/device/flashlight/attack_alien(var/mob/living/carbon/Xenomorph/M)
+	if(on)
+		playsound(src, 'sound/effects/hit_on_shattered_glass.ogg', vol = 10, sound_range = 10)
+		to_chat(M, "<span class='xenonotice'>You smash annoying light source.</span>")
+		Dispose()
+	return
+
 /obj/item/device/flashlight/attack(mob/living/M as mob, mob/living/user as mob)
 	add_fingerprint(user)
 	if(on && user.zone_selected == "eyes")
@@ -236,6 +243,9 @@
 		update_brightness(U)
 	else
 		update_brightness(null)
+
+/obj/item/device/flashlight/flare/attack_alien(var/mob/living/carbon/Xenomorph/M)
+	return
 
 /obj/item/device/flashlight/flare/attack_self(mob/user)
 

@@ -255,11 +255,16 @@
 
 /datum/ammo/bullet/pistol/tranq
 	name = "tranq bullet"
-	debilitate = list(0,5,0,0,5,3,30,0)
+	debilitate = list(0,0,5,0,5,3,30,0)
+
+/datum/ammo/bullet/pistol/tranq/New()
+	..()
+	damage = 0
+	shrapnel_chance = 0
+	shell_speed = config.super_shell_speed
 
 /datum/ammo/bullet/pistol/hollow
 	name = "hollowpoint pistol bullet"
-
 
 /datum/ammo/bullet/pistol/hollow/New()
 	..()
