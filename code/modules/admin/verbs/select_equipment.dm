@@ -82,9 +82,12 @@
 	var/list/dresspacks = list(
 		"strip",
 		"USCM Cryo",
-		"USCM Private",
-		"USCM Specialist (Smartgunner)",
-		"USCM Specialist (Armor)",
+		"USCM Squad Private",
+		"USCM Squad Engineer",
+		"USCM Squad Medic",
+		"USCM Squad Smartgunner",
+		"USCM Squad Specialist",
+		"USCM Squad Leader",
 		"USCM Tank Crewman",
 		"USCM Second-Lieutenant (SO)",
 		"USCM First-Lieutenant (XO)",
@@ -147,7 +150,7 @@
 
 			var/obj/item/card/id/dogtag/W = new(M)
 			W.name = "[M.real_name]'s ID Card"
-			W.access = list()
+			W.access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP)
 			W.assignment = "Squad Marine"
 			W.rank = "Squad Marine"
 			W.registered_name = M.real_name
@@ -158,20 +161,51 @@
 				M.mind.assigned_role = "Squad Marine"
 				M.mind.set_cm_skills(/datum/skills/pfc)
 
-		if("USCM Private")
+		if("USCM Squad Private")
+			var/list/kits = list("M41A Rifle", "M37A2 Shotgun", "M39 SMG")
+			var/kit_choice = input("Select weapon for [M]", "Robust quick dress shop") as null|anything in kits
 			M.equip_to_slot_or_del(new /obj/item/clothing/under/marine(M), WEAR_BODY)
+			M.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/marine(M), WEAR_EAR)
+			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/mgoggles(M), WEAR_EYES)
 			M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine(M), WEAR_JACKET)
 			M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine(M), WEAR_HEAD)
-			M.equip_to_slot_or_del(new /obj/item/storage/belt/marine(M), WEAR_WAIST)
-			M.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(M), WEAR_BACK)
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(M), WEAR_FEET)
-			M.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/m41a(M), WEAR_J_STORE)
-			M.equip_to_slot_or_del(new /obj/item/weapon/combat_knife(M), WEAR_L_HAND)
 			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine(M), WEAR_HANDS)
+			M.shoes.attackby(new /obj/item/weapon/combat_knife, M)
+			M.head.attackby(new /obj/item/reagent_container/food/snacks/protein_pack, M)
+
+			M.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(M), WEAR_BACK)
+			M.equip_to_slot_or_del(new /obj/item/storage/box/m94(M.back), WEAR_IN_BACK)
+			M.equip_to_slot_or_del(new /obj/item/storage/box/m94(M.back), WEAR_IN_BACK)
+
+			M.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full(M), WEAR_L_STORE)
+			M.equip_to_slot_or_del(new /obj/item/storage/pouch/flare/full(M), WEAR_R_STORE)
+
+			switch(kit_choice)
+				if("M41A Rifle")
+					M.wear_suit.attackby(new /obj/item/explosive/grenade/frag, M)
+					M.wear_suit.attackby(new /obj/item/explosive/grenade/frag, M)
+					M.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/m41a(M), WEAR_J_STORE)
+					M.equip_to_slot_or_del(new /obj/item/storage/belt/marine/full_rifle(M), WEAR_WAIST)
+					M.equip_to_slot_or_del(new /obj/item/attachable/flashlight(M.back), WEAR_IN_BACK)
+				if("M37A2 Shotgun")
+					M.wear_suit.attackby(new /obj/item/explosive/grenade/frag, M)
+					M.wear_suit.attackby(new /obj/item/attachable/flashlight, M)
+					M.equip_to_slot_or_del(new /obj/item/weapon/gun/shotgun/pump(M), WEAR_J_STORE)
+					M.equip_to_slot_or_del(new /obj/item/storage/belt/shotgun(M), WEAR_WAIST)
+					new /obj/item/ammo_magazine/shotgun(M.back)
+					new /obj/item/ammo_magazine/shotgun/buckshot(M.back)
+					new /obj/item/ammo_magazine/shotgun/flechette(M.back)
+				if("M39 SMG")
+					M.wear_suit.attackby(new /obj/item/explosive/grenade/frag, M)
+					M.equip_to_slot_or_del(new /obj/item/weapon/gun/smg/m39(M), WEAR_J_STORE)
+					M.equip_to_slot_or_del(new /obj/item/storage/belt/marine/full_smg(M), WEAR_WAIST)
+					new /obj/item/attachable/lasersight(M.back)
+					new /obj/item/attachable/stock/smg(M.back)
 
 			var/obj/item/card/id/dogtag/W = new(M)
 			W.name = "[M.real_name]'s ID Card"
-			W.access = list()
+			W.access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP)
 			W.assignment = "Squad Marine"
 			W.rank = "Squad Marine"
 			W.registered_name = M.real_name
@@ -182,21 +216,111 @@
 				M.mind.assigned_role = "Squad Marine"
 				M.mind.set_cm_skills(/datum/skills/pfc)
 
-		if("USCM Specialist (Smartgunner)")
-			M.equip_to_slot_or_del(new /obj/item/clothing/under/marine(M), WEAR_BODY)
-			M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/smartgunner(M), WEAR_JACKET)
-			M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/specrag(M), WEAR_HEAD)
-			M.equip_to_slot_or_del(new /obj/item/storage/belt/marine(M), WEAR_WAIST)
-			M.equip_to_slot_or_del(new /obj/item/smartgun_powerpack(M), WEAR_BACK)
+		if("USCM Squad Engineer")
+			M.equip_to_slot_or_del(new /obj/item/clothing/under/marine/engineer(M), WEAR_BODY)
+			M.w_uniform.attackby(new /obj/item/clothing/tie/storage/webbing, M)
+			M.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mt(M), WEAR_EAR)
+			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/welding(M), WEAR_EYES)
+			M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine(M), WEAR_JACKET)
+			M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/tech(M), WEAR_HEAD)
+			M.equip_to_slot_or_del(new /obj/item/storage/belt/utility/full(M), WEAR_WAIST)
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(M), WEAR_FEET)
-			M.equip_to_slot_or_del(new /obj/item/weapon/gun/smartgun(M), WEAR_J_STORE)
-			M.equip_to_slot_or_del(new /obj/item/weapon/combat_knife(M), WEAR_L_HAND)
-			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine(M), WEAR_HANDS)
-			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/night/m56_goggles(M), WEAR_EYES)
+			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/yellow(M), WEAR_HANDS)
+			M.shoes.attackby(new /obj/item/weapon/combat_knife, M)
+			M.head.attackby(new /obj/item/reagent_container/food/snacks/protein_pack, M)
+			M.wear_suit.attackby(new /obj/item/explosive/plastique, M)
+			M.wear_suit.attackby(new /obj/item/explosive/plastique, M)
+
+			M.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/engineerpack(M), WEAR_BACK)
+			M.equip_to_slot_or_del(new /obj/item/tool/shovel/etool(M.back), WEAR_IN_BACK)
+			M.equip_to_slot_or_del(new /obj/item/attachable/magnetic_harness(M.back), WEAR_IN_BACK)
+			M.equip_to_slot_or_del(new /obj/item/ammo_magazine/shotgun/buckshot(M.back), WEAR_IN_BACK)
+
+			M.equip_to_slot_or_del(new /obj/item/weapon/gun/shotgun/pump(M), WEAR_J_STORE)
+
+			M.equip_to_slot_or_del(new /obj/item/storage/pouch/electronics/full(M), WEAR_L_STORE)
+			M.equip_to_slot_or_del(new /obj/item/storage/pouch/construction/full(M), WEAR_R_STORE)
 
 			var/obj/item/card/id/dogtag/W = new(M)
 			W.name = "[M.real_name]'s ID Card"
-			W.access = list()
+			W.access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_ENGPREP, ACCESS_CIVILIAN_ENGINEERING)
+			W.assignment = "Squad Engineer"
+			W.rank = "Squad Engineer"
+			W.registered_name = M.real_name
+			W.paygrade = "E4"
+			M.equip_to_slot_or_del(W, WEAR_ID)
+			if(M.mind)
+				M.mind.role_comm_title = "Eng"
+				M.mind.assigned_role = "Squad Engineer"
+				M.mind.set_cm_skills(/datum/skills/combat_engineer)
+
+		if("USCM Squad Medic")
+			M.equip_to_slot_or_del(new /obj/item/clothing/under/marine/medic(M), WEAR_BODY)
+			M.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/doc(M), WEAR_EAR)
+			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/health(M), WEAR_EYES)
+			M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine(M), WEAR_JACKET)
+			M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/medic(M), WEAR_HEAD)
+			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(M), WEAR_FEET)
+			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine(M), WEAR_HANDS)
+			M.equip_to_slot_or_del(new /obj/item/storage/belt/combatLifesaver(M), WEAR_WAIST)
+			M.shoes.attackby(new /obj/item/weapon/combat_knife, M)
+			M.head.attackby(new /obj/item/reagent_container/food/snacks/protein_pack, M)
+			M.w_uniform.attackby(new /obj/item/clothing/tie/storage/webbing, M)
+			M.wear_suit.attackby(new /obj/item/ammo_magazine/smg/m39/extended, M)
+			M.wear_suit.attackby(new /obj/item/ammo_magazine/smg/m39/ap, M)
+
+			M.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel/medic(M), WEAR_BACK)
+			M.equip_to_slot_or_del(new /obj/item/bodybag/cryobag(M.back), WEAR_IN_BACK)
+			M.equip_to_slot_or_del(new /obj/item/device/defibrillator(M.back), WEAR_IN_BACK)
+			M.equip_to_slot_or_del(new /obj/item/roller/medevac(M.back), WEAR_IN_BACK)
+			M.equip_to_slot_or_del(new /obj/item/roller(M.back), WEAR_IN_BACK)
+			M.equip_to_slot_or_del(new /obj/item/reagent_container/hypospray/tricordrazine(M.back), WEAR_IN_BACK)
+			M.equip_to_slot_or_del(new /obj/item/attachable/magnetic_harness(M.back), WEAR_IN_BACK)
+
+			M.equip_to_slot_or_del(new /obj/item/weapon/gun/smg/m39(M), WEAR_J_STORE)
+
+			M.equip_to_slot_or_del(new /obj/item/storage/pouch/medical/full(M), WEAR_L_STORE)
+			M.equip_to_slot_or_del(new /obj/item/storage/pouch/medkit/full(M), WEAR_R_STORE)
+
+			var/obj/item/card/id/dogtag/W = new(M)
+			W.name = "[M.real_name]'s ID Card"
+			W.access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_MEDPREP, ACCESS_MARINE_MEDBAY)
+			W.assignment = "Squad Medic"
+			W.rank = "Squad Medic"
+			W.registered_name = M.real_name
+			W.paygrade = "E4"
+			M.equip_to_slot_or_del(W, WEAR_ID)
+			if(M.mind)
+				M.mind.role_comm_title = "Med"
+				M.mind.assigned_role = "Squad Medic"
+				M.mind.set_cm_skills(/datum/skills/combat_medic)
+
+		if("USCM Squad Smartgunner")
+			M.equip_to_slot_or_del(new /obj/item/clothing/under/marine(M), WEAR_BODY)
+			M.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/marine(M), WEAR_EAR)
+			M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/smartgunner(M), WEAR_JACKET)
+			M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine(M), WEAR_HEAD)
+			M.equip_to_slot_or_del(new /obj/item/storage/large_holster/m39/full(M), WEAR_WAIST)
+			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine(M), WEAR_HANDS)
+			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(M), WEAR_FEET)
+			M.shoes.attackby(new /obj/item/weapon/combat_knife, M)
+			M.head.attackby(new /obj/item/reagent_container/food/snacks/protein_pack, M)
+			M.w_uniform.attackby(new /obj/item/clothing/tie/storage/webbing, M)
+			M.w_uniform.attackby(new /obj/item/attachable/reddot, M)
+			M.wear_suit.attackby(new /obj/item/ammo_magazine/smg/m39/extended, M)
+			M.wear_suit.attackby(new /obj/item/ammo_magazine/smg/m39/ap, M)
+
+			M.equip_to_slot_or_del(new /obj/item/smartgun_powerpack(M), WEAR_BACK)
+			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/night/m56_goggles(M), WEAR_EYES)	//here because require powerpack to don
+
+			M.equip_to_slot_or_del(new /obj/item/weapon/gun/smartgun(M), WEAR_J_STORE)
+
+			M.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full(M), WEAR_L_STORE)
+			M.equip_to_slot_or_del(new /obj/item/storage/pouch/general/medium(M), WEAR_R_STORE)
+
+			var/obj/item/card/id/dogtag/W = new(M)
+			W.name = "[M.real_name]'s ID Card"
+			W.access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_SMARTPREP)
 			W.assignment = "Squad Smartgunner"
 			W.rank = "Squad Smartgunner"
 			W.registered_name = M.real_name
@@ -207,9 +331,238 @@
 				M.mind.assigned_role = "Squad Smartgunner"
 				M.mind.set_cm_skills(/datum/skills/smartgunner)
 
+		if("USCM Squad Specialist")
+			if(M.mind)
+				M.mind.role_comm_title = "Spc"
+				M.mind.assigned_role = "Squad Specialist"
+				M.mind.set_cm_skills(/datum/skills/specialist) //skills are set before equipment because of skill restrictions on certain clothes.
+			var/list/kits = list("Heavy Grenadier", "Pyrotechnician", "Scout", "Sniper", "Demolitionist")
+			var/kit_choice = input("Select specialist kit for [M]", "Robust quick dress shop") as null|anything in kits
+			switch(kit_choice)
+				if("Heavy Grenadier")
+					M.equip_to_slot_or_del(new /obj/item/clothing/under/marine(M), WEAR_BODY)
+					M.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/marine(M), WEAR_EAR)
+					M.equip_to_slot_or_del(new /obj/item/clothing/glasses/mgoggles(M), WEAR_EYES)
+					M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/specialist(M), WEAR_JACKET)
+					M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/specialist(M), WEAR_HEAD)
+					M.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(M), WEAR_FEET)
+					M.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine/specialist(M), WEAR_HANDS)
+					M.equip_to_slot_or_del(new /obj/item/storage/belt/grenade(M), WEAR_WAIST)
+					M.shoes.attackby(new /obj/item/weapon/combat_knife, M)
+					M.head.attackby(new /obj/item/reagent_container/food/snacks/protein_pack, M)
+					M.w_uniform.attackby(new /obj/item/clothing/tie/storage/webbing, M)
+
+					M.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(M), WEAR_BACK)
+					M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle(M.back), WEAR_IN_BACK)
+					M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle(M.back), WEAR_IN_BACK)
+					M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle(M.back), WEAR_IN_BACK)
+					M.equip_to_slot_or_del(new /obj/item/attachable/magnetic_harness(M.back), WEAR_IN_BACK)
+
+					M.equip_to_slot_or_del(new /obj/item/clothing/tie/storage/webbing(M), WEAR_ACCESSORY)
+
+					M.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/m41a(M), WEAR_R_HAND)
+
+					M.equip_to_slot_or_del(new /obj/item/weapon/gun/launcher/m92(M), WEAR_J_STORE)
+
+					M.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full(M), WEAR_L_STORE)
+					M.equip_to_slot_or_del(new /obj/item/storage/pouch/magazine/large(M), WEAR_R_STORE)
+					new /obj/item/ammo_magazine/rifle/extended(M.r_store)
+					new /obj/item/ammo_magazine/rifle/ap(M.r_store)
+					new /obj/item/ammo_magazine/rifle/ap(M.r_store)
+
+				if("Pyrotechnician")
+					M.equip_to_slot_or_del(new /obj/item/clothing/under/marine(M), WEAR_BODY)
+					M.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/marine(M), WEAR_EAR)
+					M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/M35(M), WEAR_JACKET)
+					M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/pyro(M), WEAR_HEAD)
+					M.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine(M), WEAR_HANDS)
+					M.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(M), WEAR_FEET)
+					M.equip_to_slot_or_del(new /obj/item/storage/large_holster/m39/full(M), WEAR_WAIST)
+					M.shoes.attackby(new /obj/item/weapon/combat_knife, M)
+					M.head.attackby(new /obj/item/reagent_container/food/snacks/protein_pack, M)
+					M.w_uniform.attackby(new /obj/item/clothing/tie/storage/webbing, M)
+					M.wear_suit.attackby(new /obj/item/tool/extinguisher/pyro, M)
+					M.wear_suit.attackby(new /obj/item/tool/extinguisher/pyro, M)
+
+					M.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/engineerpack/flamethrower(M), WEAR_BACK)
+					M.equip_to_slot_or_del(new /obj/item/ammo_magazine/flamer_tank/large(M.back), WEAR_IN_BACK)
+					M.equip_to_slot_or_del(new /obj/item/ammo_magazine/flamer_tank/large(M.back), WEAR_IN_BACK)
+					M.equip_to_slot_or_del(new /obj/item/ammo_magazine/flamer_tank/large/B(M.back), WEAR_IN_BACK)
+					M.equip_to_slot_or_del(new /obj/item/ammo_magazine/flamer_tank/large/X(M.back), WEAR_IN_BACK)
+					new /obj/item/attachable/magnetic_harness(M.back)
+
+					M.equip_to_slot_or_del(new /obj/item/weapon/gun/flamer/M240T(M), WEAR_J_STORE)
+
+					M.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full(M), WEAR_L_STORE)
+					M.equip_to_slot_or_del(new /obj/item/storage/pouch/magazine/large(M), WEAR_R_STORE)
+					new /obj/item/ammo_magazine/smg/m39/extended(M.r_store)
+					new /obj/item/ammo_magazine/smg/m39/ap(M.r_store)
+					new /obj/item/ammo_magazine/smg/m39(M.r_store)
+
+				if("Scout")
+					M.equip_to_slot_or_del(new /obj/item/clothing/under/marine(M), WEAR_BODY)
+					M.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/marine(M), WEAR_EAR)
+					M.equip_to_slot_or_del(new /obj/item/clothing/glasses/night/M4RA(M), WEAR_EYES)
+					M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/M3S(M), WEAR_JACKET)
+					M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/scout(M), WEAR_HEAD)
+					M.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine(M), WEAR_HANDS)
+					M.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(M), WEAR_FEET)
+					M.equip_to_slot_or_del(new /obj/item/storage/belt/marine(M), WEAR_WAIST)
+					M.shoes.attackby(new /obj/item/weapon/combat_knife, M)
+					M.head.attackby(new /obj/item/reagent_container/food/snacks/protein_pack, M)
+					M.w_uniform.attackby(new /obj/item/clothing/tie/storage/webbing, M)
+					M.w_uniform.attackby(new /obj/item/device/binoculars/tactical/scout, M)
+					M.w_uniform.attackby(new /obj/item/explosive/plastique, M)
+					M.w_uniform.attackby(new /obj/item/explosive/plastique, M)
+					M.wear_suit.attackby(new /obj/item/ammo_magazine/pistol/vp70, M)
+					M.wear_suit.attackby(new /obj/item/ammo_magazine/pistol/vp70, M)
+					new /obj/item/ammo_magazine/rifle/m4ra(M.belt)
+					new /obj/item/ammo_magazine/rifle/m4ra/incendiary(M.belt)
+					new /obj/item/ammo_magazine/rifle/m4ra/incendiary(M.belt)
+					new /obj/item/ammo_magazine/rifle/m4ra/impact(M.belt)
+					new /obj/item/ammo_magazine/rifle/m4ra/impact(M.belt)
+
+					M.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel/scout_cloak(M), WEAR_BACK)
+					M.equip_to_slot_or_del(new /obj/item/weapon/gun/pistol/vp70(M), WEAR_IN_BACK)
+					M.equip_to_slot_or_del(new /obj/item/attachable/angledgrip(M), WEAR_IN_BACK)
+
+					M.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/m4ra(M), WEAR_J_STORE)
+
+					M.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full(M), WEAR_L_STORE)
+					M.equip_to_slot_or_del(new /obj/item/storage/pouch/magazine/large(M), WEAR_R_STORE)
+					new /obj/item/ammo_magazine/rifle/m4ra(M.r_store)
+					new /obj/item/ammo_magazine/rifle/m4ra(M.r_store)
+					new /obj/item/ammo_magazine/rifle/m4ra(M.r_store)
+
+				if("Sniper")
+					M.equip_to_slot_or_del(new /obj/item/clothing/under/marine(M), WEAR_BODY)
+					M.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/marine(M), WEAR_EAR)
+					M.equip_to_slot_or_del(new /obj/item/clothing/glasses/night/m42_night_goggles(M), WEAR_EYES)
+					M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/sniper(M), WEAR_JACKET)
+					M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine(M), WEAR_HEAD)
+					M.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine(M), WEAR_HANDS)
+					M.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(M), WEAR_FEET)
+					M.equip_to_slot_or_del(new /obj/item/storage/large_holster/m39/full(M), WEAR_WAIST)
+					M.shoes.attackby(new /obj/item/weapon/combat_knife, M)
+					M.head.attackby(new /obj/item/reagent_container/food/snacks/protein_pack, M)
+					M.w_uniform.attackby(new /obj/item/clothing/tie/storage/webbing, M)
+					M.w_uniform.attackby(new /obj/item/device/binoculars/tactical/scout, M)
+					M.w_uniform.attackby(new /obj/item/ammo_magazine/smg/m39/extended, M)
+					M.w_uniform.attackby(new /obj/item/ammo_magazine/smg/m39/ap, M)
+					M.wear_suit.attackby(new /obj/item/ammo_magazine/pistol/vp70, M)
+					M.wear_suit.attackby(new /obj/item/ammo_magazine/pistol/vp70, M)
+
+					M.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/smock(M), WEAR_BACK)
+					M.equip_to_slot_or_del(new /obj/item/ammo_magazine/sniper/incendiary(M.back), WEAR_IN_BACK)
+					M.equip_to_slot_or_del(new /obj/item/ammo_magazine/sniper/incendiary(M.back), WEAR_IN_BACK)
+					M.equip_to_slot_or_del(new /obj/item/ammo_magazine/sniper/flak(M.back), WEAR_IN_BACK)
+					M.equip_to_slot_or_del(new /obj/item/ammo_magazine/sniper/flak(M.back), WEAR_IN_BACK)
+					M.equip_to_slot_or_del(new /obj/item/weapon/gun/pistol/vp70(M.back), WEAR_IN_BACK)
+					M.equip_to_slot_or_del(new /obj/item/attachable/reddot(M.back), WEAR_IN_BACK)
+					M.equip_to_slot_or_del(new /obj/item/facepaint/sniper(M.back), WEAR_IN_BACK)
+
+					M.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/sniper/M42A(M), WEAR_J_STORE)
+
+					M.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full(M), WEAR_L_STORE)
+					M.equip_to_slot_or_del(new /obj/item/storage/pouch/magazine/large(M), WEAR_R_STORE)
+					new /obj/item/ammo_magazine/sniper(M.r_store)
+					new /obj/item/ammo_magazine/sniper(M.r_store)
+					new /obj/item/ammo_magazine/sniper(M.r_store)
+
+				if("Demolitionist")
+					M.equip_to_slot_or_del(new /obj/item/clothing/under/marine(M), WEAR_BODY)
+					M.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/marine(M), WEAR_EAR)
+					M.equip_to_slot_or_del(new /obj/item/clothing/glasses/mgoggles(M), WEAR_EYES)
+					M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/M3T(M), WEAR_JACKET)
+					M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine(M), WEAR_HEAD)
+					M.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine(M), WEAR_HANDS)
+					M.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(M), WEAR_FEET)
+					M.equip_to_slot_or_del(new /obj/item/storage/large_holster/m39/full(M), WEAR_WAIST)
+					M.shoes.attackby(new /obj/item/weapon/combat_knife, M)
+					M.head.attackby(new /obj/item/reagent_container/food/snacks/protein_pack, M)
+					M.w_uniform.attackby(new /obj/item/clothing/tie/storage/webbing, M)
+					M.w_uniform.attackby(new /obj/item/explosive/plastique, M)
+					M.w_uniform.attackby(new /obj/item/explosive/plastique, M)
+					M.w_uniform.attackby(new /obj/item/attachable/magnetic_harness, M)
+					M.wear_suit.attackby(new /obj/item/ammo_magazine/smg/m39/extended, M)
+					M.wear_suit.attackby(new /obj/item/ammo_magazine/smg/m39/ap, M)
+
+					M.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(M), WEAR_BACK)
+					M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rocket/ap(M.back), WEAR_IN_BACK)
+					M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rocket/ap(M.back), WEAR_IN_BACK)
+					M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rocket/ap(M.back), WEAR_IN_BACK)
+					M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rocket/wp(M.back), WEAR_IN_BACK)
+					new /obj/item/ammo_magazine/rocket/wp(M.back)
+
+					M.equip_to_slot_or_del(new /obj/item/weapon/gun/launcher/rocket(M), WEAR_J_STORE)
+
+					M.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full(M), WEAR_L_STORE)
+					M.equip_to_slot_or_del(new /obj/item/storage/pouch/rpg/full(M), WEAR_R_STORE)
+
+			var/obj/item/card/id/dogtag/W = new(M)
+			W.name = "[M.real_name]'s ID Card"
+			W.access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_SPECPREP)
+			W.assignment = "Squad Specialist"
+			W.rank = "Squad Specialist"
+			W.registered_name = M.real_name
+			W.paygrade = "E5"
+			M.equip_to_slot_or_del(W, WEAR_ID)
+
+		if("USCM Squad Leader")
+			M.equip_to_slot_or_del(new /obj/item/clothing/under/marine(M), WEAR_BODY)
+			M.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mcom(M), WEAR_EAR)
+			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses(M), WEAR_EYES)
+			M.equip_to_slot_or_del(new /obj/item/device/whistle(M), WEAR_FACE)
+			M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/leader(M), WEAR_JACKET)
+			M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/leader(M), WEAR_HEAD)
+			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine(M), WEAR_HANDS)
+			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(M), WEAR_FEET)
+			M.equip_to_slot_or_del(new /obj/item/storage/belt/marine/full_rifle(M), WEAR_WAIST)
+			M.shoes.attackby(new /obj/item/weapon/combat_knife, M)
+			M.head.attackby(new /obj/item/clothing/glasses/mgoggles, M)
+			M.head.attackby(new /obj/item/reagent_container/food/snacks/protein_pack, M)
+			M.w_uniform.attackby(new /obj/item/clothing/tie/storage/brown_vest, M)
+			M.w_uniform.attackby(new /obj/item/device/binoculars/tactical, M)
+			M.w_uniform.attackby(new /obj/item/map/current_map, M)
+			M.w_uniform.attackby(new /obj/item/device/squad_beacon, M)
+			M.w_uniform.attackby(new /obj/item/device/squad_beacon, M)
+			M.w_uniform.attackby(new /obj/item/device/squad_beacon, M)
+			M.wear_suit.attackby(new /obj/item/explosive/plastique, M)
+
+			M.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(M), WEAR_BACK)
+			M.equip_to_slot_or_del(new /obj/item/attachable/stock/rifle(M), WEAR_IN_BACK)
+			M.equip_to_slot_or_del(new /obj/item/attachable/reddot(M), WEAR_IN_BACK)
+			M.equip_to_slot_or_del(new /obj/item/device/motiondetector(M), WEAR_IN_BACK)
+			M.equip_to_slot_or_del(new /obj/item/ammo_magazine/flamer_tank(M), WEAR_IN_BACK)
+			M.equip_to_slot_or_del(new /obj/item/ammo_magazine/flamer_tank(M), WEAR_IN_BACK)
+
+			M.equip_to_slot_or_del(new /obj/item/weapon/gun/flamer(M), WEAR_R_HAND)
+
+			M.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/m41a(M), WEAR_J_STORE)
+
+			M.equip_to_slot_or_del(new /obj/item/storage/pouch/firstaid/full(M), WEAR_L_STORE)
+			M.equip_to_slot_or_del(new /obj/item/storage/pouch/general/large(M), WEAR_R_STORE)
+			new /obj/item/explosive/grenade/frag/m15(M.r_store)
+			new /obj/item/explosive/grenade/frag/m15(M.r_store)
+			new /obj/item/explosive/grenade/incendiary(M.r_store)
+
+			var/obj/item/card/id/dogtag/W = new(M)
+			W.name = "[M.real_name]'s ID Card"
+			W.access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_LEADER, ACCESS_MARINE_DROPSHIP)
+			W.assignment = "Squad Leader"
+			W.rank = "Squad Leader"
+			W.registered_name = M.real_name
+			W.paygrade = "E6"
+			M.equip_to_slot_or_del(W, WEAR_ID)
+			if(M.mind)
+				M.mind.role_comm_title = "SL"
+				M.mind.assigned_role = "Squad Leader"
+				M.mind.set_cm_skills(/datum/skills/SL)
+
 		if("USCM Tank Crewman")
 			M.equip_to_slot_or_del(new /obj/item/device/radio/headset/almayer/mcom, WEAR_EAR)
 			M.equip_to_slot_or_del(new /obj/item/clothing/under/marine/officer/tanker, WEAR_BODY)
+			M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/tanker(M), WEAR_HEAD)
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine, WEAR_FEET)
 			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/yellow, WEAR_HANDS)
 			M.equip_to_slot_or_del(new /obj/item/storage/belt/gun/m4a3/vp70, WEAR_WAIST)
@@ -263,34 +616,6 @@
 				M.mind.role_comm_title = "LCpl"
 				M.mind.assigned_role = "Squad Smartgunner"
 				M.mind.set_cm_skills(/datum/skills/smartgunner)
-
-		if("USCM Specialist (Armor)")
-			if(M.mind)
-				M.mind.role_comm_title = "Spc"
-				M.mind.assigned_role = "Squad Specialist"
-				M.mind.set_cm_skills(/datum/skills/specialist) //skills are set before equipment because of skill restrictions on certain clothes.
-
-			M.equip_to_slot_or_del(new /obj/item/clothing/under/marine(M), WEAR_BODY)
-			M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/specialist(M), WEAR_JACKET)
-			M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/specialist(M), WEAR_HEAD)
-			M.equip_to_slot_or_del(new /obj/item/storage/belt/marine(M), WEAR_WAIST)
-			M.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/satchel(M), WEAR_BACK)
-			M.equip_to_slot_or_del(new /obj/item/clothing/mask/gas(M), WEAR_FACE)
-			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(M), WEAR_FEET)
-			M.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/m41a(M), WEAR_J_STORE)
-			M.equip_to_slot_or_del(new /obj/item/weapon/combat_knife(M), WEAR_L_HAND)
-			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine/specialist(M), WEAR_HANDS)
-
-			var/obj/item/card/id/dogtag/W = new(M)
-			W.name = "[M.real_name]'s ID Card"
-			W.access = list()
-			W.assignment = "Squad Specialist"
-			W.rank = "Squad Specialist"
-			W.registered_name = M.real_name
-			W.paygrade = "E5"
-			M.equip_to_slot_or_del(W, WEAR_ID)
-
-
 
 		if("USCM Second-Lieutenant (SO)")
 			M.equip_to_slot_or_del(new /obj/item/clothing/under/marine/officer/bridge(M), WEAR_BODY)

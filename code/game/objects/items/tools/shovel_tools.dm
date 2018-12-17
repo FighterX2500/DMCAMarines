@@ -144,13 +144,14 @@
 	name = "entrenching tool"
 	desc = "Used to dig holes and bash heads in. Folds in to fit in small spaces."
 	icon = 'icons/Marine/marine-items.dmi'
-	icon_state = "etool"
+	icon_state = "etool_c"
 	force = 30
 	throwforce = 2
 	item_state = "crowbar"
 	w_class = 4 //three for unfolded, 3 for folded. This should keep it outside backpacks until its folded, made it 3 because 2 lets you fit in pockets appearntly.
 	origin_tech = "engineering=1"
 	dirt_overlay = "etool_overlay"
+	folded = TRUE
 	dirt_amt_per_dig = 2
 	shovelspeed = 25
 

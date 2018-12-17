@@ -90,7 +90,7 @@ Additional game mode variables.
 datum/game_mode/proc/initialize_special_clamps()
 	var/ready_players = num_players() // Get all players that have "Ready" selected
 	xeno_starting_num = max((ready_players/7), xeno_required_num) //(n, minimum, maximum)
-	surv_starting_num = CLAMP((ready_players/25), 0, 8)
+	surv_starting_num = CLAMP((ready_players/20), 0, 8)
 	merc_starting_num = max((ready_players/3), 1)
 	marine_starting_num = ready_players - xeno_starting_num - surv_starting_num - merc_starting_num
 
@@ -618,7 +618,7 @@ datum/game_mode/proc/initialize_special_clamps()
 			ghost.set_cm_skills(/datum/skills/civilian/survivor/marshall)
 		if("UPP Agent") //UPP Agent
 			H.mind.special_role = "UPP Agent"
-			id_assignment = pick("Assistant","Civilian","Doctor","Atmos Tech","Chaplain","Miner")
+			id_assignment = pick("Assistant","Civilian","Doctor","Atmos Tech","Miner")
 			switch(id_assignment)
 				if("Assistant")
 					H.equip_to_slot_or_del(new /obj/item/clothing/under/colonist(H), WEAR_BODY)
