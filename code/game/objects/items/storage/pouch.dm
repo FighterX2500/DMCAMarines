@@ -454,7 +454,7 @@
 	..()
 	new /obj/item/stack/sandbags_empty/half (src)
 	new /obj/item/tool/shovel/etool (src)
-	new /obj/item/stack/barbed_wire/half (src)
+	new /obj/item/stack/barbed_wire/half_stack (src)
 
 /obj/item/storage/pouch/tools
 	name = "tools pouch"
