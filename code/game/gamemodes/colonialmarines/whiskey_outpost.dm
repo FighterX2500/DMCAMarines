@@ -1344,7 +1344,7 @@
 /obj/item/device/laz_designator
 	name = "laser designator" // Make sure they know this will kill people in the desc below.
 	desc = "A laser designator, used to mark targets for airstrikes. This one comes with two modes, one for IR laser which calls in a napalm airstrike upon the position, the other being a UV laser which calculates the distance for a mortar strike. On the side there is a label that reads:<span class='notice'> !!WARNING: Deaths from use of this tool will have the user held accountable!!</span>"
-	icon = 'icons/turf/whiskeyoutpost.dmi'
+	icon = 'icons/Marine/whiskeyoutpost.dmi'
 	icon_state = "designator_e"
 
 	//Considering putting in power cells into the weapon to power it but for now its probably not going to happen. So we'll settle for cooldowns then.
@@ -1541,7 +1541,7 @@
 
 /obj/effect/las_target
 	name = "laser"
-	icon = 'icons/turf/whiskeyoutpost.dmi'
+	icon = 'icons/Marine/whiskeyoutpost.dmi'
 	icon_state = "laz_r"
 	opacity = 1
 	anchored = 1
@@ -1557,7 +1557,7 @@
 /obj/item/device/whiskey_supply_beacon //Whiskey Outpost Supply beacon. Might as well reuse the IR target beacon (Time to spook the fucking shit out of people.)
 	name = "ASB beacon"
 	desc = "Ammo Supply Beacon, it has 5 different settings for different supplies. Look at your weapons verb tab to be able to switch ammo drops."
-	icon = 'icons/turf/whiskeyoutpost.dmi'
+	icon = 'icons/Marine/whiskeyoutpost.dmi'
 	icon_state = "ir_beacon"
 	w_class = 2
 	var/activated = 0

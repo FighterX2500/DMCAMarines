@@ -24,7 +24,7 @@
 /obj/item/storage/box/m56d_hmg
 	name = "M56D crate"
 	desc = "A large metal case with Japanese writing on the top. However it also comes with English text to the side. This is a M56D smartgun, it clearly has various labeled warnings. The most major one is that this does not have IFF features due to specialized ammo."
-	icon = 'icons/turf/whiskeyoutpost.dmi'
+	icon = 'icons/Marine/whiskeyoutpost.dmi'
 	icon_state = "M56D_case" // I guess a placeholder? Not actually going to show up ingame for now.
 	w_class = 5
 	storage_slots = 6
@@ -46,7 +46,7 @@
 	desc = "The top half of a M56D Machinegun post. However it ain't much use without the tripod."
 	unacidable = TRUE
 	w_class = 5
-	icon = 'icons/turf/whiskeyoutpost.dmi'
+	icon = 'icons/Marine/whiskeyoutpost.dmi'
 	icon_state = "M56D_gun_e"
 	var/rounds = 0 // How many rounds are in the weapon. This is useful if we break down our guns.
 
@@ -91,7 +91,7 @@
 	desc = "The folded, foldable tripod mount for the M56D.  (Place on ground and drag to you to unfold)."
 	unacidable = TRUE
 	w_class = 5
-	icon = 'icons/turf/whiskeyoutpost.dmi'
+	icon = 'icons/Marine/whiskeyoutpost.dmi'
 	icon_state = "folded_mount"
 
 /obj/item/device/m56d_post/attack_self(mob/user) //click the tripod to unfold it.
@@ -107,7 +107,7 @@
 /obj/machinery/m56d_post
 	name = "\improper M56D mount"
 	desc = "A foldable tripod mount for the M56D, provides stability to the M56D."
-	icon = 'icons/turf/whiskeyoutpost.dmi'
+	icon = 'icons/Marine/whiskeyoutpost.dmi'
 	icon_state = "M56D_mount"
 	anchored = TRUE
 	density = TRUE
@@ -214,7 +214,7 @@
 /obj/machinery/m56d_hmg
 	name = "M56D mounted smartgun"
 	desc = "A deployable, mounted smartgun. While it is capable of taking the same rounds as the M56, it fires specialized tungsten rounds for increased armor penetration.\n<span class='notice'>  Use (ctrl-click) to shoot in bursts.</span>\n<span class='notice'> !!DANGER: M56D DOES NOT HAVE IFF FEATURES!!</span>"
-	icon = 'icons/turf/whiskeyoutpost.dmi'
+	icon = 'icons/Marine/whiskeyoutpost.dmi'
 	icon_state = "M56D"
 	anchored = TRUE
 	unacidable = TRUE //stop the xeno me(l)ta.
@@ -588,7 +588,7 @@
 	rounds = 1500
 	rounds_max = 1500
 	locked = TRUE
-	icon = 'icons/turf/whiskeyoutpost.dmi'
+	icon = 'icons/Marine/whiskeyoutpost.dmi'
 	icon_full = "towergun"
 	icon_empty = "towergun"
 	view_tile_offset = 6

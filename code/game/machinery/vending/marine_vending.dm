@@ -456,6 +456,7 @@
 					)
 	shared = list(
 				/obj/structure/closet/crate/mortar_ammo/mortar_kit = 1,
+				/obj/structure/closet/crate/m8_1_tow_ammo/m8_1_tow_kit = 1
 				)
 	prices = list()
 
