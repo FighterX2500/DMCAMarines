@@ -3,7 +3,7 @@
 
 // First thing we need is the ammo. Rockets in our case.
 /obj/item/ammo_magazine/rocket/m8_1_tow
-	name = "84mm armor penetration TOW rocket"
+	name = "84mm anti-armor TOW rocket"
 	desc = "A rocket tube for an M7 TOW Launcher emplacement."
 	caliber = "rocket"
 	icon_state = "tow_mount_rocket"
@@ -50,15 +50,12 @@
 	var/gun_mounted = FALSE //Has the gun been mounted?
 	var/health = 100
 
-
 /obj/machinery/m8_1_tow_post/proc/update_health(damage)
 	health -= damage
 	if(health <= 0)
 		if(prob(30))
 			new /obj/item/device/m8_1_tow_post (src)
 		cdel(src)
-
-
 
 /obj/machinery/m8_1_tow_post/examine(mob/user)
 	..()
@@ -140,7 +137,7 @@
 // The actual TOW itself, going to borrow some stuff from current sentry code to make sure it functions. Also because they're similiar.
 /obj/machinery/m8_1_tow
 	name = "\improper M8-1 Mounted TOW Launcher"
-	desc = "A deployable, mounted TOW launcher. Shoots 84mm high-explosive TOW rockets. Is manufactured to be deployed in forward bases to obtain superiority against heavy support vehicles and tanks. Undergoing field testes in the hands of USCM.\n<span class='notice'>!!Has safety enabled by default.</span>"
+	desc = "A deployable, mounted TOW launcher. Shoots 84mm anti-armor TOW rockets. Is manufactured to be deployed in forward bases to obtain superiority against heavy support vehicles and tanks. Undergoing field testes in the hands of USCM.\n<span class='notice'>!!Has safety enabled by default.</span>\n<span class='danger'>!!Clear backblast area!</span>"
 	icon = 'icons/Marine/tow_mount.dmi'
 	icon_state = "tow"
 	anchored = TRUE
@@ -151,6 +148,7 @@
 	var/locked = FALSE
 	var/rocket = FALSE //Have it be empty upon spawn.
 	var/next_shot = 0
+	var/fire_delay = 150
 	var/safety = TRUE //Weapon safety, 0 is weapons hot, 1 is safe.
 	var/health = 200
 	var/health_max = 200 //Why not just give it sentry-tier health for now.
@@ -317,7 +315,7 @@
 	visible_message("<span class='notice'> \icon[src] \The M8-1 beeps steadily and its ammo light blinks red.</span>")
 	playsound(src.loc, 'sound/weapons/smg_empty_alarm.ogg', 25, 1)
 	update_icon() //final safeguard.
-	next_shot = world.time + 150
+	next_shot = world.time + fire_delay
 
 	var/datum/effect_system/smoke_spread/smoke = new
 	var/backblast_loc = get_turf(get_step(src, turn(src.dir, 180)))
@@ -479,11 +477,12 @@
 
 /obj/machinery/m8_1_tow/tow_turret //mapbound version with zoom feature for WO
 	name = "\improper M8-1 Mounted TOW Launcher Nest"
-	desc = "A M8-1 TOW launcher mounted upon a small reinforced post with sandbags for all your defense purpose needs. Shoots 84mm high-explosive TOW rockets. Perfect for eliminating armored targets.\n<span class='notice'>!!Has safety enabled by default.</span>"
+	desc = "A M8-1 TOW launcher mounted upon a small reinforced post with sandbags for all your defense purpose needs. Shoots 84mm anti-armor TOW rockets. Is manufactured to be deployed in forward bases to obtain superiority against heavy support vehicles and tanks. Undergoing field testes in the hands of USCM.\n<span class='notice'>!!Has safety enabled by default.</span>\n<span class='danger'>!!Clear backblast area!</span>"
 	locked = TRUE
 	icon = 'icons/Marine/tow_mount.dmi'
 	icon_full = "tow_nest"
 	icon_empty = "tow_nest_e"
+	fire_delay = 50
 	view_tile_offset = 6
 	view_tiles = 7
 
@@ -506,7 +505,7 @@
 
 /obj/structure/closet/crate/m8_1_tow_ammo/m8_1_tow_kit
 	name = "M8-1 TOW kit"
-	desc = "A crate containing a basic set of a M8-1 TOW and some rockets, to get an engineer started."
+	desc = "A crate containing a basic set of a M8-1 TOW launcher and some rockets, to get an engineer started."
 
 /obj/structure/closet/crate/m8_1_tow_ammo/m8_1_tow_kit/New()
 	..()
@@ -515,6 +514,7 @@
 	new /obj/item/ammo_magazine/rocket/m8_1_tow(src)
 	new /obj/item/ammo_magazine/rocket/m8_1_tow(src)
 	new /obj/item/ammo_magazine/rocket/m8_1_tow(src)
-	new /obj/item/tool/screwdriver3
+	new /obj/item/tool/screwdriver(src)
+	new /obj/item/tool/wrench(src)
 	new /obj/item/device/m8_1_tow_gun(src)
 	new /obj/item/device/m8_1_tow_post(src)
