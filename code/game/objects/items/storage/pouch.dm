@@ -278,6 +278,24 @@
 					"/obj/item/ammo_magazine/rocket/wp"
 					)
 
+/obj/item/storage/pouch/rpg/full/New()
+	..()
+	new /obj/item/ammo_magazine/rocket(src)
+	new /obj/item/ammo_magazine/rocket(src)
+	new /obj/item/ammo_magazine/rocket(src)
+
+/obj/item/storage/pouch/rpg/full_ap/New()
+	..()
+	new /obj/item/ammo_magazine/rocket/ap(src)
+	new /obj/item/ammo_magazine/rocket/ap(src)
+	new /obj/item/ammo_magazine/rocket/ap(src)
+
+/obj/item/storage/pouch/rpg/full_wp/New()
+	..()
+	new /obj/item/ammo_magazine/rocket/wp(src)
+	new /obj/item/ammo_magazine/rocket/wp(src)
+	new /obj/item/ammo_magazine/rocket/wp(src)
+
 /obj/item/storage/pouch/medical
 	name = "medical pouch"
 	desc = "It can contain small medical supplies."
@@ -296,6 +314,11 @@
 	    "/obj/item/reagent_container/hypospray"
 	)
 
+/obj/item/storage/pouch/medical/full/New()
+	..()
+	new /obj/item/device/healthanalyzer(src)
+	new /obj/item/storage/pill_bottle/bicaridine(src)
+	new /obj/item/storage/pill_bottle/kelotane(src)
 
 /obj/item/storage/pouch/autoinjector
 	name = "auto-injector pouch"
@@ -328,7 +351,7 @@
 
 /obj/item/storage/pouch/medkit/full/New()
 	..()
-	new /obj/item/storage/firstaid/regular(src)
+	new /obj/item/storage/firstaid/adv(src)
 
 /obj/item/storage/pouch/document
 	name = "document pouch"
@@ -403,6 +426,7 @@
 	new /obj/item/circuitboard/airlock (src)
 	new /obj/item/circuitboard/apc (src)
 	new /obj/item/cell/high (src)
+	new /obj/item/cell/high (src)
 
 
 /obj/item/storage/pouch/construction
@@ -423,8 +447,8 @@
 /obj/item/storage/pouch/construction/full/New()
 	..()
 	new /obj/item/stack/sandbags_empty/half (src)
-	new /obj/item/stack/barbed_wire/small_stack (src)
-	new /obj/item/tool/shovel/etool (src)
+	new /obj/item/stack/sheet/metal/large_stack (src)
+	new /obj/item/stack/sheet/plasteel/sentry_stack (src)
 
 /obj/item/storage/pouch/tools
 	name = "tools pouch"

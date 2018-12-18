@@ -58,10 +58,6 @@
 		if(check_lifecycle())
 			GoIdle()
 
-//Can be picked up by aliens
-/obj/item/clothing/mask/facehugger/attack_paw(user as mob)
-	attack_hand(user)
-
 /obj/item/clothing/mask/facehugger/attack_hand(user as mob)
 
 	if((stat == CONSCIOUS && !sterile))
@@ -113,9 +109,6 @@
 	if(W.flags_item & NOBLUDGEON)
 		return
 	Die()
-
-/obj/item/clothing/mask/facehugger/attack_alien(mob/living/carbon/Xenomorph/M)
-	attack_hand(M)
 
 /obj/item/clothing/mask/facehugger/bullet_act(obj/item/projectile/P)
 	..()

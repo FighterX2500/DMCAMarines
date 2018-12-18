@@ -308,19 +308,19 @@
 	New()
 		..()
 		spawn(1)
-			new	/obj/item/clothing/suit/storage/marine/M3T(src)
+			new /obj/item/clothing/suit/storage/marine/M3T(src)
 			new /obj/item/clothing/head/helmet/marine(src)
 			new /obj/item/weapon/gun/launcher/rocket(src)
-			new /obj/item/ammo_magazine/rocket(src)
-			new /obj/item/ammo_magazine/rocket(src)
 			new /obj/item/ammo_magazine/rocket/ap(src)
 			new /obj/item/ammo_magazine/rocket/ap(src)
+			new /obj/item/ammo_magazine/rocket/ap(src)
+			new /obj/item/ammo_magazine/rocket/wp(src)
 			new /obj/item/ammo_magazine/rocket/wp(src)
 			new /obj/item/explosive/mine(src)
 			new /obj/item/explosive/mine(src)
 			new /obj/item/explosive/plastique(src)
 			new /obj/item/explosive/plastique(src)
-			new /obj/item/storage/pouch/rpg(src)
+			new /obj/item/storage/pouch/rpg/full(src)
 
 
 
@@ -330,7 +330,7 @@
 	icon = 'icons/Marine/marine-weapons.dmi'
 	icon_state = "sniper_case"
 	w_class = 5
-	storage_slots = 11
+	storage_slots = 15
 	slowdown = 1
 	can_hold = list() //Nada. Once you take the stuff out it doesn't fit back in.
 	foldable = null
@@ -342,7 +342,11 @@
 			new /obj/item/clothing/suit/storage/marine/sniper(src)
 			new /obj/item/clothing/glasses/night/m42_night_goggles(src)
 			new /obj/item/ammo_magazine/sniper(src)
+			new /obj/item/ammo_magazine/sniper(src)
+			new /obj/item/ammo_magazine/sniper(src)
 			new /obj/item/ammo_magazine/sniper/incendiary(src)
+			new /obj/item/ammo_magazine/sniper/incendiary(src)
+			new /obj/item/ammo_magazine/sniper/flak(src)
 			new /obj/item/ammo_magazine/sniper/flak(src)
 			new /obj/item/storage/backpack/marine/smock(src)
 			new /obj/item/weapon/gun/pistol/vp70(src)
@@ -405,7 +409,7 @@
 	icon = 'icons/Marine/marine-weapons.dmi'
 	icon_state = "armor_case"
 	w_class = 5
-	storage_slots = 8
+	storage_slots = 10
 	slowdown = 1
 	can_hold = list()
 	foldable = null
