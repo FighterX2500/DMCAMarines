@@ -1867,6 +1867,20 @@ AMMO
 	containername = "M402 mortar ammo crate"
 	group = "Ammo"
 
+/datum/supply_packs/m8_1_tow_ammo
+	name = "M8-1 TOW ammo crate (x5 AP)"
+	cost = RO_PRICE_PRICY
+	contains = list(
+					/obj/item/ammo_magazine/rocket/m8_1_tow,
+					/obj/item/ammo_magazine/rocket/m8_1_tow,
+					/obj/item/ammo_magazine/rocket/m8_1_tow,
+					/obj/item/ammo_magazine/rocket/m8_1_tow,
+					/obj/item/ammo_magazine/rocket/m8_1_tow
+					)
+	containertype = /obj/structure/closet/crate/m8_1_tow_ammo
+	containername = "M8-1 TOW ammo crate"
+	group = "Ammo"
+
 /*******************************************************************************
 ARMOR
 *******************************************************************************/

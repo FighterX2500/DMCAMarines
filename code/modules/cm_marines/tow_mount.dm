@@ -3,10 +3,10 @@
 
 // First thing we need is the ammo. Rockets in our case.
 /obj/item/ammo_magazine/rocket/m8_1_tow
-	name = "84mm high-explosive TOW rocket"
+	name = "84mm armor penetration TOW rocket"
 	desc = "A rocket tube for an M7 TOW Launcher emplacement."
 	caliber = "rocket"
-	icon_state = "rocket"
+	icon_state = "tow_mount_rocket"
 	w_class = 3.0
 	max_rounds = 1
 	default_ammo = /datum/ammo/rocket/tow/m8_1_tow
@@ -19,18 +19,15 @@
 	desc = "The top half of a M8-1 TOW launcher post. However it ain't much use without the tripod."
 	unacidable = TRUE
 	w_class = 5
-	icon = 'icons/turf/whiskeyoutpost.dmi'
-	icon_state = "M56D_gun_e"
-
-	New()
-		update_icon()
+	icon = 'icons/Marine/tow_mount.dmi'
+	icon_state = "tow_gun"
 
 /obj/item/device/m8_1_tow_post //Adding this because I was fucken stupid and put a obj/machinery in a box. Realized I couldn't take it out
 	name = "\improper M8-1 TOW Launcher folded mount"
 	desc = "The folded, foldable tripod mount for the M8-1.\n<span class='notice'>(Place on ground and drag to you to unfold)</span>"
 	unacidable = TRUE
 	w_class = 5
-	icon = 'icons/turf/whiskeyoutpost.dmi'
+	icon = 'icons/Marine/tow_mount.dmi'
 	icon_state = "folded_mount"
 
 /obj/item/device/m8_1_tow_post/attack_self(mob/user) //click the tripod to unfold it.
@@ -45,8 +42,8 @@
 /obj/machinery/m8_1_tow_post
 	name = "\improper M8-1 TOW launcher mount"
 	desc = "A foldable tripod mount for the M8-1."
-	icon = 'icons/turf/whiskeyoutpost.dmi'
-	icon_state = "M56D_mount"
+	icon = 'icons/Marine/tow_mount.dmi'
+	icon_state = "tow_mount"
 	anchored = TRUE
 	density = TRUE
 	layer = ABOVE_MOB_LAYER
@@ -86,6 +83,8 @@
 	if(over_object == user && in_range(src, user))
 		to_chat(user, "<span class='notice'>You fold [src].</span>")
 		var/obj/item/device/m8_1_tow_post/P = new(loc)
+		if(gun_mounted)
+			new /obj/item/device/m8_1_tow_gun(src.loc)
 		user.put_in_hands(P)
 		cdel(src)
 
@@ -107,7 +106,7 @@
 			user.visible_message("\blue [user] installs [TOW] into place.","\blue You install [TOW] into place.")
 			gun_mounted = TRUE
 			user.temp_drop_inv_item(TOW)
-			icon_state = "M56D"
+			icon_state = "tow_e"
 			cdel(TOW)
 		return
 
@@ -121,7 +120,7 @@
 			user.visible_message("\blue [user] removes [src]'s gun.","\blue You remove [src]'s gun.")
 			new /obj/item/device/m8_1_tow_gun(loc)
 			gun_mounted = FALSE
-			icon_state = "M56D_mount"
+			icon_state = "tow_mount"
 		return
 
 	if(istype(O,/obj/item/tool/screwdriver))
@@ -133,6 +132,7 @@
 				var/obj/machinery/m8_1_tow/T = new(src.loc) //Here comes our new turret.
 				T.visible_message("\icon[T] <B>[T] is now complete!</B>") //finished it for everyone to
 				T.dir = src.dir //make sure we face the right direction
+				T.update_icon()
 				cdel(src)
 
 	return ..()
@@ -140,9 +140,9 @@
 // The actual TOW itself, going to borrow some stuff from current sentry code to make sure it functions. Also because they're similiar.
 /obj/machinery/m8_1_tow
 	name = "\improper M8-1 Mounted TOW Launcher"
-	desc = "A deployable, mounted TOW launcher. Shoots 84mm high-explosive TOW rockets. Perfect for eliminating armored targets.\n<span class='notice'>!!Has safety enabled by default.</span>"
-	icon = 'icons/turf/whiskeyoutpost.dmi'
-	icon_state = "M56D"
+	desc = "A deployable, mounted TOW launcher. Shoots 84mm high-explosive TOW rockets. Is manufactured to be deployed in forward bases to obtain superiority against heavy support vehicles and tanks. Undergoing field testes in the hands of USCM.\n<span class='notice'>!!Has safety enabled by default.</span>"
+	icon = 'icons/Marine/tow_mount.dmi'
+	icon_state = "tow"
 	anchored = TRUE
 	unacidable = TRUE //stop the xeno me(l)ta.
 	density = TRUE
@@ -155,11 +155,10 @@
 	var/health = 200
 	var/health_max = 200 //Why not just give it sentry-tier health for now.
 	var/atom/target = null // required for shooting at things.
-	var/icon_full = "M56D" // Put this system in for other MGs or just other mounted weapons in general, future proofing.
-	var/icon_empty = "M56D_e" //Empty
+	var/icon_full = "tow" // Put this system in for other MGs or just other mounted weapons in general, future proofing.
+	var/icon_empty = "tow_e" //Empty
 	var/view_tile_offset = 0	//this is amount of tiles we shift our vision towards MG direction
 	var/view_tiles = 7		//this is amount of tiles we want person to see in each direction (7 by default)
-
 
 	New()
 		update_icon()
@@ -176,13 +175,13 @@
 	if(!ishuman(user))
 		return
 	if(rocket)
-		to_chat(usr, "It has rocket loaded.")
+		to_chat(usr, "It has a rocket loaded.")
 	else
 		to_chat(usr, "It seems to be empty.")
 	if(safety)
 		to_chat(usr, "Safety is on. (Toggle it in Weapons tab).")
 	else
-		to_chat(usr, "Safety is off. Ready to fire.")
+		to_chat(usr, "Safety is off.")
 
 /obj/machinery/m8_1_tow/update_icon() //Lets generate the icon based on how much ammo it has.
 	if(!rocket)
@@ -224,7 +223,6 @@
 				return
 
 	if(istype(O, /obj/item/ammo_magazine/rocket/m8_1_tow)) // RELOADING DOCTOR FREEMAN.
-		var/obj/item/ammo_magazine/rocket/m8_1_tow/M = O
 		if(!user.mind || !user.mind.cm_skills)
 			to_chat(user, "<span class='warning'>You have no idea how to reload [src].</span>")
 			return
@@ -239,7 +237,7 @@
 		playsound(loc, 'sound/weapons/gun_mortar_reload.ogg', 25, 1) //!!replace this sound!!
 		rocket = TRUE
 		update_icon()
-		user.temp_drop_inv_item(M)
+		user.temp_drop_inv_item(O)
 		cdel(O)
 		return
 	return ..()
@@ -361,6 +359,10 @@
 	if(get_dist(target,src.loc) > 15)
 		return FALSE
 
+	if(get_dist(target,src.loc) < 3)
+		to_chat(usr, "<span class='danger'>You aim too close!</span>")
+		return FALSE
+
 	if(mods["middle"] || mods["shift"] || mods["alt"] || mods["ctrl"])
 		return FALSE
 
@@ -405,6 +407,9 @@
 			return
 		if(!Adjacent(user))
 			to_chat(usr, "<span class='warning'>Something is between you and [src].</span>")
+			return
+		if(get_step(src,turn(dir, 90)) != user.loc)
+			to_chat(user, "<span class='warning'>You should be on the left side of [src] to man it!</span>")
 			return
 		if(operator) //If there is already a operator then they're manning it.
 			if(operator.interactee == null)
@@ -466,9 +471,9 @@
 	if (operator != usr)
 		return
 
-	to_chat(usr, "<span class='notice'>You toggle the safety [safety ? "<b>off</b>" : "<b>on</b>"].</span>")
-	playsound(usr, 'sound/machines/click.ogg', 15, 1)
 	safety = !safety
+	to_chat(usr, "<span class='notice'>You toggle the safety [safety ? "<b>on</b>" : "<b>off</b>"].</span>")
+	playsound(usr, 'sound/machines/click.ogg', 15, 1)
 
 	return ..()
 
@@ -476,12 +481,11 @@
 	name = "\improper M8-1 Mounted TOW Launcher Nest"
 	desc = "A M8-1 TOW launcher mounted upon a small reinforced post with sandbags for all your defense purpose needs. Shoots 84mm high-explosive TOW rockets. Perfect for eliminating armored targets.\n<span class='notice'>!!Has safety enabled by default.</span>"
 	locked = TRUE
-	icon = 'icons/turf/whiskeyoutpost.dmi'
-	icon_full = "towergun"
-	icon_empty = "towergun"
+	icon = 'icons/Marine/tow_mount.dmi'
+	icon_full = "tow_nest"
+	icon_empty = "tow_nest_e"
 	view_tile_offset = 6
 	view_tiles = 7
-
 
 /obj/structure/closet/crate/m8_1_tow_ammo
 
@@ -511,5 +515,6 @@
 	new /obj/item/ammo_magazine/rocket/m8_1_tow(src)
 	new /obj/item/ammo_magazine/rocket/m8_1_tow(src)
 	new /obj/item/ammo_magazine/rocket/m8_1_tow(src)
+	new /obj/item/tool/screwdriver3
 	new /obj/item/device/m8_1_tow_gun(src)
-	new /obj/machinery/m8_1_tow_post(src)
+	new /obj/item/device/m8_1_tow_post(src)
