@@ -15,6 +15,8 @@
 	max_amount = 25
 	stack_id = "snow pile"
 
+/obj/item/stack/snow/full
+	amount = 25
 
 /obj/item/stack/snow/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/tool/shovel))
@@ -70,16 +72,18 @@
 
 /obj/item/stack/snow/attack_self(mob/user)
 	var/turf/T = get_turf(user)
-	if(T.get_dirt_type() != DIRT_TYPE_SNOW)
-		to_chat(user, "<span class='warning'>You can't build a snow barricade at this location!</span>")
+	if(T.get_dirt_type() != DIRT_TYPE_SNOW && T.get_dirt_type() != DIRT_TYPE_GROUND)
+		to_chat(user, "<span class='warning'>You can't build here!</span>")
 		return
 
 	if(user.action_busy)
 		return
 
 	if(amount < 3)
-		to_chat(user, "<span class='warning'>You need 3 layers of snow to build a barricade.</span>")
+		to_chat(user, "<span class='warning'>You need at least 3 layers of snow to build something.</span>")
 		return
+
+	var/choice = input("What do you want to built?") in list("Barricade", "Snowman")
 
 	//Using same safeties as other constructions
 	for(var/obj/O in user.loc) //Objects, we don't care about mobs. Turfs are checked elsewhere
@@ -89,21 +93,35 @@
 					to_chat(user, "<span class='warning'>There is already \a [O.name] in this direction!</span>")
 					return
 			else
-				to_chat(user, "<span class='warning'>You need a clear, open area to build the sandbag barricade!</span>")
+				to_chat(user, "<span class='warning'>You need a clear, open area to build something!</span>")
 				return
 
-	user.visible_message("<span class='notice'>[user] starts assembling a snow barricade.</span>",
-	"<span class='notice'>You start assembling a snow barricade.</span>")
-	if(!do_after(user, 20, TRUE, 5, BUSY_ICON_BUILD))
-		return
-	if(amount < 3)
-		return
-	for(var/obj/O in user.loc) //Objects, we don't care about mobs. Turfs are checked elsewhere
-		if(O.density)
-			if(!(O.flags_atom & ON_BORDER) || O.dir == user.dir)
+	user.visible_message("<span class='notice'>[user] starts assembling something out of snow.</span>",
+	"<span class='notice'>You start assembling \the [choice].</span>")
+	switch(choice)
+		if("Barricade")
+			if(!do_after(user, 20, TRUE, 5, BUSY_ICON_BUILD))
 				return
-	var/obj/structure/barricade/snow/SB = new(user.loc, user.dir)
-	user.visible_message("<span class='notice'>[user] assembles a sandbag barricade.</span>",
-	"<span class='notice'>You assemble a sandbag barricade.</span>")
-	SB.add_fingerprint(user)
+			if(amount < 3)
+				return
+			for(var/obj/O in user.loc) //Objects, we don't care about mobs. Turfs are checked elsewhere
+				if(O.density)
+					if(!(O.flags_atom & ON_BORDER) || O.dir == user.dir)
+						return
+			var/obj/structure/barricade/snow/SB = new(user.loc, user.dir)
+			user.visible_message("<span class='notice'>[user] assembles a [SB].</span>",
+			"<span class='notice'>You assemble a [SB].</span>")
+			SB.add_fingerprint(user)
+		if("Snowman")
+			if(!do_after(user, 50, TRUE, 5, BUSY_ICON_BUILD))
+				return
+			if(amount < 3)
+				return
+			for(var/obj/O in user.loc)
+				if(O.density)
+					return
+			var/obj/effect/snowman/SM = new(user.loc)
+			user.visible_message("<span class='notice'>[user] assembles a [SM].</span>",
+			"<span class='notice'>You assemble a [SM]. Perhaps you should put something to it to add more flavor?</span>")
+			SM.add_fingerprint(user)
 	use(3)

@@ -4,7 +4,7 @@
 	caste = "Ravager"
 	name = "Ravager"
 	desc = "A huge, nasty red alien with enormous scythed claws."
-	icon = 'icons/Xeno/xenomorph_64x64.dmi'
+	icon = 'icons/Xeno/HOLIDAY/xenomorph_64x64_XMAS.dmi'
 	icon_state = "Ravager Walking"
 	melee_damage_lower = 25
 	melee_damage_upper = 35

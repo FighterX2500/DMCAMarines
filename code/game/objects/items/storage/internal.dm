@@ -113,18 +113,18 @@
 
 /obj/item/storage/internal/handle_item_insertion(obj/item/W as obj, prevent_warning = 0)
 	. = ..()
-	master_item.on_pocket_insertion()
+	master_item.on_pocket_insertion(W)
 
 
 /obj/item/storage/internal/remove_from_storage(obj/item/W as obj, atom/new_location)
 	. = ..()
-	master_item.on_pocket_removal()
+	master_item.on_pocket_removal(W)
 
 
 //things to do when an item is inserted in the obj's internal pocket
-/obj/item/proc/on_pocket_insertion()
+/obj/item/proc/on_pocket_insertion(obj/item/W as obj)
 	return
 
 //things to do when an item is removed in the obj's internal pocket
-/obj/item/proc/on_pocket_removal()
+/obj/item/proc/on_pocket_removal(obj/item/W as obj)
 	return

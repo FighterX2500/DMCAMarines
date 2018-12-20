@@ -4,7 +4,7 @@
 	caste = "Drone"
 	name = "Drone"
 	desc = "An Alien Drone"
-	icon = 'icons/Xeno/xenomorph_48x48.dmi'
+	icon = 'icons/Xeno/HOLIDAY/xenomorph_48x48_XMAS.dmi'
 	icon_state = "Drone Walking"
 	melee_damage_lower = 12
 	melee_damage_upper = 16

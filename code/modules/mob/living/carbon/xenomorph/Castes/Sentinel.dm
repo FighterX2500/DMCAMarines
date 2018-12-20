@@ -4,7 +4,7 @@
 	caste = "Sentinel"
 	name = "Sentinel"
 	desc = "A slithery, spitting kind of alien."
-	icon = 'icons/Xeno/xenomorph_48x48.dmi'
+	icon = 'icons/Xeno/HOLIDAY/xenomorph_48x48_XMAS.dmi'
 	icon_state = "Sentinel Walking"
 	melee_damage_lower = 10
 	melee_damage_upper = 20
