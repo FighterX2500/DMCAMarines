@@ -89,6 +89,12 @@ datum/marineResearch/proc/AddDesigns(datum/marine_design/design)			//Haphazardou
 	possible_design -= design
 	known_design += design
 
+/datum/marineResearch/proc/ForcedToKnown(datum/marineTech/tech)				//When we need it to be researched NOW
+	if(Check_tech(tech.id))
+		return
+	possible_tech -= tech
+	known_tech += tech
+
 datum/marineResearch/proc/AvailToKnown(datum/marineTech/reserched)			//Haphazardous
 	available_tech -= reserched
 	known_tech += reserched
@@ -260,3 +266,31 @@ Queen thingy - RESEARCH_XENO_QUEEN
 	time = 150
 	req_tech = list(RESEARCH_XENO_DISRUPTION, RESEARCH_XENO_DRONE, RESEARCH_XENO_SACK, RESEARCH_XENO_SPITTER)
 	need_item = 0
+
+
+/////////
+//Disk
+/////////
+/obj/item/research_disk
+	name = "W-Y Brand disk"
+	icon = 'icons/obj/items/disk.dmi'
+	icon_state = "datadisk4"
+	w_class = 1.0
+	var/list/teches = list()
+
+/obj/item/research_disk/upp				//UPP survivor
+	icon_state = "datadisk0"
+
+/obj/item/research_disk/upp/New()
+	..()
+	teches = list(RESEARCH_XENOSTART, RESEARCH_XENO_BIOLOGY, RESEARCH_XENO_FLORA)
+	if(prob(50))
+		teches += RESEARCH_BIO_PLATING
+		teches += RESEARCH_XENO_MUSCLES
+	if(prob(50))
+		teches += RESEARCH_XENO_WEED
+		teches += RESEARCH_XENO_SACK
+	if(prob(10))
+		teches += RESEARCH_XENO_CHEMISTRY
+	if(prob(20))
+		teches += RESEARCH_XENO_DRONE

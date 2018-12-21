@@ -58,6 +58,7 @@
 	//icon_state = "rdcomp"  //Temp till i figure out what the shit is going on with the icon file.
 	circuit = /obj/item/circuitboard/computer/XenoRnD
 
+	var/obj/item/research_disk/inserted_disk = null
 	var/datum/marineResearch/files							//Stores all the collected research data.
 	var/obj/machinery/r_n_d/dissector/linked_dissector = null      //linked Organic Dissector
 	var/obj/machinery/r_n_d/modifyer/linked_modifyer = null      //linked EMU
@@ -124,6 +125,14 @@
 				D.linked_console = src
 	return
 
+/obj/machinery/computer/XenoRnD/attackby(var/obj/item/O as obj, var/mob/user as mob)
+	if(istype(O, /obj/item/research_disk))
+		user.drop_held_item()
+		inserted_disk = O
+		O.loc = src
+		return 1
+	return
+
 /obj/machinery/computer/XenoRnD/Topic(href, href_list)				//Brutally teared from rdconsole.dm
 	if(..())
 		return
@@ -141,6 +150,12 @@
 	else if(href_list["reset"])
 		warning("RnD console has errored during protolathe operation. Resetting.")
 		errored = 0
+		screen = 1.0
+		updateUsrDialog()
+
+	else if(href_list["eject"])
+		inserted_disk.loc = src.loc
+		inserted_disk = null
 		screen = 1.0
 		updateUsrDialog()
 
@@ -238,6 +253,44 @@
 					files.CheckAvail()
 					updateUsrDialog()
 				break
+
+	else if(href_list["download"])
+		if(!inserted_disk)
+			screen = 1.0
+			updateUsrDialog()
+			return
+		for(var/tech in inserted_disk.teches)
+			switch(files.Check_tech(tech))
+				if(1)						//Already known
+					continue
+				if(2)
+					for(var/datum/marineTech/avail in files.available_tech)
+						if(avail.id != tech)
+							continue
+						files.AvailToKnown(avail)
+						break
+				if(0)
+					for(var/datum/marineTech/possible in files.possible_tech)
+						if(possible.id != tech)
+							continue
+						files.ForcedToKnown(possible)
+						break
+		inserted_disk.loc = src.loc
+		inserted_disk = null
+		screen = 1.0
+		updateUsrDialog()
+
+	else if(href_list["install"])
+		if(!inserted_disk)
+			screen = 1.0
+			updateUsrDialog()
+			return
+		for(var/datum/marineTech/tech in files.known_tech)
+			inserted_disk.teches += tech
+		inserted_disk.loc = src.loc
+		inserted_disk = null
+		screen = 1.0
+		updateUsrDialog()
 
 	else if(href_list["create"])
 		for(var/datum/marine_design/design in files.known_design)
@@ -434,6 +487,7 @@
 			dat += "Main Menu:<BR><BR>"
 			dat += "<A href='?src=\ref[src];menu=1.1'>Current Available Research</A><BR>"
 			dat += "<A href='?src=\ref[src];menu=1.2'>Current Research Level</A><BR>"
+			dat += "<A href='?src=\ref[src];menu=1.6'>Disk Operations</A><BR>"
 			dat += "<A href='?src=\ref[src];menu=1.5'>Available Modifications</A><BR><HR>"
 
 			if(linked_dissector != null)
@@ -513,6 +567,18 @@
 				dat += "Name: 'Blackmarsh'-class boots modification<BR>"
 				dat += "Description: Using thin layer of xenomorph muscle tissue on combat boots completely negates slowdown on xenoweed.<BR><BR>"
 
+		if(1.6)
+			if(!inserted_disk)
+				dat += "No Disk Inserted.<HR>"
+				dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A>"
+			else
+				dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><HR>"
+				dat += "Disk Founded. Tech check result:<BR>"
+				for(var/tech in inserted_disk.teches)
+					dat += "[CallTechName(tech)]. "
+				dat += "<HR>"
+				dat += "Disk Operations: "
+				dat += "<A href='?src=\ref[src];download=1'>Download technologies.</A> || <A href='?src=\ref[src];install=1'>Install technologies.</A> || <A href='?src=\ref[src];eject=1'>Eject disk.</A>"
 
 		//////////////////////Dissector Screens//////////////////
 		if(2.0)

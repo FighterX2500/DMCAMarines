@@ -162,6 +162,7 @@
 			if(isXeno(target))
 				var/mob/living/carbon/Xenomorph/xeno = target
 				xeno.adjust_stagger(5)
+				xeno.adjust_slowdown(2)
 				to_chat(xeno, "<span class='danger'>Your entire body shaken!</span>")
 				continue
 			to_chat(target, "<span class='danger'>You feel like electricity goes through your muscles!</span>")
@@ -171,7 +172,7 @@
 // box for tesla grenade
 /obj/item/storage/box/tesla_box
 	name = "T-1 Shock grenade box"
-	desc = "A secure box holding 25 T-1 shock grenades with haphazardly cleansed \"M40 HEDP\" label. Stuns opponents in near distance."
+	desc = "A secure box holding 25 T-1 shock grenades with haphazardly cleansed \"M40 HEDP\" label. Slowing down bulky opponents and stuns others in near distance."
 	icon_state = "nade_placeholder"
 	w_class = 4
 	storage_slots = 25
@@ -347,7 +348,7 @@
 ////////////
 
 /obj/item/weapon/gun/energy/lasgan
-	name = "SR-LG \"Thunder\""
+	name = "SR-LG \"Stellar Strike\""
 	desc = "First working prototype of \"Laser Gun\"-series of 1st generation laser weapon, deliver death and destruction on its path."
 	icon = 'icons/obj/old_guns/old_guns.dmi'
 	icon_state = "laser"
@@ -432,8 +433,8 @@
 	scatter = 0
 
 /obj/item/weapon/gun/energy/lascannon
-	name = "HG-LG \"Celatid\""
-	desc = "Powerful laser cannon, \"Celatid\" may can only firing one bolt per cell, yet that bolt deliver heavy injures and can kill human in a instance."
+	name = "HG-LG \"Supernova\""
+	desc = "Powerful laser cannon, \"Supernova\" may can only firing one bolt per cell, yet that bolt deliver heavy injures and can kill human in a instance."
 	icon = 'icons/obj/old_guns/old_guns.dmi'
 	icon_state = "lasercannon"
 	item_state = "FP9000"
@@ -501,8 +502,8 @@
 	return in_chamber
 
 /obj/item/weapon/gun/energy/laspistol
-	name = "CP-LG \"PocketShock\""
-	desc = "Much more weaker compare to its older sisters, \"PocketShock\" provides enough self-defense for our marines and can even kill lone enemy."
+	name = "CP-LG \"Lil'Star\""
+	desc = "Much more weaker compare to its older sisters, \"Lil'Star\" provides enough self-defense for our marines and can even kill lone enemy."
 	icon = 'icons/obj/old_guns/old_guns.dmi'
 	icon_state = "energykill100"
 	item_state = "gun"
@@ -601,6 +602,7 @@
 	siemens_coefficient = 0.7
 	slowdown = SLOWDOWN_ARMOR_MEDIUM
 	unacidable = 1
+	is_modifyed = 1
 
 /obj/item/clothing/head/helmet/knight
 	name = "X-0 \"Shadowknight\" Chitin Helmet"
@@ -612,3 +614,4 @@
 	flags_inventory = COVEREYES|BLOCKSHARPOBJ|COVERMOUTH
 	flags_inv_hide = HIDEEARS|HIDEEYES|HIDEALLHAIR|HIDEMASK|HIDEFACE
 	unacidable = 1
+	is_modifyed = 1
