@@ -103,11 +103,6 @@ var/list/squad_colors = list(rgb(230,25,25), rgb(255,195,45), rgb(200,100,200), 
 	new_name[] 			= list(MAP_ICE_COLONY = "M3 pattern marine snow armor"))
 	if(type == /obj/item/clothing/suit/storage/marine)
 		var/armor_variation = rand(1,6)
-		switch(armor_variation)
-			if(2,3)
-				flags_armor_protection = UPPER_TORSO|LOWER_TORSO|LEGS
-				flags_cold_protection = flags_armor_protection
-				flags_heat_protection = flags_armor_protection
 		icon_state = "[armor_variation]"
 
 	select_gamemode_skin(expected_type,,new_name)
