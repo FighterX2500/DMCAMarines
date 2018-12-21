@@ -121,8 +121,8 @@
 
 	if(istype(O,/obj/item/stack/sheet))
 		var/obj/item/stack/sheet/S = O
-		if (TotalMaterials() + S.perunit > max_stored)
-			to_chat(user, "\red The protolathe's material bin is full. Please remove material before adding more.")
+		if (material_storage[S.name] + S.perunit > max_per_resource[S.name])
+			to_chat(user, "\red The protolathe's [S.name] material bin is full. Please remove material before adding more.")
 			return 1
 
 	var/obj/item/stack/sheet/stack = O
