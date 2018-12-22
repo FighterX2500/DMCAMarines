@@ -508,6 +508,7 @@
 /obj/structure/window/framed/almayer/requisitions
 	name = "kevlar-weave infused bulletproof window"
 	desc = "A borosilicate glass window infused with kevlar fibres and mounted within a special shock-absorbing frame, this is gonna be seriously hard to break through."
+	deconstructable = FALSE
 	health = 400
 	window_frame = /obj/structure/window_frame/almayer/requisitions
 
@@ -515,8 +516,6 @@
 	icon_state = "white_rwindow0"
 	basestate = "white_rwindow"
 	window_frame = /obj/structure/window_frame/almayer/white
-
-
 
 /obj/structure/window/framed/colony
 	name = "window"

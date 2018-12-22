@@ -1020,18 +1020,23 @@ obj/item/attachable/attack_hand(var/mob/user as mob)
 /obj/item/attachable/bipod/New()
 	..()
 	size_mod = 1
+	delay_mod = config.min_fire_delay
 
 /obj/item/attachable/bipod/activate_attachment(obj/item/weapon/gun/G,mob/living/user, turn_off)
 	if(turn_off)
 		if(bipod_deployed)
 			bipod_deployed = FALSE
 			G.aim_slowdown -= SLOWDOWN_ADS_SCOPE
-			G.wield_delay -= WIELD_DELAY_FAST
+			G.fire_delay += config.med_fire_delay
+			G.burst_scatter_mult += config.med_scatter_value
+			G.accuracy_mult -= config.med_hit_accuracy_mult
 	else
 		if(bipod_deployed)
 			to_chat(user, "<span class='notice'>You retract [src].</span>")
 			G.aim_slowdown -= SLOWDOWN_ADS_SCOPE
-			G.wield_delay -= WIELD_DELAY_FAST
+			G.fire_delay += config.med_fire_delay
+			G.burst_scatter_mult += config.med_scatter_value
+			G.accuracy_mult -= config.med_hit_accuracy_mult
 			bipod_deployed = !bipod_deployed
 		else
 			var/obj/support = check_bipod_support(G, user)
@@ -1040,7 +1045,9 @@ obj/item/attachable/attack_hand(var/mob/user as mob)
 					bipod_deployed = !bipod_deployed
 					to_chat(user, "<span class='notice'>You deploy [src] on [support].</span>")
 					G.aim_slowdown += SLOWDOWN_ADS_SCOPE
-					G.wield_delay += WIELD_DELAY_FAST
+					G.fire_delay -= config.med_fire_delay
+					G.burst_scatter_mult -= config.med_scatter_value
+					G.accuracy_mult += config.med_hit_accuracy_mult
 			else
 				to_chat(user, "<span class='notice'>There is nothing to support [src].</span>")
 				return FALSE
@@ -1071,6 +1078,12 @@ obj/item/attachable/attack_hand(var/mob/user as mob)
 	var/turf/T = get_turf(user)
 	for(var/obj/O in T)
 		if(O.throwpass && O.density && O.dir == user.dir && O.flags_atom & ON_BORDER)
+			return O
+	T = get_step(T, user.dir)
+	for(var/obj/structure/window_frame/WF in T.contents)
+		return WF
+	for(var/obj/O in T)
+		if(O.throwpass && O.density && O.dir == turn(user.dir, 180) && O.flags_atom & ON_BORDER)
 			return O
 	return FALSE
 
