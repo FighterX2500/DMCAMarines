@@ -12,8 +12,8 @@
 	maxHealth = 120
 	plasma_stored = 350
 	plasma_max = 750
-	evolution_threshold = 250
-	upgrade_threshold = 250
+	evolution_threshold = 150
+	upgrade_threshold = 100
 	plasma_gain = 18
 	tier = 1
 	t_squish_level = 1
