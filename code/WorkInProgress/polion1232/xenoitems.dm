@@ -151,17 +151,25 @@ Queen thingy - 40
 	update_icon()
 	new /obj/effect/alien/weeds/node(user.loc, null, null)
 
+/obj/item/bodybag/research
+	name = "Hazard-resistant body bag"
+	desc = "Special body bag with enormous capacity and highly resistant against hazardous environments"
+	unfolded_path = /obj/structure/closet/bodybag/research
+
+/obj/structure/closet/bodybag/research
+	name = "Hazard-resistant body bag"
+	bag_name = "Hazard-resistant body bag"
+	desc = "Special body bag with enormous capacity and highly resistant against hazardous environments"
+	storage_capacity = mob_size * MOB_SIZE_BIG
+	item_path = /obj/item/bodybag/research
+
+/obj/structure/closet/bodybag/research/can_close()
+	for(var/obj/structure/closet/closet in get_turf(src))
+		if(closet != src && !closet.wall_mounted)
+			return FALSE
+	return TRUE
+
 // To be placed in Almayer research
 /obj/item/paper/res_note
 	name = "Note about equipment"
-	info = "Well, I actually managed to add to Requsition our old surplus equipment, such as scanning modules, matter bins, ect. Let's hope those monkeys from Req. will not greedy enough to NOT give us needed equipment."
-
-/*
-/obj/item/marineResearch/gene_injector
-	name = "Xeno Corruption Injector"
-	desc = "Powerful gene-agent for changing xenomoph eggs genetic structure."
-	icon_state = "3"
-	var/used = 0
-*/
-
-///// ZZZZZZAP! Lets find some test subjects /////
+	info = "Well, I actually managed to add to Requsition our old surplus equipment, such as scanning modules, matter bins, ect. Let's hope those monkeys from Req. will not be greedy enough to NOT give us needed equipment."
