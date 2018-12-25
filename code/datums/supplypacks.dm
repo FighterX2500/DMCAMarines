@@ -230,6 +230,17 @@ WEAPONS
 	containername = "M240 Incinerator crate"
 	group = "Weapons"
 
+/datum/supply_packs/rocket_law
+	name = "M52 LAW Rocket Launcher crate (x2)"
+	contains = list(
+					/obj/item/weapon/gun/launcher/rocket/m52,
+					/obj/item/weapon/gun/launcher/rocket/m52
+					)
+	cost = RO_PRICE_NORMAL
+	containertype = /obj/structure/closet/crate/weapon
+	containername = "M52 LAW Rocket Launcher crate"
+	group = "Weapons"
+
 /datum/supply_packs/weapons_sentry
 	name = "UA 571-C sentry crate (x1)"
 	contains = list()

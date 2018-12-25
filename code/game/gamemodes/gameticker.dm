@@ -57,11 +57,11 @@ var/global/datum/controller/gameticker/ticker
 //	'sound/music/DeadSpace_Ring_Around_the_Rosie.ogg',
 //	'sound/music/DeadSpace_Twinkle_Twinkle_Little_Star.ogg'
 	'sound/music/fortunate_son.ogg',
-//	'sound/music/buffalo_springfield.ogg',
-	'sound/music/warrior_song.ogg'//The Warrior Song
+	'sound/music/buffalo_springfield.ogg',
+	'sound/music/warrior_song.ogg',//The Warrior Song
+	'sound/music/Ross_bugden_Welcome_to_chaos.ogg')//Welcome to Chaos
 //	'sound/music/NeilDiamondChanukah.ogg',
 //	'sound/music/WeirdAlGroundZeroXmas.ogg',
-	'sound/music/Ross_bugden_Welcome_to_chaos.ogg')//Welcome to Chaos
 //	'sound/music/WeirdAlSantaCrazy.ogg')
 
 	do
