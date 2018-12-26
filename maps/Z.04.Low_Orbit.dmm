@@ -34,12 +34,12 @@
 "aH" = (/obj/structure/bed/chair/dropship/passenger,/turf/open/shuttle/dropship{tag = "icon-floor8"; icon_state = "floor8"},/area/vehicle_interior/apc_1)
 "aI" = (/obj/machinery/autodoc{unacidable = 1},/turf/open/shuttle/dropship{tag = "icon-floor8"; icon_state = "floor8"},/area/vehicle_interior/apc_1)
 "aJ" = (/obj/item/device/radio/intercom{anyai = 1; freerange = 1; name = "Almayer Communication Interface"; pixel_x = 0; pixel_y = 30},/obj/structure/bed/chair/dropship/passenger,/turf/open/shuttle/dropship{tag = "icon-floor8"; icon_state = "floor8"},/area/vehicle_interior/apc_1)
-"aK" = (/obj/structure/table/reinforced,/obj/item/storage/firstaid/adv,/obj/item/storage/box/bodybags,/turf/open/shuttle/dropship{tag = "icon-floor8"; icon_state = "floor8"},/area/vehicle_interior/apc_1)
+"aK" = (/obj/structure/table/reinforced,/obj/item/storage/firstaid/adv,/obj/item/storage/box/bodybags,/obj/item/m_gift,/turf/open/shuttle/dropship{tag = "icon-floor8"; icon_state = "floor8"},/area/vehicle_interior/apc_1)
 "aL" = (/obj/machinery/autodoc_console{unacidable = 1},/turf/open/shuttle/dropship{tag = "icon-floor8"; icon_state = "floor8"},/area/vehicle_interior/apc_1)
 "aM" = (/turf/closed/wall/indestructible/vehicle{icon_state = "hull7T"},/area/space)
 "aN" = (/turf/closed/wall/indestructible/vehicle{icon_state = "hull9"},/area/vehicle_interior/apc_1)
 "aO" = (/obj/machinery/computer/security/almayer_network{density = 0; name = "Cameras Interface"; network = list("apc_1"); pixel_y = 25; unacidable = 1},/obj/structure/bed/chair/dropship/passenger,/turf/open/shuttle/dropship{tag = "icon-floor8"; icon_state = "floor8"},/area/vehicle_interior/apc_1)
-"aP" = (/obj/structure/bed/chair/comfy/beige/apc{dir = 4},/turf/open/shuttle/dropship{tag = "icon-floor8"; icon_state = "floor8"},/area/vehicle_interior/apc_3)
+"aP" = (/obj/structure/vehicle_interior/supply_receiver,/obj/structure/closet/crate,/obj/item/m_gift/gun,/obj/item/m_gift/gun,/obj/item/m_gift/gun,/obj/item/m_gift/gun,/obj/item/m_gift,/obj/item/m_gift,/obj/item/m_gift,/turf/open/floor/almayer{tag = "icon-cargo (SOUTHWEST)"; icon_state = "cargo"; dir = 10},/area/vehicle_interior/apc_2)
 "aQ" = (/obj/structure/bed/chair/dropship/passenger,/turf/open/shuttle/dropship{tag = "icon-floor8"; icon_state = "floor8"},/area/vehicle_interior/apc_2)
 "aR" = (/turf/closed/wall/indestructible/vehicle{icon_state = "hull10"},/area/vehicle_interior/apc_3)
 "aS" = (/turf/open/floor/almayer{tag = "icon-cargo (SOUTHWEST)"; icon_state = "cargo"; dir = 10},/area/vehicle_interior/apc_2)
@@ -108,7 +108,7 @@
 "cd" = (/obj/structure/vehicle_interior/side_door,/turf/open/shuttle/dropship{tag = "icon-floor8"; icon_state = "floor8"},/area/vehicle_interior/apc_3)
 "ce" = (/obj/structure/bed/chair/dropship/passenger{icon_state = "shuttle_chair"; dir = 1},/turf/open/shuttle/dropship{tag = "icon-floor8"; icon_state = "floor8"},/area/vehicle_interior/apc_1)
 "cf" = (/obj/machinery/vending/marine{contraband = list(); desc = "A automated rack hooked up to a small supply of standard-issue weapons."; hacking_safety = 1; products = list(/obj/item/weapon/gun/pistol/m4a3 = 10, /obj/item/weapon/gun/revolver/m44 = 5, /obj/item/weapon/gun/smg/m39 = 10, /obj/item/weapon/gun/rifle/m41a = 10, /obj/item/weapon/gun/shotgun/pump = 5, /obj/item/weapon/combat_knife = 10, /obj/item/weapon/throwing_knife = 5, /obj/item/storage/box/m94 = 10, /obj/item/attachable/flashlight = 15, /obj/item/attachable/bayonet = 10); req_one_access_txt = "9;2;21"; unacidable = 1},/turf/open/shuttle/dropship{tag = "icon-floor8"; icon_state = "floor8"},/area/space)
-"cg" = (/obj/structure/vehicle_interior/supply_receiver,/turf/open/floor/almayer{tag = "icon-cargo (SOUTHWEST)"; icon_state = "cargo"; dir = 10},/area/vehicle_interior/apc_2)
+"cg" = (/obj/structure/bed/chair/comfy/beige/apc{dir = 4},/obj/item/m_gift,/turf/open/shuttle/dropship{tag = "icon-floor8"; icon_state = "floor8"},/area/vehicle_interior/apc_3)
 "ch" = (/obj/structure/bed/chair/dropship/passenger{icon_state = "shuttle_chair"; dir = 1},/turf/open/shuttle/dropship{tag = "icon-floor8"; icon_state = "floor8"},/area/vehicle_interior/apc_2)
 "ci" = (/turf/closed/wall/indestructible/vehicle{icon_state = "hull10"},/area/vehicle_interior/apc_1)
 "cj" = (/turf/closed/wall/indestructible/vehicle{icon_state = "hull4T"},/area/space)
@@ -157,8 +157,8 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabacabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 adadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadaaaaaaaaaaaaayazazazaAaaaaaaaaaaaaaacmcncncncoaaaaaaaaaaaaaaaBaDaDaDaMaaaaaaaaaaaaaaaEaFaFaFaGaaaaaa
-adafagahaiahajahaiahajahaiahajahaiahajahaiahajahaiahajahaiahajakaialamakaialamakaiagadaaaaayazazazciaKaIaLaNazaAaacmcncncncqaScgaScrcncoaaaBaDaDaDbjbpbpbpbRaDaMaaaEaFaFaFaRbfbgbkbqaFaGaa
-adafagalanaoapalanaoapalanaoapalanaoapalanaoapalanaoapalanaoapaoagaqaiaoagaqaiaoagagadaaaaaWaHaJaOaHbebebeaUaVbiaacsaQaTaXaQblblblbnboctaabSbmbGbKbmbUbUbUbPcfcjaabwbTcpcNbTbsaPbsbubvbVaa
+adafagahaiahajahaiahajahaiahajahaiahajahaiahajahaiahajahaiahajakaialamakaialamakaiagadaaaaayazazazciaKaIaLaNazaAaacmcncncncqaSaPaScrcncoaaaBaDaDaDbjbpbpbpbRaDaMaaaEaFaFaFaRbfbgbkbqaFaGaa
+adafagalanaoapalanaoapalanaoapalanaoapalanaoapalanaoapalanaoapaoagaqaiaoagaqaiaoagagadaaaaaWaHaJaOaHbebebeaUaVbiaacsaQaTaXaQblblblbnboctaabSbmbGbKbmbUbUbUbPcfcjaabwbTcpcNbTbscgbsbubvbVaa
 adasaoaraoapafaraoapafaraoapafaraoapafaraoapafaraoapafaraoapafaiahajanaiahajanaiahagadaaaaaWbxbebebebebebebebybzaacsbAblblblblblblblbBbCaabSckbUbUbUbUbUbUbUclcAaabwbDbsbsbsbsbsbsbsbEbFaa
 adasaiakaialamakaialamakaialamakaialamakaialamakaialamakaialamanaoapaqanaoapaqanaoagadaaaaaWcecXbNcebebebebrbtbiaacschbhcwchblblblbHbIctaabScZcBcPcZbUbUbUcCcDcjaabwcGcUdccGbsbsbscGcRbVaa
 adagakaoagaqaiaoagaqaiaoagaqaiaoagaqaiaoagaqaiaoagaqaiaoagaqaiahakagagahakafagagagagadaaaabJbLbLbLbObWcSbMbQbLcMaacucvcvcvcxchcwaCcycvczaacEcFcFcFcHcZcPcIcJcFcKaabXbZbZbZcacGdcbYcObZcWaa

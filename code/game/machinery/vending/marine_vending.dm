@@ -248,18 +248,21 @@
 	icon_deny = "generic-deny"
 	wrenchable = FALSE
 	products = list(/obj/item/reagent_container/food/snacks/protein_pack = 50,
-					/obj/item/reagent_container/food/snacks/mre_pack/meal1 = 15,
+/*					/obj/item/reagent_container/food/snacks/mre_pack/meal1 = 15,
 					/obj/item/reagent_container/food/snacks/mre_pack/meal2 = 15,
 					/obj/item/reagent_container/food/snacks/mre_pack/meal3 = 15,
 					/obj/item/reagent_container/food/snacks/mre_pack/meal4 = 15,
 					/obj/item/reagent_container/food/snacks/mre_pack/meal5 = 15,
-					/obj/item/reagent_container/food/snacks/mre_pack/meal6 = 15,
-					/obj/item/reagent_container/food/drinks/flask = 5)
+					/obj/item/reagent_container/food/snacks/mre_pack/meal6 = 15,*/
+
 //Christmas inventory
-/*
+
 					/obj/item/reagent_container/food/snacks/mre_pack/xmas1 = 25,
 					/obj/item/reagent_container/food/snacks/mre_pack/xmas2 = 25,
-					/obj/item/reagent_container/food/snacks/mre_pack/xmas3 = 25)*/
+					/obj/item/reagent_container/food/snacks/mre_pack/xmas3 = 25,
+
+					/obj/item/reagent_container/food/drinks/flask = 5)
+
 	contraband = list(/obj/item/reagent_container/food/drinks/flask/marine = 10)
 	vend_delay = 15
 	//product_slogans = "Standard Issue Marine food!;It's good for you, and not the worst thing in the world.;Just fucking eat it.;"

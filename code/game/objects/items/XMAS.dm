@@ -191,13 +191,36 @@
 //XMAS clothing
 
 /obj/item/xmas_hat
-	name = "XMAS hat"
+	name = "Christmas hat"
 	desc = "Oi, look, it's a Christmas hat! You feel sudden urge to put it over your helmet."
 	icon = 'icons/Seasonal/xmas.dmi'
 	icon_state = "helmet"
 	item_state = "helmet"
 	w_class = 1.0
 	unacidable = TRUE	//nein!
+
+/obj/item/xmas_hat/attack_self(mob/M as mob)
+	M.temp_drop_inv_item(src)
+	var/obj/item/clothing/head/xmas/hat = new(loc)
+	M.put_in_hands(hat)
+	to_chat(M, "<span class='notice'>You adjust your [name] so it can be put on head.</span>")
+	cdel(src)
+
+/obj/item/clothing/head/xmas
+	name = "Christmas hat"
+	desc = "Oi, look, it's a Christmas hat! You feel sudden urge to put it on."
+	icon = 'icons/obj/clothing/cm_hats.dmi'
+	sprite_sheet_id = 1
+	icon_state = "xmas_hat"
+	flags_inv_hide = HIDETOPHAIR
+	unacidable = TRUE
+
+/obj/item/clothing/head/xmas/attack_self(mob/M as mob)
+	M.temp_drop_inv_item(src)
+	var/obj/item/xmas_hat/item_hat = new(loc)
+	M.put_in_hands(item_hat)
+	to_chat(M, "<span class='notice'>You adjust your [name] so it can be put on helmet.</span>")
+	cdel(src)
 
 //Snowman
 
@@ -219,6 +242,11 @@
 
 /obj/effect/snowman/present
 	present = TRUE
+
+/obj/effect/snowman/New()
+	..()
+	healthcheck()
+	return
 
 /obj/effect/snowman/update_icon()
 	overlays.Cut()
@@ -272,7 +300,7 @@
 		if(present)
 			if(prob(2))
 				new /obj/item/m_gift/apc(loc)
-			else if(prob(5))
+			else if(prob(10))
 				new /obj/item/clothing/mask/facehugger(loc)
 			else new /obj/item/m_gift(loc)
 		cdel(src)
@@ -464,4 +492,42 @@
 		user.put_in_hands(added_head)
 		added_head = null
 	healthcheck()
+	return
+
+/obj/item/paper/xmas_note_2
+	name = "small note"
+	icon_state = "paper_words"
+	info = "Hey, Mike! Danny said they finally received the package in Garage and will deliver it to bar at 17:30. They even got those hats I told you about! Make sure no one read this, it's supposed to be a surprise!<br>Vlad<br>"
+
+/obj/item/paper/xmas_note_1
+	name = "small note"
+	icon_state = "paper_words"
+	info = "Terry, I'll be waiting for you at the bar after your shift. Gonna come early to get the table closest to the christmas tree as you wanted!<br>xoxo<br>Laura<br>"
+
+/obj/item/paper/manifest/xmas
+	name = "Supply Manifest"
+	icon_state = "paper_words"
+
+/obj/item/paper/manifest/xmas/New()
+	..()
+	info = "<h3>Shiva Iceball Cargo Manifest</h3><hr><br>"
+	info +="Order #1231/2018<br>"
+	info +="2 PACKAGES IN THIS SHIPMENT<br>"
+	info +="CONTENTS:<br><ul>"
+	info += "<li>Christmas Gifts crate (x15).</li>"
+	info += "<li>Christmas Hats crate (x15).</li>"
+	info += "</ul><br>"
+	info += "CHECK CONTENTS AND STAMP BELOW THE LINE TO CONFIRM RECEIPT OF GOODS"
+
+	stamps += (stamps=="" ? "<HR>" : "<BR>") + "<i>This paper has been stamped with the Quartermaster stamp.</i>"
+
+	var/image/I = image(icon, icon_state = "paper_stamp-qm")
+	var/{x; y;}
+	x = rand(-2, 2)
+	y = rand(-3, 2)
+	I.pixel_x = x
+	I.pixel_y = y
+
+	stamped += /obj/item/tool/stamp
+	overlays += I
 	return
