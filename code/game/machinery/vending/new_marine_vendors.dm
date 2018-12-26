@@ -883,6 +883,7 @@ var/list/available_specialist_sets = list("Scout Set", "Sniper Set", "Demolition
 							list("Motion detector", 5, /obj/item/device/motiondetector, null, "black"),
 							list("Smoke grenade", 2, /obj/item/explosive/grenade/smokebomb, null, "black"),
 							list("Incendiary grenade", 8, /obj/item/explosive/grenade/incendiary, null, "black"),
+							list("M52 LAW", 20, /obj/item/weapon/gun/launcher/rocket/m52, null, "black"),
 							list("Flamethrower", 12, /obj/item/weapon/gun/flamer, null, "black"),
 							list("Flamethrower tank", 6, /obj/item/ammo_magazine/flamer_tank, null, "black"),
 							list("Whistle", 5, /obj/item/device/whistle, null, "black"),
