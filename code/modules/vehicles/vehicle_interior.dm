@@ -88,7 +88,7 @@
 				if(!isXeno(user.pulling))
 					passengers_left++
 		if(isobj(user.pulling))
-			if((istype(user.pulling, /obj/structure) && !istype(user.pulling, /obj/structure/mortar) && !istype(user.pulling, /obj/structure/closet/bodybag)) || (istype(user.pulling, /obj/machinery) && !istype(user.pulling, /obj/machinery/marine_turret_frame) && !istype(user.pulling, /obj/machinery/marine_turret) && !istype(user.pulling, /obj/machinery/m56d_post) && !istype(user.pulling, /obj/machinery/m56d_hmg)))
+			if((istype(user.pulling, /obj/structure) && !istype(user.pulling, /obj/structure/mortar) && !istype(user.pulling, /obj/structure/closet/bodybag) && !istype(user.pulling, /obj/structure/closet/crate)) || (istype(user.pulling, /obj/machinery) && !istype(user.pulling, /obj/machinery/marine_turret_frame) && !istype(user.pulling, /obj/machinery/marine_turret) && !istype(user.pulling, /obj/machinery/m56d_post) && !istype(user.pulling, /obj/machinery/m56d_hmg)))
 				to_chat(user, "<span class='warning'>You can't fit the [user.pulling] through a doorway!</span>")
 				return
 			to_chat(user, "<span class='debuginfo'>user.pulling is object.</span>")

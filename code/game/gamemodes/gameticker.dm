@@ -59,6 +59,7 @@ var/global/datum/controller/gameticker/ticker
 	'sound/music/fortunate_son.ogg',
 	'sound/music/buffalo_springfield.ogg',
 	'sound/music/warrior_song.ogg',//The Warrior Song
+	'sound/music/Edwin_Starr_War.ogg',
 	'sound/music/Ross_bugden_Welcome_to_chaos.ogg')//Welcome to Chaos
 //	'sound/music/NeilDiamondChanukah.ogg',
 //	'sound/music/WeirdAlGroundZeroXmas.ogg',
