@@ -456,7 +456,7 @@ var/list/free_modules = list("Medical Modification", "Supply Modification", "Com
 				else
 					new_passengers++
 		if(isobj(M.pulling))
-			if((istype(M.pulling, /obj/structure) && !istype(M.pulling, /obj/structure/mortar) && !istype(M.pulling, /obj/structure/closet/bodybag)) || (istype(M.pulling, /obj/machinery) && !istype(M.pulling, /obj/machinery/marine_turret_frame) && !istype(M.pulling, /obj/machinery/marine_turret) && !istype(M.pulling, /obj/machinery/m56d_post) && !istype(M.pulling, /obj/machinery/m56d_hmg)))
+			if((istype(M.pulling, /obj/structure) && !istype(M.pulling, /obj/structure/mortar) && !istype(M.pulling, /obj/structure/closet/bodybag) && !istype(M.pulling, /obj/structure/closet/crate)) || (istype(M.pulling, /obj/machinery) && !istype(M.pulling, /obj/machinery/marine_turret_frame) && !istype(M.pulling, /obj/machinery/marine_turret) && !istype(M.pulling, /obj/machinery/m56d_post) && !istype(M.pulling, /obj/machinery/m56d_hmg)))
 				to_chat(M, "<span class='warning'>You can't fit the [M.pulling] through a doorway!</span>")
 				return
 			to_chat(M, "<span class='debuginfo'>M.pulling is object.</span>")

@@ -9,6 +9,7 @@ sound/music/Klendathu_Drop.ogg
 sound/music/doom_1.ogg
 sound/music/doom_2.ogg
 sound/music/Ross_bugden_Welcome_to_chaos.ogg
+sound/music/Edwin_Starr_War.ogg
 sound/music/Seven_Nation_Army_(The_Glitch_Mob_Remix).ogg
 sound/music/In_the_Army_Now.ogg
 sound/misc/hell_march.ogg.ogg
