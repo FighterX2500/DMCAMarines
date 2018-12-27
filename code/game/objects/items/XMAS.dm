@@ -15,6 +15,10 @@
 	item_state = "[icon_state]"
 	return
 
+/obj/item/m_gift/flamer_fire_act()
+	spawn(15)
+	cdel(src)
+
 /obj/item/m_gift/attack_self(mob/M as mob)
 	var fancy = rand(1,100) //Check if it has the possibility of being a FANCY present
 	var exFancy = rand(1,20) // Checks if it might be one of the ULTRA fancy presents.
@@ -154,7 +158,7 @@
 	cdel(src)
 	return
 
-/obj/item/m_gift/apc	//gift with APC
+/obj/item/m_gift/apc	//yes, APC. It's a fucking APC
 	name = "Present"
 	desc = "This one is really heavy!"
 
@@ -166,6 +170,56 @@
 	M.temp_drop_inv_item(src)
 	cdel(src)
 	return
+
+/obj/item/m_gift/xeno	//royal jelly! Yay!
+	name = "Present"
+	desc = "This one has something odd about it."
+	var/used = FALSE
+
+/obj/item/m_gift/xeno/New()
+	..()
+	icon_state = "jelly"
+
+/obj/item/m_gift/xeno/examine(mob/user)
+	..()
+	if(isXeno(user))
+		to_chat(user, "<span class='xenonotice'>You can feel long-missed Royal Jelly inside this odd box! Praise the Queen!</span>")
+		return
+
+/obj/item/m_gift/xeno/attack_alien(mob/living/carbon/Xenomorph/X)
+
+	if(used)
+		to_chat(X, "<span class='xenowarning'>Oh no, someone has already drunk the juice!</span>")
+		return
+
+	X.put_in_hands(src)
+
+/obj/item/m_gift/xeno/attack_self(mob/M as mob)
+
+	if(ishuman(M))
+		to_chat(M, "<span class='warning'>Ew, it's slimey! You don't want to open that!</span>")
+		return
+	if(!isXeno(M))
+		return
+	var/mob/living/carbon/Xenomorph/X = M
+	if(isXenoLarva(X) || istype(X, /mob/living/carbon/Xenomorph/Predalien) || isXenoQueen(X))
+		to_chat(X, "<span class='xenowarning'>You won't benefit from Royal Jelly, better leave it to your sisters.</span>")
+		return
+	if(X.upgrade >= 3 || X.upgrade_stored >= X.upgrade_threshold)
+		to_chat(X, "<span class='xenowarning'>You are at your peak form already.</span>")
+		return
+
+	playsound(src, pick('sound/effects/alien_resin_break1.ogg','sound/effects/alien_resin_break2.ogg','sound/effects/alien_resin_break3.ogg'), 10, 1)
+	used = TRUE
+	to_chat(X, "<span class='xenonotice'>You rip the box apart and drink sweet Royal Jelly!</span>")
+	X.drop_held_item()
+	icon_state = "jelly_ripped"
+	X.xeno_jitter(25)
+	spawn(30)
+	to_chat(X, "<span class='xenonotice'>You feel Royal Jelly ripple through your haemolymph!</span>")
+	X.upgrade_stored += 50
+	spawn(25)
+	cdel(src)
 
 //XMAS guns
 
@@ -511,7 +565,7 @@
 /obj/item/paper/manifest/xmas/New()
 	..()
 	info = "<h3>Shiva Iceball Cargo Manifest</h3><hr><br>"
-	info +="Order #1231/2018<br>"
+	info +="Order #31-2018-DC<br>"
 	info +="2 PACKAGES IN THIS SHIPMENT<br>"
 	info +="CONTENTS:<br><ul>"
 	info += "<li>Christmas Gifts crate (x15).</li>"
