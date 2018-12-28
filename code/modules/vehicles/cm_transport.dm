@@ -847,6 +847,11 @@ var/list/apc_dmg_distributions = list(
 		var/obj/machinery/door/window/WD = A
 		WD.visible_message("<span class='danger'>[root] smashes through[WD]!</span>")
 		WD.take_damage(350)
+	else if (istype(A, /obj/effect/snowman))
+		var/obj/effect/snowman/SM = A
+		SM.visible_message("<span class='danger'>[root] smashes through[SM]!</span>")
+		SM.health -=100
+		SM.healthcheck()
 
 	healthcheck()
 

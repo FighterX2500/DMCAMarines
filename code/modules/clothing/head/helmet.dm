@@ -222,7 +222,7 @@
 	return pockets.attackby(W, user)
 
 /obj/item/clothing/head/helmet/marine/on_pocket_insertion(obj/item/W as obj)
-	if(istype(W, /obj/item/xmas_hat) && pockets.contents[1] == W && !istype(pockets.contents[2], /obj/item/xmas_hat))
+	if(istype(W, /obj/item/xmas_hat))
 		armor[1] += 20
 		armor[2] += 20
 		armor[3] += 20
@@ -230,7 +230,7 @@
 	update_icon()
 
 /obj/item/clothing/head/helmet/marine/on_pocket_removal(obj/item/W as obj)
-	if(istype(W, /obj/item/xmas_hat) && !istype(pockets.contents[1], /obj/item/xmas_hat))
+	if(istype(W, /obj/item/xmas_hat))
 		armor[1] -= 20
 		armor[2] -= 20
 		armor[3] -= 20
