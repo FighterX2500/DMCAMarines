@@ -311,12 +311,10 @@
 		icon_state = "snowman_2"
 	else icon_state = "snowman_3"
 	if(added_armor)
-		visible_message("<span class='debuginfo'>\The [src] armor sprite_sheet_id = [added_armor.sprite_sheet_id], icon_state = [added_armor.icon_state].</span>")
 		var/image/I = image(icon = (added_armor.sprite_sheet_id? 'icons/mob/suit_1.dmi' : 'icons/mob/suit_0.dmi'),icon_state = added_armor.icon_state)
 		I.pixel_x -=1
 		overlays += I
 	if(added_head)
-		visible_message("<span class='debuginfo'>\The [src] helmet sprite_sheet_id = [added_head.sprite_sheet_id], icon_state = [added_head.icon_state].</span>")
 		var/image/I = image(icon = (added_head.sprite_sheet_id? 'icons/mob/head_1.dmi' : 'icons/mob/head_0.dmi'), icon_state = added_head.icon_state)
 		I.pixel_x -=1
 		overlays += I
