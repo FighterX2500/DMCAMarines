@@ -19,7 +19,7 @@
 	caste = "Queen"
 	name = "Queen"
 	desc = "A huge, looming alien creature. The biggest and the baddest."
-	icon = 'icons/Xeno/xenomorph_64x64.dmi'
+	icon = 'icons/Xeno/HOLIDAY/xenomorph_64x64_XMAS.dmi'
 	icon_state = "Queen Walking"
 	melee_damage_lower = 30
 	melee_damage_upper = 46
@@ -64,6 +64,7 @@
 	var/queen_ability_cooldown = 0
 	var/mob/living/carbon/Xenomorph/observed_xeno //the Xenomorph the queen is currently overwatching
 	var/egg_amount = 0 //amount of eggs inside the queen
+	var/gift_amount = 0
 	var/last_larva_time = 0
 	actions = list(
 		/datum/action/xeno_action/xeno_resting,
@@ -144,6 +145,13 @@
 						egg_amount--
 						var/obj/item/xeno_egg/newegg = new /obj/item/xeno_egg(loc)
 						newegg.hivenumber = hivenumber
+			gift_amount += 0.02
+			if(gift_amount >= 1)
+				if(isturf(loc))
+					var/turf/T = loc
+					if(T.contents.len <= 25) //so we don't end up with a million gifts on that turf.
+						gift_amount--
+						new /obj/item/m_gift/xeno(loc)
 
 			if(hivenumber == XENO_HIVE_NORMAL && loc.z == 1)
 				if(ticker.mode.stored_larva)
@@ -415,7 +423,7 @@
 		for(var/Z in actions)
 			var/datum/action/A = Z
 			A.update_button_icon()
-	playsound(loc, 'sound/voice/alien_queen_screech.ogg', 75, 0)
+	playsound(loc, 'sound/voice/alien_queen_xmas.ogg', 75, 0)
 	visible_message("<span class='xenohighdanger'>\The [src] emits an ear-splitting guttural roar!</span>")
 	create_shriekwave() //Adds the visual effect. Wom wom wom
 	//stop_momentum(charge_dir) //Screech kills a charge

@@ -2,7 +2,7 @@
 	caste = "Crusher"
 	name = "Crusher"
 	desc = "A huge alien with an enormous armored head crest."
-	icon = 'icons/Xeno/2x2_Xenos.dmi'
+	icon = 'icons/Xeno/HOLIDAY/2x2_Xenos_XMAS.dmi'
 	icon_state = "Crusher Walking"
 	melee_damage_lower = 15
 	melee_damage_upper = 30

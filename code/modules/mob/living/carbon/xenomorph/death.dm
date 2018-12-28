@@ -79,6 +79,8 @@
 		A.acid_damage = 0 //Reset the acid damage
 		A.forceMove(loc)
 
+	new/obj/item/clothing/head/xmas(loc)
+
 	round_statistics.total_xeno_deaths++
 
 

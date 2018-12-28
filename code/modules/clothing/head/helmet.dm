@@ -190,7 +190,8 @@
 						/obj/item/reagent_container/hypospray/autoinjector = "helmet_snack_eat",
 						/obj/item/reagent_container/food/snacks/packaged_burrito = "helmet_snack_burrito",
 						/obj/item/clothing/glasses/mgoggles = "goggles",
-						/obj/item/clothing/glasses/mgoggles/prescription = "goggles")
+						/obj/item/clothing/glasses/mgoggles/prescription = "goggles",
+						/obj/item/xmas_hat = "xmas_hat")
 
 
 /obj/item/clothing/head/helmet/marine/New(loc,expected_type 		= /obj/item/clothing/head/helmet/marine,
@@ -220,10 +221,20 @@
 	..()
 	return pockets.attackby(W, user)
 
-/obj/item/clothing/head/helmet/marine/on_pocket_insertion()
+/obj/item/clothing/head/helmet/marine/on_pocket_insertion(obj/item/W as obj)
+	if(istype(W, /obj/item/xmas_hat) && pockets.contents[1] == W && !istype(pockets.contents[2], /obj/item/xmas_hat))
+		armor[1] += 20
+		armor[2] += 20
+		armor[3] += 20
+		armor[4] += 20
 	update_icon()
 
-/obj/item/clothing/head/helmet/marine/on_pocket_removal()
+/obj/item/clothing/head/helmet/marine/on_pocket_removal(obj/item/W as obj)
+	if(istype(W, /obj/item/xmas_hat) && !istype(pockets.contents[1], /obj/item/xmas_hat))
+		armor[1] -= 20
+		armor[2] -= 20
+		armor[3] -= 20
+		armor[4] -= 20
 	update_icon()
 
 /obj/item/clothing/head/helmet/marine/update_icon()

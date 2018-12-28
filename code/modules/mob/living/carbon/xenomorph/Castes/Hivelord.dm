@@ -4,7 +4,7 @@
 	caste = "Hivelord"
 	name = "Hivelord"
 	desc = "A huge ass xeno covered in weeds! Oh shit!"
-	icon = 'icons/Xeno/xenomorph_64x64.dmi'
+	icon = 'icons/Xeno/HOLIDAY/xenomorph_64x64_XMAS.dmi'
 	icon_state = "Hivelord Walking"
 	melee_damage_lower = 15
 	melee_damage_upper = 20

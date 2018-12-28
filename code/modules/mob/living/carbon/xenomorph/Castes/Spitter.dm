@@ -4,7 +4,7 @@
 	caste = "Spitter"
 	name = "Spitter"
 	desc = "A gross, oozing alien of some kind."
-	icon = 'icons/Xeno/xenomorph_48x48.dmi'
+	icon = 'icons/Xeno/HOLIDAY/xenomorph_48x48_XMAS.dmi'
 	icon_state = "Spitter Walking"
 	melee_damage_lower = 12
 	melee_damage_upper = 22

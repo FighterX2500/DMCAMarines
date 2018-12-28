@@ -5,6 +5,7 @@
 	name = "Bloody Larva"
 	caste = "Bloody Larva"
 	speak_emote = list("hisses")
+	icon = 'icons/Xeno/HOLIDAY/1x1_Xenos_XMAS.dmi'
 	icon_state = "Bloody Larva"
 	amount_grown = 0
 	max_grown = 100
