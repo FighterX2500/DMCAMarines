@@ -101,6 +101,7 @@
 	gun_type = /obj/item/weapon/gun/rifle/type71
 //-------------------------------------------------------
 //UPP Saiga shotgun
+
 /obj/item/ammo_magazine/rifle/saiga
 	name = "Saiga 22 slug magazine"
 	desc = "A slug magazine that fits in the Saiga 22 shotgun."
@@ -129,6 +130,17 @@
 	max_rounds = 10
 	bonus_overlay = "saiga_incendiary_over"
 	gun_type = /obj/item/weapon/gun/rifle/saiga/
+
+
+
+
+
+
+
+
+
+
+
 
 
 
