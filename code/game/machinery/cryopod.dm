@@ -353,6 +353,8 @@ var/global/list/frozen_items = list("Alpha"=list(),"Bravo"=list(),"Charlie"=list
 										set_name = "Scout Set"
 									if(SKILL_SPEC_SNIPER)
 										set_name = "Sniper Set"
+									if(SKILL_SPEC_TRAINED)
+										set_name = pick("Sniper Set", "Pyro Set", "Scout Set", "Heavy Grenadier Set", "Demolitionist Set") // If spec go into cryo, get !!RANDOME!! AVAILABLE SET
 
 								if(set_name && !available_specialist_sets.Find(set_name))
 									available_specialist_sets += set_name
