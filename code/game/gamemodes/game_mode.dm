@@ -268,6 +268,7 @@
 
 	var/roletext
 	switch(role)
+		if(BE_DEATHMATCH)	roletext = "End of Round Deathmatch"
 		if(BE_RESPONDER)	roletext = "Responder"
 		if(BE_ALIEN)		roletext = "Alien"
 		if(BE_QUEEN)		roletext = "Queen"
