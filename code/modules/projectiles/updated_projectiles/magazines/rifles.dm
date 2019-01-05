@@ -99,5 +99,41 @@
 	default_ammo = /datum/ammo/bullet/rifle/mar40
 	max_rounds = 40
 	gun_type = /obj/item/weapon/gun/rifle/type71
+	
+//-------------------------------------------------------
+//UPP Saiga shotgun
+
+/obj/item/ammo_magazine/rifle/saiga
+	name = "Saiga 22 slug magazine"
+	desc = "A slug magazine that fits in the Saiga 22 shotgun."
+	caliber = "12g"
+	icon_state = "saiga_slug"
+	default_ammo = /datum/ammo/bullet/shotgun/slug
+	max_rounds = 10
+	gun_type = /obj/item/weapon/gun/rifle/saiga/
+//-------------------------------------------------------
+/obj/item/ammo_magazine/rifle/saiga/buckshot
+	name = "Saiga 22 buckshot magazine"
+	desc = "A buckshot magazine that fits in the Saiga 22 shotgun."
+	caliber = "12g"
+	icon_state = "saiga_buckshot"
+	default_ammo = /datum/ammo/bullet/shotgun/buckshot
+	max_rounds = 10
+	bonus_overlay = "saiga_buckshot_over"
+	gun_type = /obj/item/weapon/gun/rifle/saiga/
+//-------------------------------------------------------
+/obj/item/ammo_magazine/rifle/saiga/incendiary
+	name = "Saiga 22 incendiary magazine"
+	desc = "A incendiary magazine that fits in the Saiga 22 shotgun."
+	caliber = "12g"
+	icon_state = "saiga_incendiary"
+	default_ammo = /datum/ammo/bullet/shotgun/incendiary
+	max_rounds = 10
+	bonus_overlay = "saiga_incendiary_over"
+	gun_type = /obj/item/weapon/gun/rifle/saiga/
+	
+//-------------------------------------------------------
+
+
 
 
