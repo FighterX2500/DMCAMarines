@@ -233,17 +233,17 @@
 			if(bitf == MARINE_CAN_BUY_ESSENTIALS)
 				if(vendor_role == "Squad Specialist" && H.mind && H.mind.assigned_role == "Squad Specialist")
 					var/p_name = L[1]
-					switch(p_name)
+					switch(p_name) // Gives access to all weapons specs, there may be difficulties with checks in some places
 						if("Scout Set")
-							H.mind.cm_skills.spec_weapons = SKILL_SPEC_SCOUT
+							H.mind.cm_skills.spec_weapons = SKILL_SPEC_TRAINED
 						if("Sniper Set")
-							H.mind.cm_skills.spec_weapons = SKILL_SPEC_SNIPER
+							H.mind.cm_skills.spec_weapons = SKILL_SPEC_TRAINED
 						if("Demolitionist Set")
-							H.mind.cm_skills.spec_weapons = SKILL_SPEC_ROCKET
+							H.mind.cm_skills.spec_weapons = SKILL_SPEC_TRAINED
 						if("Heavy Grenadier Set")
-							H.mind.cm_skills.spec_weapons = SKILL_SPEC_GRENADIER
+							H.mind.cm_skills.spec_weapons = SKILL_SPEC_TRAINED
 						if("Pyro Set")
-							H.mind.cm_skills.spec_weapons = SKILL_SPEC_PYRO
+							H.mind.cm_skills.spec_weapons = SKILL_SPEC_TRAINED
 						else
 							to_chat(H, "<span class='warning'><b>Something bad occured with [src], tell a Dev.</b></span>")
 							return
@@ -876,18 +876,21 @@ var/list/available_specialist_sets = list("Scout Set", "Sniper Set", "Demolition
 							list("Essential SL Set", 0, /obj/effect/essentials_set/leader, MARINE_CAN_BUY_ESSENTIALS, "white"),
 
 							list("LEADER SUPPLIES", 0, null, null, null),
-							list("Supply beacon", 15, /obj/item/device/squad_beacon, null, "black"),
+							list("Supply beacon", 10, /obj/item/device/squad_beacon, null, "black"),
 //							list("Orbital beacon", 25, /obj/item/device/squad_beacon/bomb, null, "black"),
-							list("Plastique explosive", 5, /obj/item/explosive/plastique, null, "black"),
-							list("Sandbags x25", 15, /obj/item/stack/sandbags_empty/half, null, "black"),
+							list("Plastique explosive", 3, /obj/item/explosive/plastique, null, "black"),
+							list("Sandbags x25", 10, /obj/item/stack/sandbags_empty/half, null, "black"),
 							list("Motion detector", 5, /obj/item/device/motiondetector, null, "black"),
-							list("Smoke grenade", 2, /obj/item/explosive/grenade/smokebomb, null, "black"),
-							list("Incendiary grenade", 8, /obj/item/explosive/grenade/incendiary, null, "black"),
-							list("M52 LAW", 20, /obj/item/weapon/gun/launcher/rocket/m52, null, "black"),
-							list("Flamethrower", 12, /obj/item/weapon/gun/flamer, null, "black"),
+							//list("Smoke grenade", 2, /obj/item/explosive/grenade/smokebomb, null, "black"),
+							list("Incendiary grenade", 4, /obj/item/explosive/grenade/incendiary, null, "black"),
+							list("M52 LAW", 18, /obj/item/weapon/gun/launcher/rocket/m52, null, "black"),
+							list("Flamethrower", 10, /obj/item/weapon/gun/flamer, null, "black"),
+							list("HPR", 22, /obj/item/weapon/gun/rifle/lmg, null, "black")
+							list("HPR magazine", 5, obj/item/ammo_magazine/rifle/lmg, null, "black"),
 							list("Flamethrower tank", 6, /obj/item/ammo_magazine/flamer_tank, null, "black"),
 							list("Whistle", 5, /obj/item/device/whistle, null, "black"),
 							list("Advanced firstaid kit", 10, /obj/item/storage/firstaid/adv, null, "orange"),
+							list("Tactical binocular", 10, /obj/item/device/binoculars/tactical, null, "orange"),
 
 							list("SPECIAL AMMUNITION", 0, null, null, null),
 							list("HP M4A3 magazine", 5, /obj/item/ammo_magazine/pistol/hp, null, "black"),
@@ -968,7 +971,7 @@ var/list/available_specialist_sets = list("Scout Set", "Sniper Set", "Demolition
 						/obj/item/device/squad_beacon,
 						/obj/item/device/squad_beacon,
 						/obj/item/weapon/gun/flamer,
-						/obj/item/storage/box/zipcuffs,
+						//obj/item/storage/box/zipcuffs,
 						)
 
 
