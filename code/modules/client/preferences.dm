@@ -8,6 +8,7 @@ var/global/list/special_roles = list(
 	"Survivor" = 1,
 	"Responder" = 1,
 	"Predator" = 1,
+	"End of Round Deathmatch" = 1,
 	"WO Commander" = 1
 
 	// "wizard" = IS_MODE_COMPILED("wizard"),               // 3

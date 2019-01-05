@@ -449,6 +449,11 @@ var/list/ghostteleportlocs = list()
 	name = "abandoned  Thunderdome (Observer.)"
 	icon_state = "purple"
 
+/area/deathmatch
+	name = "\improper End of Round Deathmatch Arena"
+	icon_state = "green"
+	requires_power = 0
+
 //ENEMY
 
 //names are used
