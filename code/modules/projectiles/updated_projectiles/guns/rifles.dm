@@ -404,3 +404,47 @@
 	recoil_unwielded = config.high_recoil_value
 
 //-------------------------------------------------------
+//SAIGA automatic shotgun
+
+/obj/item/weapon/gun/rifle/saiga/
+	name = "Saiga 22 shotgun"
+	desc = "A custom made automatic shotgun,this shotgun can rival tactical shotgun and is only given to elite UPP units."
+	icon_state = "saiga"
+	item_state = "saiga"
+	fire_sound = 'sound/weapons/gun_shotgun.ogg'
+	origin_tech = "combat=7;materials=5"
+	current_mag = /obj/item/ammo_magazine/rifle/saiga
+	type_of_casings = "shell"
+	attachable_allowed = list(
+						/obj/item/attachable/bayonet,
+						/obj/item/attachable/reddot,
+						/obj/item/attachable/flashlight,
+						/obj/item/attachable/verticalgrip,
+						/obj/item/attachable/magnetic_harness)
+	gun_skill_category = GUN_SKILL_SHOTGUNS
+	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
+
+/obj/item/weapon/gun/rifle/saiga/New()
+	..()
+	attachable_offset = list("muzzle_x" = 30, "muzzle_y" = 21,"rail_x" = 15, "rail_y" = 23, "under_x" = 24, "under_y" = 13, "stock_x" = 24, "stock_y" = 13)
+	//Vertical grip
+	var/obj/item/attachable/verticalgrip/S = new(src)
+	S.attach_icon = ""
+	S.icon_state = ""
+	S.flags_attach_features &= ~ATTACH_REMOVABLE
+	S.Attach(src)
+	update_attachable(S.slot)
+
+
+/obj/item/weapon/gun/rifle/saiga/set_gun_config_values()
+	fire_delay = config.mhigh_fire_delay*2
+	accuracy_mult = config.base_hit_accuracy_mult
+	accuracy_mult_unwielded = config.base_hit_accuracy_mult + config.low_hit_accuracy_mult - config.hmed_hit_accuracy_mult
+	scatter = config.med_scatter_value
+	scatter_unwielded = config.max_scatter_value
+	damage_mult = config.base_hit_damage_mult - config.low_hit_damage_mult
+	recoil = config.low_recoil_value
+	recoil_unwielded = config.high_recoil_value
+
+
+//-------------------------------------------------------
