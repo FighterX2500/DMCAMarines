@@ -329,7 +329,7 @@
 	armor = list(melee = 85, bullet = 75, laser = 60, energy = 50, bomb = 50, bio = 10, rad = 10)
 	min_cold_protection_temperature = ICE_PLANET_min_cold_protection_temperature
 	max_heat_protection_temperature = FIRESUIT_max_heat_protection_temperature
-	anti_hug = 3
+	//anti_hug = 3
 	New()
 		select_gamemode_skin(type)
 		..()
