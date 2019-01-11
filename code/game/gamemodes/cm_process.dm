@@ -169,7 +169,53 @@ dat += " You failed to evacuate \the [MAIN_SHIP_NAME]"
 				dat += "<br><b>[RA.recipient_rank] [recipient]</b> is awarded [RA.posthumous[i] ? "posthumously " : ""]the <span class='boldnotice'>[RA.medal_names[i]]</span>: \'<i>[RA.medal_citations[i]]</i>\'."
 		to_chat(world, dat)
 
+/datum/game_mode/proc/end_of_round_deathmatch()
+	var/list/spawns = list()
 
+	for(var/obj/effect/landmark/L in landmarks_list)
+		if(L.name == "deathmatch")
+			spawns += L.loc
+
+	if(length(spawns) < 1)
+		message_admins("DEBUG: Failed to find any End of Round Deathmatch landmarks.")
+		log_debug("DEBUG: Failed to find any End of Round Deathmatch landmarks.")
+		to_chat(world, "<br><br><h1><span class='warning'>End of Round Deathmatch initialization failed, please do not grief.</span></h1><br><br>")
+		return
+
+	for(var/x in mob_list)
+		if(!istype(x, /mob/living/carbon/human))
+			continue
+
+		var/mob/living/carbon/human/H = x
+
+		if(!(H.client?.prefs?.be_special & BE_DEATHMATCH))
+			continue
+
+		var/turf/picked
+		if(length(spawns))
+			picked = pick(spawns)
+			spawns -= picked
+		else
+			for(var/obj/effect/landmark/L in landmarks_list)
+				switch(L.name)
+					if("deathmatch")
+						spawns += L.loc
+
+			if(length(spawns) < 1)
+				message_admins("DEBUG: Failed to regenerate End of Round Deathmatch landmarks.")
+				log_debug("DEBUG: Failed to regenerate End of Round Deathmatch landmarks.")
+
+			else
+				picked = pick(spawns)
+				spawns -= picked
+
+
+		if(picked)
+			H.loc = picked
+			H.revive()
+			to_chat(H, "<br><br><h1><span class='warning'>Fight for your life!</span></h1><br><br>")
+		else
+			to_chat(H, "<br><br><h1><span class='warning'>Failed to find a valid location for End of Round Deathmatch.</span></h1><br><br>")
 
 //===================================================\\
 

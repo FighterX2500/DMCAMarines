@@ -22,12 +22,12 @@
 #define R_MENTOR		32768
 #define R_HOST			65536
 // 512.1430 increases maximum bit flags from 16 to 24, so the following flags should be available for future changes:
-// #define R_PERMISSION	131072	
-// #define R_PERMISSION	262144	
-// #define R_PERMISSION	524288	
-// #define R_PERMISSION	1048576	
-// #define R_PERMISSION	2097152	
-// #define R_PERMISSION	4194304	
+// #define R_PERMISSION	131072
+// #define R_PERMISSION	262144
+// #define R_PERMISSION	524288
+// #define R_PERMISSION	1048576
+// #define R_PERMISSION	2097152
+// #define R_PERMISSION	4194304
 //=================================================
 
 
@@ -161,6 +161,7 @@ var/list/surv_spawn = list()//Survivors spawn at these
 var/list/pred_spawn = list()//Predators spawn at these
 var/list/pred_elder_spawn = list() //For elder preds.
 var/list/yautja_teleport_loc = list() //Yautja teleporter target location.
+var/list/deathmatch = list()
 //	list/mazewarp = list()
 var/list/tdome1 = list()
 var/list/tdome2 = list()

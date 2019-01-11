@@ -96,8 +96,8 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					speed = -0.8
 					armor_deflection = 45
 					tacklemin = 4
-					tacklemax = 8
-					tackle_chance = 85
+					tacklemax = 5
+					tackle_chance = 75
 				if ("Defender")
 					melee_damage_lower = 20
 					melee_damage_upper = 30
@@ -123,8 +123,8 @@ Queen		 0.0	 0.1	 0.2	 0.3
 				if("Crusher")
 					melee_damage_lower = 20
 					melee_damage_upper = 35
-					tacklemin = 4
-					tacklemax = 7
+					tacklemin = 3
+					tacklemax = 5
 					tackle_chance = 65
 					health = 325
 					maxHealth = 325
@@ -311,8 +311,8 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					speed = -0.9
 					armor_deflection = 50
 					tacklemin = 5
-					tacklemax = 9
-					tackle_chance = 90
+					tacklemax = 7
+					tackle_chance = 80
 				if ("Defender")
 					melee_damage_lower = 25
 					melee_damage_upper = 35
@@ -338,9 +338,9 @@ Queen		 0.0	 0.1	 0.2	 0.3
 				if("Crusher")
 					melee_damage_lower = 35
 					melee_damage_upper = 45
-					tacklemin = 5
-					tacklemax = 9
-					tackle_chance = 70
+					tacklemin = 4
+					tacklemax = 6
+					tackle_chance = 75
 					health = 375
 					maxHealth = 375
 					plasma_gain = 30
@@ -524,9 +524,9 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					caste_desc = "As I walk through the valley of the shadow of death."
 					speed = -1.0
 					armor_deflection = 50
-					tacklemin = 6
+					tacklemin = 5
 					tacklemax = 10
-					tackle_chance = 95
+					tackle_chance = 90
 				if ("Defender")
 					to_chat(src, "<span class='xenoannounce'>You are a incredibly resilient, you can control the battle through sheer force.</span>")
 					health = 325
@@ -553,8 +553,8 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					to_chat(src, "<span class='xenoannounce'>You are the physical manifestation of a Tank. Almost nothing can harm you.</span>")
 					melee_damage_lower = 35
 					melee_damage_upper = 45
-					tacklemin = 5
-					tacklemax = 9
+					tacklemin = 4
+					tacklemax = 7
 					tackle_chance = 75
 					health = 450
 					maxHealth = 450

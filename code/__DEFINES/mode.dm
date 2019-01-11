@@ -37,9 +37,9 @@
 #define BE_SURVIVOR		4
 #define BE_RESPONDER	8
 #define BE_PREDATOR		16
+#define BE_DEATHMATCH	32
 
-
-#define BE_REV        32
+//#define BE_REV        32
 #define BE_TRAITOR    64
 #define BE_OPERATIVE  128
 #define BE_CULTIST    256
@@ -57,6 +57,7 @@ var/list/be_special_flags = list(
 	"Xenomorph" = BE_ALIEN,
 	"Survivor" = BE_SURVIVOR,
 	"Responder" = BE_RESPONDER,
+	"End of Round Deathmatch" = BE_DEATHMATCH,
 	"Predator" = BE_PREDATOR,
 	"Queen" = BE_QUEEN
 
