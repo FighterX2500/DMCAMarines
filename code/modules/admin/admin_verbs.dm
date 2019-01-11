@@ -80,7 +80,9 @@ var/list/admin_verbs_admin = list(
 	/client/proc/award_medal,
 	/client/proc/force_shuttle,
 	/client/proc/remove_players_from_tank,
-	/client/proc/remove_players_from_apc
+	/client/proc/remove_players_from_apc,
+	/client/proc/checkAccount,
+	/client/proc/checkAllAccounts
 )
 var/list/admin_verbs_ban = list(
 	/client/proc/unban_panel
