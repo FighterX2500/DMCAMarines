@@ -67,6 +67,8 @@
 	var/xeno_explosion_resistance = 0 //0 to 3. how explosions affects the xeno, can it stun it, etc...
 	var/innate_healing = FALSE //whether the xeno slowly heals even outside weeds.
 	var/emotedown = 0
+	//Notification spam controls
+	var/cresttoss_used = FALSE
 
 	var/datum/action/xeno_action/activable/selected_ability
 	var/selected_resin = "resin wall" //which resin structure to build when we secrete resin

@@ -595,6 +595,20 @@
 		X.is_charging = !X.is_charging
 		to_chat(X, "<span class='xenonotice'>You will [X.is_charging ? "now" : "no longer"] charge when moving.</span>")
 
+// Crusher Crest Toss
+/datum/action/xeno_action/activable/cresttoss
+	name = "Crest Toss"
+	action_icon_state = "cresttoss"
+	ability_name = "crest toss"
+
+/datum/action/xeno_action/activable/cresttoss/use_ability(atom/A)
+	var/mob/living/carbon/Xenomorph/X = owner
+	X.cresttoss(A)
+
+/datum/action/xeno_action/activable/cresttoss/action_cooldown_check()
+	var/mob/living/carbon/Xenomorph/X = owner
+	return !X.cresttoss_used
+
 //Hivelord Abilities
 
 /datum/action/xeno_action/toggle_speed
