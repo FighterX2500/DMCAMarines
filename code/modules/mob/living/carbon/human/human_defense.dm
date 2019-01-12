@@ -342,11 +342,15 @@ Contains most of the procs that are called when a mob is attacked by something
 
 /mob/living/carbon/human/check_shields(damage = 0, attack_text = "the attack", hit_dir = 0)
 	if(l_hand && istype(l_hand, /obj/item/weapon))//Current base is the prob(50-d/3)
-		visible_message("<span class='userdanger'>[src] blocks [attack_text] with the [l_hand.name]!</span>")
-		return 1
+		var/obj/item/weapon/I = l_hand
+		if( (!hit_dir || is_the_opposite_dir(dir, hit_dir)) && prob(I.Get_shield_chance()))
+			visible_message("<span class='userdanger'>[src] blocks [attack_text] with the [l_hand.name]!</span>")
+			return 1
 	if(r_hand && istype(r_hand, /obj/item/weapon))
-		visible_message("<span class='userdanger'>[src] blocks [attack_text] with the [r_hand.name]!</span>")
-		return 1
+		var/obj/item/weapon/I = r_hand
+		if( (!hit_dir || is_the_opposite_dir(dir, hit_dir)) && prob(I.Get_shield_chance()))
+			visible_message("<span class='userdanger'>[src] blocks [attack_text] with the [r_hand.name]!</span>")
+			return 1
 	if(wear_suit && istype(wear_suit, /obj/item/))
 		var/obj/item/I = wear_suit
 		if(prob(I.Get_shield_chance() - round(damage / 3) ))

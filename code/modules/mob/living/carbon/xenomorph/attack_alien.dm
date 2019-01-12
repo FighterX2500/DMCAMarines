@@ -23,7 +23,7 @@
 			if(M == src || anchored || buckled)
 				return FALSE
 
-			if(check_shields(0, M.name) && prob(66)) //Bit of a bonus
+			if(check_shields(0, M.name) && prob(90)) //Bit of a bonus
 				M.visible_message("<span class='danger'>\The [M]'s grab is blocked by [src]'s shield!</span>", \
 				"<span class='danger'>Your grab was blocked by [src]'s shield!</span>", null, 5)
 				playsound(loc, 'sound/weapons/alien_claw_block.ogg', 25, 1) //Feedback
