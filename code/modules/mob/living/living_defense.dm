@@ -174,4 +174,7 @@
 	adjust_fire_stacks(rand(1,2))
 	IgniteMob()
 
+/mob/living/proc/check_shields(damage = 0, attack_text = "the attack", hit_dir = 0)
+	return FALSE
+
 //Mobs on Fire end

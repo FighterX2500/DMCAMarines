@@ -600,7 +600,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 			continue
 		if (M.stat == 2)
 			continue
-		if(!M.ckey || !M.client) 
+		if(!M.ckey || !M.client)
 			continue
 		var/name = M.name
 		if (name in names)
@@ -1753,3 +1753,14 @@ var/list/WALLITEMS = list(
 
 /datum/proc/stack_trace(msg)
 	CRASH(msg)
+
+/proc/is_the_opposite_dir(hol_dir, hit_dir)
+	if(hol_dir == NORTH && (hit_dir in list(SOUTH, SOUTHEAST, SOUTHWEST)))
+		return TRUE
+	else if(hol_dir == SOUTH && (hit_dir in list(NORTH, NORTHEAST, NORTHWEST)))
+		return TRUE
+	else if(hol_dir == EAST && (hit_dir in list(WEST, NORTHWEST, SOUTHWEST)))
+		return TRUE
+	else if(hol_dir == WEST && (hit_dir in list(EAST, NORTHEAST, SOUTHEAST)))
+		return TRUE
+	return FALSE

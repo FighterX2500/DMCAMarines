@@ -244,6 +244,8 @@
 							H.mind.cm_skills.spec_weapons = SKILL_SPEC_GRENADIER
 						if("Pyro Set")
 							H.mind.cm_skills.spec_weapons = SKILL_SPEC_PYRO
+						if("Stormtrooper Set")
+							H.mind.cm_skills.spec_weapons = SKILL_SPEC_ST
 						else
 							to_chat(H, "<span class='warning'><b>Something bad occured with [src], tell a Dev.</b></span>")
 							return
@@ -825,7 +827,7 @@
 
 
 //the global list of specialist sets that haven't been claimed yet.
-var/list/available_specialist_sets = list("Scout Set", "Sniper Set", "Demolitionist Set", "Heavy Grenadier Set", "Pyro Set")
+var/list/available_specialist_sets = list("Scout Set", "Sniper Set", "Demolitionist Set", "Heavy Grenadier Set", "Pyro Set", "Stormtrooper Set")
 
 
 /obj/machinery/marine_selector/gear/spec
@@ -840,6 +842,7 @@ var/list/available_specialist_sets = list("Scout Set", "Sniper Set", "Demolition
 							list("Demolitionist Set", 0, /obj/item/storage/box/spec/demolitionist, MARINE_CAN_BUY_ESSENTIALS, "white"),
 							list("Heavy Grenadier Set", 0, /obj/item/storage/box/spec/heavy_grenadier, MARINE_CAN_BUY_ESSENTIALS, "white"),
 							list("Pyro Set", 0, /obj/item/storage/box/spec/pyro, MARINE_CAN_BUY_ESSENTIALS, "white"),
+							list("Stormtrooper Set", 0, /obj/item/storage/box/spec/st, MARINE_CAN_BUY_ESSENTIALS, "white"),
 
 							list("SPECIAL AMMUNITION", 0, null, null, null),
 							list("AP M4A3 magazine", 10, /obj/item/ammo_magazine/pistol/ap, null, "black"),

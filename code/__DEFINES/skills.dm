@@ -53,7 +53,8 @@
 #define SKILL_SPEC_SNIPER		3
 #define SKILL_SPEC_GRENADIER	4
 #define SKILL_SPEC_PYRO			5
-#define SKILL_SPEC_TRAINED		6 //can use all specialist gear
+#define SKILL_SPEC_ST           6
+#define SKILL_SPEC_TRAINED		7 //can use all specialist gear
 
 
 
