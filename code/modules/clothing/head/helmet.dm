@@ -334,6 +334,18 @@
 		select_gamemode_skin(type)
 		..()
 
+/obj/item/clothing/head/helmet/marine/M40
+	name = "M40 helmet"
+	icon_state = "st_helmet"
+	desc = "A helmet designed for USCM storm trooper. Contains heavy insulation, covered in nomex weave."
+	armor = list(melee = 70, bullet = 40, laser = 30, energy = 25, bomb = 30, bio = 0, rad = 0)
+	min_cold_protection_temperature = ICE_PLANET_min_cold_protection_temperature
+	max_heat_protection_temperature = FIRESUIT_max_heat_protection_temperature
+
+	New()
+		select_gamemode_skin(type)
+		..()
+
 /obj/item/clothing/head/helmet/marine/pilot
 	name = "M30 tactical helmet"
 	desc = "The M30 tactical helmet has an left eyepiece filter used to filter tactical data. It is required to fly the Alamo and Normandy dropships manually and in safety."

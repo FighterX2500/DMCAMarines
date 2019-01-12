@@ -75,7 +75,7 @@
 							to_chat(M, "<span class='warning'>You should not harm this host! It has a sister inside.</span>")
 							return FALSE
 
-			if(check_shields(0, M.name) && prob(66)) //Bit of a bonus
+			if(check_shields(0, M.name) && prob(90)) //Bit of a bonus
 				M.visible_message("<span class='danger'>\The [M]'s slash is blocked by [src]'s shield!</span>", \
 				"<span class='danger'>Your slash is blocked by [src]'s shield!</span>", null, 5)
 				return FALSE
