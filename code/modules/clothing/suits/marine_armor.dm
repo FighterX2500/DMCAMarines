@@ -392,7 +392,7 @@ var/list/squad_colors = list(rgb(230,25,25), rgb(255,195,45), rgb(200,100,200), 
 
 /obj/item/clothing/suit/storage/marine/M40
 	name = "M40 armor"
-	desc = "A custom set of M40 armor designed for use by USCM storm trooper. Contains thick kevlar shielding."
+	desc = "A custom set of M40 armor designed for use by USCM stormtrooper. Contains thick kevlar shielding."
 	icon_state = "st_armor"
 	armor = list(melee = 60, bullet = 80, laser = 40, energy = 40, bomb = 40, bio = 0, rad = 0)
 	max_heat_protection_temperature = FIRESUIT_max_heat_protection_temperature

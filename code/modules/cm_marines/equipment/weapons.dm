@@ -295,7 +295,7 @@
 
 /obj/item/storage/box/spec/st
 	name = "Stormtrooper equipment crate"
-	desc = "M40 helmet, M40 armor, Montage, "
+	desc = "M40 helmet, M40 armor, Montage, 88 mod vp70 and ammo. "
 	icon = 'icons/Marine/marine-weapons.dmi'
 	icon_state = "rocket_case"
 	spec_set = "stormtrooper"
@@ -312,14 +312,6 @@
 			new /obj/item/clothing/head/helmet/marine/M40(src)
 			new /obj/item/weapon/shield/montage(src)
 			new /obj/item/weapon/gun/pistol/vp70(src)
-			new /obj/item/ammo_magazine/pistol/vp70(src)
-			new /obj/item/ammo_magazine/pistol/vp70(src)
-			new /obj/item/ammo_magazine/pistol/vp70(src)
-			new /obj/item/ammo_magazine/pistol/vp70(src)
-			new /obj/item/ammo_magazine/pistol/vp70(src)
-			new /obj/item/ammo_magazine/pistol/vp70(src)
-			new /obj/item/ammo_magazine/pistol/vp70(src)
-			new /obj/item/ammo_magazine/pistol/vp70(src)
 			new /obj/item/ammo_magazine/pistol/vp70(src)
 			new /obj/item/ammo_magazine/pistol/vp70(src)
 			new /obj/item/ammo_magazine/pistol/vp70(src)
