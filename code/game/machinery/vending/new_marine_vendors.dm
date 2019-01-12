@@ -244,6 +244,8 @@
 							H.mind.cm_skills.spec_weapons = SKILL_SPEC_TRAINED
 						if("Pyro Set")
 							H.mind.cm_skills.spec_weapons = SKILL_SPEC_TRAINED
+						if("Stormtrooper Set")
+							H.mind.cm_skills.spec_weapons = SKILL_SPEC_TRAINED
 						else
 							to_chat(H, "<span class='warning'><b>Something bad occured with [src], tell a Dev.</b></span>")
 							return
