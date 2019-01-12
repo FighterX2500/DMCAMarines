@@ -829,7 +829,6 @@
 #include "code\modules\admin\verbs\mapping.dm"
 #include "code\modules\admin\verbs\massmodvar.dm"
 #include "code\modules\admin\verbs\modifyvariables.dm"
-#include "code\modules\admin\verbs\multiaccounts.dm"
 #include "code\modules\admin\verbs\onlyone.dm"
 #include "code\modules\admin\verbs\playsound.dm"
 #include "code\modules\admin\verbs\possess.dm"
