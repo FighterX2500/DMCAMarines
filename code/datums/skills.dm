@@ -274,7 +274,7 @@
 	name = "Squad Leader"
 	cqc = SKILL_CQC_TRAINED
 	construction = SKILL_CONSTRUCTION_PLASTEEL
-	engineer = SKILL_ENGINEER_PLASTEEL
+	engineer = SKILL_ENGINEER_ENGI //For APC
 	leadership = SKILL_LEAD_TRAINED
 	medical = SKILL_MEDICAL_CHEM
 
