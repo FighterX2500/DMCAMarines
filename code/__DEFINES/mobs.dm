@@ -425,5 +425,5 @@ var/list/global_mutations = list() // list of hidden mutation things
 #define XENO_SLOWDOWN_REGEN 0.4
 
 //crusher defines
-#define CRUSHER_CRESTTOSS_COST			40
+#define CRUSHER_CRESTTOSS_COST			70
 #define CRUSHER_CRESTTOSS_COOLDOWN		6 SECONDS
