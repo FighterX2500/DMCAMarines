@@ -227,19 +227,6 @@
 				if(map_tag == MAP_ICE_COLONY)
 					new /obj/item/clothing/mask/rebreather/scarf(loc)
 
-
-
-			if(bitf == MARINE_CAN_BUY_UNIFORM)
-				if(gives_webbing)
-					var/obj/item/clothing/under/U = IT
-					var/obj/item/clothing/tie/storage/webbing/W = new()
-					U.hastie = W
-					W.on_attached(U)
-				//if(istype(ticker.mode, /datum/game_mode/ice_colony))//drop a coif with the uniform on ice colony
-				if(map_tag == MAP_ICE_COLONY)
-					new /obj/item/clothing/mask/rebreather/scarf(loc)
-
-
 			if(bitf == MARINE_CAN_BUY_ESSENTIALS)
 				if(vendor_role == "Squad Specialist" && H.mind && H.mind.assigned_role == "Squad Specialist")
 					var/p_name = L[1]
