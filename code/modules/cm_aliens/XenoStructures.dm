@@ -770,3 +770,31 @@ TUNNEL
 	else
 		to_chat(M, "<span class='warning'>Your crawling was interrupted!</span>")
 
+/obj/structure/alien_spawner
+	name = "colony tunnel"
+	desc = "A tunnel entrance. Looks like a lot of nasty creatures went out from it."
+	icon = 'icons/Xeno/effects.dmi'
+	icon_state = "hole"
+
+	density = 0
+	opacity = 0
+	anchored = 1
+	unacidable = 1
+	layer = RESIN_STRUCTURE_LAYER
+
+	var/aliens = 5
+
+/obj/structure/alien_spawner/New()
+	..()
+
+	spawn(rand(100, 200))
+		visible_message("<span class='xenowarning'>Squad of xenomorphs emerge from the tunnel!</span>", \
+		"<span class='xenonotice'>You feel ground rattle!</span>")
+		for(var/i=0,i<aliens, i++)
+			switch(rand(0, 20))
+				if(10)
+					new /mob/living/simple_animal/hostile/alien/ravager(src.loc)
+				if(7 to 9)
+					new /mob/living/simple_animal/hostile/alien/drone(src.loc)
+				else
+					new /mob/living/simple_animal/hostile/alien(src.loc)
