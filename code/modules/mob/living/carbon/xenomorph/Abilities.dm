@@ -28,6 +28,31 @@
 		new /obj/effect/alien/weeds/node(X.loc, src, X)
 		playsound(X.loc, "alien_resin_build", 25)
 
+/datum/action/xeno_action/plant_spawner
+	name = "Plant Colony (500)"
+	action_icon_state = "plant_weeds"
+	plasma_cost = 500
+
+/datum/action/xeno_action/plant_spawner/action_activate()
+	var/mob/living/carbon/Xenomorph/X = owner
+	if(!X.check_state()) return
+
+	var/turf/T = X.loc
+
+	if(!istype(T))
+		to_chat(X, "<span class='warning'>You can't do that here.</span>")
+		return
+
+	if(!T.is_weedable())
+		to_chat(X, "<span class='warning'>Bad place for a colony!</span>")
+		return
+
+	if(locate(/obj/effect/alien/weeds) in T)
+		X.use_plasma(75)
+		X.visible_message("<span class='xenonotice'>\The [X] dug a tunnel on the ground!</span>", \
+		"<span class='xenonotice'>You dug a tunnel on the ground!</span>", null, 5)
+		new /obj/structure/alien_spawner(X.loc)
+		return
 
 // Resting
 /datum/action/xeno_action/xeno_resting
