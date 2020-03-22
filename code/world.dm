@@ -18,14 +18,14 @@ var/global/datum/global_init/init = new ()
 	cache_lifespan = 0	//stops player uploaded stuff from being kept in the rsc past the current session
 	hub = "Exadv1.spacestation13"
 
-#define RECOMMENDED_VERSION 512
+#define RECOMMENDED_VERSION 511
 
 //Force the log directory to be something specific in the data/logs folder
 #define OVERRIDE_LOG_DIRECTORY_PARAMETER "log-directory"
 
 /world/New()
 
-	hub_password = "kMZy3U5jJHSiBQjr"
+	hub_password = "[config.hub_password]"
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
 
 	if(byond_version < RECOMMENDED_VERSION)
