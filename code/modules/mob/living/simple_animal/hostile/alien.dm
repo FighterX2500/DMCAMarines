@@ -1,5 +1,5 @@
 /mob/living/simple_animal/hostile/alien
-	name = "alien hunter"
+	name = "alien trooper"
 	icon = 'icons/Xeno/1x1_Xenos.dmi'
 	icon_state = "Hunter Running"
 	icon_living = "Hunter Running"
@@ -49,7 +49,7 @@
 	return
 
 /mob/living/simple_animal/hostile/alien/drone
-	name = "alien drone"
+	name = "alien lesser drone"
 	icon_state = "Drone Running"
 	icon_living = "Drone Running"
 	icon_dead = "Drone Dead"
@@ -82,7 +82,7 @@
 // 	projectilesound = 'sound/weapons/pierce.ogg'
 
 /mob/living/simple_animal/hostile/alien/ravager
-	name = "alien ravager"
+	name = "alien tearer"
 	icon = 'icons/Xeno/2x2_Xenos.dmi'
 	icon_state = "Ravager Running"
 	icon_living = "Ravager Running"
