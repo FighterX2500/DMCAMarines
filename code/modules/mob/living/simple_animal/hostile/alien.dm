@@ -58,8 +58,8 @@
 	melee_damage_upper = 25
 
 /mob/living/simple_animal/hostile/alien/drone/handle_bot_alien_behavior()
-	var/obj/effect/alien/weeds/W = locate() in range(10, loc)
-	var/obj/effect/alien/weeds/node/N = locate() in range(10, loc)
+	var/obj/effect/alien/weeds/W = locate() in range(4, loc)
+	var/obj/effect/alien/weeds/node/N = locate() in range(6, loc)
 	if(!W || !N)
 		var/turf/T = src.loc
 		if(!istype(T) && !T.is_weedable())
@@ -93,18 +93,23 @@
 	health = 200
 
 	var/rage = 0								//The more you hit with bullets, meanier it would be
+	var/maxrage = 3
 
 /mob/living/simple_animal/hostile/alien/ravager/bullet_act(obj/item/projectile/Proj)
 	. = ..()
 
-	if(rage < 3)
+	if(rage < maxrage)
+		if(prob(rage*10))
+			visible_message("<span class='xenodanger'>[src] becomes enraged!</span>","", null, 5)
 		rage++
 		melee_damage_upper += 5*rage
+		melee_damage_lower += 5
 
 
 /mob/living/simple_animal/hostile/alien/ravager/handle_bot_alien_behavior()
 	if(rage > 0)
 		melee_damage_upper -= 5*rage
+		melee_damage_lower -= 5
 		rage--
 
 /obj/item/projectile/neurotox

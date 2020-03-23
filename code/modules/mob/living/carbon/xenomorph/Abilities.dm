@@ -30,7 +30,7 @@
 
 /datum/action/xeno_action/plant_spawner
 	name = "Plant Colony (500)"
-	action_icon_state = "plant_weeds"
+	action_icon_state = "dug_spawner"
 	plasma_cost = 500
 
 /datum/action/xeno_action/plant_spawner/action_activate()
@@ -43,7 +43,7 @@
 		to_chat(X, "<span class='warning'>You can't do that here.</span>")
 		return
 
-	var/obj/structure/alien_spawner/SPW = locate() in view(5)
+	var/obj/structure/alien_spawner/SPW = locate() in view(7)
 	if(SPW)
 		to_chat(X, "<span class='warning'>There is tunnel nearby!</span>")
 		return

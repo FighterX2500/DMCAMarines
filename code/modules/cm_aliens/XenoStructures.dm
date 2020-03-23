@@ -774,7 +774,7 @@ TUNNEL
 	name = "colony tunnel"
 	desc = "A tunnel entrance. Looks like a lot of nasty creatures went out from it."
 	icon = 'icons/Xeno/effects.dmi'
-	icon_state = "hole"
+	icon_state = "colony_hole"
 
 	density = 0
 	opacity = 0
@@ -794,16 +794,17 @@ TUNNEL
 		spawn_aliens()
 
 /obj/structure/alien_spawner/proc/spawn_aliens()
-	visible_message("<span class='xenowarning'>Squad of xenomorphs emerge from the tunnel!</span>", \
+	visible_message("<span class='xenodanger'>Squad of xenomorphs emerging from the tunnel!</span>", \
 		"<span class='xenonotice'>You feel ground rattle!</span>")
 	for(var/i=0,i<aliens, i++)
-		switch(rand(0, 20))
-			if(10)
-				new /mob/living/simple_animal/hostile/alien/ravager(src.loc)
-			if(7 to 9)
-				new /mob/living/simple_animal/hostile/alien/drone(src.loc)
-			else
-				new /mob/living/simple_animal/hostile/alien(src.loc)
+		spawn(i*10)
+			switch(rand(0, 20))
+				if(10)
+					new /mob/living/simple_animal/hostile/alien/ravager(src.loc)
+				if(7 to 9)
+					new /mob/living/simple_animal/hostile/alien/drone(src.loc)
+				else
+					new /mob/living/simple_animal/hostile/alien(src.loc)
 
 /obj/structure/alien_spawner/attack_alien(mob/living/carbon/Xenomorph/M)
 	if(world.time < time_emerged + spawn_delay)
