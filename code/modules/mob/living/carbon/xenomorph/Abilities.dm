@@ -43,15 +43,23 @@
 		to_chat(X, "<span class='warning'>You can't do that here.</span>")
 		return
 
+	var/obj/structure/alien_spawner/SPW = locate() in view(5)
+	if(SPW)
+		to_chat(X, "<span class='warning'>There is tunnel nearby!</span>")
+		return
+
 	if(!T.is_weedable())
 		to_chat(X, "<span class='warning'>Bad place for a colony!</span>")
 		return
 
 	if(locate(/obj/effect/alien/weeds) in T)
-		X.use_plasma(75)
+		X.use_plasma(500)
 		X.visible_message("<span class='xenonotice'>\The [X] dug a tunnel on the ground!</span>", \
 		"<span class='xenonotice'>You dug a tunnel on the ground!</span>", null, 5)
 		new /obj/structure/alien_spawner(X.loc)
+		return
+	else
+		to_chat(X, "<span class='warning'>We can dig a tunnel only in weed's presense!</span>")
 		return
 
 // Resting

@@ -783,18 +783,36 @@ TUNNEL
 	layer = RESIN_STRUCTURE_LAYER
 
 	var/aliens = 5
+	var/time_emerged
+	var/spawn_delay = 6000
 
 /obj/structure/alien_spawner/New()
 	..()
+	time_emerged = world.time
 
 	spawn(rand(100, 200))
-		visible_message("<span class='xenowarning'>Squad of xenomorphs emerge from the tunnel!</span>", \
+		spawn_aliens()
+
+/obj/structure/alien_spawner/proc/spawn_aliens()
+	visible_message("<span class='xenowarning'>Squad of xenomorphs emerge from the tunnel!</span>", \
 		"<span class='xenonotice'>You feel ground rattle!</span>")
-		for(var/i=0,i<aliens, i++)
-			switch(rand(0, 20))
-				if(10)
-					new /mob/living/simple_animal/hostile/alien/ravager(src.loc)
-				if(7 to 9)
-					new /mob/living/simple_animal/hostile/alien/drone(src.loc)
-				else
-					new /mob/living/simple_animal/hostile/alien(src.loc)
+	for(var/i=0,i<aliens, i++)
+		switch(rand(0, 20))
+			if(10)
+				new /mob/living/simple_animal/hostile/alien/ravager(src.loc)
+			if(7 to 9)
+				new /mob/living/simple_animal/hostile/alien/drone(src.loc)
+			else
+				new /mob/living/simple_animal/hostile/alien(src.loc)
+
+/obj/structure/alien_spawner/attack_alien(mob/living/carbon/Xenomorph/M)
+	if(world.time < time_emerged + spawn_delay)
+		to_chat(M, "<span class='warning'>Not enough sisters in this tunnel! Wait for another [((time_emerged + spawn_delay) - world.time)/10] seconds!</span>")
+		return
+	else
+		if(M)
+			visible_message("<span class='xenonotice'>You tap to your sisters underground.</span>", \
+			"")
+		time_emerged = world.time
+		spawn(rand(100, 200))
+			spawn_aliens()
