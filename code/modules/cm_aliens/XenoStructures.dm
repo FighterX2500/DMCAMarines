@@ -770,3 +770,50 @@ TUNNEL
 	else
 		to_chat(M, "<span class='warning'>Your crawling was interrupted!</span>")
 
+/obj/structure/alien_spawner
+	name = "colony tunnel"
+	desc = "A tunnel entrance. Looks like a lot of nasty creatures went out from it."
+	icon = 'icons/Xeno/effects.dmi'
+	icon_state = "colony_hole"
+
+	density = 0
+	opacity = 0
+	anchored = 1
+	unacidable = 1
+	layer = RESIN_STRUCTURE_LAYER
+
+	var/aliens = 5
+	var/time_emerged
+	var/spawn_delay = 6000
+
+/obj/structure/alien_spawner/New()
+	..()
+	time_emerged = world.time
+
+	spawn(rand(100, 200))
+		spawn_aliens()
+
+/obj/structure/alien_spawner/proc/spawn_aliens()
+	visible_message("<span class='xenodanger'>Squad of xenomorphs emerging from the tunnel!</span>", \
+		"<span class='xenonotice'>You feel ground rattle!</span>")
+	for(var/i=0,i<aliens, i++)
+		spawn(i*10)
+			switch(rand(0, 20))
+				if(10)
+					new /mob/living/simple_animal/hostile/alien/ravager(src.loc)
+				if(7 to 9)
+					new /mob/living/simple_animal/hostile/alien/drone(src.loc)
+				else
+					new /mob/living/simple_animal/hostile/alien(src.loc)
+
+/obj/structure/alien_spawner/attack_alien(mob/living/carbon/Xenomorph/M)
+	if(world.time < time_emerged + spawn_delay)
+		to_chat(M, "<span class='warning'>Not enough sisters in this tunnel! Wait for another [((time_emerged + spawn_delay) - world.time)/10] seconds!</span>")
+		return
+	else
+		if(M)
+			visible_message("<span class='xenonotice'>You tap to your sisters underground.</span>", \
+			"")
+		time_emerged = world.time
+		spawn(rand(100, 200))
+			spawn_aliens()
