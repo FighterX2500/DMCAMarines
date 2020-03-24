@@ -237,8 +237,8 @@
 	var/is_bursting = 0.
 	var/icon_full = "M56D" // Put this system in for other MGs or just other mounted weapons in general, future proofing.
 	var/icon_empty = "M56D_e" //Empty
-	var/view_tile_offset = 3	//this is amount of tiles we shift our vision towards MG direction
-	var/view_tiles = 7		//this is amount of tiles we want person to see in each direction (7 by default)
+	var/view_tile_offset = 4	//this is amount of tiles we shift our vision towards MG direction
+	var/view_tiles = 10		//this is amount of tiles we want person to see in each direction (7 by default)
 
 	New()
 		ammo = ammo_list[ammo] //dunno how this works but just sliding this in from sentry-code.
@@ -591,5 +591,5 @@
 	icon = 'icons/Marine/whiskeyoutpost.dmi'
 	icon_full = "towergun"
 	icon_empty = "towergun"
-	view_tile_offset = 6
-	view_tiles = 7
+	view_tile_offset = 8
+	view_tiles = 10
