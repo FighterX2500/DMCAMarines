@@ -156,7 +156,7 @@
 	var/icon_full = "tow" // Put this system in for other MGs or just other mounted weapons in general, future proofing.
 	var/icon_empty = "tow_e" //Empty
 	var/view_tile_offset = 0	//this is amount of tiles we shift our vision towards MG direction
-	var/view_tiles = 7		//this is amount of tiles we want person to see in each direction (7 by default)
+	var/view_tiles = 12		//this is amount of tiles we want person to see in each direction (7 by default)
 
 	New()
 		update_icon()
@@ -483,8 +483,8 @@
 	icon_full = "tow_nest"
 	icon_empty = "tow_nest_e"
 	fire_delay = 50
-	view_tile_offset = 6
-	view_tiles = 7
+	view_tile_offset = 8
+	view_tiles = 12
 
 /obj/structure/closet/crate/m8_1_tow_ammo
 
