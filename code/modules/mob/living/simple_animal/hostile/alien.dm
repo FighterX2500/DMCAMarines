@@ -35,15 +35,19 @@
 	stop_automated_movement_when_pulled = 1
 	break_stuff_probability = 90
 
+/mob/living/simple_animal/hostile/alien/IgniteMob()			//Crowd control!
+	health = -maxHealth
+
 /mob/living/simple_animal/hostile/alien/Life()				//I deserve to burn in hell@polion1232
 	. = ..()
 	if(!.)
-		return null
+		return 0
 
-	var/obj/effect/W = locate(/obj/effect/alien/weeds) in src.loc
-	if(W != null)
+	var/obj/effect/alien/weeds/W = locate() in src.loc
+	if(W != null && stat != DEAD)
 		health = min(maxHealth, health+5)
 	handle_bot_alien_behavior()
+	return 1
 
 /mob/living/simple_animal/hostile/alien/proc/handle_bot_alien_behavior()
 	return
