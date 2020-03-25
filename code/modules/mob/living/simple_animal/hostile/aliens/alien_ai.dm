@@ -57,7 +57,7 @@
 			else if (istype(src, /mob/living/simple_animal/alien) && (isrobot(L)))
 				continue
 			else if(isXeno(L))
-				if(leader)
+				if(leader || stance == HOSTILE_STANCE_ATTACK || stance == HOSTILE_STANCE_ATTACKING)
 					continue
 				var/mob/living/carbon/Xenomorph/X = L
 				if(X.queen_chosen_lead)
@@ -76,8 +76,8 @@
 						leader = null
 					break
 
-		if(istype(A, /obj/machinery/bot))
-			var/obj/machinery/bot/B = A
+		if(istype(A, /obj/machinery/marine_turret))
+			var/obj/machinery/marine_turret/B = A
 			if (B.health > 0)
 				stance = HOSTILE_STANCE_ATTACK
 				T = B
@@ -150,7 +150,7 @@
 		if(HOSTILE_STANCE_IDLE)
 			target_mob = FindTarget()
 
-		if(HOSTILE_STANCE_ATTACK)
+		if(HOSTILE_STANCE_ATTACK, HOSTILE_STANCE_AWAY)
 			if(destroy_surroundings)
 				DestroySurroundings()
 			MoveToTarget()
@@ -212,6 +212,7 @@
 		playsound(src.loc, "alien_resin_build", 25)
 
 
+// Tearer things
 
 /mob/living/simple_animal/alien/ravager/handle_bot_alien_behavior()
 	. = ..()
