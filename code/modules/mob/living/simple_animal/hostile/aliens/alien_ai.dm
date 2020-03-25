@@ -211,6 +211,27 @@
 		new /obj/effect/alien/weeds/node(src.loc, src, null)
 		playsound(src.loc, "alien_resin_build", 25)
 
+/mob/living/simple_animal/alien/drone/MoveToTarget()
+	var/list/enemies = new/list()
+	for(var/atom/A in ListTargets(7))
+		if(isliving(A))
+			var/mob/living/L = A
+			if(L.faction == src.faction && !attack_same)
+				continue
+			else if(L in friends)
+				continue
+			else if (istype(src, /mob/living/simple_animal/alien) && (isrobot(L)))
+				continue
+			else if(isXeno(L))
+				continue
+			else
+				enemies+=L
+	if(enemies.len > max_enemies)
+		stance = HOSTILE_STANCE_AWAY
+		target_mob = null
+		walk_away(src, pick(ListTargets(7)), 7, move_to_delay)
+
+	..()
 
 // Tearer things
 
