@@ -60,7 +60,7 @@
 	health = 70
 	melee_damage_lower = 5
 	melee_damage_upper = 15
-	move_to_delay = 2
+	move_to_delay = 3
 	var/max_enemies = 5								//Will run from 5 enemies
 
 // Still using old projectile code - commenting this out for now
@@ -103,8 +103,3 @@
 /obj/item/projectile/neurotox
 	damage = 30
 	icon_state = "toxin"
-
-/mob/living/simple_animal/alien/death(gibbed, deathmessage = "lets out a waning guttural screech, green blood bubbling from its maw.")
-	. = ..()
-	if(!.) return //If they were already dead, it will return.
-	playsound(src, 'sound/voice/alien_death.ogg', 50, 1)

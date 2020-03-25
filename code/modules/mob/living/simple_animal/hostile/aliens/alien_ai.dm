@@ -75,13 +75,6 @@
 						leader.bot_followers--
 						leader = null
 					break
-
-		if(istype(A, /obj/machinery/marine_turret))
-			var/obj/machinery/marine_turret/B = A
-			if (B.health > 0)
-				stance = HOSTILE_STANCE_ATTACK
-				T = B
-				break
 	return T
 
 
@@ -118,13 +111,6 @@
 		var/mob/living/L = target_mob
 		L.attack_animal(src)
 		return L
-	if(istype(target_mob,/obj/mecha))
-		var/obj/mecha/M = target_mob
-		M.attack_animal(src)
-		return M
-	if(istype(target_mob,/obj/machinery/bot))
-		var/obj/machinery/bot/B = target_mob
-		B.attack_animal(src)
 
 /mob/living/simple_animal/alien/proc/LoseTarget()
 	stance = HOSTILE_STANCE_IDLE
@@ -140,17 +126,12 @@
 	var/list/L = hearers(src, dist)
 	return L
 
-/mob/living/simple_animal/alien/death()
-	. = ..()
-	if(!.) return //was already dead
-	walk(src, 0)
-
 /mob/living/simple_animal/alien/proc/handle_bot_alien_behavior()
 	switch(stance)
-		if(HOSTILE_STANCE_IDLE)
+		if(HOSTILE_STANCE_IDLE, HOSTILE_STANCE_AWAY)
 			target_mob = FindTarget()
 
-		if(HOSTILE_STANCE_ATTACK, HOSTILE_STANCE_AWAY)
+		if(HOSTILE_STANCE_ATTACK)
 			if(destroy_surroundings)
 				DestroySurroundings()
 			MoveToTarget()
@@ -180,9 +161,7 @@
 		stance = HOSTILE_STANCE_IDLE
 		return
 
-	if(get_dist(src, leader) <= 2)					//Too close
-		walk_away(src, leader, 2, move_to_delay+4)
-	else
+	if(get_dist(src, leader) > 5)					//Too close
 		walk_to(src, leader, 2, move_to_delay+2)
 
 /mob/living/simple_animal/alien/proc/DestroySurroundings()
@@ -196,11 +175,17 @@
 			if(istype(obstacle, /obj/structure/window) || istype(obstacle, /obj/structure/closet) || istype(obstacle, /obj/structure/table) || istype(obstacle, /obj/structure/grille) || istype(obstacle, /obj/structure/barricade))
 				obstacle.attack_animal(src)
 
+/mob/living/simple_animal/alien/death(gibbed, deathmessage = "lets out a waning guttural screech, green blood bubbling from its maw.")
+	. = ..()
+	if(!.) return //If they were already dead, it will return.
+	if(leader)
+		leader.bot_followers--
+		leader = null
+	playsound(src, 'sound/voice/alien_death.ogg', 50, 1)
+
 // Drone things
 
 /mob/living/simple_animal/alien/drone/handle_bot_alien_behavior()
-	. = ..()
-
 	var/obj/effect/alien/weeds/W = locate() in range(4, loc)
 	var/obj/effect/alien/weeds/node/N = locate() in range(6, loc)
 	if(!W || !N)
@@ -210,6 +195,31 @@
 
 		new /obj/effect/alien/weeds/node(src.loc, src, null)
 		playsound(src.loc, "alien_resin_build", 25)
+
+	return ..()
+
+/mob/living/simple_animal/alien/drone/FindTarget()
+	var/list/enemies = new/list()
+	for(var/atom/A in ListTargets(7))
+		if(isliving(A))
+			var/mob/living/L = A
+			if(L.faction == src.faction && !attack_same)
+				continue
+			else if(L in friends)
+				continue
+			else if (istype(src, /mob/living/simple_animal/alien) && (isrobot(L)))
+				continue
+			else if(isXeno(L))
+				return ..()
+			else
+				enemies+=L
+	if(enemies.len > max_enemies)
+		stance = HOSTILE_STANCE_AWAY
+		target_mob = null
+		walk_away(src, pick(ListTargets(7)), 7, move_to_delay)
+		return null
+	else
+		return ..()
 
 /mob/living/simple_animal/alien/drone/MoveToTarget()
 	var/list/enemies = new/list()
@@ -223,15 +233,39 @@
 			else if (istype(src, /mob/living/simple_animal/alien) && (isrobot(L)))
 				continue
 			else if(isXeno(L))
-				continue
+				return ..()
 			else
 				enemies+=L
 	if(enemies.len > max_enemies)
 		stance = HOSTILE_STANCE_AWAY
 		target_mob = null
 		walk_away(src, pick(ListTargets(7)), 7, move_to_delay)
+		return null
+	else
+		return ..()
 
-	..()
+/mob/living/simple_animal/alien/drone/AttackTarget()
+	var/list/enemies = new/list()
+	for(var/atom/A in ListTargets(7))
+		if(isliving(A))
+			var/mob/living/L = A
+			if(L.faction == src.faction && !attack_same)
+				continue
+			else if(L in friends)
+				continue
+			else if (istype(src, /mob/living/simple_animal/alien) && (isrobot(L)))
+				continue
+			else if(isXeno(L))
+				return ..()
+			else
+				enemies+=L
+	if(enemies.len > max_enemies)
+		stance = HOSTILE_STANCE_AWAY
+		target_mob = null
+		walk_away(src, pick(ListTargets(7)), 7, move_to_delay)
+		return 0
+	else
+		return ..()
 
 // Tearer things
 
