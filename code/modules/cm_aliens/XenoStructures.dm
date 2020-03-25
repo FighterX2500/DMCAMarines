@@ -800,11 +800,11 @@ TUNNEL
 		spawn(i*10)
 			switch(rand(0, 20))
 				if(10)
-					new /mob/living/simple_animal/hostile/alien/ravager(src.loc)
+					new /mob/living/simple_animal/alien/ravager(src.loc)
 				if(7 to 9)
-					new /mob/living/simple_animal/hostile/alien/drone(src.loc)
+					new /mob/living/simple_animal/alien/drone(src.loc)
 				else
-					new /mob/living/simple_animal/hostile/alien(src.loc)
+					new /mob/living/simple_animal/alien(src.loc)
 
 /obj/structure/alien_spawner/attack_alien(mob/living/carbon/Xenomorph/M)
 	if(world.time < time_emerged + spawn_delay)
