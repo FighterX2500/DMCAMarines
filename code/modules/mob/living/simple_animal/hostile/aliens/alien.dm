@@ -10,8 +10,8 @@
 	response_harm = "hits"
 	speed = -1
 	meat_type = /obj/item/reagent_container/food/snacks/xenomeat
-	maxHealth = 90
-	health = 90
+	maxHealth = 100
+	health = 100
 	harm_intent_damage = 5
 	attacktext = "slashes"
 	a_intent = "harm"
@@ -56,7 +56,8 @@
 	icon_state = "Drone Running"
 	icon_living = "Drone Running"
 	icon_dead = "Drone Dead"
-	health = 50
+	maxHealth = 70
+	health = 70
 	melee_damage_lower = 5
 	melee_damage_upper = 15
 	move_to_delay = 2
@@ -83,8 +84,8 @@
 	icon_dead = "Ravager Dead"
 	melee_damage_lower = 35
 	melee_damage_upper = 45
-	maxHealth = 200
-	health = 200
+	maxHealth = 400
+	health = 400
 
 	var/rage = 0								//The more you hit with bullets, meanier it would be
 	var/maxrage = 3
@@ -98,13 +99,6 @@
 		rage++
 		melee_damage_upper += 5*rage
 		melee_damage_lower += 5
-
-
-/mob/living/simple_animal/alien/ravager/handle_bot_alien_behavior()
-	if(rage > 0)
-		melee_damage_upper -= 5*rage
-		melee_damage_lower -= 5
-		rage--
 
 /obj/item/projectile/neurotox
 	damage = 30
