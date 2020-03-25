@@ -13,3 +13,4 @@ tools/Runtime Condenser/Output.txt
 tools/MapDaemon/logs/*.txt
 *.json
 *.txt
+code/world.dm

@@ -763,7 +763,7 @@ APC Hardpoint Modules (and their ammo)
 	group = "APC Hardpoint Modules"
 
 /datum/supply_packs/dual_cannon_ammo
-	name = "M78 Dual Ã‘annon Magazines (x6)"
+	name = "M78 Dual Ñannon Magazines (x6)"
 	contains = list(
 					/obj/item/ammo_magazine/apc/dual_cannon,
 					/obj/item/ammo_magazine/apc/dual_cannon,
@@ -2182,17 +2182,6 @@ MEDICAL
 	containername = "sterile equipment crate"
 	group = "Medical"
 
-/datum/supply_packs/medvac
-	name = "medvac system crate (medvac stretcher and beacon)"
-	contains = list(
-					/obj/item/roller/medevac,
-					/obj/item/device/medevac_beacon,
-					)
-	cost = RO_PRICE_VERY_PRICY
-	containertype = /obj/structure/closet/crate/secure/surgery
-	containername = "\improper medvac crate"
-	access = ACCESS_MARINE_MEDBAY
-	group = "Medical"
 
 /*******************************************************************************
 ENGINEERING
