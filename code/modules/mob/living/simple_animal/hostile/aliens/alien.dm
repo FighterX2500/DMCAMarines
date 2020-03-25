@@ -1,4 +1,4 @@
-/mob/living/simple_animal/hostile/alien
+/mob/living/simple_animal/alien
 	name = "alien trooper"
 	icon = 'icons/Xeno/1x1_Xenos.dmi'
 	icon_state = "Hunter Running"
@@ -10,11 +10,9 @@
 	response_harm = "hits"
 	speed = -1
 	meat_type = /obj/item/reagent_container/food/snacks/xenomeat
-	maxHealth = 100
-	health = 100
+	maxHealth = 90
+	health = 90
 	harm_intent_damage = 5
-	melee_damage_lower = 25
-	melee_damage_upper = 35
 	attacktext = "slashes"
 	a_intent = "harm"
 	attack_sound = 'sound/weapons/alien_claw_flesh1.ogg'
@@ -33,47 +31,39 @@
 	minbodytemp = 0
 	heat_damage_per_tick = 20
 	stop_automated_movement_when_pulled = 1
-	break_stuff_probability = 90
+	var/break_stuff_probability = 90
 
-/mob/living/simple_animal/hostile/alien/IgniteMob()			//Crowd control!
+	melee_damage_lower = 15
+	melee_damage_upper = 25
+	var/attack_same = 0
+	var/list/friends = list()
+	var/stance = HOSTILE_STANCE_IDLE
+	var/mob/living/target_mob
+	var/mob/living/carbon/Xenomorph/leader
+	var/destroy_surroundings = 1
+	var/move_to_delay = 4
+
+/mob/living/simple_animal/alien/IgniteMob()			//Crowd control!
 	health = -maxHealth
 
-/mob/living/simple_animal/hostile/alien/Life()				//I deserve to burn in hell@polion1232
+/mob/living/simple_animal/alien/bullet_act(obj/item/projectile/Proj)
 	. = ..()
-	if(!.)
-		return 0
-
-	var/obj/effect/alien/weeds/W = locate() in src.loc
-	if(W != null && stat != DEAD)
-		health = min(maxHealth, health+5)
-	handle_bot_alien_behavior()
+	Proj.play_damage_effect(src)
 	return 1
 
-/mob/living/simple_animal/hostile/alien/proc/handle_bot_alien_behavior()
-	return
-
-/mob/living/simple_animal/hostile/alien/drone
+/mob/living/simple_animal/alien/drone
 	name = "alien lesser drone"
 	icon_state = "Drone Running"
 	icon_living = "Drone Running"
 	icon_dead = "Drone Dead"
-	health = 60
-	melee_damage_lower = 15
-	melee_damage_upper = 25
-
-/mob/living/simple_animal/hostile/alien/drone/handle_bot_alien_behavior()
-	var/obj/effect/alien/weeds/W = locate() in range(4, loc)
-	var/obj/effect/alien/weeds/node/N = locate() in range(6, loc)
-	if(!W || !N)
-		var/turf/T = src.loc
-		if(!istype(T) && !T.is_weedable())
-			return
-
-		new /obj/effect/alien/weeds/node(src.loc, src, null)
-		playsound(src.loc, "alien_resin_build", 25)
+	health = 50
+	melee_damage_lower = 5
+	melee_damage_upper = 15
+	move_to_delay = 2
+	var/max_enemies = 5								//Will run from 5 enemies
 
 // Still using old projectile code - commenting this out for now
-// /mob/living/simple_animal/hostile/alien/sentinel
+// /mob/living/simple_animal/alien//alien/sentinel
 // 	name = "alien sentinel"
 // 	icon_state = "Sentinel Running"
 // 	icon_living = "Sentinel Running"
@@ -85,7 +75,7 @@
 // 	projectiletype = /obj/item/projectile/neurotox
 // 	projectilesound = 'sound/weapons/pierce.ogg'
 
-/mob/living/simple_animal/hostile/alien/ravager
+/mob/living/simple_animal/alien/ravager
 	name = "alien tearer"
 	icon = 'icons/Xeno/2x2_Xenos.dmi'
 	icon_state = "Ravager Running"
@@ -99,7 +89,7 @@
 	var/rage = 0								//The more you hit with bullets, meanier it would be
 	var/maxrage = 3
 
-/mob/living/simple_animal/hostile/alien/ravager/bullet_act(obj/item/projectile/Proj)
+/mob/living/simple_animal/alien/ravager/bullet_act(obj/item/projectile/Proj)
 	. = ..()
 
 	if(rage < maxrage)
@@ -110,7 +100,7 @@
 		melee_damage_lower += 5
 
 
-/mob/living/simple_animal/hostile/alien/ravager/handle_bot_alien_behavior()
+/mob/living/simple_animal/alien/ravager/handle_bot_alien_behavior()
 	if(rage > 0)
 		melee_damage_upper -= 5*rage
 		melee_damage_lower -= 5
@@ -120,7 +110,7 @@
 	damage = 30
 	icon_state = "toxin"
 
-/mob/living/simple_animal/hostile/alien/death(gibbed, deathmessage = "lets out a waning guttural screech, green blood bubbling from its maw.")
+/mob/living/simple_animal/alien/death(gibbed, deathmessage = "lets out a waning guttural screech, green blood bubbling from its maw.")
 	. = ..()
 	if(!.) return //If they were already dead, it will return.
 	playsound(src, 'sound/voice/alien_death.ogg', 50, 1)
