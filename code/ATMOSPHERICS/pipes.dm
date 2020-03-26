@@ -72,6 +72,13 @@
 				A.forceMove(loc)
 		if(parent)
 			cdel(parent)
+			for(var/direc in cardinal)
+				var/obj/machinery/atmospherics/pipe/P = findConnecting(dir)
+				if(P)
+					if(P.parent)
+						continue
+					P.parent = new /datum/pipeline()
+					P.parent.build_pipeline(P)
 	. = ..()
 	//build_network()
 
