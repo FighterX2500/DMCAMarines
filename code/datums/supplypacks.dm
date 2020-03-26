@@ -2182,6 +2182,17 @@ MEDICAL
 	containername = "sterile equipment crate"
 	group = "Medical"
 
+/datum/supply_packs/medvac
+	name = "medvac system crate (medvac stretcher and beacon)"
+	contains = list(
+					/obj/item/roller/medevac,
+					/obj/item/device/medevac_beacon,
+					)
+	cost = RO_PRICE_VERY_PRICY
+	containertype = /obj/structure/closet/crate/secure/surgery
+	containername = "\improper medvac crate"
+	access = ACCESS_MARINE_MEDBAY
+	group = "Medical"
 
 /*******************************************************************************
 ENGINEERING
