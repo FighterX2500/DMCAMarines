@@ -409,7 +409,7 @@
 
 //SAIGA automatic shotgun
 
-/obj/item/weapon/gun/rifle/saiga
+/obj/item/weapon/gun/rifle/saiga/
 	name = "Saiga 22 shotgun"
 	desc = "A custom made automatic shotgun,this shotgun can rival tactical shotgun and is only given to elite UPP units."
 	icon_state = "saiga"
@@ -420,8 +420,10 @@
 	type_of_casings = "shell"
 	attachable_allowed = list(
 						/obj/item/attachable/bayonet,
-						/obj/item/attachable/lasersight,
-						/obj/item/attachable/extended_barrel)
+						/obj/item/attachable/reddot,
+						/obj/item/attachable/flashlight,
+						/obj/item/attachable/verticalgrip,
+						/obj/item/attachable/magnetic_harness)
 	gun_skill_category = GUN_SKILL_SHOTGUNS
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
@@ -435,18 +437,10 @@
 	S.flags_attach_features &= ~ATTACH_REMOVABLE
 	S.Attach(src)
 	update_attachable(S.slot)
-	//scope
-	var/obj/item/attachable/reddot/F = new(src)
-	F.attach_icon = ""
-	F.icon_state = ""
-	F.flags_attach_features &= ~ATTACH_REMOVABLE
-	F.Attach(src)
-	update_attachable(F.slot)
-	F.icon_state = initial(F.icon_state)
 
 
 /obj/item/weapon/gun/rifle/saiga/set_gun_config_values()
-	fire_delay = config.mhigh_fire_delay*3
+	fire_delay = config.mhigh_fire_delay*2
 	accuracy_mult = config.base_hit_accuracy_mult
 	accuracy_mult_unwielded = config.base_hit_accuracy_mult + config.low_hit_accuracy_mult - config.hmed_hit_accuracy_mult
 	scatter = config.med_scatter_value

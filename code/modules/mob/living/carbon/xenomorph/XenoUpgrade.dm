@@ -91,7 +91,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 220
 					plasma_gain = 10
 					plasma_max = 150
-					upgrade_threshold = 800
+					upgrade_threshold = 600
 					caste_desc = "A brutal, devastating front-line attacker. It looks a little more dangerous."
 					speed = -0.8
 					armor_deflection = 45
@@ -186,7 +186,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 220
 					plasma_gain = 30
 					plasma_max = 900
-					upgrade_threshold = 800
+					upgrade_threshold = 600
 					spit_delay = 15
 					caste_desc = "A giant ranged monster. It looks a little more dangerous."
 					armor_deflection = 40
@@ -251,7 +251,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 320
 					plasma_max = 800
 					plasma_gain = 40
-					upgrade_threshold = 800
+					upgrade_threshold = 600
 					spit_delay = 20
 					caste_desc = "The biggest and baddest xeno. The Queen controls the hive and plants eggs."
 					armor_deflection = 50
@@ -306,7 +306,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 250
 					plasma_gain = 15
 					plasma_max = 200
-					upgrade_threshold = 1600
+					upgrade_threshold = 1200
 					caste_desc = "A brutal, devastating front-line attacker. It looks pretty strong."
 					speed = -0.9
 					armor_deflection = 50
@@ -345,7 +345,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 375
 					plasma_gain = 30
 					plasma_max = 400
-					upgrade_threshold = 1600
+					upgrade_threshold = 1200
 					caste_desc = "A huge tanky xenomorph. It looks pretty strong."
 					armor_deflection = 85
 				if("Sentinel")
@@ -401,7 +401,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 250
 					plasma_gain = 40
 					plasma_max = 1000
-					upgrade_threshold = 1600
+					upgrade_threshold = 1200
 					spit_delay = 10
 					caste_desc = "A giant ranged monster. It looks pretty strong."
 					armor_deflection = 45
@@ -466,7 +466,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 350
 					plasma_max = 900
 					plasma_gain = 50
-					upgrade_threshold = 1600
+					upgrade_threshold = 1200
 					spit_delay = 15
 					caste_desc = "The biggest and baddest xeno. The Empress controls multiple hives and planets."
 					armor_deflection = 55
@@ -585,7 +585,7 @@ Queen		 0.0	 0.1	 0.2	 0.3
 					maxHealth = 250
 					plasma_gain = 50
 					plasma_max = 900
-					spit_delay = 10
+					spit_delay = 5
 					caste_desc = "A ranged destruction machine."
 					armor_deflection = 30
 					tacklemin = 5

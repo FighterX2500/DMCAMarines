@@ -511,3 +511,45 @@ can cause issues with ammo types getting mixed up during the burst.
 	recoil_unwielded = config.high_recoil_value
 
 
+//-------------------------------------------------------
+//SAIGA PUMP SHOTGUN
+
+/obj/item/weapon/gun/shotgun/pump/saiga_pump
+	name = "Saiga pump shotgun 15"
+	desc = "A standart issue UPP pump action shotgun,uses the same mechanism as HG 37-12,wich allows it to quickly reload and grants it with high accuracy ."
+	icon_state = "saiga_pump"
+	item_state = "saiga_pump"
+	fire_sound = 'sound/weapons/gun_shotgun.ogg'
+	current_mag = /obj/item/ammo_magazine/internal/shotgun/pump/CMB
+	attachable_allowed = list(
+						/obj/item/attachable/bayonet,
+						/obj/item/attachable/reddot,
+						/obj/item/attachable/verticalgrip,
+						/obj/item/attachable/angledgrip,
+						/obj/item/attachable/gyro,
+						/obj/item/attachable/flashlight,
+						/obj/item/attachable/extended_barrel,
+						/obj/item/attachable/heavy_barrel,
+						/obj/item/attachable/compensator,
+						/obj/item/attachable/magnetic_harness,
+						/obj/item/attachable/attached_gun/flamer,
+						/obj/item/attachable/attached_gun/shotgun)
+
+
+/obj/item/weapon/gun/shotgun/pump/cmb/New()
+	..()
+	pump_delay = config.mhigh_fire_delay*2
+	attachable_offset = list("muzzle_x" = 31, "muzzle_y" = 18,"rail_x" = 12, "rail_y" = 19, "under_x" = 19, "under_y" = 17, "stock_x" = 19, "stock_y" = 17)
+
+/obj/item/weapon/gun/shotgun/pump/cmb/set_gun_config_values()
+	fire_delay = config.med_fire_delay*6
+	accuracy_mult = config.base_hit_accuracy_mult + config.hmed_hit_accuracy_mult
+	accuracy_mult_unwielded = config.base_hit_accuracy_mult - config.hmed_hit_accuracy_mult
+	scatter = config.low_scatter_value
+	scatter_unwielded = config.max_scatter_value
+	damage_mult = config.base_hit_damage_mult
+	recoil = config.low_recoil_value
+	recoil_unwielded = config.high_recoil_value
+
+
+
