@@ -4,7 +4,7 @@
 	icon_state = "claymore"
 	item_state = "claymore"
 	flags_atom = CONDUCT
-	flags_equip_slot = SLOT_WAIST
+	flags_equip_slot = SLOT_WAIST|SLOT_BACK
 	force = 40
 	throwforce = 10
 	sharp = IS_SHARP_ITEM_BIG
@@ -37,6 +37,15 @@
 	icon_state = "machete"
 	force = 35
 	w_class = 4.0
+
+/obj/item/weapon/claymore/mercsword/hammer
+	name = "N45 battle hammer"
+	desc = "RIP AND TEAR."
+	icon_state = "sledgehammer"
+	item_state = "sledgehammer"
+	force = 50
+	w_class = 4.0
+	flags_equip_slot = SLOT_BACK
 
 /obj/item/weapon/claymore/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	playsound(loc, 'sound/weapons/bladeslice.ogg', 25, 1)

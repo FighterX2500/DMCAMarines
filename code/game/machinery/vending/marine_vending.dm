@@ -23,6 +23,9 @@
 					/obj/item/weapon/gun/smg/m39 = 20,
 					/obj/item/weapon/gun/rifle/m41a = 25,
 					/obj/item/weapon/gun/shotgun/pump = 10,
+					/obj/item/weapon/gun/rifle/saiga = 15,
+					/obj/item/ammo_magazine/rifle/saiga = 20,
+					/obj/item/ammo_magazine/rifle/saiga/buckshot = 10,
 					/obj/item/ammo_magazine/pistol = 30,
 					/obj/item/ammo_magazine/revolver = 25,
 					/obj/item/ammo_magazine/smg/m39 = 30,
@@ -107,6 +110,7 @@
 					/obj/item/storage/pouch/firstaid/full = 5,
 					/obj/item/storage/pouch/pistol = 10,
 					/obj/item/storage/pouch/magazine/pistol/large = 5,
+					/obj/item/weapon/gun/rifle/saiga = 15,
 					/obj/item/weapon/gun/pistol/m4a3 = 20,
 					/obj/item/weapon/gun/pistol/m1911 = 2,
 					/obj/item/weapon/gun/revolver/m44 = 10,
@@ -197,6 +201,9 @@
 					/obj/item/ammo_magazine/shotgunbox/buckshot = 3,
 					/obj/item/ammo_magazine/shotgun/buckshot = 10,
 					/obj/item/ammo_magazine/shotgun/flechette = 15,
+					/obj/item/ammo_magazine/rifle/saiga = 20,
+					/obj/item/ammo_magazine/rifle/saiga/buckshot = 20,
+					/obj/item/ammo_magazine/rifle/saiga/incendiary = 10,
 					/obj/item/smartgun_powerpack = 2
 					)
 
