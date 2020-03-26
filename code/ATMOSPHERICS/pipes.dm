@@ -20,6 +20,14 @@
 	//so pipes under walls are hidden
 	if(istype(loc, /turf/closed))
 		level = 1
+
+	for(var/direc in cardinal)
+		var/obj/machinery/atmospherics/pipe/P = findConnecting(dir)
+		if(P)
+			if(P.parent)
+				continue
+			P.parent = new /datum/pipeline()
+			P.parent.build_pipeline(P)
 	//build_network()
 
 /obj/machinery/atmospherics/pipe/proc/pipeline_expansion()
@@ -306,12 +314,12 @@
 /obj/machinery/atmospherics/pipe/simple/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
 		if(istype(node1, /obj/machinery/atmospherics/pipe))
-			del(parent)
+			parent = null
 		node1 = null
 
 	if(reference == node2)
 		if(istype(node2, /obj/machinery/atmospherics/pipe))
-			del(parent)
+			parent = null
 		node2 = null
 
 	update_icon()
@@ -459,17 +467,17 @@
 /obj/machinery/atmospherics/pipe/manifold/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
 		if(istype(node1, /obj/machinery/atmospherics/pipe))
-			del(parent)
+			parent = null
 		node1 = null
 
 	if(reference == node2)
 		if(istype(node2, /obj/machinery/atmospherics/pipe))
-			del(parent)
+			parent = null
 		node2 = null
 
 	if(reference == node3)
 		if(istype(node3, /obj/machinery/atmospherics/pipe))
-			del(parent)
+			parent = null
 		node3 = null
 
 	update_icon()
@@ -698,22 +706,22 @@
 /obj/machinery/atmospherics/pipe/manifold4w/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
 		if(istype(node1, /obj/machinery/atmospherics/pipe))
-			del(parent)
+			parent = null
 		node1 = null
 
 	if(reference == node2)
 		if(istype(node2, /obj/machinery/atmospherics/pipe))
-			del(parent)
+			parent = null
 		node2 = null
 
 	if(reference == node3)
 		if(istype(node3, /obj/machinery/atmospherics/pipe))
-			del(parent)
+			parent = null
 		node3 = null
 
 	if(reference == node4)
 		if(istype(node4, /obj/machinery/atmospherics/pipe))
-			del(parent)
+			parent = null
 		node4 = null
 
 	update_icon()
@@ -949,7 +957,7 @@
 /obj/machinery/atmospherics/pipe/cap/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node)
 		if(istype(node, /obj/machinery/atmospherics/pipe))
-			del(parent)
+			parent = null
 		node = null
 
 	update_icon()
@@ -1096,7 +1104,7 @@
 /obj/machinery/atmospherics/pipe/tank/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
 		if(istype(node1, /obj/machinery/atmospherics/pipe))
-			del(parent)
+			parent = null
 		node1 = null
 
 	update_underlays()
@@ -1239,7 +1247,7 @@
 /obj/machinery/atmospherics/pipe/vent/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
 		if(istype(node1, /obj/machinery/atmospherics/pipe))
-			del(parent)
+			parent = null
 		node1 = null
 
 	update_icon()
