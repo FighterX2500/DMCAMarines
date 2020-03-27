@@ -2,8 +2,6 @@
 	layer = ATMOS_PIPE_LAYER
 	plane = FLOOR_PLANE
 
-	var/deconstructable = 0
-
 	var/datum/pipeline/parent
 
 	var/volume = 0
