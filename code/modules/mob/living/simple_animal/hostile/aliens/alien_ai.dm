@@ -190,7 +190,7 @@
 	var/obj/effect/alien/weeds/node/N = locate() in range(6, loc)
 	if(!W || !N)
 		var/turf/T = src.loc
-		if(!istype(T) && !T.is_weedable())
+		if(!istype(T) || !T.is_weedable())
 			return
 
 		new /obj/effect/alien/weeds/node(src.loc, src, null)
