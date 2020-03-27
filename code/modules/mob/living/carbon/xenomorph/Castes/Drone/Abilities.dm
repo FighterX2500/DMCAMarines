@@ -39,7 +39,7 @@
 
 	var/turf/T = X.loc
 
-	if(!istype(T))
+	if(!istype(T) || X.z == 3 || istype(T, /turf/open/floor/plating/almayer) || istype(T, /turf/open/shuttle))
 		to_chat(X, "<span class='warning'>You can't do that here.</span>")
 		return
 
