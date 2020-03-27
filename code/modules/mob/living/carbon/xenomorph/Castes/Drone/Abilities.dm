@@ -43,7 +43,7 @@
 		to_chat(X, "<span class='warning'>You can't do that here.</span>")
 		return
 
-	var/obj/structure/alien_spawner/SPW = locate() in view(25)
+	var/obj/structure/alien_spawner/SPW = locate() in range(15)
 	if(SPW)
 		to_chat(X, "<span class='warning'>There is tunnel nearby!</span>")
 		return
