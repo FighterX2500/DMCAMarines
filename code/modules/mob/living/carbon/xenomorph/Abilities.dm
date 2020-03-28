@@ -48,6 +48,22 @@
 	else
 		to_chat(X, "<span class='warning'>There's nothing in your belly that needs regurgitating.</span>")
 
+
+//Call xenobots
+/datum/action/xeno_action/call_xeno
+	name = "Call Lessers"
+	action_icon_state = "call"
+	plasma_cost = 0
+
+/datum/action/xeno_action/call_xeno/action_activate()
+	var/mob/living/carbon/Xenomorph/X = owner
+	if(X.is_mob_incapacitated(TRUE))
+		return
+
+	X.call_lesser = !X.call_lesser
+	to_chat(X, "\blue You commanded lessers to [X.call_lesser ? "follow" : "leave you"]")
+
+
 /mob/living/carbon/Xenomorph/proc/add_abilities()
 	if(actions && actions.len)
 		for(var/action_path in actions)

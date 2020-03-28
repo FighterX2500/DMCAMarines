@@ -41,6 +41,7 @@
 	actions = list(
 		/datum/action/xeno_action/xeno_resting,
 		/datum/action/xeno_action/regurgitate,
+		/datum/action/xeno_action/call_xeno,
 		/datum/action/xeno_action/activable/charge,
 		)
 

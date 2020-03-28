@@ -57,7 +57,13 @@
 			else if (istype(src, /mob/living/simple_animal/alien) && (isrobot(L)))
 				continue
 			else if(isXeno(L))
-				if(leader || stance == HOSTILE_STANCE_ATTACK || stance == HOSTILE_STANCE_ATTACKING)
+				if(leader)
+					if(!leader.call_lesser)
+						stance = HOSTILE_STANCE_IDLE
+						leader.bot_followers--
+						leader = null
+						walk(src,0)
+				if(stance == HOSTILE_STANCE_ATTACK || stance == HOSTILE_STANCE_ATTACKING)
 					continue
 				var/mob/living/carbon/Xenomorph/X = L
 				if(X.queen_chosen_lead)
