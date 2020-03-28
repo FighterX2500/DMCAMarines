@@ -497,10 +497,10 @@ obj/effect/landmark/corpsespawner/UPPsanitar
 /obj/effect/landmark/corpsespawner/doomguy
 	name	=	"Alien Slayer"
 	corpseuniform	=	/obj/item/clothing/under/marine/veteran/bear
-	corpsesuit	=	/obj/item/clothing/suit/storage/marine/M35
+	corpsesuit	=	/obj/item/clothing/suit/storage/marine
 	corpseshoes	=	/obj/item/clothing/shoes/jackboots
 	corpsegloves	=	/obj/item/clothing/gloves/swat
 	corpsemask	=	/obj/item/clothing/mask/breath
 	corpsehelmet	=	/obj/item/clothing/head/helmet/marine/pyro
-	corpseid	=	1
+	corpseid	=	0
 	corpseidjob	=	null
