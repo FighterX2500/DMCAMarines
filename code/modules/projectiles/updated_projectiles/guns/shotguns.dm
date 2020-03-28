@@ -510,4 +510,45 @@ can cause issues with ammo types getting mixed up during the burst.
 	recoil = config.low_recoil_value
 	recoil_unwielded = config.high_recoil_value
 
+//-------------------------------------------------------------------------------------
 
+/obj/item/weapon/gun/shotgun/merc/spec
+	name = "spec's super-shotgun"
+	desc = "A cobbled-together pile of scrap and alien wood. Point end towards things you want to die. Has a burst fire feature, as if it needed it."
+	icon_state = "spec"
+	item_state = "spec"
+	origin_tech = "combat=4;materials=2"
+	fire_sound = 'sound/weapons/gun_shotgun_automatic.ogg'
+	current_mag = /obj/item/ammo_magazine/internal/shotgun/spec
+	attachable_allowed = list(
+						/obj/item/attachable/bayonet,
+						/obj/item/attachable/reddot)
+
+	flags_gun_features = GUN_CAN_POINTBLANK|GUN_INTERNAL_MAG|GUN_TRIGGER_SAFETY
+
+/obj/item/weapon/gun/shotgun/merc/New()
+	..()
+	attachable_offset = list("muzzle_x" = 31, "muzzle_y" = 19,"rail_x" = 10, "rail_y" = 20, "under_x" = 26, "under_y" = 14, "stock_x" = 17, "stock_y" = 14)
+	if(current_mag && current_mag.current_rounds > 0) load_into_chamber()
+
+/obj/item/weapon/gun/shotgun/merc/set_gun_config_values()
+	fire_delay = config.high_fire_delay*2
+	accuracy_mult = config.base_hit_accuracy_mult - config.med_hit_accuracy_mult
+	accuracy_mult_unwielded = config.base_hit_accuracy_mult - config.med_hit_accuracy_mult - config.hmed_hit_accuracy_mult
+	scatter = config.med_scatter_value
+	scatter_unwielded = config.max_scatter_value
+	damage_mult = config.base_hit_damage_mult
+	recoil = config.low_recoil_value
+	recoil_unwielded = config.low_recoil_value
+
+	//Vertical grip
+	var/obj/item/attachable/verticalgrip/S = new(src)
+	S.attach_icon = ""
+	S.icon_state = ""
+	S.flags_attach_features &= ~ATTACH_REMOVABLE
+	S.Attach(src)
+	update_attachable(S.slot)
+
+/obj/item/weapon/gun/shotgun/merc/examine(mob/user)
+	..()
+	if(in_chamber) to_chat(user, "It has a chambered round.")
