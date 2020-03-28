@@ -493,3 +493,14 @@ obj/effect/landmark/corpsespawner/UPPsanitar
 	corpseback	=	/obj/item/storage/backpack/lightpack
 	corpseid	=	1
 	corpseidjob	=	"UPP Engineer"
+
+/obj/effect/landmark/corpsespawner/doomguy
+	name	=	"Alien Slayer"
+	corpseuniform	=	/obj/item/clothing/under/marine/veteran/bear
+	corpsesuit	=	/obj/item/clothing/suit/storage/marine/M35
+	corpseshoes	=	/obj/item/clothing/shoes/jackboots
+	corpsegloves	=	/obj/item/clothing/gloves/swat
+	corpsemask	=	/obj/item/clothing/mask/breath
+	corpsehelmet	=	/obj/item/clothing/head/helmet/marine/pyro
+	corpseid	=	1
+	corpseidjob	=	null
