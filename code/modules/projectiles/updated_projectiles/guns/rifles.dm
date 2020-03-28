@@ -418,10 +418,7 @@
 	origin_tech = "combat=7;materials=5"
 	current_mag = /obj/item/ammo_magazine/rifle/saiga
 	type_of_casings = "shell"
-	attachable_allowed = list(
-						/obj/item/attachable/bayonet,
-						/obj/item/attachable/lasersight,
-						/obj/item/attachable/extended_barrel)
+	attachable_allowed = null
 	gun_skill_category = GUN_SKILL_SHOTGUNS
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
