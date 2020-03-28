@@ -191,6 +191,7 @@
 /mob/living/simple_animal/alien/death(gibbed, deathmessage = "lets out a waning guttural screech, green blood bubbling from its maw.")
 	. = ..()
 	if(!.) return //If they were already dead, it will return.
+	walk(src, 0)
 	if(leader)
 		leader.bot_followers--
 		leader = null
