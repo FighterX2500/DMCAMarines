@@ -515,8 +515,8 @@ can cause issues with ammo types getting mixed up during the burst.
 /obj/item/weapon/gun/shotgun/merc/spec
 	name = "spec's super-shotgun"
 	desc = "A cobbled-together pile of scrap and alien wood. Point end towards things you want to die. Has a burst fire feature, as if it needed it."
-	icon_state = "spec"
-	item_state = "spec"
+	icon_state = "super_shotgun"
+	item_state = "super_shotgun"
 	origin_tech = "combat=4;materials=2"
 	fire_sound = 'sound/weapons/gun_shotgun_automatic.ogg'
 	current_mag = /obj/item/ammo_magazine/internal/shotgun/spec
