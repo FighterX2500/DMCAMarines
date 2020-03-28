@@ -56,6 +56,8 @@
 				continue
 			else if (istype(src, /mob/living/simple_animal/alien) && (isrobot(L)))
 				continue
+			else if(ismonkey(L))
+				continue
 			else if(isXeno(L))
 				if(leader)
 					if(!leader.call_lesser)
@@ -66,15 +68,20 @@
 				if(stance == HOSTILE_STANCE_ATTACK || stance == HOSTILE_STANCE_ATTACKING)
 					continue
 				var/mob/living/carbon/Xenomorph/X = L
-				if(X.queen_chosen_lead)
+				if(X.call_lesser)
 					if(X.bot_followers >= X.tier + X.upgrade)
 						continue
 					leader = X
 					leader.bot_followers++
 					stance = HOSTILE_STANCE_FOLLOW
 					continue
+			else if(isSynth(L))
+				continue
 			else
 				if(!L.stat)
+					var/obj/item/alien_embryo/embryo = locate() in L
+					if(embryo)
+						continue
 					stance = HOSTILE_STANCE_ATTACK
 					T = L
 					if(leader)
