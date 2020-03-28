@@ -784,7 +784,7 @@ TUNNEL
 
 	var/aliens = 5
 	var/time_emerged
-	var/spawn_delay = 360000
+	var/spawn_delay = 18000
 
 /obj/structure/alien_spawner/New()
 	..()

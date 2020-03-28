@@ -45,6 +45,16 @@
 
 /mob/living/simple_animal/alien/IgniteMob()			//Crowd control!
 	health = -maxHealth
+	death(0)
+
+/mob/living/simple_animal/alien/ex_act(severity)
+	switch(severity)
+		if(1)
+			health = -maxHealth
+			death(1)
+		if(2, 3)
+			health = -maxHealth
+			death(0)
 
 /mob/living/simple_animal/alien/bullet_act(obj/item/projectile/Proj)
 	. = ..()
