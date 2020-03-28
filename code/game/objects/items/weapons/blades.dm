@@ -45,7 +45,7 @@
 	item_state = "sledgehammer"
 	force = 50
 	w_class = 3
-	flags_equip_slot = SLOT_BACK
+	flags_equip_slot = SLOT_WAIST|SLOT_BACK
 
 /obj/item/weapon/claymore/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	playsound(loc, 'sound/weapons/bladeslice.ogg', 25, 1)
