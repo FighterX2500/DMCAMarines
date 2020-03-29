@@ -198,9 +198,9 @@
 					/obj/item/ammo_magazine/shotgunbox/buckshot = 3,
 					/obj/item/ammo_magazine/shotgun/buckshot = 10,
 					/obj/item/ammo_magazine/shotgun/flechette = 15,
-					/obj/item/ammo_magazine/rifle/saiga = 20,
-					/obj/item/ammo_magazine/rifle/saiga/buckshot = 20,
-					/obj/item/ammo_magazine/rifle/saiga/incendiary = 15,
+					/obj/item/ammobox/s22 = 2,
+					/obj/item/ammobox/s22buckshot = 2,
+					/obj/item/ammobox/s22incendiary = 1,
 					/obj/item/smartgun_powerpack = 2
 					)
 

@@ -374,9 +374,9 @@ Turn() or Shift() as there is virtually no overhead. ~N
 	var/base = /obj/item/ammobox
 
 /obj/item/ammobox/update_icon()
-	if(magazine_amount > 0) 
+	if(magazine_amount > 0)
 		icon_state = "[base_icon_state]_deployed"
-	else 
+	else
 		icon_state = "[base_icon_state]_empty"
 
 /obj/item/ammobox/examine(mob/user)
@@ -456,9 +456,9 @@ Turn() or Shift() as there is virtually no overhead. ~N
 
 
 /obj/item/ammo_magazine/shotgunbox/update_icon()
-	if(current_rounds > 0) 
+	if(current_rounds > 0)
 		icon_state = "[base_icon_state]_deployed"
-	else 
+	else
 		icon_state = "[base_icon_state]_empty"
 
 /obj/item/ammo_magazine/shotgunbox/attack_self(mob/user)
@@ -602,3 +602,51 @@ Turn() or Shift() as there is virtually no overhead. ~N
 	max_rounds = 100
 	current_rounds = 100
 	base = /obj/item/ammo_magazine/shotgunbox/buckshot
+
+/obj/item/ammobox/s22
+	name = "Saiga-22 Ammo Box"
+	icon = 'icons/obj/items/Saiga_Boxes.dmi'
+	icon_state = "ammoboxm39ext"
+	item_state = "ammoboxm39ext"
+	base_icon_state = "ammoboxm39ext"
+	max_magazine_amount = 20
+	max_magazine_rounds = 10
+	ammo_type = /datum/ammo/bullet/shotgun/slug
+	magazine_type = /obj/item/ammo_magazine/rifle/saiga
+	base = /obj/item/ammobox/s22
+
+/obj/item/ammobox/s22
+	name = "Saiga-22 Ammo Box"
+	icon = 'icons/obj/items/Saiga_Boxes.dmi'
+	icon_state = "ammoboxslug"
+	item_state = "ammoboxslug"
+	base_icon_state = "ammoboxslug"
+	max_magazine_amount = 20
+	max_magazine_rounds = 10
+	ammo_type = /datum/ammo/bullet/shotgun/slug
+	magazine_type = /obj/item/ammo_magazine/rifle/saiga
+	base = /obj/item/ammobox/s22
+
+/obj/item/ammobox/s22buckshot
+	name = "Saiga-22 Buckshot Ammo Box"
+	icon = 'icons/obj/items/Saiga_Boxes.dmi'
+	icon_state = "ammoboxbuckshot"
+	item_state = "ammoboxbuckshot"
+	base_icon_state = "ammoboxbuckshot"
+	max_magazine_amount = 20
+	max_magazine_rounds = 10
+	ammo_type = /datum/ammo/bullet/shotgun/buckshot
+	magazine_type = /obj/item/ammo_magazine/rifle/saiga/buckshot
+	base = /obj/item/ammobox/s22buckshot
+
+/obj/item/ammobox/s22incendiary
+	name = "Saiga-22 Incendiary Ammo Box"
+	icon = 'icons/obj/items/Saiga_Boxes.dmi'
+	icon_state = "ammoboxincendiary"
+	item_state = "ammoboxincendiary"
+	base_icon_state = "ammoboxincendiary"
+	max_magazine_amount = 15
+	max_magazine_rounds = 10
+	ammo_type = /datum/ammo/bullet/shotgun/incendiary
+	magazine_type = /obj/item/ammo_magazine/rifle/saiga/incendiary
+	base = /obj/item/ammobox/s22incendiary

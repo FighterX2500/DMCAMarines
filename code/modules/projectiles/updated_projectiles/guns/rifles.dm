@@ -411,7 +411,7 @@
 
 /obj/item/weapon/gun/rifle/saiga
 	name = "Saiga 22 shotgun"
-	desc = "A custom made automatic shotgun,this shotgun can rival tactical shotgun and is only given to elite UPP units."
+	desc = "A custom made automatic shotgun,this shotgun can rival tactical shotgun and is only given to elite USCM units."
 	icon_state = "saiga"
 	item_state = "saiga"
 	fire_sound = 'sound/weapons/gun_shotgun.ogg'
