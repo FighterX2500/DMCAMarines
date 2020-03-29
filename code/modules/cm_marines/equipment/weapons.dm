@@ -297,7 +297,7 @@
 	name = "Stormtrooper equipment crate"
 	desc = "M40 helmet, M40 armor, Montage, 88 mod vp70 and ammo. "
 	icon = 'icons/Marine/marine-weapons.dmi'
-	icon_state = "rocket_case"
+	icon_state = "st_case"
 	spec_set = "stormtrooper"
 	w_class = 5
 	storage_slots = 13
@@ -317,6 +317,8 @@
 			new /obj/item/ammo_magazine/pistol/vp70(src)
 			new /obj/item/ammo_magazine/pistol/vp70(src)
 			new /obj/item/ammo_magazine/pistol/vp70(src)
+			new /obj/item/storage/belt/gun/m4a3(src)
+			new /obj/item/weapon/claymore/mercsword/hammer(src)
 
 /obj/item/storage/box/spec/demolitionist
 	name = "Demolitionist equipment crate"

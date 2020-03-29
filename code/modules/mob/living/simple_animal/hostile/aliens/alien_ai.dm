@@ -56,19 +56,32 @@
 				continue
 			else if (istype(src, /mob/living/simple_animal/alien) && (isrobot(L)))
 				continue
+			else if(ismonkey(L))
+				continue
 			else if(isXeno(L))
-				if(leader || stance == HOSTILE_STANCE_ATTACK || stance == HOSTILE_STANCE_ATTACKING)
+				if(leader)
+					if(!leader.call_lesser)
+						stance = HOSTILE_STANCE_IDLE
+						leader.bot_followers--
+						leader = null
+						walk(src,0)
+				if(stance == HOSTILE_STANCE_ATTACK || stance == HOSTILE_STANCE_ATTACKING)
 					continue
 				var/mob/living/carbon/Xenomorph/X = L
-				if(X.queen_chosen_lead)
+				if(X.call_lesser)
 					if(X.bot_followers >= X.tier + X.upgrade)
 						continue
 					leader = X
 					leader.bot_followers++
 					stance = HOSTILE_STANCE_FOLLOW
 					continue
+			else if(isSynth(L))
+				continue
 			else
 				if(!L.stat)
+					var/obj/item/alien_embryo/embryo = locate() in L
+					if(embryo)
+						continue
 					stance = HOSTILE_STANCE_ATTACK
 					T = L
 					if(leader)
@@ -178,6 +191,7 @@
 /mob/living/simple_animal/alien/death(gibbed, deathmessage = "lets out a waning guttural screech, green blood bubbling from its maw.")
 	. = ..()
 	if(!.) return //If they were already dead, it will return.
+	walk(src, 0)
 	if(leader)
 		leader.bot_followers--
 		leader = null
@@ -190,7 +204,7 @@
 	var/obj/effect/alien/weeds/node/N = locate() in range(6, loc)
 	if(!W || !N)
 		var/turf/T = src.loc
-		if(!istype(T) && !T.is_weedable())
+		if(!istype(T) || !T.is_weedable())
 			return
 
 		new /obj/effect/alien/weeds/node(src.loc, src, null)

@@ -92,6 +92,8 @@
 	var/xeno_mobhud = FALSE //whether the xeno mobhud is activated or not.
 
 	var/queen_chosen_lead //whether the xeno has been selected by the queen as a leader.
+
+	var/call_lesser = 0   //if beno wants lil' benos, he can call them
 	var/bot_followers = 0 //if leader, he has followers
 
 	//Surgery var

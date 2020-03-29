@@ -29,7 +29,7 @@
 /obj/machinery/atmospherics/unary/Dispose()
 	if(node)
 		node.disconnect(src)
-		del(network)
+
 	node = null
 	. = ..()
 
@@ -78,7 +78,7 @@
 
 /obj/machinery/atmospherics/unary/disconnect(obj/machinery/atmospherics/reference)
 	if(reference==node)
-		del(network)
+		network = null
 		node = null
 
 	update_icon()
