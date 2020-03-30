@@ -419,6 +419,7 @@
 	current_mag = /obj/item/ammo_magazine/rifle/saiga
 	type_of_casings = "shell"
 	gun_skill_category = GUN_SKILL_SHOTGUNS
+	attachable_allowed = list()
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
 /obj/item/weapon/gun/rifle/saiga/New()
