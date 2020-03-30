@@ -10,7 +10,7 @@
 	anchored = TRUE
 	throwpass = TRUE
 	climbable = TRUE
-	var/travelling_time = 100 //time to impact
+	var/travelling_time = 75 //time to impact
 	var/equipment_type //type of equipment that accept this type of ammo.
 	var/ammo_count
 	var/max_ammo_count
@@ -121,7 +121,7 @@
 	name = "high-velocity 30mm ammo crate"
 	icon_state = "30mm_crate_hv"
 	desc = "A crate full of 30mm high-velocity bullets used on the dropship heavy guns."
-	travelling_time = 60
+	travelling_time = 40
 	ammo_count = 400
 	max_ammo_count = 400
 	ammo_used_per_firing = 40
@@ -206,7 +206,7 @@
 	ammo_id = ""
 	bound_width = 64
 	bound_height = 32
-	travelling_time = 60 //faster than 30mm rounds
+	travelling_time = 40 //faster than 30mm rounds
 	max_inaccuracy = 5
 	point_cost = 0
 
@@ -261,7 +261,7 @@
 	desc = "The SM-17 'Fatty' is a cluster-bomb type ordnance that only requires laser-guidance when first launched."
 	icon_state = "fatty"
 	ammo_id = "f"
-	travelling_time = 70 //slower but deadly accurate, even if laser guidance is stopped mid-travel.
+	travelling_time = 45 //slower but deadly accurate, even if laser guidance is stopped mid-travel.
 	max_inaccuracy = 1
 	point_cost = 450
 
@@ -306,9 +306,9 @@
 	name = "DMC-1207 'CreepClean'"
 	desc = "The DMC-1207 is a modification of the AGM-227 that has had it's explosive payload replaced with a canister of pressurized nitrogen sorrunded with defoliants and toxins, meant for cleaning out large areas during asymetrical warfare to deny cover to the enemy."
 	icon_state = "single"
-	travelling_time = 30 //not powerful, but reaches target fast
+	travelling_time = 25 //not powerful, but reaches target fast
 	ammo_id = ""
-	point_cost = 100
+	point_cost = 300
 
 	detonate_on(turf/impact)
 		impact.ceiling_debris_check(3)
@@ -352,7 +352,7 @@
 	ammo_count = 6
 	max_ammo_count = 6
 	ammo_name = "minirocket"
-	travelling_time = 80 //faster than 30mm cannon, slower than real rockets
+	travelling_time = 60 //faster than 30mm cannon, slower than real rockets
 	transferable_ammo = TRUE
 	point_cost = 300
 
@@ -421,11 +421,11 @@
 	icon_state = "" //No sprite
 	invisibility = 101
 	mouse_opacity = 0
-	brightness_on = 7 //Magnesium/sodium fires (White star) really are bright
+	brightness_on = 10 //Magnesium/sodium fires (White star) really are bright
 
 /obj/item/device/flashlight/flare/on/cas/New()
 	..()
 	var/turf/T = get_turf(src)
-	fuel = rand(700, 900) // About the same burn time as a flare, considering it requires it's own CAS run.
+	fuel = rand(900, 1400) // About the same burn time as a flare, considering it requires it's own CAS run.
 	T.visible_message("<span class='warning'>You see a tiny flash, and then a blindingly bright light from the flare as it lights off in the sky!</span>")
 	playsound(T, 'sound/weapons/gun_flare.ogg', 50, 1, 4) // stolen from the mortar i'm not even sorry
