@@ -411,14 +411,13 @@
 
 /obj/item/weapon/gun/rifle/saiga
 	name = "Saiga 22 shotgun"
-	desc = "A custom made automatic shotgun,this shotgun can rival tactical shotgun and is only given to elite UPP units."
+	desc = "A custom made automatic shotgun,this shotgun can rival tactical shotgun and is only given to elite USCM units."
 	icon_state = "saiga"
 	item_state = "saiga"
 	fire_sound = 'sound/weapons/gun_shotgun.ogg'
 	origin_tech = "combat=7;materials=5"
 	current_mag = /obj/item/ammo_magazine/rifle/saiga
 	type_of_casings = "shell"
-	attachable_allowed = null
 	gun_skill_category = GUN_SKILL_SHOTGUNS
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
 
