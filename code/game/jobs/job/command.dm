@@ -13,7 +13,7 @@ var/datum/announcement/minor/captain_announcement = new(do_newscast = 1)
 /datum/job/command/commander
 	title = "Commander"
 	comm_title = "CO"
-	paygrade = "O4"
+	paygrade = "O5"
 	flag = ROLE_COMMANDING_OFFICER
 	supervisors = "USCM high command"
 	selection_color = "#ccccff"
@@ -67,7 +67,7 @@ Come hell or high water, you are going to be there for them."}
 /datum/job/command/executive
 	title = "Executive Officer"
 	comm_title = "XO"
-	paygrade = "O3"
+	paygrade = "O4"
 	flag = ROLE_EXECUTIVE_OFFICER
 	flags_startup_parameters = ROLE_ADD_TO_DEFAULT|ROLE_ADD_TO_MODE|ROLE_ADMIN_NOTIFY
 	skills_type = /datum/skills/XO
@@ -96,7 +96,7 @@ Make the USCM proud!"}
 	title = "Staff Officer"
 	disp_title = "Staff Officer"
 	comm_title = "SO"
-	paygrade = "O2"
+	paygrade = "O3"
 	flag = ROLE_BRIDGE_OFFICER
 	total_positions = 3
 	spawn_positions = 3
@@ -186,7 +186,7 @@ If you are not piloting, there is an autopilot fallback for command, but don't l
 /datum/job/command/tank_crew
 	title = "Tank Crewman"
 	comm_title = "TC"
-	paygrade = "O1"
+	paygrade = "E7"
 	flag = ROLE_TANK_OFFICER
 	total_positions = 2
 	spawn_positions = 2

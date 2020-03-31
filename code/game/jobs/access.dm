@@ -263,10 +263,10 @@ proc/get_all_job_icons() return joblist + list("Prisoner")//For all existing HUD
 		if("E8E") . = size ? "FSGT " : "First Sergeant"
 		if("E9") . = size ? "SGM " : "Sergeant Major"
 		if("E9E") . = size ? "CSGM " : "Command Sergeant Major"
-		if("O1") . = size ? "ENS " : "Ensign"
+		if("O1") . = size ? "2dLT " : "Second Lieutenant"
 		if("O2") . = size ? "LT " : "Lieutenant"
 		if("O3") . = size ? "LCDR " : "Lieutenant Commander"
-		if("O4") . = size ? "CDR " : "Commander"
+		if("O4") . = size ? "FCDR " : "Field Commander"
 		if("O5") . = size ? "CPT " : "Captain"
 		if("O6") . = size ? "RADM " : "Rear Admiral"
 		if("O7") . = size ? "ADM " : "Admiral"
@@ -275,6 +275,6 @@ proc/get_all_job_icons() return joblist + list("Prisoner")//For all existing HUD
 		if("WO") . = size ? "WO " : "Warrant Officer"
 		else . = paygrade + " " //custom paygrade
 
-#define PAYGRADES_MARINE list("C","E1","E2","E3","E4","E5","E6","E6E","E7","E8","E8E","E9","E9E","O1","O2","O3","O4", "WO")
-#define PAYGRADES_OFFICER list("O1","O2","O3","O4", "WO")
+#define PAYGRADES_MARINE list("C","E1","E2","E3","E4","E5","E6","E6E","E7","E8","E8E","E9","E9E","O1","O2","O3","O4","O5", "WO")
+#define PAYGRADES_OFFICER list("O1","O2","O3","O4","O5", "WO")
 #define PAYGRADES_ENLISTED list("C","E1","E2","E3","E4","E5","E6","E7","E8","E9")

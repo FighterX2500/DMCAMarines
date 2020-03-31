@@ -9,7 +9,7 @@
 /datum/job/logistics/engineering
 	title = "Chief Engineer"
 	comm_title = "CE"
-	paygrade = "O3"
+	paygrade = "O2"
 	flag = ROLE_CHIEF_ENGINEER
 	department_flag = ROLEGROUP_MARINE_ENGINEERING
 	selection_color = "#ffeeaa"
@@ -41,7 +41,7 @@ You are also next in the chain of command, should the bridge crew fall in the li
 /datum/job/logistics/requisition
 	title = "Requisitions Officer"
 	comm_title = "RO"
-	paygrade = "O1"
+	paygrade = "O2"
 	flag = ROLE_REQUISITION_OFFICER
 	department_flag = ROLEGROUP_MARINE_ENGINEERING
 	selection_color = "#9990B2"
