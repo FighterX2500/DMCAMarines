@@ -27,10 +27,10 @@
 	name = "tactical binoculars"
 	desc = "A pair of binoculars, with a laser targeting function. Ctrl+Click to target something."
 	var/laser_cooldown = 0
-	var/cooldown_duration = 200 //20 seconds
+	var/cooldown_duration = 80 //80 seconds
 	var/obj/effect/overlay/temp/laser_target/laser
 	var/obj/effect/overlay/temp/laser_coordinate/coord
-	var/target_acquisition_delay = 100 //10 seconds
+	var/target_acquisition_delay = 30 //3 seconds
 	var/mode = 0 //Able to be switched between modes, 0 for cas laser, 1 for finding coordinates.
 	var/changable = 1 //If set to 0, you can't toggle the mode between CAS and coordinate finding
 
@@ -109,7 +109,7 @@
 
 	var/acquisition_time = target_acquisition_delay
 	if(user.mind.cm_skills)
-		acquisition_time = max(15, acquisition_time - 25*user.mind.cm_skills.leadership)
+		acquisition_time = 15 //1.5 second
 
 	var/datum/squad/S = user.assigned_squad
 
@@ -162,8 +162,8 @@
 /obj/item/device/binoculars/tactical/scout
 	name = "scout tactical binoculars"
 	desc = "A modified version of tactical binoculars with an advanced laser targeting function. Ctrl+Click to target something."
-	cooldown_duration = 80
-	target_acquisition_delay = 30
+	cooldown_duration = 40 //4 second
+	target_acquisition_delay = 15 // 1.5 second
 
 //For events
 /obj/item/device/binoculars/tactical/range
