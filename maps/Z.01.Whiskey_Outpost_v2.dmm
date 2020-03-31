@@ -9,7 +9,7 @@
 "ai" = (/obj/structure/bed,/turf/open/floor/wood,/area/whiskey_outpost)
 "aj" = (/obj/structure/table,/obj/item/ammo_magazine/rifle/m41aMK1,/obj/item/ammo_magazine/rifle/m41aMK1,/turf/open/floor/wood,/area/whiskey_outpost)
 "ak" = (/turf/closed/mineral,/area/whiskey_outpost)
-"al" = (/obj/machinery/door/airlock/command{name = "Captain's Quarters"; req_access = null; req_access_txt = "1"},/turf/open/floor/wood,/area/whiskey_outpost)
+"al" = (/obj/machinery/door/airlock/almayer/command{dir = 1; name = "Captain's Quarters"},/turf/open/floor/wood,/area/whiskey_outpost)
 "am" = (/obj/structure/cable{d1 = 2; d2 = 4; icon_state = "2-4"},/turf/open/floor/plating{dir = 1; icon_state = "asteroidfloor"},/area/whiskey_outpost)
 "an" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"; pixel_x = 0},/turf/open/floor/plating{dir = 1; icon_state = "asteroidfloor"},/area/whiskey_outpost)
 "ao" = (/obj/machinery/door/airlock/glass_engineering{name = "Command Pod Power Center"; req_access_txt = "7"},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"; pixel_x = 0},/turf/open/floor,/area/whiskey_outpost)
@@ -24,7 +24,7 @@
 "ax" = (/obj/machinery/vending/snack,/turf/open/floor{icon_state = "dark"},/area/whiskey_outpost)
 "ay" = (/obj/structure/table,/obj/item/device/binoculars,/obj/item/device/binoculars,/obj/item/device/binoculars,/turf/open/floor{icon_state = "dark"},/area/whiskey_outpost)
 "az" = (/turf/open/floor{icon_state = "dark"},/area/whiskey_outpost)
-"aA" = (/obj/structure/table,/obj/item/folder/blue,/turf/open/floor{icon_state = "dark"},/area/whiskey_outpost)
+"aA" = (/obj/structure/table,/obj/machinery/prop/almayer/computer/PC{pixel_x = 8; pixel_y = 6},/turf/open/floor{icon_state = "dark"},/area/whiskey_outpost)
 "aB" = (/obj/structure/table,/turf/open/floor{icon_state = "dark"},/area/whiskey_outpost)
 "aC" = (/obj/machinery/telecomms/relay/preset/ice_colony{idle_power_usage = 100},/obj/structure/cable{icon_state = "0-4"; d2 = 4},/turf/open/floor/plating{tag = "icon-asteroidwarning (SOUTHEAST)"; icon_state = "asteroidwarning"; dir = 6},/area/whiskey_outpost)
 "aD" = (/obj/machinery/light{dir = 4},/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/open/floor/plating{dir = 1; icon_state = "asteroidfloor"},/area/whiskey_outpost)
@@ -50,9 +50,9 @@
 "aX" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/closed/wall/r_wall,/area/whiskey_outpost)
 "aY" = (/obj/structure/bed/chair/office/dark{dir = 4},/turf/open/floor{icon_state = "dark"},/area/whiskey_outpost)
 "aZ" = (/obj/machinery/computer/communications,/obj/structure/table,/turf/open/floor{icon_state = "dark"},/area/whiskey_outpost)
-"ba" = (/obj/structure/table,/obj/item/storage/box/wy_mre,/turf/open/floor{icon_state = "dark"},/area/whiskey_outpost)
-"bb" = (/obj/structure/table,/obj/item/paper_bin,/obj/item/tool/pen,/turf/open/floor{icon_state = "dark"},/area/whiskey_outpost)
-"bc" = (/obj/machinery/computer/marine_card,/turf/open/floor{icon_state = "dark"},/area/whiskey_outpost)
+"ba" = (/obj/structure/prop/almayer/sensor_computer1,/turf/open/floor{icon_state = "dark"},/area/whiskey_outpost)
+"bb" = (/obj/structure/prop/almayer/sensor_computer3,/turf/open/floor{icon_state = "dark"},/area/whiskey_outpost)
+"bc" = (/obj/structure/prop/almayer/sensor_computer2,/turf/open/floor{icon_state = "dark"},/area/whiskey_outpost)
 "bd" = (/turf/closed/wall,/area/whiskey_outpost)
 "be" = (/obj/machinery/floodlight{anchored = 0; density = 1},/turf/open/floor/plating{dir = 9; icon_state = "warnplate"},/area/whiskey_outpost)
 "bf" = (/obj/effect/landmark{icon_state = "x3"; name = "whiskey_outpost_marine"},/turf/open/floor/plating{icon_state = "warnplate"; dir = 1},/area/whiskey_outpost)
@@ -61,7 +61,7 @@
 "bi" = (/turf/open/floor{dir = 9; icon_state = "whitered"},/area/whiskey_outpost)
 "bj" = (/turf/open/floor{tag = "icon-whitered (NORTH)"; icon_state = "whitered"; dir = 1},/area/whiskey_outpost)
 "bk" = (/turf/open/floor{tag = "icon-whitered (NORTHEAST)"; icon_state = "whitered"; dir = 5},/area/whiskey_outpost)
-"bl" = (/obj/machinery/door/airlock/glass_command{name = "Command"},/turf/open/floor{icon_state = "dark"},/area/whiskey_outpost)
+"bl" = (/obj/machinery/door/airlock/almayer/command{name = "Bridge"; icon_state = "door_closed"; dir = 2},/turf/open/floor{icon_state = "dark"},/area/whiskey_outpost)
 "bm" = (/obj/machinery/light{dir = 4; icon_state = "tube1"},/turf/open/floor/plating{dir = 1; icon_state = "asteroidfloor"},/area/whiskey_outpost)
 "bn" = (/obj/structure/bed,/obj/effect/landmark{icon_state = "x3"; name = "whiskey_outpost_marine"},/obj/structure/closet/hydrant{pixel_y = 32},/turf/open/floor{icon_state = "red"; dir = 8},/area/whiskey_outpost)
 "bo" = (/obj/structure/sign/prop2{pixel_y = 32},/turf/open/floor{icon_state = "red"; dir = 4},/area/whiskey_outpost)
@@ -94,7 +94,7 @@
 "bP" = (/obj/machinery/autodoc,/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
 "bQ" = (/obj/machinery/autodoc_console,/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
 "bR" = (/obj/machinery/wo_recycler,/turf/open/floor/plating{dir = 1; icon_state = "asteroidfloor"},/area/whiskey_outpost)
-"bS" = (/obj/machinery/door/airlock/medical{name = "Surgery"; req_one_access_txt = "2;8;19"},/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
+"bS" = (/obj/machinery/door/airlock/almayer/medical{icon_state = "door_closed"; dir = 1},/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
 "bT" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/sign/safety/medical_supplies,/turf/closed/wall,/area/whiskey_outpost)
 "bU" = (/obj/structure/table,/obj/item/storage/belt/combatLifesaver,/obj/item/clothing/glasses/hud/health,/obj/item/clothing/glasses/hud/health,/obj/item/clothing/glasses/hud/health,/obj/item/storage/box/gloves{pixel_x = 5; pixel_y = 5},/obj/item/storage/box/masks,/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
 "bV" = (/obj/structure/sign/safety/autodoc,/turf/closed/wall/r_wall,/area/whiskey_outpost)
@@ -105,7 +105,7 @@
 "ca" = (/obj/machinery/bodyscanner,/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
 "cb" = (/obj/machinery/body_scanconsole,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
 "cc" = (/obj/structure/table,/obj/item/storage/firstaid/toxin,/obj/item/storage/firstaid/toxin{pixel_x = 5; pixel_y = 5},/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
-"cd" = (/obj/structure/grille,/obj/structure/window/reinforced{color = "gray"; dir = 5; health = 80; name = "gray reinforced window"},/turf/open/floor/plating,/area/whiskey_outpost)
+"cd" = (/obj/structure/window/framed/colony,/turf/open/floor/plating,/area/whiskey_outpost)
 "ce" = (/obj/structure/bed,/obj/machinery/light{icon_state = "tube1"; dir = 8},/obj/effect/landmark{icon_state = "x3"; name = "whiskey_outpost_marine"},/turf/open/floor{icon_state = "red"; dir = 8},/area/whiskey_outpost)
 "cf" = (/obj/machinery/light{icon_state = "tube1"; dir = 8},/obj/effect/landmark{icon_state = "x3"; name = "whiskey_outpost_marine"},/turf/open/floor/plating{dir = 1; icon_state = "asteroidfloor"},/area/whiskey_outpost)
 "cg" = (/obj/machinery/vending/MarineMed,/obj/machinery/light{icon_state = "tube1"; dir = 8},/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
@@ -113,7 +113,7 @@
 "ci" = (/obj/effect/landmark{icon_state = "x3"; name = "whiskey_outpost_marine"},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
 "cj" = (/obj/structure/table,/obj/item/storage/firstaid/fire,/obj/item/storage/firstaid/fire{pixel_x = 5; pixel_y = 5},/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
 "ck" = (/obj/machinery/light{dir = 4},/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
-"cl" = (/obj/machinery/door/airlock/multi_tile/glass,/turf/open/floor{icon_state = "red"; dir = 4},/area/whiskey_outpost)
+"cl" = (/obj/machinery/door/airlock/multi_tile/almayer/generic,/turf/open/floor{icon_state = "red"; dir = 4},/area/whiskey_outpost)
 "cm" = (/obj/structure/barricade/metal,/turf/open/floor/plating{dir = 2; icon_state = "asteroidwarning"},/area/whiskey_outpost)
 "cn" = (/turf/open/gm/dirt,/area/whiskey_outpost)
 "co" = (/obj/machinery/floodlight{anchored = 0; density = 1},/turf/open/floor/plating{icon_state = "warnplate"; dir = 10},/area/whiskey_outpost)
@@ -145,8 +145,8 @@
 "cO" = (/turf/open/floor/plating{dir = 1; icon_state = "asteroidwarning"},/area/whiskey_outpost)
 "cP" = (/obj/structure/bed/chair,/obj/effect/landmark{icon_state = "x3"; name = "whiskey_outpost_marine"},/turf/open/floor/plating{tag = "icon-asteroidwarning (NORTHEAST)"; icon_state = "asteroidwarning"; dir = 5},/area/whiskey_outpost)
 "cQ" = (/obj/machinery/light{dir = 4},/turf/open/floor/plating{dir = 1; icon_state = "asteroidfloor"},/area/whiskey_outpost)
-"cR" = (/obj/machinery/door/airlock/glass_medical{name = "Medbay"},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/open/floor{dir = 2; icon_state = "warnwhite"},/area/whiskey_outpost)
-"cS" = (/obj/machinery/door/airlock/glass_medical{name = "Medbay"},/turf/open/floor{dir = 2; icon_state = "warnwhite"},/area/whiskey_outpost)
+"cR" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/door/airlock/multi_tile/almayer/medidoor{name = "\improper Medical Bay"; req_one_access_txt = "0"},/turf/open/floor{dir = 2; icon_state = "warnwhite"},/area/whiskey_outpost)
+"cS" = (/turf/open/floor{dir = 2; icon_state = "warnwhite"},/area/whiskey_outpost)
 "cT" = (/obj/effect/landmark{icon_state = "x3"; name = "whiskey_outpost_marine"},/obj/machinery/light{icon_state = "tube1"; dir = 8},/turf/open/floor/plating{dir = 1; icon_state = "asteroidfloor"},/area/whiskey_outpost)
 "cU" = (/obj/machinery/light{dir = 4},/obj/structure/reagent_dispensers/watertank,/turf/open/floor/plating{dir = 1; icon_state = "asteroidfloor"},/area/whiskey_outpost)
 "cV" = (/obj/structure/sign/double/barsign{pixel_y = 32},/turf/open/floor{icon_state = "red"; dir = 4},/area/whiskey_outpost)
@@ -209,7 +209,7 @@
 "ea" = (/turf/open/gm/grass,/turf/closed/shuttle{density = 0; dir = 1; icon_state = "re_corner"},/area/whiskey_outpost/outside/north)
 "eb" = (/turf/open/gm/grass,/turf/closed/shuttle{density = 0; dir = 4; icon_state = "re_corner"},/area/whiskey_outpost/outside/north)
 "ec" = (/obj/item/lightstick/red{anchored = 1; icon_state = "lightstick_red1"; luminosity = 2},/turf/open/gm/dirt,/area/whiskey_outpost/outside/north)
-"ed" = (/obj/machinery/door/airlock/multi_tile/glass{name = "Chow Hall"},/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
+"ed" = (/obj/machinery/door/airlock/multi_tile/almayer/medidoor{name = "\improper Medical Bay"; req_one_access_txt = "0"},/turf/open/floor{dir = 2; icon_state = "warnwhite"},/area/whiskey_outpost)
 "ee" = (/obj/structure/barricade/sandbags,/turf/open/floor/plating{dir = 1; icon_state = "asteroidfloor"},/area/whiskey_outpost)
 "ef" = (/obj/effect/landmark{icon_state = "x3"; name = "whiskey_outpost_marine"},/obj/structure/barricade/sandbags,/turf/open/floor/plating{dir = 1; icon_state = "asteroidfloor"},/area/whiskey_outpost)
 "eg" = (/obj/machinery/door/airlock/glass_engineering{name = "Engineering Workshop"; req_access_txt = "7"},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/open/floor,/area/whiskey_outpost)
@@ -365,7 +365,7 @@
 "ha" = (/turf/open/floor/plating{dir = 4; icon_state = "asteroidwarning"},/area/whiskey_outpost/outside/east)
 "hb" = (/obj/structure/jungle/plantbot1{icon_state = "alienplant1"; luminosity = 2},/turf/open/gm/river,/area/whiskey_outpost/outside/east)
 "hc" = (/turf/closed/mineral,/area/whiskey_outpost/outside/east)
-"hd" = (/obj/structure/barricade/sandbags,/turf/open/jungle{bushes_spawn = 0; icon_state = "grass_impenetrable"},/area/whiskey_outpost/outside/north)
+"hd" = (/obj/structure/barricade/metal,/turf/open/gm/grass,/area/whiskey_outpost/outside/west)
 "he" = (/turf/open/gm/coast{tag = "icon-beach (NORTHWEST)"; icon_state = "beach"; dir = 9},/area/whiskey_outpost/outside/east)
 "hf" = (/turf/open/gm/coast{dir = 4; icon_state = "beachcorner"},/area/whiskey_outpost/outside/east)
 "hg" = (/turf/open/gm/dirt,/area/whiskey_outpost/outside/east)
@@ -396,16 +396,16 @@
 "hF" = (/turf/open/gm/coast{dir = 2; icon_state = "beachcorner2"},/area/whiskey_outpost/outside/east)
 "hG" = (/turf/open/gm/dirtgrassborder{dir = 1; icon_state = "grassdirt_corner2"},/area/whiskey_outpost/outside/west)
 "hH" = (/obj/structure/flora/ausbushes/reedbush,/turf/open/gm/river,/area/whiskey_outpost/outside/east)
-"hI" = (/obj/item/lightstick/red{anchored = 1; icon_state = "lightstick_red1"; luminosity = 2},/turf/open/space,/area/space)
-"hJ" = (/turf/open/gm/grass{dir = 2; icon_state = "grassbeach"},/area/whiskey_outpost/outside/west)
-"hK" = (/turf/open/gm/grass{dir = 8; icon_state = "gbcorner"},/area/whiskey_outpost/outside/west)
+"hI" = (/obj/structure/barricade/plasteel,/turf/open/gm/grass,/area/whiskey_outpost/outside/west)
+"hJ" = (/turf/open/jungle/impenetrable,/area/whiskey_outpost/outside/west)
+"hK" = (/obj/structure/barricade/sandbags,/turf/open/jungle,/area/whiskey_outpost/outside/west)
 "hL" = (/turf/open/gm/dirtgrassborder{dir = 4; icon_state = "grassdirt_corner"},/area/whiskey_outpost/outside/west)
 "hM" = (/obj/machinery/floodlight{icon_state = "flood01"; in_use = 1; luminosity = 7; name = "Outpost Light"; on = 1; use_power = 0},/turf/open/gm/grass,/area/whiskey_outpost/outside/west)
 "hN" = (/obj/structure/flora/ausbushes/grassybush,/turf/open/gm/dirt,/area/whiskey_outpost/outside/west)
 "hO" = (/obj/structure/flora/ausbushes/sparsegrass,/turf/open/gm/dirt,/area/whiskey_outpost/outside/west)
 "hP" = (/turf/open/gm/coast{dir = 1},/area/whiskey_outpost/outside/east)
 "hQ" = (/turf/open/gm/coast{dir = 4; icon_state = "beachcorner2"},/area/whiskey_outpost/outside/east)
-"hR" = (/turf/open/gm/grass{dir = 8; icon_state = "grassbeach"},/area/whiskey_outpost/outside/west)
+"hR" = (/obj/structure/barricade/sandbags{icon_state = "sandbag_0"; dir = 4},/turf/open/gm/grass,/area/whiskey_outpost/outside/west)
 "hS" = (/obj/item/lightstick/red{anchored = 1; icon_state = "lightstick_red1"; luminosity = 2},/turf/open/jungle{bushes_spawn = 0; icon_state = "grass_impenetrable"},/area/whiskey_outpost/outside/west)
 "hT" = (/obj/structure/flora/ausbushes/leafybush,/turf/open/gm/grass,/area/whiskey_outpost/outside/west)
 "hU" = (/obj/structure/barricade/sandbags{tag = "icon-sandbag (WEST)"; icon_state = "sandbag"; dir = 8},/turf/open/gm/dirt,/area/whiskey_outpost/outside/west)
@@ -419,25 +419,23 @@
 "ic" = (/obj/structure/barricade/sandbags,/obj/structure/barricade/sandbags{tag = "icon-sandbag (EAST)"; icon_state = "sandbag"; dir = 4},/turf/open/gm/dirt,/area/whiskey_outpost/outside/west)
 "id" = (/obj/structure/barricade/sandbags{tag = "icon-sandbag (WEST)"; icon_state = "sandbag"; dir = 8},/turf/open/gm/dirt,/area/whiskey_outpost/outside/east)
 "ie" = (/obj/structure/flora/ausbushes/sparsegrass,/turf/open/gm/dirt,/area/whiskey_outpost/outside/east)
-"if" = (/turf/open/gm/grass{dir = 2; icon_state = "gbcorner"},/area/whiskey_outpost/outside/west)
+"if" = (/obj/structure/barricade/sandbags{icon_state = "sandbag_0"; dir = 4},/turf/open/jungle,/area/whiskey_outpost/outside/west)
 "ig" = (/obj/structure/barricade/sandbags{tag = "icon-sandbag (WEST)"; icon_state = "sandbag"; dir = 8},/obj/structure/barricade/sandbags,/turf/open/gm/dirt,/area/whiskey_outpost/outside/east)
 "ih" = (/obj/machinery/floodlight{icon_state = "flood01"; in_use = 1; luminosity = 7; name = "Outpost Light"; on = 1; use_power = 0},/turf/open/gm/dirt,/area/whiskey_outpost/outside/east)
 "ii" = (/obj/structure/flora/ausbushes/grassybush,/turf/open/gm/dirt,/area/whiskey_outpost/outside/east)
 "ij" = (/obj/machinery/marine_turret/premade,/turf/open/floor/plating{icon_state = "platebot"},/area/whiskey_outpost/outside/east)
-"ik" = (/turf/open/gm/grass{dir = 4; icon_state = "grassbeach"},/area/whiskey_outpost/outside/west)
+"ik" = (/obj/machinery/m56d_hmg,/turf/open/gm/dirtgrassborder{dir = 1},/area/whiskey_outpost/outside/west)
 "il" = (/turf/open/gm/dirtgrassborder{dir = 1},/area/whiskey_outpost/outside/east)
 "im" = (/turf/open/gm/dirtgrassborder{dir = 8; icon_state = "grassdirt_corner2"},/area/whiskey_outpost/outside/east)
 "in" = (/obj/machinery/marine_turret/premade{dir = 4; pixel_y = 0},/turf/open/floor/plating{icon_state = "platebot"},/area/whiskey_outpost/outside/east)
 "io" = (/obj/machinery/marine_turret/premade{dir = 8; pixel_y = 0},/turf/open/floor/plating{icon_state = "platebot"},/area/whiskey_outpost/outside/east)
 "ip" = (/obj/item/lightstick/red{anchored = 1; icon_state = "lightstick_red1"; luminosity = 2},/turf/open/gm/grass,/area/whiskey_outpost/outside/west)
 "iq" = (/turf/open/gm/grass,/area/whiskey_outpost/outside/east)
-"ir" = (/obj/item/lightstick/red{anchored = 1; icon_state = "lightstick_red1"; luminosity = 2},/turf/open/gm/grass,/area/whiskey_outpost/outside/east)
+"ir" = (/obj/structure/mortar,/turf/open/floor/plating{dir = 1; icon_state = "asteroidfloor"},/area/whiskey_outpost)
 "is" = (/turf/open/gm/dirtgrassborder{dir = 8; icon_state = "grassdirt_corner"},/area/whiskey_outpost/outside/east)
 "it" = (/obj/structure/barricade/metal,/turf/open/floor/plating{dir = 2; icon_state = "warnplate"},/area/whiskey_outpost/outside/east)
 "iu" = (/obj/structure/barricade/metal,/turf/open/floor/plating{icon_state = "warnplate"; dir = 6},/area/whiskey_outpost/outside/east)
 "iv" = (/obj/structure/barricade/metal,/turf/open/floor/plating{icon_state = "warnplate"; dir = 10},/area/whiskey_outpost/outside/east)
-"iw" = (/turf/open/gm/grass{dir = 4; icon_state = "gbcorner"},/area/whiskey_outpost/outside/west)
-"ix" = (/turf/open/gm/grass{dir = 1; icon_state = "grassbeach"},/area/whiskey_outpost/outside/west)
 "iy" = (/obj/machinery/marine_turret/premade,/turf/open/floor/plating{icon_state = "platebot"},/area/whiskey_outpost/outside/west)
 "iz" = (/obj/structure/flora/ausbushes/leafybush,/turf/open/gm/grass,/area/whiskey_outpost/outside/east)
 "iA" = (/turf/open/gm/coast{tag = "icon-beach (SOUTHEAST)"; icon_state = "beach"; dir = 6},/area/whiskey_outpost/outside/east)
@@ -462,7 +460,6 @@
 "iT" = (/turf/closed/shuttle/dropship{tag = "icon-rasputin4"; icon_state = "rasputin4"},/area/whiskey_outpost/outside/east)
 "iU" = (/turf/open/floor/plating,/area/whiskey_outpost/outside/east)
 "iV" = (/turf/closed/shuttle/dropship{tag = "icon-rasputin10"; icon_state = "rasputin10"},/area/whiskey_outpost/outside/east)
-"iW" = (/obj/structure/flora/ausbushes/stalkybush,/turf/open/gm/grass{dir = 2; icon_state = "grassbeach"},/area/whiskey_outpost/outside/west)
 "iX" = (/obj/machinery/floodlight{icon_state = "flood01"; in_use = 1; luminosity = 7; name = "Outpost Light"; on = 1; use_power = 0},/turf/open/gm/grass,/area/whiskey_outpost/outside/east)
 "iY" = (/turf/closed/shuttle/dropship,/area/whiskey_outpost/outside/east)
 "iZ" = (/turf/open/shuttle/dropship{tag = "icon-rasputin6"; icon_state = "rasputin6"},/area/whiskey_outpost/outside/east)
@@ -482,14 +479,13 @@
 "jn" = (/obj/item/storage/box/m94,/turf/open/floor/plating,/area/whiskey_outpost/outside/east)
 "jo" = (/turf/open/shuttle{icon_state = "floor7"},/area/whiskey_outpost/outside/east)
 "jp" = (/obj/item/cell/high,/turf/open/shuttle/dropship{tag = "icon-rasputin3"; icon_state = "rasputin3"},/area/whiskey_outpost/outside/east)
-"jq" = (/obj/item/storage/box/m94,/turf/open/jungle{bushes_spawn = 0; icon_state = "grass_impenetrable"},/area/whiskey_outpost/outside/west)
 "jr" = (/obj/machinery/floodlight{icon_state = "flood01"; in_use = 1; luminosity = 7; name = "Outpost Light"; on = 1; use_power = 0},/turf/open/jungle{bushes_spawn = 0; icon_state = "grass_impenetrable"},/area/whiskey_outpost/outside/east)
 "js" = (/obj/item/storage/box/m94,/turf/open/shuttle/dropship{tag = "icon-rasputin3"; icon_state = "rasputin3"},/area/whiskey_outpost/outside/east)
 "jt" = (/obj/structure/barricade/sandbags{tag = "icon-sandbag (EAST)"; icon_state = "sandbag"; dir = 4},/turf/open/shuttle{icon_state = "floor7"},/area/whiskey_outpost/outside/east)
-"ju" = (/turf/open/gm/grass{dir = 8; icon_state = "grassbeach"},/area/whiskey_outpost/outside/east)
+"ju" = (/obj/structure/table/almayer,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
 "jv" = (/obj/item/storage/box/m94,/turf/open/shuttle/dropship{tag = "icon-rasputin5"; icon_state = "rasputin5"},/area/whiskey_outpost/outside/east)
-"jw" = (/turf/open/gm/river,/turf/closed/shuttle{density = 0; dir = 8; icon_state = "re_corner"},/area/whiskey_outpost)
-"jx" = (/turf/open/jungle,/turf/closed/shuttle{density = 0; dir = 2; icon_state = "re_corner"},/area/whiskey_outpost)
+"jw" = (/obj/machinery/optable,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"jx" = (/obj/structure/table/almayer,/obj/item/storage/surgical_tray,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
 "jy" = (/turf/open/gm/grass,/area/whiskey_outpost/outside/south)
 "jz" = (/obj/effect/landmark{icon_state = "x2"; name = "whiskey_outpost_supply"},/obj/structure/closet/crate/mortar_ammo/full,/turf/open/floor/plating,/area/whiskey_outpost)
 "jA" = (/obj/machinery/door/airlock/hatch{name = "Dropship Hatch"},/turf/open/shuttle/dropship{tag = "icon-rasputin15"; icon_state = "rasputin15"},/area/whiskey_outpost/outside/east)
@@ -499,10 +495,6 @@
 "jE" = (/obj/machinery/vending/wallmed1{name = "Emergency NanoMed"; pixel_x = 30; pixel_y = 0; req_access_txt = "0"},/obj/item/storage/firstaid/regular,/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
 "jF" = (/obj/effect/spawner/gibspawner/human,/turf/open/gm/grass,/area/whiskey_outpost/outside/south)
 "jG" = (/turf/open/shuttle/dropship{tag = "icon-rasputin10"; icon_state = "rasputin10"},/area/whiskey_outpost/outside/east)
-"jH" = (/turf/open/jungle,/turf/closed/shuttle{density = 0; dir = 8; icon_state = "re_corner"},/area/whiskey_outpost/outside/west)
-"jI" = (/turf/closed/wall,/area/whiskey_outpost/outside/west)
-"jJ" = (/obj/item/storage/box/explosive_mines,/turf/open/floor/plating{dir = 1; icon_state = "warnplate"},/area/whiskey_outpost/outside/west)
-"jK" = (/turf/open/jungle,/turf/closed/shuttle{density = 0; dir = 2; icon_state = "re_corner"},/area/whiskey_outpost/outside/west)
 "jL" = (/obj/item/storage/box/m94,/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
 "jM" = (/obj/item/storage/box/explosive_mines,/obj/item/storage/box/explosive_mines,/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
 "jN" = (/obj/item/roller,/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
@@ -510,9 +502,6 @@
 "jP" = (/turf/open/shuttle/dropship{tag = "icon-rasputin4"; icon_state = "rasputin4"},/area/whiskey_outpost/outside/east)
 "jQ" = (/obj/item/cell/high,/turf/open/shuttle/dropship{tag = "icon-rasputin13"; icon_state = "rasputin13"},/area/whiskey_outpost/outside/east)
 "jR" = (/turf/open/shuttle/dropship{tag = "icon-rasputin8"; icon_state = "rasputin8"},/area/whiskey_outpost/outside/east)
-"jS" = (/obj/item/storage/box/sentry,/turf/open/floor/plating{icon_state = "platebot"},/area/whiskey_outpost/outside/west)
-"jT" = (/turf/open/floor/plating{icon_state = "platebot"},/area/whiskey_outpost/outside/west)
-"jU" = (/obj/item/storage/box/sentry,/obj/item/storage/box/m94,/turf/open/floor/plating{icon_state = "platebot"},/area/whiskey_outpost/outside/west)
 "jV" = (/obj/structure/table,/obj/item/storage/belt/combatLifesaver,/obj/item/storage/firstaid/regular,/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
 "jW" = (/obj/structure/table,/obj/item/storage/firstaid/o2,/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
 "jX" = (/obj/item/storage/box/explosive_mines,/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
@@ -522,15 +511,11 @@
 "kb" = (/obj/machinery/vending/wallmed1{pixel_x = -32},/obj/structure/bed/chair/dropship/passenger{tag = "icon-shuttle_chair (EAST)"; icon_state = "shuttle_chair"; dir = 4},/turf/open/shuttle/dropship{tag = "icon-rasputin15"; icon_state = "rasputin15"},/area/whiskey_outpost/outside/east)
 "kc" = (/obj/machinery/vending/wallmed1{pixel_x = 32},/obj/structure/bed/chair/dropship/passenger{tag = "icon-shuttle_chair (WEST)"; icon_state = "shuttle_chair"; dir = 8},/turf/open/shuttle/dropship{tag = "icon-rasputin15"; icon_state = "rasputin15"},/area/whiskey_outpost/outside/east)
 "kd" = (/turf/closed/shuttle/dropship{tag = "icon-rasputin6"; icon_state = "rasputin6"},/area/whiskey_outpost/outside/east)
-"ke" = (/obj/structure/largecrate/guns,/turf/open/floor/plating{icon_state = "warnplate"; dir = 8},/area/whiskey_outpost/outside/west)
-"kf" = (/obj/item/storage/box/explosive_mines,/turf/open/floor/plating{icon_state = "platebot"},/area/whiskey_outpost/outside/west)
-"kg" = (/obj/item/stack/medical/bruise_pack,/turf/open/floor/plating{icon_state = "platebot"},/area/whiskey_outpost/outside/west)
-"kh" = (/turf/open/floor/plating{icon_state = "warnplate"; dir = 4},/area/whiskey_outpost/outside/west)
 "ki" = (/obj/item/lightstick/red{anchored = 1; icon_state = "lightstick_red1"; luminosity = 2},/turf/open/gm/grass,/area/whiskey_outpost/outside/south)
 "kj" = (/turf/open/floor/plating{dir = 2; icon_state = "warnplate"},/area/whiskey_outpost/outside/west)
 "kk" = (/turf/open/floor/plating{dir = 2; icon_state = "warnplate"},/area/whiskey_outpost/outside/east)
-"kl" = (/turf/open/jungle,/turf/closed/shuttle{density = 0; dir = 1; icon_state = "re_corner"},/area/whiskey_outpost)
-"km" = (/turf/open/jungle,/turf/closed/shuttle{density = 0; dir = 4; icon_state = "re_corner"},/area/whiskey_outpost)
+"kl" = (/obj/machinery/light{dir = 8; icon_state = "tube1"; pixel_y = 0},/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"km" = (/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
 "kn" = (/turf/open/gm/dirt,/area/whiskey_outpost/outside/south)
 "ko" = (/obj/structure/barricade/metal,/turf/open/floor/plating{dir = 2; icon_state = "warnplate"},/area/whiskey_outpost/outside/south)
 "kp" = (/obj/structure/barricade/sandbags,/turf/open/gm/dirt,/area/whiskey_outpost/outside/south)
@@ -541,8 +526,7 @@
 "ku" = (/obj/structure/bed/chair/dropship/passenger{tag = "icon-shuttle_chair (WEST)"; icon_state = "shuttle_chair"; dir = 8},/obj/item/weapon/gun/rifle/lmg,/obj/item/weapon/gun/rifle/lmg,/turf/open/shuttle/dropship{tag = "icon-rasputin15"; icon_state = "rasputin15"},/area/whiskey_outpost/outside/east)
 "kv" = (/turf/closed/shuttle/dropship{tag = "icon-rasputin7"; icon_state = "rasputin7"},/area/whiskey_outpost/outside/east)
 "kw" = (/obj/structure/barricade/metal,/turf/open/floor/plating,/area/whiskey_outpost/outside/east)
-"kx" = (/obj/structure/largecrate/guns,/turf/open/floor/plating{icon_state = "platebot"},/area/whiskey_outpost/outside/west)
-"ky" = (/obj/structure/sign/greencross{icon_state = "lifestar"; pixel_y = 32},/turf/open/jungle,/area/whiskey_outpost/outside/west)
+"ky" = (/obj/structure/table/almayer,/obj/item/storage/box/nade_box,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
 "kz" = (/turf/closed/mineral,/area/whiskey_outpost/outside/south)
 "kA" = (/turf/open/gm/river,/area/whiskey_outpost/outside/south)
 "kB" = (/turf/open/gm/coast{dir = 8},/area/whiskey_outpost/outside/south)
@@ -552,13 +536,9 @@
 "kF" = (/turf/closed/shuttle/dropship{tag = "icon-rasputin12"; icon_state = "rasputin12"},/area/whiskey_outpost/outside/east)
 "kG" = (/turf/closed/shuttle/dropship{tag = "icon-rasputin9"; icon_state = "rasputin9"},/area/whiskey_outpost/outside/east)
 "kH" = (/turf/open/gm/coast{tag = "icon-beachcorner"; icon_state = "beachcorner"; dir = 2},/area/whiskey_outpost/outside/east)
-"kI" = (/turf/open/jungle,/turf/closed/shuttle{density = 0; dir = 1; icon_state = "re_corner"},/area/whiskey_outpost/outside/west)
-"kJ" = (/obj/item/stack/medical/bruise_pack,/turf/open/floor/plating{dir = 2; icon_state = "warnplate"},/area/whiskey_outpost/outside/west)
-"kK" = (/turf/open/jungle,/turf/closed/shuttle{density = 0; dir = 4; icon_state = "re_corner"},/area/whiskey_outpost/outside/west)
 "kL" = (/obj/structure/shuttle/engine/propulsion{pixel_y = 24},/turf/open/gm/dirt,/area/whiskey_outpost/outside/east)
 "kM" = (/turf/closed/shuttle/dropship{tag = "icon-rasputin3"; icon_state = "rasputin3"},/area/whiskey_outpost/outside/east)
 "kN" = (/obj/structure/barricade/metal{dir = 8; icon_state = "barricade2"; tag = "icon-barricade (WEST)"},/turf/open/floor/plating,/area/whiskey_outpost/outside/west)
-"kO" = (/obj/item/storage/box/explosive_mines,/turf/open/jungle{bushes_spawn = 0; icon_state = "grass_impenetrable"},/area/whiskey_outpost/outside/west)
 "kP" = (/turf/open/gm/coast{dir = 1; icon_state = "beachcorner"},/area/whiskey_outpost/outside/east)
 "kQ" = (/obj/machinery/m56d_hmg/mg_turret,/turf/open/gm/dirt,/area/whiskey_outpost/outside/east)
 "kR" = (/turf/open/floor/plating,/area/whiskey_outpost/outside/west)
@@ -576,7 +556,6 @@
 "ld" = (/obj/structure/barricade/metal{dir = 8; icon_state = "barricade2"; tag = "icon-barricade (WEST)"},/turf/open/floor/plating,/area/whiskey_outpost/outside/east)
 "le" = (/obj/structure/barricade/metal{dir = 4; icon_state = "barricade2"; tag = "icon-barricade (EAST)"},/turf/open/floor/plating,/area/whiskey_outpost/outside/east)
 "lf" = (/turf/open/jungle,/area/whiskey_outpost/outside/south)
-"lg" = (/turf/open/gm/grass{dir = 4; icon_state = "gbcorner"},/area/whiskey_outpost/outside/south)
 "lh" = (/obj/machinery/floodlight{icon_state = "flood01"; in_use = 1; luminosity = 7; name = "Outpost Light"; on = 1; use_power = 0},/turf/open/jungle{bushes_spawn = 0; icon_state = "grass_impenetrable"},/area/whiskey_outpost/outside/south)
 "li" = (/obj/effect/spawner/gibspawner/human,/obj/item/weapon/gun/rifle/m41a,/turf/open/gm/dirt,/area/whiskey_outpost/outside/south)
 "lj" = (/obj/structure/barricade/metal{dir = 8; icon_state = "barricade2"; tag = "icon-barricade (WEST)"},/turf/open/floor/plating{icon_state = "warnplate"; dir = 10},/area/whiskey_outpost/outside/west)
@@ -597,10 +576,8 @@
 "ly" = (/obj/structure/barricade/metal,/obj/structure/barricade/metal{dir = 8; icon_state = "barricade2"; tag = "icon-barricade (WEST)"},/turf/open/floor/plating{icon_state = "warnplate"; dir = 10},/area/whiskey_outpost/outside/east)
 "lz" = (/obj/structure/grille,/obj/structure/window/reinforced{color = "gray"; dir = 5; health = 80; name = "gray reinforced window"},/turf/open/floor/plating,/area/whiskey_outpost/outside/south)
 "lA" = (/obj/structure/flora/ausbushes/leafybush,/turf/open/jungle,/area/whiskey_outpost/outside/south)
-"lB" = (/obj/effect/decal/cleanable/blood,/turf/closed/mineral,/area/whiskey_outpost/outside/south)
 "lC" = (/obj/effect/spawner/gibspawner/human,/turf/open/floor,/area/whiskey_outpost/outside/south)
 "lD" = (/obj/structure/table,/obj/item/paper_bin,/obj/item/tool/pen,/obj/item/folder/white,/turf/open/floor,/area/whiskey_outpost/outside/south)
-"lE" = (/obj/effect/decal/cleanable/blood,/turf/open/jungle{bushes_spawn = 0; icon_state = "grass_impenetrable"},/area/whiskey_outpost/outside/south)
 "lF" = (/turf/closed/shuttle/dropship{tag = "icon-rasputin3"; icon_state = "rasputin3"},/area/whiskey_outpost/outside/south)
 "lG" = (/obj/structure/grille{density = 0; icon_state = "brokengrille"},/obj/effect/decal/cleanable/blood/writing,/obj/item/shard,/obj/item/weapon/gun/pistol/m4a3,/turf/open/floor/plating,/area/whiskey_outpost/outside/south)
 "lH" = (/obj/effect/spawner/gibspawner/human,/turf/open/jungle{bushes_spawn = 0; icon_state = "grass_impenetrable"},/area/whiskey_outpost/outside/south)
@@ -608,11 +585,19 @@
 "lJ" = (/turf/open/jungle,/turf/closed/shuttle/dropship{tag = "icon-diagrasputin (EAST)"; icon_state = "diagrasputin"; dir = 4},/area/whiskey_outpost/outside/south)
 "lK" = (/turf/closed/shuttle/dropship{tag = "icon-rasputin13"; icon_state = "rasputin13"},/area/whiskey_outpost/outside/south)
 "lL" = (/turf/open/jungle,/turf/closed/shuttle/dropship{tag = "icon-diagrasputin (NORTH)"; icon_state = "diagrasputin"; dir = 1},/area/whiskey_outpost/outside/south)
+"lM" = (/obj/structure/table,/obj/item/clothing/mask/surgical{pixel_x = 3; pixel_y = 5},/obj/item/clothing/mask/surgical{pixel_x = 1; pixel_y = 2},/obj/item/clothing/mask/surgical,/obj/item/storage/box/masks,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
 "lN" = (/obj/effect/decal/cleanable/blood/writing,/turf/open/jungle,/area/whiskey_outpost/outside/south)
 "lO" = (/obj/effect/decal/cleanable/blood/writing{tag = "icon-tracks (NORTH)"; icon_state = "tracks"; dir = 1},/turf/open/jungle,/area/whiskey_outpost/outside/south)
 "lP" = (/turf/closed/wall,/area/whiskey_outpost/outside/south)
+"lQ" = (/obj/structure/table,/obj/item/clothing/under/colonist,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"lR" = (/obj/structure/table,/obj/item/stack/medical/ointment,/obj/item/stack/medical/bruise_pack,/obj/item/stack/medical/bruise_pack{pixel_x = 3; pixel_y = 3},/obj/item/reagent_container/hypospray/autoinjector/quickclot,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"lS" = (/obj/structure/curtain/open/medical,/turf/open/floor/plating,/area/whiskey_outpost)
+"lT" = (/obj/structure/curtain/medical,/turf/open/floor/plating,/area/whiskey_outpost)
+"lU" = (/obj/structure/window/framed/colony,/turf/open/floor/plating/plating_catwalk,/area/whiskey_outpost)
+"lV" = (/obj/machinery/door/airlock/almayer/medical{icon_state = "door_closed"; dir = 1},/turf/open/floor/plating/plating_catwalk,/area/whiskey_outpost)
 "lW" = (/turf/open/jungle/impenetrable{icon_state = "grass_clear"},/area/whiskey_outpost/outside/south)
 "lX" = (/obj/effect/decal/cleanable/blood/writing,/turf/open/jungle/impenetrable{icon_state = "grass_clear"},/area/whiskey_outpost/outside/south)
+"lY" = (/obj/structure/bed/chair{dir = 4},/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
 "lZ" = (/obj/effect/decal/cleanable/blood/writing{tag = "icon-tracks (NORTHWEST)"; icon_state = "tracks"; dir = 9},/turf/open/jungle,/area/whiskey_outpost/outside/south)
 "ma" = (/obj/effect/decal/cleanable/blood/writing{tag = "icon-tracks (EAST)"; icon_state = "tracks"; dir = 4},/turf/open/jungle,/area/whiskey_outpost/outside/south)
 "mb" = (/obj/effect/decal/cleanable/blood/writing{tag = "icon-tracks (EAST)"; icon_state = "tracks"; dir = 4},/turf/open/jungle{bushes_spawn = 0; icon_state = "grass_impenetrable"},/area/whiskey_outpost/outside/south)
@@ -630,6 +615,65 @@
 "mn" = (/obj/effect/landmark/start{name = "Squad Marine"},/turf/open/floor/plating{dir = 1; icon_state = "asteroidfloor"},/area/space)
 "mo" = (/turf/open/floor/plating{dir = 1; icon_state = "asteroidfloor"},/area/space)
 "mp" = (/obj/structure/campfire{name = "IF YOU CAN SEE THIS FIRE AFTER THE LAG, AHELP SAYING THAT ART'S FIX DIDN'T WORK"},/turf/open/floor/plating{dir = 1; icon_state = "asteroidfloor"},/area/space)
+"mq" = (/obj/structure/table,/obj/item/stack/medical/bruise_pack,/obj/item/tool/surgery/hemostat,/obj/item/storage/box/syringes,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mr" = (/obj/machinery/light{dir = 1},/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"ms" = (/obj/structure/bed/roller,/obj/structure/barricade/metal{icon_state = "metal_0"; dir = 8},/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mt" = (/obj/effect/decal/medical_decals{icon_state = "triagedecalleft"; pixel_x = 20; tag = ""},/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mu" = (/obj/machinery/bodyscanner,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mv" = (/obj/machinery/body_scanconsole,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mw" = (/obj/structure/largecrate/supply/medicine/blood,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mx" = (/obj/structure/rack,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"my" = (/obj/structure/rack,/obj/machinery/light{dir = 1},/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mz" = (/obj/structure/bed/roller,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mA" = (/obj/structure/sink{pixel_y = 20},/obj/effect/decal/medical_decals{icon_state = "triagedecalleft"; pixel_x = 20; tag = ""},/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mB" = (/obj/machinery/door/airlock/almayer/medical/glass,/turf/open/floor/plating/plating_catwalk,/area/whiskey_outpost)
+"mC" = (/obj/structure/stairs{icon_state = "rampbottom"; dir = 4},/turf/open/jungle{bushes_spawn = 0; icon_state = "grass_impenetrable"},/area/whiskey_outpost/outside/east)
+"mD" = (/obj/structure/stairs{icon_state = "rampbottom"; dir = 8},/turf/open/jungle{bushes_spawn = 0; icon_state = "grass_impenetrable"},/area/whiskey_outpost/outside/west)
+"mE" = (/obj/structure/barricade/plasteel{icon_state = "plasteel_closed_0"; dir = 8},/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mF" = (/obj/machinery/iv_drip,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mG" = (/obj/structure/barricade/metal{icon_state = "metal_0"; dir = 8},/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mH" = (/obj/machinery/light,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mI" = (/obj/structure/table/almayer,/obj/machinery/recharger,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mJ" = (/obj/structure/closet/crate/supply,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mK" = (/obj/structure/closet/secure_closet/medical1,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mL" = (/obj/structure/closet/secure_closet/medical3,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mM" = (/obj/structure/barricade/plasteel,/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mN" = (/obj/structure/bed/roller,/obj/effect/decal/medical_decals{icon_state = "triagedecalleft"; pixel_x = 20; tag = ""},/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mO" = (/obj/structure/rack,/obj/machinery/light{dir = 4},/turf/open/floor/almayer{icon_state = "white_sterile"},/area/whiskey_outpost)
+"mP" = (/obj/machinery/door/airlock/almayer/generic{dir = 2},/turf/open/floor/plating/plating_catwalk,/area/whiskey_outpost)
+"mQ" = (/obj/machinery/door/airlock/almayer/maint{icon_state = "door_closed"; dir = 1},/turf/open/floor/plating/plating_catwalk,/area/whiskey_outpost)
+"mR" = (/obj/structure/bed/chair,/obj/machinery/light{dir = 1},/turf/open/floor/wood,/area/whiskey_outpost)
+"mS" = (/obj/machinery/vending/snack,/turf/open/floor/wood,/area/whiskey_outpost)
+"mT" = (/obj/structure/bed/chair{dir = 4},/turf/open/floor/wood,/area/whiskey_outpost)
+"mU" = (/obj/structure/table/almayer,/turf/open/floor/wood,/area/whiskey_outpost)
+"mV" = (/obj/structure/bedsheetbin,/obj/machinery/light{dir = 1},/turf/open/floor/wood,/area/whiskey_outpost)
+"mW" = (/obj/structure/rack,/obj/machinery/light{dir = 1},/turf/open/floor/almayer,/area/whiskey_outpost)
+"mX" = (/turf/open/floor/plating/plating_catwalk,/area/whiskey_outpost)
+"mY" = (/obj/machinery/power/apc{pixel_y = 32},/obj/structure/cable{d2 = 2; icon_state = "0-2"; pixel_y = 0},/turf/open/floor/almayer,/area/whiskey_outpost)
+"mZ" = (/obj/structure/table/almayer,/obj/item/storage/box/MRE,/obj/item/storage/box/MRE,/obj/item/storage/box/MRE,/turf/open/floor/wood,/area/whiskey_outpost)
+"na" = (/obj/structure/bed/chair{dir = 8},/turf/open/floor/wood,/area/whiskey_outpost)
+"nb" = (/obj/machinery/vending/cigarette,/turf/open/floor/wood,/area/whiskey_outpost)
+"nc" = (/obj/machinery/power/geothermal,/obj/structure/cable{d2 = 2; icon_state = "0-2"; pixel_y = 0},/turf/open/floor/almayer,/area/whiskey_outpost)
+"nd" = (/obj/structure/rack,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/open/floor/almayer,/area/whiskey_outpost)
+"ne" = (/obj/structure/bed/chair{dir = 1},/turf/open/floor/wood,/area/whiskey_outpost)
+"nf" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/open/floor/plating/plating_catwalk,/area/whiskey_outpost)
+"ng" = (/obj/structure/rack,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/open/floor/plating/plating_catwalk,/area/whiskey_outpost)
+"nh" = (/obj/machinery/light,/turf/open/floor/wood,/area/whiskey_outpost)
+"ni" = (/obj/machinery/door/airlock/multi_tile/almayer/generic{name = "\improper Canteen"},/turf/open/floor{icon_state = "cafeteria"; dir = 2},/area/whiskey_outpost)
+"nj" = (/obj/structure/table/almayer,/obj/machinery/light,/obj/item/stack/barbed_wire/full,/obj/item/stack/sandbags/large_stack,/turf/open/floor/wood,/area/whiskey_outpost)
+"nk" = (/obj/structure/rack,/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/open/floor/almayer,/area/whiskey_outpost)
+"nl" = (/obj/machinery/power/terminal{icon_state = "term"; dir = 4},/obj/structure/cable{d2 = 8; icon_state = "0-8"},/turf/open/floor/plating/plating_catwalk,/area/whiskey_outpost)
+"nm" = (/obj/machinery/power/smes,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/structure/cable,/turf/open/floor/almayer,/area/whiskey_outpost)
+"nn" = (/obj/structure/table/almayer,/turf/open/floor/plating/plating_catwalk,/area/whiskey_outpost)
+"no" = (/obj/structure/rack,/turf/open/floor/almayer,/area/whiskey_outpost)
+"np" = (/obj/machinery/light,/turf/open/floor/almayer,/area/whiskey_outpost)
+"nq" = (/obj/structure/platform_decoration{icon_state = "platform_deco"; dir = 8},/turf/open/gm/grass,/area/whiskey_outpost/outside/west)
+"nr" = (/obj/structure/platform{icon_state = "platform"; dir = 1},/turf/open/gm/grass,/area/whiskey_outpost/outside/west)
+"ns" = (/obj/structure/platform_decoration{icon_state = "platform_deco"; dir = 4},/turf/open/gm/grass,/area/whiskey_outpost/outside/west)
+"nt" = (/obj/structure/platform_decoration{icon_state = "platform_deco"; dir = 4},/turf/open/gm/grass,/area/whiskey_outpost/outside/east)
+"nu" = (/obj/structure/stairs,/turf/open/gm/grass,/area/whiskey_outpost/outside/east)
+"nv" = (/obj/machinery/m56d_hmg/mg_turret,/turf/open/floor/wood,/area/whiskey_outpost)
+"nw" = (/turf/open/asphalt,/area/whiskey_outpost/outside/south)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -651,7 +695,7 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababababababababababakakamanaoapaqaparasacatauavawacaxayazaAaBacacakakabababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabakakakakakakakakakakaCaDacacaEaFaGaHaIacatauazazaJazazazazaBacacaKakakakakakakakakakababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabakakakaLaLaLaLaLaLaLaLaLacacacacacaMaNaOatauazazazazazazazaPacacaLaLaLaQaLaLaRaLaLakaSababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabakakakaTaTaTaLaLaTaTaTaTacacaUaVaWaVaUaXatauazaYaZbabbazbcaBacacaLaLbdbdbdbdbdbdaLaLaSaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabakakakaTaTaTaLaLaTaTaTaTacacaUaVaWaVaUaXatauazaYaZbabbbcazaBacacaLaLbdbdbdbdbdbdaLaLaSaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabakakaLbebfbfbfbfbfbfbgaLacacbhbibjbkbhaXacacblacacacacacacacacacaLbmbdbnbobpbqbdaKaLaLaSababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabakbdbrbsjzjzjzbtbtkabuaLacacbvbwbxbybvbzbAbBbxbCbDbEbFbGbxbxacacaLaLbdbHbIbpbJbdaLaLaLaSaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababababababababakbKaLbsjzjzjzbtbtkabuaLacacbLbwbMbybLbzbNbxbxbxbxbObxbxbPbQacacaLaTbdbHbIbpbJbdaLaLaLaSaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -661,16 +705,16 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababab
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabababaSaSaSaSbWbWbWbWbWcnbXbYaLcocpcpcpcpcpcpcqaLacacbZbxbxchchcichchchbxcrcsbxbxbPbQacacaLaLaLctaLaLbKaLbYcubWbWbWbWaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababaSaSaSbWbWbWbWbWbWbWbWcnbXbYaLaLaLaLaLaLaLaLaLaLacaccvbxbxchchcichchchbxbxbObxbxbxbxacacaLaLaLaQaLaLaRaLbYcubWbWcwbWbWbWaSaSaSaSaSaSaSaSaSaSaScxcxcxcxcxcxcxcxaSaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababaSaSbWbWcybWbWbWbWcwbWbWczcAbYaLaLaLaLaLaLaLcBaLaLacaccCcDcEcFcFcGbxcacHbxbxbObxbxbPbQacacaLaLbdbdbdbdbdbdaLcIbWbWbWbWbWbWbWbWaSaSaSaSaSaSaSaScxcxcxcxcxcJcxcxcxcxaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabababababababababababababaSaSbWbWbWbWcKbWbWbWbWbWbWcLcAbYaLcBcMcNcNcOcNcNcPcQacacacacacacaccRcSacaccScSacacacacacacaccTcUbdbncVbpbqbdaKcIbWbWbWbWbWbWbWbWbWbWbWbWcybWcWcxcxcXcxcxcxcxcxcxcxcxaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabababababababababababababaSaSbWbWbWbWcKbWbWbWbWbWbWcLcAbYaLcBcMcNcNcOcNcNcPcQacacacacacacaccRcSacacedcSacacacacacacaccTcUbdbncVbpbqbdaKcIbWbWbWbWbWbWbWbWbWbWbWbWcybWcWcxcxcXcxcxcxcxcxcxcxcxaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabababababaSaSaSaSaSaSaSaSaSaSaSaSaSbWbWcYbWbWbWbWbWbWbWbWbWcZcAbYaLcBdadbdbaLdbdbdcaLaLacacacacdddedfaLdgdgaLaLdeddacacacacaLbYdhbdbHbIbpbJbdaLcIbWbWbWbWbWbWcKbWbWbWbWbWdidjdkcxcxcxcxcxcxcxcxdlcxcxaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaSaSaSaSaSaSaSaSaSdmdmdmdmdndobWbWbWbWcYbWbWbWbWbWbWbWbWbWbWbXbYaLcBdpdqdqdrdqdqdsaLaLdtdgdgdgdtaLduanananananandvdwdwdwdvdxbYdhbdbHbIbpbJbdbYcubWbWbWbWbWbWbWbWbWbWbWdycWcxcxcxcxcxcxcxcJcxcxcxcxcxaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaabababababababababaSaSaSdmdmdmdmdmdmdmdmdmdmdmdobWbWbWbWbWcYbWbWbWbWbWbWbWbWbWbXbYaLaLaLaLaLaLaLaLaLaLaLaLaLaTaTaTaLaLaLaLdzaTaLaLaLaTaTaTdAdfbYdhbdbHbIbpbJbdbYcubWbWbWbWbWbWbWbWbWbWbWdBcWcxcXcxcxdlcxcxcxcxcxcxcxcxaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaabaSaSaSaSaSaSaSaSaSdmdmdmdmdmdndmdmdmaSaSaSaSaSbWbWbWbWbWcYcwbWbWbWbWbWbWbWbWdCaLaLaLaLdDdEdFdGdDcBaLaLaTaTaLaLaLaTaTaLaLaLaLaLaLaTaTaLaLaLdfbYbmbdcebIbpbJbdcfdHdIbWbWbWbWbWbWbWdJbWbWbWcWcxcxcxcxcxcxcxcxcxcxcxcxcxaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaababaSdmdmdmdmdmdmdmdmdmdmdmaSaSaSaSaSaSaSaSaSaSaSaSaSaSbWbWcYbWbWbWbWbWbWcKbWbWdCaLaLaLaLaLdKdLdMaLcBaLaLaLaLaLaLaLaLaLaLaLaLaLaLaLaLaLaLdAaLdfbYaTbdbdclbpbdbdbYdHdNbWbWbWbWcwbWbWdJbWdidjdkcxcJcxcxcxcxcxcxcxcxcJcxcxaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaabdOaSdPdQdQdQdQdRdndmdmaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSbWbWbWbWbWbWbWbWbWbWbWdCaLaLaLaLaLaLaLaLaLcBaLaLaLaLaLaLaLaLaLaLaLaLaLaLaLaLaLaLaLaLdfaLaLaLdSaLaLbKaLbYdHdTbWbWbWbWbWbWbWbWdJcWcxcxcxcxcxcxcxcXcxcxcxcxcxcxcxaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaabdOaSdPdQdQdQdQdRdndmdmaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSbWbWbWbWbWbWbWbWbWbWbWdCaLaLaLaLaLaLaLaLaLcBaLaLaLaLaLiraLaLaLaLaLaLaLaLaLiraLaLaLaLdfaLaLaLdSaLaLbKaLbYdHdTbWbWbWbWbWbWbWbWdJcWcxcxcxcxcxcxcxcXcxcxcxcxcxcxcxaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaabdOdmdQdUdUdUdVdQdmdmdmaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSbWbWbWbWbWbWbWbWbWbWbWbXbYaLaLcBaLaLaLaLaLaLaLaLaLaLaLbYaLbYaLbYaRbYaLbYaLbYaLaLaLaLdfaLaLaLdAaLaLaLaLbYcubWbWbWbWbWbWbWbWbWdJcWcxcxcxcxcxcxcxcxdlcxcxcxcxcXcxaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaabdOdmdQdWdUdUdXdQdmdmaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSbWbWbWbWbWbWbWbWbWbWbWbWbWbXbYaLaRcBaLaLaLaLaLaLaLaRaLaLaLbYaLbYaLdYbdcTaLbYaLbYaLaLaRaLdfaLaLaRaLaLaLaLaLbYcubWbWbWbWbWbWbWbWbWcycWcxcxcxcxcJcxcxcxcxcxcxcxcxcxdZaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaabdOdmeadQdUdQdQebdmdmaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSbWbWbWbWbWbWbWbWecbWbWbWbWbXbYbdbdcdcdbdedbxbdcdcdbdbdaLeeefaLbYaLbYbKbYaLbYaLefeebdbdbdegehbdbdbdaLaLaLaLbYcubWbWbWbWbWbWecbWdidjdkcxdlcxcxcxcxcxcxcxdZeieieieiejaSabababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaabdOdmeadQdUdQdQebdmdmaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSbWbWbWbWbWbWbWbWecbWbWbWbWbXbYbdbdcdcdbdnibxbdcdcdbdbdaLeeefaLbYaLbYbKbYaLbYaLefeebdbdbdegehbdbdbdaLaLaLaLbYcubWbWbWbWbWbWecbWdidjdkcxdlcxcxcxcxcxcxcxdZeieieieiejaSabababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaabdOdmdmdmdmdmdndmdmaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSaSbWbWbWbWcwbWbWbWbWbWbWbWbWczcAekbdelbxelbxelbxembxelenbdaKaLbYaLefeeefaLefeeefaLbYeobdepeqeraGesetbdcfbYbYaLbYcubWbWbWcKbWbWbWdJcWcxcxcxcxcxcxcxcXcxcxcxeubWbWbWbWbWaSaSaSababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaabdOdmdmevdmevdmevdmaSaSaSaSaSaSewdjdjdjdjdjdjdjdjexcYbWbWbWbWbWbWbWbWbWbWbWbWeycAbYcdezeAeBeCezeDeEeCbxeFcdeGaLbYaLbYaLbYaLbYaLbYaLbYaLcdeHeIeraGeJeKcdbYaLcmdLcmeLbWbWbWbWbWbWbWdJcWcxcxcxcxcxcxcxcxcxcxcxeubWbWbWbWbWbWbWaSaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaabdOdmdmevdmevdmevdmaSaSaSaSaSbWcWcxcxcxcxcxcxcxcxeucYbWbWbWbWcybWbWbWbWbWbWbWeMcAbYcdeNeOePeQeNeReSeQeleTcdeGaLbYaLbYeeefaLefeebYaLbYaLcdeUeIeVeWeJeXcdbYcubWbWbWbWbWbWbWbWbWbWbWbWcWcxcxcxcxdZeieieieieieiejbWbWcybWbWbWbWbWaSababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -689,52 +733,52 @@ aaaaaaaaaaaaaaaaaaabdOfPfPfPfOfPfOfPfOfOdobWfKbWbWbWbWcWcxcxcxcxcxcxeubWbWbWbWaS
 aaaaaaaaaaaaaaaaaaabdOfPfOfOfOfOfPfOfPfPdofKcKbWbWbWbWcWcxcxcXcxcxcxeubWcyaSaSaSaSaSaSaSaSaSaSgjgjgjbWbWbWbWgJgKgKgKgLbWbWcKgjgjgjbWbWbWbWbWbWbWbWbWecgcgMdobWbWbWgDgEgFgEgGbWbWbWbWgjgCcWcxcXcxcxcxcxcxcxcxcxcxcxcxgufsfsfsgvcxcxcxcxcxaSaSaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaabdOgNfPfPfPfOfOfPfPfPdofKbWbWbWcybWeYeZcxcxcxdlcxgfdjaSaSaSaSaSaSaSaSaSaSdjdjexbWbWgjgjbWgOgPgQgPgRbWgjgjbWbWbWbWgjgjcyfsfsfsbWbWbWgjgSgTbWbWbWgJgKgKgKgLbWbWbWewdjdjdkcxcxcxcxcxdZeieZgUgUcxcxcxgufsfsfsgvcxcxcxcxaSaSaSaSabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaabdOgNfPfPfOfPfOfPfOfPgVfXfXfTbWbWbWbWcWcxcJcxcxcxcxcxcxaSaSaSaSaSaSaScxcxcxcxgfdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjgufsfsfsgvgjgjbWbWbWgjgjbWgOgPgQgPgRbWgjgCcWcxcxcxcxcxdlcxcxeubWeYgWgUgXgUgUgYgZgZgZhagUgUgUhbhchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaabdOgNfOhdhdhdfOfOfOfOdmdndmdogegebWbWcWcxcxcxcxcXcxcxcxcxcxcxcxcxcxcxcxdlcxcxcxcxcxcxcxcxcJcxcxcxcxcxcxcxcxcXcxcxcxcxgufsfsfsgvdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdkcxcxcJcxcxgUgUhehfhghghhgUgUgUgUgYgZgZgZhagUgUgUhehchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaabdOgNfOfOfOfOfOfOfOfOdmdndmdobWbWbWbWcWcxcxcxcxcXcxcxcxcxcxcxcxcxcxcxcxdlcxcxcxcxcxcxcxcxcJcxcxcxcxcxcxcxcxcXcxcxcxcxgufsfsfsgvdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdkcxcxcJcxcxgUgUhehfhghghhgUgUgUgUgYgZgZgZhagUgUgUhehchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaabdOhihjfOfOfOfOfOfPfPdmhkhkhlhmhmhmhmhnhohohphqhqhqhqhqhqhqhqhqhqhqhqhqhqhqhqhqhrhqhqhqhqhqhqhqhshqhqhqhqhqhqhqhqcxcxgufsfsfsgvcxcxcJcxcxdlcxcxcxcxcxcxcxcxcxcxcxcxcxcxcxcxgUgUhthuhuhvhhgUgUgUgUgYgZgZgZhagUgUgUhthchchchcabababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaabdOdOhwhjhjhjhjhwhjhjhjhkhkhxhyhzhAhmhmhmhmhnhohohohohohBhBhBhBhBhBhqhqhqhqhChqhqhqhqhqhqhqhqhqhqhqhqhqhqhChqhqhscxcxgufsfsfsgvcxcxcxcxcxcxcxcxcxcxcxcxcxcxcxcxcXcxcxgUgUgUgUgUhDhEhEhEhFgUgUgUgUgYgZgZgZhagUgUgUhDhchchchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaabdOdOhwhjhjhjhjhjhwhjhjhkhkhkhkhlhmhAhAhAhGhyhyhyhyhyhyhyhBhBhBhBhBhBhBhBhohohohohohohohohohohohohohohohohohohohogocxgufsfsfsgvcxgUgUgUgXgUgUgUgUgUgUgUgUgUgUgUgUgUgUgUhHgUgUgUgUgUgUgUgUgUgUgUgUgYgZgZgZhahbgUgUgUhchchchchchcababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaahIabdOdOhJhKhjhjhjhjhwhjhjhjhwhkhkhxhyhyhyhyhLhMhkhjhwhBhBhBhBhBhBhBhBhBhBhBhmhNhmhmhmhmhmhOhmhmhmhmhmhmhmhmhmhmhmhmeYeigufsfsfsgveihPhPhPhPhPhQgUgUgUgUgUgUhHgUgUgUgUgUgUgUgUgUgUgXgUgUgUgUgUgUhbgUgYgZgZgZhagUgUgUgUhchchchchchchcabababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaababdOhqhRhjhjhjhjhjhjhShwhjhkhkhkhkhThkhkhkhkhkhwhwhBhBhBhBhBhBhBhBhBhBhBhBhmhmhmhmhmhmhmhmhmhmhmhmhmhmhNhmhmhmhUhmhVhWhXhXhXhYhZhghghghghgiahPhPhPhPhPhQgUgUgUgUgUgUhbgUgUgUgUgUgUgUgUgUgUgUgUgUgYgZgZgZhagUgUgUgUhchchchchchchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaabdOhBhRhwhwhjhwhjhjhwhwhwhwhwhkhkhBhBhkhkhjhwhBhBhBhBhBhBhBhBhBhBhBhBhBhmhmhmhZhmhmhmhmhmhmhmhmhmhmhZhmhmhmhmibhAichmhXhXhXhmhmidhghgiehghghghghghghgiahPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPgYgZgZgZhahPhPhPhPhchchchchchchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaabdOhBhRhwhjhwhwhjhjhwhjhjhjifhJhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhyhyhzhmhmhmhmhmhmhGhyhzhmhmhmhmhmhGhyhzhmhmhmhmhmhmhmhmighuhuhvhghgihhghgiihghghghghghghghghghghghghghchchchchchghgiiihgYgZijgZhaihiehghghchchchchchchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaabdOhBhwhwhjhjhwhjhjhjhwhjhwikhqhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhkhkhxhyhyhyhyhyhyhLhkhxhyhyhyhyhyhLhkhxhyhyhyhyhyhyhyililililililimhghghghghghghghghgiehghghghghghghghchchchcinhghghghggYgZgZgZhahghghghgiohchchchchchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaabdOhBhjhwhwhjhwhjhjhwhjhwhwikhqhqhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwhwhkhkhkhkhkhkhkhkhkhkhkhkhkhkhkhkhThkhkhkhkhkhkhkhkiqiqiqiqiqiqisilililililimhghghghghghghgiihghghchchchchchcitititiugYgZgZgZhaivititithchchchchchchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaabhBhBhwhjhjhwhjhjhjhjhwhwhwiwixixhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjhjhkhkhThkhkhkhkhkhkiyhkhkhkhkhkhkhkhkhkhkhkhkhkhkhkiqiqiqiqiqiqiziqiqiqiqiqisimhghghghghghghghghghchchchchchchEhEhEhEgYgZgZgZhahEhEhEhEiAgUgUgXhchchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaababhBhBhjhjhjhjiyhjhjhjhjhjhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhkhjhjhkhkhkhkhkhkhkhkhkhBhBhkhkhkhkhkhkhkhkiziBiCiqiqiqiqiqiqiqiqiqiqiDhghghghghgihhghghchchchchchcgUgUgUgUgUgYgZgZgZhagUgUhHgUiEiFiGgUgUhchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabhBhBhjhjhjhjhjhjhjhjhjhjhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBiHhjhjhjhkhkhkhkhkhkhkhkhkiIhBhBhkhkhBhBhBhBhBhciBiBiCiBiBiCiCiqiqiqiqijiDhghghghgiJhghghghchchchchchcgUgUhbgUgUgYgZgZgZhagUgUgUgUiKiLiMgUgUgUhchcababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabhBiHhjhjhjhjhjhjhjhjhjhjiIhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBiNiNiNkjkjiNiNiNiNkjiNiNhBhBhBhBhBhBhBhBhBhchchchchchchchciCiCiqiqiqiqisimhghghchchchchchchchchcgUgUgUgUgUgUiOgYgZgZgZhahPhPhPhPiKiPiMhPhPhPhchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabhBhBiNiNiNiNiNhjhSiNiNiNhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjhjhjhjhkhkhkhkhkhkhkhkhkhBhBhBhBhBhBhBhBhBhchchchchchchciniCiCiCiCiqiqiCisililiohchchchchchchchcgUgUgUgUhHgUhtgYgZgZgZhahgiQiRiRiSiLiTiUiUiVhchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabhBhJhJhJhJhJhJhJhJhJhJiWhJhJhJhJhJhJhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjhjhjhjhjhjhjhkhkhkhkiphkhkhkhjhBhBhBhBhBhBhBhBhBhchchchchchchchcititititkkkkitititithchchchchchchchcgUgUgUgUgUgUgUhtgYgZgZgZhahgiYiLiZjajbjajcjdiYhchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabhBhqhqhChqhqhqhqhqhqhqhqhqhqhqhshqhqhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjhjhjhjhjhjhjjehkhkhkhkhkhjhjhjhBhBhBhBhBhBhBhBhBhchchchchchchchciCiCiCiCiqiqiCiCiCiCiChchchchchchchcgUgUgUgUgUgUhbhtgYgZgZgZhahgiUiLiUjfjgjhjijdjjhchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabhBhqhqhqhqhqhrhqhqhshqhqhChqhqhqhqhqhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjhjhjhjhjhjhjhkhkhkhkhkhjhjhjhjhBhBhBhBhBhBhBhBhBhchchchchchchchciCiCiCiCiqiqiCiCiCiCiCiChchchchchchcgUgUgUgUgXgUgUhtgYgZgZgZhahgjkiLiUiLjliLjijmjkhchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabhBixixixixixixixixixixixixixixixixixixhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjhwhwhjhwhjhkhkhkhkhkhjhShwhjhBhBhBhBhBhBhBhBhBhchchchchchchchciCiCiCiCiqiqiCiCiCiCiCiCiCiChchchchchcgUgUgUgUgUgUhtgYgZgZgZhahgiUiUiUjnjoiLjpjfiYhchcababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabhBhjhjhjhjjqhjhjhjhjhjhjhjhjhjhwhwhwhjhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjhwhwhjhjhjhkiphkhkhkhwhwhwhjhBhBhBhBhBhBhBhBhBhchchchchchchchchciCiCiCiqiqjriCiCiCiCiCiCiChchchchchchcgUgUhHgUgUhDgYgZgZgZhahgiUhgiUiUjgiLjsjfjthghchcabababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabhBhjhwhjhwhjhjhjhwhjhjhjhjhjhwhwhwhwhwhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwhwhwhwhwhjhkhkhkhkhwhwhjhjhjhBhBhBhBhBhqhqhqhqgUgUgUjuiCiBhchchchciBiCiqiqiqiCiBiBiBiBiChchchchchchcgUgUiOhPhPhPhPgYgZgZgZhahghgiUiUjajajviUjfjkhghghchchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabhBhwhwhwhwhjhjhwhwhwhjhjhwhwhjhjifhJhJhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwhwhjhjhwhjhkhkhkhkhwhjhwhwhBhBhBhBhBhqhCjwbdbdbdbdbdbdjxiBiBhchchciBiCiqiqiqiCiCiBiBiCiBiBhchchchchcgUhbhthghghghghggZgZgZhghgiUhgiSjAjgiLiUiUjBhghghghghghghcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaababhBhjhwhjhwhjhjhjhjhwhjhjhwhjhjhwikhqhqhqhqhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjhwhwhwhjhjhkhkhkhkhjhjhjhjhjhBhBhBhqhqhqbdbZjCjCjCjDjEbdiBiBiBiBiBiBiqiqiqiqhciCiBiBiBiBiBhchchchchcgUgUhthghghgiehghghghghghgiUiUiLiZjGjciUiUjBhghghghgiehghcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaabhBhBhwhjjHjIjJjIjKhjhjhwhwhjhwhjhwikhqhshqhChBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjhwhwhjhjhjhkhkhkhkhjhjhwhjhwhwhwikhqhshqbdjLbxjMjLjNjObdiCiBiBiBiBiCiqiqiqiqhciCiBiBiCiBiBhchchchchchcgUhthgihhghghghghghghghgiUhgiLjPjQjRiUhgiUhghgiUhghghghcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaabhBhjhjhjjIjSjTjUjIhjhwjqhjhwhwhjhwikhqhqhqhqhqhqhrhqhBhBhBhBhBhBhBhBhBhBhBhwhjhjhjhwhjhkhkhkhkhjhwhwhwhwhjhwiwixixixbdjVjWjXjXjYjZbdiBiBiCiBiBiqiqiqiqiqhcjriCiCiBiBiBhchchchchcgUgUhthghghghghghghghghgjniUhuiVkbjikckdhuhuhgiJhghghghghcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaabhBhjhjhSkekfkfkgkhhjhjhwhjhwhjhjhjiwixixixixixixhqhqhqhqhqhqhRhBhBhBhBhBhBhwhwhjhwhwhjhkhkhkiphjhjhwhjhjhwhjhwhwhwhjklbdbdgFgFbdbdkmiCiBiBiCiBiqiqiqiCiBiCiCiCiBiCiBiBhchchchchcgUhHhthgknkokokokoknknknkpkqknkrksktkukvhghghgkwkwhgihhchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaabhBhjhjhjjIkxkgkxjIhjhjhwhwhjhwhjhwhwhwhwhjhwhwhjikhshqhqhrhqhRhBhBhBhBhBhBhjhjhjhjhwhjhkhkhkhkhjjehwhjhwhwhwhjhwhjhwhwhjkyiCiCiBiBiCiBiqiqiqiqiqiqiqiCiBiBiBiCiBiBiBhchchchckzkAkAkAkBknknknknknknknknknknknknkCkDkEkFkGhgkwkwhgkHhEhEhchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaabhBhBhBhjkIjIkJjIkKhjhjhjhjhjhjhjhjhjhwhwhwhjhwhwikhqhqhqhqhqhRhBhBhBhBhBhBhwhwhwhwhjhjhkhkhkhkhkhjhjhjhjhShjhjhjhjhjhjhShjiCiCiCiBiBiCiqiqiqiqiqiqiCiBiCiBiCiBiCiBiChchchchchcgUhbgUhthghghghghghgiehghgiUhghghgkLkMkLhghghghgkHiAgUgUhcababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaababhBhBhjhjjqhjhjhjhjhjhjhjhjhjhjhjhjhjhwhjhwhwhwhBhBhBhBhBhBhBhBhBhBhBhBhBhjhwhjhwhwhjhkhkhkhkhkhkhkhkhkhkhkhkhkhkhkhkhkhkiqiqiqiriqiqiqiqiqiqiCiBiCiBiBiCiCiBiBiBiBhchchchchcgUgUgUhthuhuhuhuhghghuhuhghghghgiUhghgiUhghghghghhgUhchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabhBhBhjhjhjhjhjhjkOhjhjhjhjhjhjhjhjhjhjhwhjhwhwhBhBhBhBhBhBhBhBhBhBhBhBhBhwhwhwhwhjhjhShkhkhkhkhkhkhkhkhkhkhkhkhkhkhkhkhkiqiqiqiqiqiqiqiqiqiqiBiCiBiCiCiCiCiBiBiBiBiChchchchcgUgUgUhDhEhEhEkPkQhuhghghuhghghghukQhuhghghgihkHiAgUhcabababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabhBhBhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhwhBhBhBhBhBhBhBhBhBhBhBhBhBhwhwhjhwhjhwhjhjhkhkhkhkhkhkhkhkhkiphkhkhkhkhkhkhkiqiqiXiqiqiqiqiCiCiCiBiCiCiBiBiBiCiCiBiCiBiChchchchchcgUgXgUgUgUhHhDhEhEhEhEkPihhuhghghghghuhuhukHiAgUhchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabhBhBhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwhjhjhwhjkNkRkWhjhShjhjhjhjhjkNkRkWhjhjhkkRiUiqkSiCiCiCldiUleiCiCiCiCiCiCiCiBiCiCiCiBiChchchchchchcgUgUgUgUgUgUgUgUgUgUhDhEhEhEhEhEhEhEhEhEhFhbgUhcababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabhBhBiNiNiNiNhjiNiNkTiNhjhjiNkTiNiNhjhjiNiNiNhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjhjhjljkTlkhjhjhjhjhjhjhjljkTlkhjhjhkkRiUiqiCiCiCiClokUlpiCiCiCjriCiCldiUleiCiChchchchchchchchcgUgUhbgUgUgXgUgUgUgUgUhHgUgUhbgUgUgUgXgUgUgUgUhcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjlsiNiNiNiNiNiNiNiNiNiNiNiNiNiNiNiNlwlwlxlxitititititititititititiUiClokUlpiChchchchchchchchchcgUgUgUgUgUgUgUgUhbgUgUgUgUgUgUgUiOhPhPhPhQgUhHhcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhkkRiUiqiCiCiCiCiCiCiCiCiCiCiClyititititithchchchchchchchchchchchchPhPhPhPhPhPhPhPhPhPhPhPhPhfhghghgiagWgUkzababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabkzkzhBhBhBhjhjhjhjhjhjhjhjhjhBhBhBhBhjhjifhKhjhBhBkzkzkzkzkzkzkzkzkzkzkzkzkzkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVjykqkqjykXkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkzkzkzkzkzkzkzkzkzkzkzkzknknknknknknknknknknknknkYknkqknknknkZlakzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabkzkzkzkzkzhBhjhjhjhjhjhBhBhBhBhBhBhBhjhjikhRhBhBhBkzkzkzkzkzkzkzkzkzkzkzkzkzkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVjyjyjyjyjykVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkzkzkzkzkzkzkzkzkzkzkzkzknknkYkzlbknlckzknkpkpknknkzknknknknkzkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabkzkzkzkzkzkzhBhBhBhBhBhBhBhBhBhBhBhBhBhBlgkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVjyjyjyjyjylhkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkzkzkzkzkzkzkzkzkzkzkzkzkpkpkpkzkpkpkzkzknknknkpkpkzlikpkpkpkpkpkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaabkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkXjyjyjyjyjykVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkzkzkzkzkzkzkzkzkzkzkzlBkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaalPkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkVlflfkVlfkVlflfkVkVlfkVkVlflfkVlflfkVlfkVkVjyjyjyjyjykVkVkVlflfkVlflfkVlflfkVkVkVlflflfkVkVkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzllkzkzkzlclnkzkzkzkzkzkzkzkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaalPkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlqkVkVlqkVkVlqkVkVlqkVkVlqkVkVlqlflflqkVkVlrjyjyjyjyjylPlPltlPlukVkVlqkVkVlqlfkVlqlflflqkVkVkzkzkzkzkzkzkzkzkzkzkzkzkzkzlflflvlllllllllllmkzkzkzkzkzkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaalPkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlflfkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVjyjyjyjyjylzltltlzkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkzkzkzkzkzkzkzkzkVkVlflflflflflflAlflflflflvllllllllllkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaalPkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlflfkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVjyjyjyjyjylzlClDlzkVlflfkVlflflflflflflhlfkVkVlflfkzkzkzkzkzkzkzkzlflfkVlfkVlElflflflflfkVlflFlfkVlflflfkzabababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaalPkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlfkVlflfkVkVkVlflflfkVkVkVlflflfkVkVlflfkVkVlfkVlfkVkXjyjyjyjyjylPlGlzlPlfkVlflflHlfkVlfkVkVlflfkVlflfkVkzkzkzkzkzkzkzkzlfkVkVlflfkVlflflIlflflflJlKlLlflflflfkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaalPkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlfkVkVkVlflfkVlflfkVkVkVlflflflflflflfkVkVlflfkVkVlfkVlhjyjyjyjyjykVlIlflfkVlflfkVlNkVlflflflfkVlflflfkVlfkzkzkzkzkzkzkzkzlflfkVkVlflfkVkVlIlflfkVkVkVkVkVlflflfkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaalPkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlflflflfkVlflflflfkVlfkVlflflfkVkVlfkVlflflfkVlfkVlfkVkVjyjyjyjyjykXlNkVkVkVkVkVlflNkVlfkVlfkVlflfkVlflflflflfkzkzkzkzkzkzkVkVkVlIkVkVlfkVlIlflfkVkVkVkVkVlfkVlfkzlPabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaabdOdOhwhjhjhjhjhwhjhjhjhkhkhxhyhzhmhmhmhmhmhnhohohohohohBhBhBhBhBhBhqhqhqhqhChqhqhqhqhqhqhqhqhqhqhqhqhqhqhChqhqhscxcxgufsfsfsgvcxcxcxcxcxcxcxcxcxcxcxcxcxcxcxcxcXcxcxgUgUgUgUgUhDhEhEhEhFgUgUgUgUgYgZgZgZhagUgUgUhDhchchchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaabdOdOhwhjhjhjhjhjhwhjhjhkhkhkhkhlhmhmhmhmhGikhyhyhyhyhyhyhBhBhBhBhBhBhBhBhohohohohohohohohohohohohohohohohohohohogocxgufsfsfsgvcxgUgUgUgXgUgUgUgUgUgUgUgUgUgUgUgUgUgUgUhHgUgUgUgUgUgUgUgUgUgUgUgUgYgZgZgZhahbgUgUgUhchchchchchcababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaabdOdOhBhBhBhBhBhBhBhBhBhBhBhBhkhxhyhyhyhyhLhkhkhjhMhBhBhBhBhBhBhBhBhBhBhBhmhNhmhmhmhmhmhOhmhmhmhmhmhmhmhmhmhmhmhmeYeigufsfsfsgveihPhPhPhPhPhQgUgUgUgUgUgUhHgUgUgUgUgUgUgUgUgUgUgXgUgUgUgUgUgUhbgUgYgZgZgZhagUgUgUgUhchchchchchchcabababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaababdOhBhBhBhBhBhBhBhBhBhBhBhBhkhkhkhThkhdhdhIhdhwhwhBhBhBhBhBhBhBhBhBhBhBhBhmhmhmhmhmhmhmhmhmhmhmhmhmhmhNhmhmhmhUhmhVhWhXhXhXhYhZhghghghghgiahPhPhPhPhPhQgUgUgUgUgUgUhbgUgUgUgUgUgUgUgUgUgUgUgUgUgYgZgZgZhagUgUgUgUhchchchchchchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaabdOhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwhwhjhwhBhBhBhBhBhBhBhBhBhBhBhBhBhmhmhmhZhmhmhmhmhmhmhmhmhmhmhZhmhmhmhmibhAichmhXhXhXhmhmidhghgiehghghghghghghgiahPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPgYgZgZgZhahPhPhPhPhchchchchchchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaabdOhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwhwhkhBhBhBhBhBhBhBhBhBhBhBhBhBhyhyhzhmhmhmhmhmhmhGhyhzhmhmhmhmhmhGhyhzhmhmhmhmhmhmhmhmighuhuhvhghgihhghgiihghghghghghghghghghghghghghchchchchchghgiiihgYgZijgZhaihiehghghchchchchchchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaabdOhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwhwhkhJhBhBhBhBhBhBhBhBhBhBhBhkhkhxhyhyhyhyhyhyhLhkhxhyhyhyhyhyhLhkhxhyhyhyhyhyhyhyililililililimhghghghghghghghghgiehghghghghghghghchchchcinhghghghggYgZgZgZhahghghghgiohchchchchchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaabdOhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhkhwhkhKhBhBhBhBhBhBhBhBhBhBhBhwhwhkhkhkhkhkhkhkhkhkhkhkhkhkhkhkhkhThkhkhkhkhkhkhkhkiqiqiqiqiqiqisilililililimhghghghghghghgiihghghchchchchchcitititiugYgZgZgZhaivititithchchchchchchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhJhwhkhkhBhBhBhBhBhBhBhBhBhBhjhjhkhkhThkhkhkhkhkhkiyhkhkhkhkhkhkhkhkhkhkhkhkhkhkhkiqiqiqiqiqiqiziqiqiqiqiqisimhghghghghghghghghghchchchchchchEhEhEhEgYgZgZgZhahEhEhEhEiAgUgUgXhchchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaababhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhkhkhwhJhBhBhBhBhBhBhBhBhBhBhBhBhBhBhkhjhjhkhkhkhkhkhkhkhkhkhBhBhkhkhkhkhkhkhkhkiziBiCiqiqiqiqiqiqiqiqiqiqiDhghghghghgihhghghchchchchchcgUgUgUgUgUgYgZgZgZhagUgUhHgUiEiFiGgUgUhchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhJhkhwhwhkhBhBhBhBhBhBhBhBhBhBhBhBiHhjhjhjhkhkhkhkhkhkhkhkhkiIhBhBhkhkhBhBhBhBhBhciBiBiCiBiBiCiCiqiqiqiqijiDhghghghgiJhghghghchchchchchcgUgUhbgUgUgYgZgZgZhagUgUgUgUiKiLiMgUgUgUhchcababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhJhkhRhwhkhwhBhBhBhBhBhBhBhBhBhBhBhBiNiNiNkjkjiNiNiNiNkjiNiNhBhBhBhBhBhBhBhBhBhchchchchchchchciCiCiqiqiqiqisimhghghchchchchchchchchcgUgUgUgUgUgUiOgYgZgZgZhahPhPhPhPiKiPiMhPhPhPhchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwhkhkhkhBhBhBhBhBhBhBhBhBhBhjhjhjhjhkhkhkhkhkhkhkhkhkhBhBbdbdbdbdbdbdbdbdbdbdbdbdhchciniCiCiCiCiqiqiCisililiohchchchchchchchcgUgUgUgUhHgUhtgYgZgZgZhahgiQiRiRiSiLiTiUiUiVhchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhJhwhkhkhBhBhBhBhBhBhjhjhjhjhjhjhjhkhkhkhkiphkhkhkhjhBhBbdbZjCjCjCjDjEbdjujwjxbdhchchckkitititkkkkitititithchchchchchchchcgUgUgUgUgUgUgUhtgYgZgZgZhahgiYiLiZjajbjajcjdiYhchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwifhkhkhBhBhBhBhBhjhjhjhjhjhjhjjehkhkhkhkhkhjhjhjhBhBbdjLbxjMjLjNjObdklkmkmbdbdbdbdbdiCiCiCiqiqiCiCiCiCiChchchchchchchcgUgUgUgUgUgUhbhtgYgZgZgZhahgiUiLiUjfjgjhjijdjjhchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwifhwhwhkhkhBhBhBhjhjhjhjhjhjhjhkhkhkhkhkhjhjhjhjhBhBbdjVjWjXjXjYjZbdkykmkmbdlMlQlRbdiCiCiCiqiqiCiCiCiCiCiChchchchchchcgUgUgUgUgXgUgUhtgYgZgZgZhahgjkiLiUiLjliLjijmjkhchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwhwhwhBhBhBhBhjhwhwhjhwhjhkhkhkhkhkhjhSbdbdbdbdbdbdbdlSlTbdbdbdlUlVlUbdkllYmqbdiCiCiCiqiqiCiCiCiCiCiCiCiChchchchchcgUgUgUgUgUgUhtgYgZgZgZhahgiUiUiUjnjoiLjpjfiYhchcababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhkhkhwhkhwhJifhjhwhwhjhjhjhkiphkhkhkhwhwbdmrmsmtmumvmwkmkmjumxmykmkmmzmAkmkmkmmBmCiCiCiqiqjriCiCiCiCiCiCiChchchchchchcgUgUhHgUgUhDgYgZgZgZhahgiUhgiUiUjgiLjsjfjthghchcabababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhkhwhwifhwhkhwhwhwhwhwhjhkhkhkhkhwhwmDmBkmmEmtkmkmkmkmkmkmkmkmkmkmkmmtmFkmmxbdhciBiCiqiqiqiCiBiBiBiBiChchchchchchcgUgUiOhPhPhPhPgYgZgZgZhahghgiUiUjajajviUjfjkhghghchchchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhkhkhRhkhkhwhwhjhjhwhjhkhkhkhkhwhjhwbdkmmGmtkmmHmxmImFmzkmmJmKmLmMmNmJkmmObdhciBiCiqiqiqiCiCiBiBiCiBiBhchchchchcgUhbhthghghghghggZgZgZhghgiUhgiSjAjgiLiUiUjBhghghghghghghcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaababhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhJhJhkhRhjhwhwhwhjhjhkhkhkhkhjhjhBbdbdbdbdmPbdbdbdbdbdmPbdbdbdmQbdbdbdbdbdhchciqiqiqiqhciCiBiBiBiBiBhchchchchcgUgUhthghghgiehghghghghghgiUiUiLiZjGjciUiUjBhghghghgiehghcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjhwhwhjhjhjhkhkhkhkhjhjhBhBhBbdmRaemSmTmUmUaeaemVbdmWmXmYbdhchchchchciqiqiqhchciCiBiBiCiBiBhchchchchchcgUhthgihhghghghghghghghgiUhgiLjPjQjRiUhgiUhghgiUhghghghcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwhjhjhjhwhjhkhkhkhkhjhwhBhBhBbdmUaeaeaemZmUnaaenbbdncmXndbdhchchciBiqiqiqiqhchcjriCiCiBiBiBhchchchchcgUgUhthghghghghghghghghgjniUhuiVkbjikckdhuhuhgiJhghghghghcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwhwhjhwhwhjhkhkhkiphjhjhwhBhBbdmUaeaeaeaeneaeaeaebdnfmXngbdhchciCiBiqiqiqiCiBiCiCiCiBiCiBiBhchchchchcgUhHhthgknkokokokoknknknkpkqknkrksktkukvhghghgkwkwhgihhchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjhjhjhjhwhjhkhkhkhkhjjehwhjhBbdnhaenvaeaeaenvaenjbdnknlnmbdhciqiqiqiqiqiqiCiBiBiBiCiBiBiBhchchchckzkAkAkAkBknknknknknknknknknknknknkCkDkEkFkGhgkwkwhgkHhEhEhchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwhwhwhwhjhjhkhkhkhkhkhjhjhjhjbdbdnnnnbdbdbdnnnnbdbdnomXnpbdiqiqiqiqiqiqiCiBiCiBiCiBiCiBiChchchchchcgUhbgUhthghghghghghgiehghgiUhghghgkLkMkLhghghghgkHiAgUgUhcababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaababhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjhwhjhwhwhjhkhkhkhkhkhkhkhkhkhknqnrnrnshknqnrnrntbdbdmQbdbdiqiqiqiqiCiBiCiBiBiCiCiBiBiBiBhchchchchcgUgUgUhthuhuhuhuhghghuhuhghghghgiUhghgiUhghghghghhgUhchchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwhwhwhwhjhjhShkhkhkhkhkhkhkhkhkhkhkhkhkhkhkhkhkiqiqiqnuiqiqiqiqiqiqiBiCiBiCiCiCiCiBiBiBiBiChchchchcgUgUgUhDhEhEhEkPkQhuhghghuhghghghukQhuhghghgihkHiAgUhcabababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwhwhjhwhjhwhjhjhkhkhkhkhkhkhkhkhkiphkhkhkhkhkhkhkiqiqiXiqiqiqiqiCiCiCiBiCiCiBiBiBiCiCiBiCiBiChchchchchcgUgXgUgUgUhHhDhEhEhEhEkPihhuhghghghghuhuhukHiAgUhchcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhwhjhjhwhjkNkRkWhjhShjhjhjhjhjkNkRkWhjhjhkkRiUiqkSiCiCiCldiUleiCiCiCiCiCiCiCiBiCiCiCiBiChchchchchchcgUgUgUgUgUgUgUgUgUgUhDhEhEhEhEhEhEhEhEhEhFhbgUhcababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjhjhjljkTlkhjhjhjhjhjhjhjljkTlkhjhjhkkRiUiqiCiCiCiClokUlpiCiCiCjriCiCldiUleiCiChchchchchchchchcgUgUhbgUgUgXgUgUgUgUgUhHgUgUhbgUgUgUgXgUgUgUgUhcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjlsiNiNiNiNiNiNiNiNiNiNiNiNiNiNiNiNlwlwlxlxitititititititititititiUiClokUlpiChchchchchchchchchcgUgUgUgUgUgUgUgUhbgUgUgUgUgUgUgUiOhPhPhPhQgUhHhcabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhjhkkRiUiqiCiCiCiCiCiCiCiCiCiCiClyititititithchchchchchchchchchchchchPhPhPhPhPhPhPhPhPhPhPhPhPhfhghghgiagWgUkzababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabkzkzhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBkzkzkzkzkzkzkzkzkzkzkzkzkzkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVjykqkqjykXkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkzkzkzkzkzkzkzkzkzkzkzkzkzknknknknknknknknknknknkYknkqknknknkZlakzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabkzkzkzkzkzhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBhBkzkzkzkzkzkzkzkzkzkzkzkzkzkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVjyjyjyjyjykVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlbknlckzknkpkpknknkzknknknknkzkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabkzkzkzkzkzkzhBhBhBhBhBhBhBhBhBhBhBhBhBhBkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVjyjyjyjyjylhkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkpkpkzkzknknknkpkpkzlikpkpkpkpkpkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkXjyjyjyjyjykVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaalPkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkVlflfkVlfkVlflfkVkVlfkVkVlflfkVlflfkVlfkVkVjyjyjyjyjykVkVkVlflfkVlflfkVlflfkVkVkVlflflfkVkVkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlclnkzkzkzkzkzkzkzkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaalPkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlqkVkVlqkVkVlqkVkVlqkVkVlqkVkVlqlflflqkVkVlrjyjyjyjyjylPlPltlPlukVkVlqkVkVlqlfkVlqlflflqkVkVkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlllllllmkzkzkzkzkzkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaalPkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlflfkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVjyjyjyjyjylzltltlzkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlAlflflflflvllllllllllkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaalPkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlflfkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVjyjyjyjyjylzlClDlzkVlflfkVlflflflflflflhlfkVkVlflfkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlflflfkVlflFlfkVlflflfkzabababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaalPkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlfkVlflfkVkVkVlflflfkVkVkVlflflfkVkVlflfkVkVlfkVlfkVkXjyjyjyjyjylPlGlzlPlfkVlflflHlfkVlfkVkVlflfkVlflfkVkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlflIlflflflJlKlLlflflflfkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaalPkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlfkVkVkVlflfkVlflfkVkVkVlflflflflflflfkVkVlflfkVkVlfkVlhjyjyjyjyjykVlIlflfkVlflfkVlNkVlflflflfkVlflflfkVlfkzkzkzkzkzkzkzkzkzkzkzkVlflfkVkVlIlflfkVkVkVkVkVlflflfkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaalPkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlflflflfkVlflflflfkVlfkVlflflfkVkVlfkVlflflfkVlfkVlfkVkVjyjyjyjyjykXlNkVkVkVkVkVlflNkVlfkVlfkVlflfkVlflflflflfkzkzkzkzkzkzkzkzkVlIkVkVlfkVlIlflfkVkVkVkVkVlfkVlfkzlPabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaalPkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkVlflfkVlflflflflfkVlfkVlflflflflflflflfkzkzkzkVkVkVlflflflflfkVjyjFjyjykVlNkVlfkVlflfkVlNkVlflflflfkVlflflflflfkVkVkzkzkzkzkzkzlflflflNlflflflflIlfkVkVkVkVkVlfkVlflfkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaabkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkVlfkVlfkVkVkVkVlflfkVlflfkVkVkVlflflfkVkzkzkzlflflflflfkVlflfkVjyjyjyjykVlIlflflfkVkVkVlIkVlfkVlflflfkVlflfkVlflfkVkzkzkzkzkzkzlfkVlflNlflfkVlflNlflflfkVkVkVlflflflfkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaabdOdOkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzlfkVlfkVlflfkVkVlflflfkVlflflflflfkVlflfkzkzkzlflflflfkzkzkzlflflfkVkijyjyjykVlNlHkVlfkVkVlflNlflfkVkVlflflfkVlflflfkVlfkzkzkzkzkzkzlflflflNlflflflflNlflflflflflflfkzkzkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -755,17 +799,17 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkVkVlIkVkVkVkVkVkVkVlIkzkzkzkzkzkzkzkzkzkz
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkVmkmkmkmkmkmkmkkVkVlIkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzmimimimimimimimimikVkVkzkzkzkzkzkzkzkVjyjyjykikVkzkzkzkzkzkzkVkVmjmjmjmjmjmjmjkVkVkVkVkVkVkVkVlflfkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkVmkmkmkmkmkmkmkkVkVkVlflflflflflflflflflflfkzkzkzkzkzkzkzkzkzkzkzmimimimimimimimimikVkVkzkzkzkzkzkzkzmljyjyjyjymlkzkzkzkzkzkzkVkVmjmjmjmjmjmjmjkVkVkVkVkVkVkVkVkVkVkVlflfkVlfkVkVkVkVkVkVkVkVkVkVkVkzababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkVmkmkmkmkmkmkmkkVkVkVlflflflflflflflflflflfkzkzkzkzkzkzkzkzkzkzkzmimimimimimimimimikVlfkVkzkzkzkzkzkzmlmmmlmlmlmlkzkzkzkzkzkzkVkVmjmjmjmjmjmjmjkVkVlflflflfkzkzkzkzkzkzkzkzkzkzkzlflflflflflflflflfkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkVmkmkmkmkmkmkmkkVkVkVkVkVkVkVkVkVkVkVkVkVkVkzkzkzkzkzkzkzkzkzkzkzmimimimimimimimimilflflfkzkzkzkzkzkzmljyjyjyjymlkzkzkzkzkzkzkVkVmjmjmjmjmjmjmjkVkVlflflfkzababababababababababkzkzkzkzkzkzkzkzkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkVmkmkmkmkmkmkmkkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVmimimimimimimimimikVkVlfkVlflfkVlflfmljyjyjyjymlkVlflfkzkzkzkVkVmjmjmjmjmjmjmjkVkVlfkzkzkzabaaaaaaaaaaaaaaaaabababababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkVmkmkmkmkmkmkmkkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVmimimimimimimimimikVkVkVlfkVkVlfkVlfmljyjyjyjymllflfkVkVkVkVkVkVmjmjmjmjmjmjmjkVkVkzkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkVkVkVkVkVkVkVkVkzlflflflflflflflflflflfkzkzkzkzkzkzkzkzlflflflflfmimimimimimimimimikVlfkVkVkVkVkVkVkVkVjyjyjyjykVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkzababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkVkVkVkVkVkVkVkVkVkVjyjyjyjykVkVkVkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabababababababababababababababababababababababababababababababababababababababababababkzkzkzkzkzkzkzkVkVkVmljyjyjyjykVkVkzkzababababababababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabababababababkzkzkzkzmljyjyjyjymlkzkzababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababababkzmljyjyjyjymlkzababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzmljyjyjyjymlkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzmljyjyjyjymlkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkzjyjyjyjymlkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkVmkmkmkmkmkmkmkkVkVkVkVkVkVkVkVkVkVkVkVkVkVkzkzkzkzkzkzkzkzkzkzkzmimimimimimimimimilflflfkzkzkzkzkzkzmlnwnwnwnwmlkzkzkzkzkzkzkVkVmjmjmjmjmjmjmjkVkVlflflfkzababababababababababkzkzkzkzkzkzkzkzkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkVmkmkmkmkmkmkmkkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVmimimimimimimimimikVkVlfkVlflfkVlflfmlnwnwnwnwmlkVlflfkzkzkzkVkVmjmjmjmjmjmjmjkVkVlfkzkzkzabaaaaaaaaaaaaaaaaabababababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkVmkmkmkmkmkmkmkkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVmimimimimimimimimikVkVkVlfkVkVlfkVlfmlnwnwnwnwmllflfkVkVkVkVkVkVmjmjmjmjmjmjmjkVkVkzkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkVkVkVkVkVkVkVkVkzlflflflflflflflflflflfkzkzkzkzkzkzkzkzlflflflflfmimimimimimimimimikVlfkVkVkVkVkVkVkVkVnwnwnwnwkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkVkzababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkVkVkVkVkVkVkVkVkVkVnwnwnwnwkVkVkVkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabababababababababababababababababababababababababababababababababababababababababababkzkzkzkzkzkzkzkVkVkVmlnwnwnwnwkVkVkzkzababababababababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabababababababkzkzkzkzmlnwnwnwnwmlkzkzababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababababkzmlnwnwnwnwmlkzababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzmlnwnwnwnwmlkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzmlnwnwnwnwmlkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkznwnwnwnwmlkzabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabkzkzkzkzkzkzmlkzlPaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabababababababababababaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaababababababababababababababababababababababababab
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabmnmnmnmnmnmnmnmnmnmnmnmnmnmnmnmnmnmnmnmnmnmnmnab

@@ -114,6 +114,7 @@
 					/obj/item/weapon/gun/smg/m39 = 15,
 					/obj/item/weapon/gun/rifle/m41a = 20,
 					/obj/item/weapon/gun/shotgun/pump = 10,
+					/obj/item/device/motiondetector = 4,
 					// /obj/item/weapon/gun/shotgun/combat = 1,
 					/obj/item/explosive/mine = 2,
 					/obj/item/storage/box/nade_box = 2,

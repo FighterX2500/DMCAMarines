@@ -10,7 +10,7 @@
 	idle_power_usage = 20
 	icon = 'icons/obj/machines/drone_fab.dmi'
 	icon_state = "drone_fab_idle"
-	var/dropship_points = 0 //gains roughly 18 points per minute
+	var/dropship_points = 0 //gains roughly 36 points per minute
 	var/busy
 
 /obj/machinery/dropship_part_fabricator/New()
@@ -33,7 +33,7 @@
 		return
 	else
 		icon_state = "drone_fab_idle"
-	dropship_points++
+	dropship_points+=2
 
 
 /obj/machinery/dropship_part_fabricator/attack_hand(mob/user)
