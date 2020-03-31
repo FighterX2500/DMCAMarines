@@ -1082,6 +1082,7 @@ datum/game_mode/proc/initialize_special_clamps()
 						/obj/item/weapon/gun/rifle/m41a = round(scale * 20),
 						/obj/item/weapon/gun/shotgun/pump = round(scale * 10),
 						/obj/item/weapon/gun/rifle/saiga = round(scale * 5),
+						/obj/item/device/motiondetector = round(scale * 4),
 						// /obj/item/weapon/gun/shotgun/combat = round(scale * 1),
 						/obj/item/explosive/mine = round(scale * 2),
 						/obj/item/storage/box/nade_box = round(scale * 2),
