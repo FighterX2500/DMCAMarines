@@ -195,6 +195,11 @@ proc/isXenoWarrior(A)
 		return 1
 	return 0
 
+proc/isXenoBot(A)
+	if(istype(A, /mob/living/simple_animal/alien))
+		return 1
+	return 0
+
 proc/isYautja(A)
 	if(isHellhound(A))
 		return 1 //They are always considered Yautja.
