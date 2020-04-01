@@ -22,7 +22,7 @@
 	title = "Priority Announcement"
 	announcement_type = "Priority Announcement"
 
-/datum/announcement/priority/command/New(var/do_log = 1, var/new_sound = sound('sound/misc/notice2.ogg'), var/do_newscast = 0)
+/datum/announcement/priority/command/New(var/do_log = 1, var/new_sound = sound('sound/AI/commandreport.ogg'), var/do_newscast = 0)
 	..(do_log, new_sound, do_newscast)
 	title = "Command Announcement"
 	announcement_type = "Command Announcement"

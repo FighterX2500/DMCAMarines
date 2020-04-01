@@ -329,7 +329,7 @@
 
 	if(!( P.dir & reverse_direction(dir) || P.dir & dir))
 		return FALSE //no effect if bullet direction is perpendicular to barricade
-		
+
 	var/distance = P.distance_travelled - 1
 	if(distance < P.ammo.barricade_clear_distance)
 		return FALSE
@@ -764,9 +764,15 @@ Normal range for a defender's bullet resist should be something around 30-50. ~N
 
 	if(ismob(P.firer))
 		var/mob/firingMob = P.firer
-		if(ishuman(firingMob) && ishuman(src) && firingMob.mind && !firingMob.mind.special_role && mind && !mind.special_role) //One human shot another, be worried about it but do everything basically the same //special_role should be null or an empty string if done correctly
+		if(ishuman(firingMob) && ishuman(src) && firingMob.mind) //One human shot another, be worried about it but do everything basically the same //special_role should be null or an empty string if done correctly
 			log_combat(firingMob, src, "shot", P)
 			msg_admin_ff("[firingMob] ([firingMob.ckey]) shot [src] ([ckey]) with \a [P.name] in [get_area(firingMob)] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[P.firer.x];Y=[P.firer.y];Z=[P.firer.z]'>JMP</a>) (<a href='?priv_msg=\ref[firingMob.client]'>PM</a>)")
+			if(firingMob != src && stat != DEAD && prob(20))
+				if(gender == "male")
+					if(prob(10))
+						playsound(src, 'sound/voice/friendly_fire_8.ogg','sound/voice/friendly_fire.ogg', 25)
+					else
+						playsound(src, pick('sound/voice/friendly_fire_1.ogg', 'sound/voice/friendly_fire_2.ogg', 'sound/voice/friendly_fire_3.ogg', 'sound/voice/friendly_fire_4.ogg','sound/voice/friendly_fire_5.ogg', 'sound/voice/friendly_fire_6.ogg', 'sound/voice/friendly_fire_7.ogg'), 25)
 		else
 			log_combat(firingMob, src, "shot", P)
 			msg_admin_attack("[firingMob] ([firingMob.ckey]) shot [src] ([ckey]) with \a [P.name] in [get_area(firingMob)] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[P.firer.x];Y=[P.firer.y];Z=[P.firer.z]'>JMP</a>)")

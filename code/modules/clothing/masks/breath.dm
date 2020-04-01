@@ -60,9 +60,17 @@
 /obj/item/clothing/mask/rebreather/scarf
 	name = "heat absorbent coif"
 	desc = "A close-fitting cap that covers the top, back, and sides of the head. Can also be adjusted to cover the lower part of the face so it keeps the user warm in harsh conditions."
-	icon_state = "coif"
-	item_state = "coif"
+	icon_state = "clown"
+	item_state = "clown"
 	flags_inventory = COVERMOUTH|ALLOWREBREATH
 	flags_inv_hide = HIDEALLHAIR|HIDEEARS
 	flags_cold_protection = HEAD
 	min_cold_protection_temperature = ICE_PLANET_min_cold_protection_temperature
+
+/obj/item/clothing/mask/rebreather/scarf/New()
+	if(type == /obj/item/clothing/mask/rebreather/scarf)
+		var/coif_variation = rand(1,8)
+		icon_state = "[coif_variation]"
+		item_state = icon_state
+		update_icon()
+	..()
