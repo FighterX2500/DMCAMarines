@@ -215,9 +215,9 @@ datum/controller/vote
 			to_chat(world, "<font color='purple'><b>[text]</b>\nType vote to place your votes.\nYou have [config.vote_period/10] seconds to vote.</font>")
 			switch(vote_type)
 				if("gamemode")
-					world << sound('sound/ambience/alarm4.ogg', repeat = 0, wait = 0, volume = 50, channel = 1)
+					world << sound('sound/ambience/GOLOSOVANIE.ogg', repeat = 0, wait = 0, volume = 50, channel = 1)
 				if("custom")
-					world << sound('sound/ambience/alarm4.ogg', repeat = 0, wait = 0, volume = 50, channel = 1)
+					world << sound('sound/ambience/GOLOSOVANIE.ogg', repeat = 0, wait = 0, volume = 50, channel = 1)
 			if(mode == "gamemode" && going)
 				going = 0
 				to_chat(world, "<font color='red'><b>Round start has been delayed.</b></font>")

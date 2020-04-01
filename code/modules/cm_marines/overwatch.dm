@@ -732,7 +732,7 @@
 
 	var/obj/item/card/id/ID = transfer_marine.wear_id
 	ID.assigned_fireteam = 0 //reset fireteam assignment
-	
+
 	//Changes headset frequency to match new squad
 	var/obj/item/device/radio/headset/almayer/marine/H = transfer_marine.wear_ear
 	if(istype(H, /obj/item/device/radio/headset/almayer/marine))
@@ -1009,12 +1009,15 @@
 	var/message = ""
 	switch(command_aura)
 		if("move")
+			playsound(src.loc, pick('sound/voice/move_focus_1.ogg', 'sound/voice/move_focus_2.ogg'), 35, 1)
 			message = pick(";оньебекхбюиреяэ!", ";боепед, боепед, боепед!", ";дбхфеляъ!", ";ьебекхреяэ!", ";ашярпее!")
 			say(message)
 		if("hold")
+			playsound(src.loc, pick('sound/voice/end_defence_1.ogg', 'sound/voice/end_defence_2.ogg', 'sound/voice/end_defence_3.ogg'), 35, 1)
 			message = pick(";б сйпшрхе!", ";депфюрэ кхмхч!", ";депфюрэ онгхжхч!", ";бяел ярнърэ мю леяре!", ";ярнърэ х япюфюрэяъ!")
 			say(message)
 		if("focus")
+			playsound(src.loc, pick('sound/voice/focus_on_enemy_1.ogg', 'sound/voice/focus_on_enemy_2.ogg', 'sound/voice/focus_on_enemy_3.ogg'), 35, 1)
 			message = pick(";ятнйсяхпнбюрэ нцнмэ!", ";опхжекхрэяъ!", ";нцнмэ он жемрпс!", ";опхжекэмшлх нвепедълх!", ";опхжекэмши нцнмэ!")
 			say(message)
 	update_action_buttons()
