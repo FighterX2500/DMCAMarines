@@ -661,6 +661,15 @@
 	msg = oldreplacetext(msg, "t", "7")
 	msg = oldreplacetext(msg, "l", "1")
 	msg = oldreplacetext(msg, "n", "*")
+	msg = oldreplacetext(msg, "à", "@")
+	msg = oldreplacetext(msg, "å", "3")
+	msg = oldreplacetext(msg, "û", "1")
+	msg = oldreplacetext(msg, "î", "0")
+	msg = oldreplacetext(msg, "ó", "7")
+	msg = oldreplacetext(msg, "ð", "9")
+	msg = oldreplacetext(msg, "ñ", "5")
+	msg = oldreplacetext(msg, "ò", "3")
+	msg = oldreplacetext(msg, "í", "*")
 	   //Preds now speak in bastardized 1337speak BECAUSE.
 
 	spawn(10)

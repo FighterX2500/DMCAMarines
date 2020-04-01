@@ -784,7 +784,7 @@ TUNNEL
 
 	var/aliens = 5
 	var/time_emerged
-	var/spawn_delay = 6000
+	var/spawn_delay = 18000
 
 /obj/structure/alien_spawner/New()
 	..()
@@ -798,13 +798,15 @@ TUNNEL
 		"<span class='xenonotice'>You feel ground rattle!</span>")
 	for(var/i=0,i<aliens, i++)
 		spawn(i*10)
-			switch(rand(0, 20))
-				if(10)
-					new /mob/living/simple_animal/hostile/alien/ravager(src.loc)
-				if(7 to 9)
-					new /mob/living/simple_animal/hostile/alien/drone(src.loc)
+			switch(rand(0, 40))
+				if(10, 20)
+					new /mob/living/simple_animal/alien/ravager(src.loc)
+				if(7 to 12)
+					new /mob/living/simple_animal/alien/drone(src.loc)
+				if(1 to 3)
+					new /mob/living/simple_animal/alien/leader(src.loc)
 				else
-					new /mob/living/simple_animal/hostile/alien(src.loc)
+					new /mob/living/simple_animal/alien(src.loc)
 
 /obj/structure/alien_spawner/attack_alien(mob/living/carbon/Xenomorph/M)
 	if(world.time < time_emerged + spawn_delay)
