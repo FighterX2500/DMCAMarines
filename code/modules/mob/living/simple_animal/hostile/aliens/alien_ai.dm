@@ -352,7 +352,7 @@
 		return
 	if(isliving(target_mob))
 		var/mob/living/L = target_mob
-		if(prob(30))
+		if(prob(10))
 			tail_sweep(target_mob)
 		else
 			L.attack_animal(src)
@@ -369,18 +369,5 @@
 		var/mob/living/carbon/human/HE = enemy
 		HE.apply_damage(5)
 		HE.KnockDown(2, 1)
-
-	var/sweep_range = 1
-	var/list/L = orange(sweep_range)		// Not actually the fruit
-
-	for (var/mob/living/carbon/human/H in L)
-		step_away(H, src, sweep_range, 2)
-		H.apply_damage(10)
-		round_statistics.defender_tail_sweep_hits++
-		shake_camera(H, 2, 1)
-
-		if (prob(50))
-			H.KnockDown(2, 1)
-
-		to_chat(H, "<span class='xenowarning'>You are struck by \the [src]'s tail sweep!</span>")
-		playsound(H,'sound/weapons/alien_claw_block.ogg', 50, 1)
+		to_chat(HE, "<span class='xenowarning'>You are struck by \the [src]'s tail sweep!</span>")
+		playsound(HE,'sound/weapons/alien_claw_block.ogg', 50, 1)
