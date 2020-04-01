@@ -113,3 +113,19 @@
 /obj/item/projectile/neurotox
 	damage = 30
 	icon_state = "toxin"
+
+
+/mob/living/simple_animal/alien/leader
+	name = "alien alpha trooper"
+	icon = 'icons/Xeno/2x2_Xenos.dmi'
+	icon_state = "Warrior Running"
+	icon_living = "Warrior Running"
+	icon_dead = "Warrior Dead"
+	maxHealth = 200
+	health = 200
+	melee_damage_lower = 25
+	melee_damage_upper = 35
+	move_to_delay = 2
+
+	var/bot_followers = 0
+	var/bot_max = 5
