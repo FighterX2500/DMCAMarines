@@ -39,7 +39,7 @@
 	var/list/friends = list()
 	var/stance = HOSTILE_STANCE_IDLE
 	var/mob/living/target_mob
-	var/mob/living/carbon/Xenomorph/leader
+	var/mob/living/leader
 	var/destroy_surroundings = 1
 	var/move_to_delay = 3
 

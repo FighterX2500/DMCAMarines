@@ -50,21 +50,51 @@
 
 		if(isliving(A))
 			var/mob/living/L = A
-			if(L.faction == src.faction && !attack_same)
+			if(L in friends)
 				continue
-			else if(L in friends)
-				continue
-			else if (istype(src, /mob/living/simple_animal/alien) && (isrobot(L)))
+			else if (isrobot(L))
 				continue
 			else if(ismonkey(L))
 				continue
+			else if(isXenoBot(L))
+				if(!L.stat)
+					continue
+				if(istype(src, /mob/living/simple_animal/alien/leader))
+					continue
+				else if(leader)
+					continue
+				else if(!istype(L, /mob/living/simple_animal/alien/leader))
+					continue
+				else
+					var/mob/living/simple_animal/alien/leader/lead = L
+					if(lead.bot_followers < lead.bot_max)
+						leader = lead
+						lead.bot_followers++
+						stance = HOSTILE_STANCE_FOLLOW
+					continue
 			else if(isXeno(L))
+				if(!L.stat)
+					continue
 				if(leader)
-					if(!leader.call_lesser)
-						stance = HOSTILE_STANCE_IDLE
-						leader.bot_followers--
-						leader = null
-						walk(src,0)
+					if(isXenoBot(leader))
+						continue
+					else
+						if(isXeno(leader))
+							var/mob/living/carbon/Xenomorph/X = leader
+							if(X.call_lesser)
+								continue
+							stance = HOSTILE_STANCE_IDLE
+							X.bot_followers--
+							leader = null
+							walk(src,0)
+							X = L
+							if(X.call_lesser)
+								if(X.bot_followers >= X.tier + X.upgrade)
+									continue
+								leader = X
+								X.bot_followers++
+								stance = HOSTILE_STANCE_FOLLOW
+								continue
 				if(stance == HOSTILE_STANCE_ATTACK || stance == HOSTILE_STANCE_ATTACKING)
 					continue
 				var/mob/living/carbon/Xenomorph/X = L
@@ -72,7 +102,7 @@
 					if(X.bot_followers >= X.tier + X.upgrade)
 						continue
 					leader = X
-					leader.bot_followers++
+					X.bot_followers++
 					stance = HOSTILE_STANCE_FOLLOW
 					continue
 			else if(isSynth(L))
@@ -85,8 +115,14 @@
 					stance = HOSTILE_STANCE_ATTACK
 					T = L
 					if(leader)
-						leader.bot_followers--
-						leader = null
+						if(isXeno(leader))
+							var/mob/living/carbon/Xenomorph/X = leader
+							X.bot_followers--
+							leader = null
+						if(isXenoBot(leader))
+							var/mob/living/simple_animal/alien/leader/b = leader
+							b.bot_followers--
+							leader = null
 					break
 	return T
 
@@ -168,11 +204,23 @@
 		stance = HOSTILE_STANCE_IDLE
 		return
 
-	if(!(leader in ListTargets(10)))
-		leader.bot_followers--
-		leader = null
+	if(leader.stat == DEAD)
 		stance = HOSTILE_STANCE_IDLE
 		return
+
+	if(!(leader in ListTargets(10)))
+		if(isXeno(leader))
+			var/mob/living/carbon/Xenomorph/X = leader
+			X.bot_followers--
+			leader = null
+			stance = HOSTILE_STANCE_IDLE
+			return
+		if(isXenoBot(leader))
+			var/mob/living/simple_animal/alien/leader/b = leader
+			b.bot_followers--
+			leader = null
+			stance = HOSTILE_STANCE_IDLE
+			return
 
 	if(get_dist(src, leader) > 5)					//Too close
 		walk_to(src, leader, 2, move_to_delay+2)
@@ -193,8 +241,14 @@
 	if(!.) return //If they were already dead, it will return.
 	walk(src, 0)
 	if(leader)
-		leader.bot_followers--
-		leader = null
+		if(isXeno(leader))
+			var/mob/living/carbon/Xenomorph/X = leader
+			X.bot_followers--
+			leader = null
+		else
+			var/mob/living/simple_animal/alien/leader/lead = leader
+			lead.bot_followers--
+			leader = null
 	playsound(src, 'sound/voice/alien_death.ogg', 50, 1)
 
 // Drone things
@@ -290,3 +344,43 @@
 		melee_damage_upper -= 5*rage
 		melee_damage_lower -= 5
 		rage--
+
+// Alpha things
+
+/mob/living/simple_animal/alien/leader/AttackingTarget()
+	if(!Adjacent(target_mob))
+		return
+	if(isliving(target_mob))
+		var/mob/living/L = target_mob
+		if(prob(30))
+			tail_sweep(target_mob)
+		else
+			L.attack_animal(src)
+		return L
+
+/mob/living/simple_animal/alien/leader/proc/tail_sweep(var/mob/living/enemy)
+	round_statistics.defender_tail_sweeps++
+	visible_message("<span class='xenowarning'>\The [src] sweeps it's tail in a wide circle!</span>", \
+	"")
+
+	spin_circle()
+
+	if(ishuman(enemy))
+		var/mob/living/carbon/human/HE = enemy
+		HE.apply_damage(5)
+		HE.KnockDown(2, 1)
+
+	var/sweep_range = 1
+	var/list/L = orange(sweep_range)		// Not actually the fruit
+
+	for (var/mob/living/carbon/human/H in L)
+		step_away(H, src, sweep_range, 2)
+		H.apply_damage(10)
+		round_statistics.defender_tail_sweep_hits++
+		shake_camera(H, 2, 1)
+
+		if (prob(50))
+			H.KnockDown(2, 1)
+
+		to_chat(H, "<span class='xenowarning'>You are struck by \the [src]'s tail sweep!</span>")
+		playsound(H,'sound/weapons/alien_claw_block.ogg', 50, 1)
