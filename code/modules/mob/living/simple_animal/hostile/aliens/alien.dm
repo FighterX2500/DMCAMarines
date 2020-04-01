@@ -59,6 +59,8 @@
 /mob/living/simple_animal/alien/bullet_act(obj/item/projectile/Proj)
 	. = ..()
 	Proj.play_damage_effect(src)
+	if(health <= 0)
+		death(0)
 	return 1
 
 /mob/living/simple_animal/alien/drone
