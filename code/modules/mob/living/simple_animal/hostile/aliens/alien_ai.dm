@@ -57,7 +57,7 @@
 			else if(ismonkey(L))
 				continue
 			else if(isXenoBot(L))
-				if(!L.stat)
+				if(L.stat)
 					continue
 				if(istype(src, /mob/living/simple_animal/alien/leader))
 					continue
@@ -73,7 +73,7 @@
 						stance = HOSTILE_STANCE_FOLLOW
 					continue
 			else if(isXeno(L))
-				if(!L.stat)
+				if(L.stat)
 					continue
 				if(leader)
 					if(isXenoBot(leader))
