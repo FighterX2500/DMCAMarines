@@ -39,9 +39,9 @@
 	var/list/friends = list()
 	var/stance = HOSTILE_STANCE_IDLE
 	var/mob/living/target_mob
-	var/mob/living/carbon/Xenomorph/leader
+	var/mob/living/leader
 	var/destroy_surroundings = 1
-	var/move_to_delay = 4
+	var/move_to_delay = 3
 
 /mob/living/simple_animal/alien/IgniteMob()			//Crowd control!
 	health = -maxHealth
@@ -59,6 +59,8 @@
 /mob/living/simple_animal/alien/bullet_act(obj/item/projectile/Proj)
 	. = ..()
 	Proj.play_damage_effect(src)
+	if(health <= 0)
+		death(0)
 	return 1
 
 /mob/living/simple_animal/alien/drone
@@ -70,7 +72,7 @@
 	health = 70
 	melee_damage_lower = 5
 	melee_damage_upper = 15
-	move_to_delay = 3
+	move_to_delay = 2
 	var/max_enemies = 5								//Will run from 5 enemies
 
 // Still using old projectile code - commenting this out for now
@@ -113,3 +115,19 @@
 /obj/item/projectile/neurotox
 	damage = 30
 	icon_state = "toxin"
+
+
+/mob/living/simple_animal/alien/leader
+	name = "alien alpha trooper"
+	icon = 'icons/Xeno/2x2_Xenos.dmi'
+	icon_state = "Warrior Running"
+	icon_living = "Warrior Running"
+	icon_dead = "Warrior Dead"
+	maxHealth = 200
+	health = 200
+	melee_damage_lower = 25
+	melee_damage_upper = 35
+	move_to_delay = 2
+
+	var/bot_followers = 0
+	var/bot_max = 5
