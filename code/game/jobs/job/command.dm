@@ -256,7 +256,7 @@ While you are an officer, your authority is limited to your own vehicle, where y
 				WEAR_JACKET = /obj/item/clothing/suit/storage/marine/MP,
 				WEAR_EYES = /obj/item/clothing/glasses/sunglasses/sechud,
 				WEAR_HEAD = /obj/item/clothing/head/cmberet/red,
-				WEAR_BACK = /obj/item/storage/backpack/satchel/sec,
+				WEAR_BACK = /obj/item/storage/backpack/marine/satchel,
 				WEAR_R_STORE = /obj/item/storage/pouch/general/medium
 				)
 
@@ -288,7 +288,7 @@ In addition, you are tasked with the security of high-ranking personnel, includi
 				WEAR_JACKET = /obj/item/clothing/suit/storage/marine/MP/WO,
 				WEAR_EYES = /obj/item/clothing/glasses/sunglasses/sechud,
 				WEAR_HEAD = /obj/item/clothing/head/cmberet/wo,
-				WEAR_BACK = /obj/item/storage/backpack/security,
+				WEAR_BACK = /obj/item/storage/backpack/marine/satchel,
 				WEAR_R_STORE = /obj/item/storage/pouch/general/large
 				)
 
