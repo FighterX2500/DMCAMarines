@@ -46,14 +46,14 @@
 	force = 30
 	flags_item = TWOHANDED
 	var/force_wielded = 50
-	w_class = 3
+	w_class = 4
 	sharp = IS_SHARP_ITEM_BIG
 	unacidable = 1
 	flags_equip_slot = SLOT_WAIST|SLOT_BACK
 
 	attack(mob/M, mob/user)
 		..()
-		M.KnockDown(14)
+		M.KnockDown(8)
 
 /obj/item/weapon/claymore/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	playsound(loc, 'sound/weapons/bladeslice.ogg', 25, 1)
