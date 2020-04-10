@@ -38,17 +38,16 @@
 	force = 35
 	w_class = 4.0
 
-/obj/item/weapon/claymore/mercsword/hammer
+/obj/item/weapon/twohanded/hammer
 	name = "N45 battle hammer"
 	desc = "RIP AND TEAR."
 	icon_state = "sledgehammer"
 	item_state = "sledgehammer"
 	force = 30
 	flags_item = TWOHANDED
-	var/force_wielded = 50
+	force_wielded = 50
 	w_class = 4
 	sharp = IS_SHARP_ITEM_BIG
-	unacidable = 1
 	flags_equip_slot = SLOT_WAIST|SLOT_BACK
 
 	attack(mob/M, mob/user)
