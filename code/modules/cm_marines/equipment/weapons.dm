@@ -318,7 +318,7 @@
 			new /obj/item/ammo_magazine/pistol/vp70(src)
 			new /obj/item/ammo_magazine/pistol/vp70(src)
 			new /obj/item/storage/belt/gun/m4a3(src)
-			new /obj/item/weapon/claymore/mercsword/hammer(src)
+			new /obj/item/weapon/twohanded/hammer(src)
 
 /obj/item/storage/box/spec/demolitionist
 	name = "Demolitionist equipment crate"
