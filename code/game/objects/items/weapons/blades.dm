@@ -50,9 +50,10 @@
 	sharp = IS_SHARP_ITEM_BIG
 	flags_equip_slot = SLOT_WAIST|SLOT_BACK
 
-	attack(mob/M, mob/user)
-		..()
-		M.KnockDown(8)
+/obj/item/weapon/twohanded/hammer/attack(mob/M, mob/user)
+    ..()
+    if(flags_item & WIELDED && prob(50))
+        M.KnockDown(6)
 
 /obj/item/weapon/claymore/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	playsound(loc, 'sound/weapons/bladeslice.ogg', 25, 1)
