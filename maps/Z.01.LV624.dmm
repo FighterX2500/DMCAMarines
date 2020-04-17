@@ -182,7 +182,7 @@
 "dz" = (/turf/closed/wall,/area/lv624/ground/sand5)
 "dA" = (/turf/open/floor/airless{dir = 5; icon_state = "asteroidfloor"},/area/lv624/ground/sand6)
 "dB" = (/obj/effect/decal/remains/xeno,/turf/open/gm/dirt,/area/lv624/ground/caves/east1)
-"dC" = (/obj/structure/rack,/obj/item/stack/sheet/mineral/gold{amount = 2},/obj/item/stack/sheet/mineral/platinum{pixel_x = -6},/turf/open/floor{icon_state = "vault"; dir = 8},/area/lv624/ground/sand5)
+"dC" = (/obj/machinery/light/small{dir = 4},/turf/open/gm/dirt,/area/lv624/ground/caves/central1)
 "dD" = (/obj/structure/rack,/obj/item/stack/sheet/mineral/diamond{amount = 2},/turf/open/floor{icon_state = "vault"; dir = 8},/area/lv624/ground/sand5)
 "dE" = (/obj/structure/rack,/obj/item/stack/sheet/metal{amount = 50; pixel_x = 4; pixel_y = 4},/obj/item/stack/sheet/metal{amount = 30},/turf/open/floor{icon_state = "vault"; dir = 8},/area/lv624/ground/sand5)
 "dF" = (/obj/structure/rack,/obj/item/tool/shovel,/turf/open/floor{icon_state = "vault"; dir = 8},/area/lv624/ground/sand5)
@@ -193,7 +193,7 @@
 "dK" = (/obj/structure/mineral_door/resin,/obj/effect/alien/weeds/node,/turf/open/gm/dirt,/area/lv624/ground/caves/west1)
 "dL" = (/obj/effect/alien/weeds/node,/turf/open/gm/dirt,/area/lv624/ground/sand8)
 "dM" = (/turf/open/floor{icon_state = "dark"},/area/lv624/ground/sand5)
-"dN" = (/obj/structure/rack,/obj/item/stack/sheet/mineral/iron{amount = 5},/obj/item/stack/sheet/mineral/platinum,/obj/machinery/light{dir = 4; icon_state = "tube1"},/turf/open/floor{icon_state = "vault"; dir = 8},/area/lv624/ground/sand5)
+"dN" = (/turf/closed/wall,/area/lv624/ground/caves/central1)
 "dO" = (/turf/closed/wall/mineral/sandstone,/area/lv624/ground/caves/east1)
 "dP" = (/turf/closed/wall/resin/membrane/ondirt,/area/lv624/ground/caves/central3)
 "dQ" = (/obj/structure/rack,/obj/item/stack/sheet/mineral/tritium{pixel_x = -4},/turf/open/floor{icon_state = "vault"; dir = 8},/area/lv624/ground/sand5)
@@ -816,11 +816,14 @@
 "pJ" = (/obj/machinery/door/airlock/almayer/medical/glass{dir = 4; name = "\improper Hydroponics Dome"; req_access_txt = "100"; req_one_access_txt = "0"},/turf/open/floor{dir = 1; icon_state = "green"},/area/lv624/lazarus/hydroponics)
 "pK" = (/obj/structure/bed/roller,/obj/effect/landmark/corpsespawner/engineer{corpseback = /obj/item/storage/backpack; corpseidjob = "Engineer"; corpseshoes = /obj/item/clothing/shoes/black; corpseuniform = /obj/item/clothing/under/colonist; name = "Colonist Wes Uvin"},/turf/open/floor{dir = 2; icon_state = "whitebluecorner"; tag = "icon-whitebluecorner"},/area/lv624/lazarus/medbay)
 "pL" = (/obj/structure/barricade/plasteel,/turf/open/floor{dir = 2; icon_state = "whitebluecorner"; tag = "icon-whitebluecorner"},/area/lv624/lazarus/medbay)
+"pM" = (/obj/structure/rack,/obj/item/stack/sheet/mineral/gold{amount = 2},/obj/item/stack/sheet/mineral/platinum{pixel_x = -6},/turf/open/floor{icon_state = "vault"; dir = 8},/area/lv624/ground/caves/central1)
 "pN" = (/obj/structure/flora/ausbushes/reedbush,/turf/closed/gm/dense{icon_state = "wall2"},/area/lv624/ground/river3)
 "pO" = (/obj/structure/flora/ausbushes/sparsegrass,/turf/open/gm/river,/area/lv624/ground/river1)
 "pP" = (/turf/open/gm/dirtgrassborder{dir = 8; icon_state = "grassdirt_corner"},/area/lv624/ground/jungle6)
+"pQ" = (/obj/structure/rack,/obj/item/stack/sheet/mineral/iron{amount = 5},/obj/item/stack/sheet/mineral/platinum,/obj/machinery/light/small{dir = 4},/turf/open/floor{icon_state = "vault"; dir = 8},/area/lv624/ground/sand5)
 "pR" = (/obj/structure/jungle/vines{icon_state = "Light3"},/turf/closed/gm/dense{icon_state = "wall2"},/area/lv624/ground/jungle6)
 "pS" = (/obj/structure/jungle/vines/heavy,/turf/open/gm/grass,/area/lv624/ground/jungle6)
+"pT" = (/turf/open/floor{icon_state = "vault"; dir = 8},/area/lv624/ground/sand5)
 "pU" = (/obj/machinery/colony_floodlight,/turf/open/gm/grass,/area/lv624/ground/jungle6)
 "pV" = (/obj/effect/landmark{name = "crap_item"},/turf/open/floor{dir = 2; icon_state = "whitebluecorner"; tag = "icon-whitebluecorner"},/area/lv624/lazarus/medbay)
 "pW" = (/obj/structure/cable/yellow{d1 = 2; d2 = 4; icon_state = "2-4"},/obj/structure/cable/yellow{d1 = 1; d2 = 2; icon_state = "1-2"; layer = 2.1},/turf/open/floor{dir = 2; icon_state = "whitebluecorner"; tag = "icon-whitebluecorner"},/area/lv624/lazarus/medbay)
@@ -832,6 +835,8 @@
 "qc" = (/turf/closed/gm/dense{icon_state = "wall2"},/area/lv624/ground/jungle5)
 "qd" = (/turf/open/gm/dirtgrassborder{dir = 8; icon_state = "grassdirt_corner"},/area/lv624/ground/jungle5)
 "qe" = (/obj/effect/landmark{name = "hunter_secondary"},/turf/open/gm/dirt,/area/lv624/ground/sand7)
+"qf" = (/obj/machinery/door/airlock/almayer/generic{dir = 2},/turf/open/floor{icon_state = "dark"},/area/lv624/ground/sand5)
+"qg" = (/obj/machinery/power/port_gen/pacman,/obj/machinery/light/small{dir = 8},/obj/structure/cable{d2 = 2; icon_state = "0-2"; pixel_y = 0},/turf/open/floor{tag = "icon-darkyellowcorners2 (WEST)"; icon_state = "darkyellowcorners2"; dir = 8},/area/lv624/ground/sand5)
 "qh" = (/obj/structure/jungle/vines/heavy{icon_state = "Med2"; pixel_x = 0; pixel_y = 0},/turf/closed/gm/dense{icon_state = "wall2"},/area/lv624/ground/jungle6)
 "qi" = (/turf/open/gm/grass,/area/lv624/ground/compound/n)
 "qj" = (/obj/structure/jungle/vines/heavy{icon_state = "Med2"; pixel_x = 0; pixel_y = 0},/turf/open/gm/grass,/area/lv624/ground/jungle6)
@@ -846,6 +851,9 @@
 "qs" = (/obj/effect/landmark{name = "hunter_secondary"},/turf/open/gm/coast,/area/lv624/ground/river1)
 "qt" = (/obj/structure/flora/ausbushes/fullgrass,/turf/open/gm/coast,/area/lv624/ground/river1)
 "qu" = (/turf/open/gm/coast{icon_state = "beachcorner"},/area/lv624/ground/sand7)
+"qv" = (/obj/structure/closet/crate,/obj/item/stack/sheet/mineral/phoron{amount = 15},/obj/item/stack/sheet/mineral/phoron{amount = 15},/turf/open/floor{tag = "icon-darkyellowcorners2 (WEST)"; icon_state = "darkyellowcorners2"; dir = 8},/area/lv624/ground/sand5)
+"qw" = (/obj/structure/reagent_dispensers/fueltank,/obj/machinery/power/apc{pixel_y = 32},/obj/structure/cable{d2 = 2; icon_state = "0-2"; pixel_y = 0},/turf/open/floor{tag = "icon-darkyellowcorners2 (WEST)"; icon_state = "darkyellowcorners2"; dir = 8},/area/lv624/ground/sand5)
+"qx" = (/turf/open/floor{tag = "icon-darkyellowcorners2 (WEST)"; icon_state = "darkyellowcorners2"; dir = 8},/area/lv624/ground/sand5)
 "qy" = (/obj/effect/landmark{name = "hunter_primary"},/turf/open/gm/grass,/area/lv624/ground/jungle6)
 "qz" = (/obj/structure/jungle/vines{icon_state = "Light2"},/turf/open/gm/grass,/area/lv624/ground/jungle6)
 "qA" = (/obj/item/device/radio/intercom{anyai = 1; freerange = 1; frequency = 1469; name = "General Listening Channel"; pixel_x = -30; pixel_y = 0},/turf/open/floor{dir = 2; icon_state = "whitebluecorner"; tag = "icon-whitebluecorner"},/area/lv624/lazarus/medbay)
@@ -879,6 +887,7 @@
 "rc" = (/obj/effect/landmark{name = "hunter_secondary"},/turf/open/gm/river,/area/lv624/ground/river1)
 "rd" = (/obj/structure/jungle/vines/heavy{icon_state = "Med1"; pixel_x = 0},/turf/open/gm/grass,/area/lv624/ground/jungle6)
 "re" = (/obj/item/bodybag{pixel_x = -4; pixel_y = 5},/obj/item/bodybag{pixel_x = 6; pixel_y = 3},/obj/item/bodybag,/obj/structure/table,/obj/item/tank/anesthetic,/turf/open/floor{dir = 2; icon_state = "whitebluecorner"; tag = "icon-whitebluecorner"},/area/lv624/lazarus/medbay)
+"rf" = (/obj/machinery/light/small{dir = 4},/turf/open/floor{icon_state = "dark"},/area/lv624/ground/sand5)
 "rg" = (/obj/machinery/door/window/southright,/turf/open/floor{dir = 2; icon_state = "whitebluecorner"; tag = "icon-whitebluecorner"},/area/lv624/lazarus/medbay)
 "rh" = (/obj/structure/table,/obj/item/paper_bin{pixel_y = 6},/obj/item/tool/pen{pixel_y = 7},/obj/effect/landmark{name = "crap_item"},/turf/open/floor{dir = 2; icon_state = "whitebluecorner"; tag = "icon-whitebluecorner"},/area/lv624/lazarus/medbay)
 "ri" = (/turf/open/gm/grass,/area/lv624/lazarus/quartstorage/outdoors)
@@ -1048,6 +1057,7 @@
 "uq" = (/turf/open/gm/coast{dir = 1},/area/lv624/ground/jungle6)
 "ur" = (/turf/open/gm/coast{dir = 4; icon_state = "beachcorner2"},/area/lv624/ground/jungle6)
 "us" = (/turf/open/gm/river,/area/lv624/ground/jungle6)
+"ut" = (/obj/machinery/door/poddoor/shutters/almayer{dir = 4; id = "mining_garage"; name = "\improper Garage Shutters"},/turf/open/floor{icon_state = "dark"},/area/lv624/ground/sand5)
 "uu" = (/obj/machinery/door/airlock/almayer/research{dir = 4; locked = 1; name = "\improper Research Dome"; req_access_txt = "100"},/turf/open/floor{dir = 5; icon_state = "whitepurple"},/area/lv624/lazarus/research)
 "uv" = (/obj/effect/decal/remains/human,/obj/effect/landmark{name = "crap_item"},/turf/open/floor{icon_state = "white"},/area/lv624/lazarus/research)
 "uw" = (/obj/structure/bed/chair/office/dark{dir = 1},/turf/open/floor{dir = 5; icon_state = "whitepurple"},/area/lv624/lazarus/research)
@@ -1093,6 +1103,7 @@
 "vk" = (/obj/effect/landmark{name = "hunter_primary"},/turf/open/gm/grass,/area/lv624/ground/jungle5)
 "vl" = (/obj/structure/flora/ausbushes/grassybush,/turf/open/gm/river,/area/lv624/ground/jungle6)
 "vm" = (/obj/structure/table/woodentable,/obj/item/reagent_container/food/drinks/bottle/whiskey{pixel_x = -7},/obj/item/reagent_container/food/drinks/bottle/absinthe,/obj/item/reagent_container/food/drinks/bottle/gin{pixel_x = 4; pixel_y = 4},/turf/open/floor/wood,/area/lv624/ground/jungle6)
+"vn" = (/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/open/floor{tag = "icon-darkyellowcorners2 (EAST)"; icon_state = "darkyellowcorners2"; dir = 4},/area/lv624/ground/sand5)
 "vo" = (/obj/structure/barricade/wooden,/turf/open/floor/wood,/area/lv624/ground/jungle6)
 "vp" = (/obj/structure/sign/science{pixel_x = 30},/turf/open/gm/grass,/area/lv624/ground/jungle6)
 "vq" = (/obj/machinery/door/airlock/almayer/research{dir = 1; locked = 1; name = "\improper Research Dome"; req_access_txt = "100"},/turf/open/floor{dir = 5; icon_state = "whitepurple"},/area/lv624/lazarus/research)
@@ -1208,6 +1219,7 @@
 "xw" = (/obj/structure/jungle/planttop1,/turf/open/gm/grass,/area/lv624/lazarus/quartstorage/outdoors)
 "xx" = (/obj/effect/landmark/corpsespawner/chef{corpsesuit = null; corpseuniform = /obj/item/clothing/under/colonist; name = "Colonist Jed Willis"},/obj/effect/decal/cleanable/blood/splatter/animated,/obj/item/weapon/harpoon,/turf/open/gm/river,/area/lv624/ground/jungle6)
 "xy" = (/obj/effect/decal/cleanable/blood/splatter/animated,/turf/open/gm/dirtgrassborder{dir = 4; icon_state = "grassdirt_corner2"},/area/lv624/ground/jungle6)
+"xz" = (/obj/structure/cable{tag = "icon-4-8"; icon_state = "4-8"; d2 = 8},/turf/open/floor{tag = "icon-darkyellowcorners2 (EAST)"; icon_state = "darkyellowcorners2"; dir = 4},/area/lv624/ground/sand5)
 "xA" = (/obj/item/stool,/turf/open/floor/plating{icon_state = "platebot"},/area/lv624/lazarus/robotics)
 "xB" = (/obj/machinery/door/airlock/almayer/engineering{name = "\improper Robotics Dome"; req_access_txt = "100"; req_one_access_txt = "0"},/turf/open/floor{icon_state = "vault"; dir = 8},/area/lv624/lazarus/robotics)
 "xC" = (/obj/effect/decal/cleanable/blood/oil,/turf/open/floor{icon_state = "vault"},/area/lv624/lazarus/robotics)
@@ -1256,7 +1268,7 @@
 "yt" = (/turf/open/floor{dir = 8; icon_state = "warnwhite"},/area/lv624/lazarus/fitness)
 "yu" = (/obj/structure/window/framed/colony/reinforced,/turf/open/floor/plating,/area/lv624/lazarus/main_hall)
 "yv" = (/turf/open/floor{icon_state = "white"},/area/lv624/lazarus/fitness)
-"yw" = (/turf/open/floor/plating,/area/lv624/lazarus/main_hall)
+"yw" = (/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/open/floor{tag = "icon-darkyellowcorners2 (EAST)"; icon_state = "darkyellowcorners2"; dir = 4},/area/lv624/ground/sand5)
 "yx" = (/turf/open/floor{dir = 4; icon_state = "warnwhite"},/area/lv624/lazarus/fitness)
 "yy" = (/obj/item/clothing/under/shorts/black{pixel_x = 2; pixel_y = 2},/turf/open/floor{dir = 4; icon_state = "whitepurplecorner"},/area/lv624/lazarus/fitness)
 "yz" = (/obj/item/tool/mop,/obj/structure/rack{layer = 2.5},/turf/open/floor{dir = 4; icon_state = "whitepurplecorner"},/area/lv624/lazarus/fitness)
@@ -1276,8 +1288,8 @@
 "yN" = (/turf/open/gm/dirt,/area/lv624/ground/compound/c)
 "yO" = (/obj/item/weapon/baseballbat/metal,/obj/item/weapon/baseballbat/metal{pixel_x = 5},/obj/structure/rack{layer = 2.5},/turf/open/floor{dir = 4; icon_state = "whitepurplecorner"},/area/lv624/lazarus/fitness)
 "yP" = (/turf/closed/wall/r_wall,/area/lv624/lazarus/main_hall)
-"yQ" = (/obj/machinery/door/airlock/multi_tile/almayer/generic{name = "\improper Nexus Dome"; req_access_txt = "100"},/turf/open/floor/plating,/area/lv624/lazarus/main_hall)
-"yR" = (/obj/structure/window_frame/colony/reinforced,/obj/item/shard,/turf/open/floor/plating,/area/lv624/lazarus/main_hall)
+"yQ" = (/obj/structure/window/reinforced{tag = "icon-rwindow (EAST)"; icon_state = "rwindow"; dir = 4},/obj/structure/window/reinforced{dir = 1},/obj/structure/rack,/obj/item/storage/toolbox/emergency{pixel_x = 1; pixel_y = 10},/obj/item/storage/toolbox/electrical{pixel_y = 1},/turf/open/floor{icon_state = "dark"},/area/lv624/ground/sand5)
+"yR" = (/obj/machinery/door/poddoor/shutters/almayer{dir = 4; id = "mining_garage"; name = "\improper Garage Shutters"},/turf/open/floor/plating,/area/lv624/ground/sand5)
 "yS" = (/obj/effect/landmark{name = "crap_item"},/obj/structure/barricade/wooden,/turf/open/gm/grass,/area/lv624/ground/compound/ne)
 "yT" = (/obj/effect/landmark{name = "hunter_secondary"},/turf/open/gm/grass,/area/lv624/ground/compound/ne)
 "yU" = (/obj/structure/jungle/plantbot1,/turf/open/gm/grass,/area/lv624/lazarus/quartstorage/outdoors)
@@ -1374,6 +1386,8 @@
 "AH" = (/obj/structure/barricade/wooden{dir = 8},/obj/machinery/landinglight/ds2/delaythree{tag = "icon-landingstripe (EAST)"; icon_state = "landingstripe"; dir = 4},/turf/open/floor/plating{dir = 4; icon_state = "asteroidwarning"},/area/shuttle/drop2/lz2)
 "AI" = (/turf/open/floor/plating,/area/shuttle/drop2/lz2)
 "AJ" = (/obj/structure/barricade/wooden{dir = 4},/obj/machinery/landinglight/ds2/delayone{tag = "icon-landingstripe (WEST)"; icon_state = "landingstripe"; dir = 8},/turf/open/floor/plating{dir = 8; icon_state = "asteroidwarning"},/area/shuttle/drop2/lz2)
+"AK" = (/turf/open/floor/plating,/area/lv624/ground/sand5)
+"AL" = (/obj/item/storage/toolbox/mechanical{pixel_x = 13; pixel_y = 22},/turf/open/floor/plating,/area/lv624/ground/sand5)
 "AM" = (/obj/structure/cable/yellow{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/closed/wall,/area/lv624/lazarus/robotics)
 "AN" = (/obj/structure/fence,/turf/open/gm/dirtgrassborder{dir = 8; icon_state = "grassdirt_corner2"},/area/lv624/ground/compound/c)
 "AO" = (/obj/structure/fence,/turf/open/gm/dirtgrassborder{dir = 4; icon_state = "grassdirt_corner2"},/area/lv624/ground/compound/c)
@@ -1383,6 +1397,7 @@
 "AS" = (/obj/machinery/power/apc{dir = 1; name = "Men's Dorms APC"; pixel_y = 30; start_charge = 0},/obj/structure/cable/yellow{d2 = 2; icon_state = "0-2"},/obj/structure/table,/obj/item/toy/deck,/obj/item/storage/fancy/cigarettes,/turf/open/floor{dir = 2; icon_state = "bluecorner"},/area/lv624/lazarus/sleep_male)
 "AT" = (/obj/structure/flora/ausbushes/reedbush,/turf/open/gm/coast{dir = 8; icon_state = "beachcorner2"},/area/lv624/ground/jungle4)
 "AU" = (/turf/open/floor{dir = 2; icon_state = "bluecorner"},/area/lv624/lazarus/sleep_male)
+"AV" = (/obj/structure/window/reinforced{tag = "icon-rwindow (EAST)"; icon_state = "rwindow"; dir = 4},/turf/open/floor/mech_bay_recharge_floor,/area/lv624/ground/sand5)
 "AW" = (/obj/structure/bed,/turf/open/floor{dir = 2; icon_state = "bluecorner"},/area/lv624/lazarus/sleep_male)
 "AX" = (/obj/structure/closet,/obj/item/clothing/under/rank/scientist,/obj/structure/window/reinforced/tinted,/obj/item/stack/medical/advanced/bruise_pack,/turf/open/floor{dir = 2; icon_state = "bluecorner"},/area/lv624/lazarus/sleep_male)
 "AY" = (/obj/structure/barricade/wooden{dir = 4},/turf/open/floor{icon_state = "white"},/area/lv624/lazarus/main_hall)
@@ -1400,6 +1415,7 @@
 "Bk" = (/obj/structure/flora/ausbushes/stalkybush,/turf/open/gm/coast{dir = 2; icon_state = "beachcorner2"},/area/lv624/ground/jungle4)
 "Bl" = (/obj/structure/flora/ausbushes/genericbush,/turf/open/gm/river,/area/lv624/ground/jungle4)
 "Bm" = (/obj/structure/flora/ausbushes/reedbush,/turf/open/gm/river,/area/lv624/ground/jungle4)
+"Bn" = (/obj/structure/window/reinforced{tag = "icon-rwindow (EAST)"; icon_state = "rwindow"; dir = 4},/obj/structure/window/reinforced,/obj/structure/rack,/obj/item/stack/sheet/metal{amount = 10},/turf/open/floor{icon_state = "dark"},/area/lv624/ground/sand5)
 "Bo" = (/turf/open/floor/plating,/area/shuttle/drop2/LV624{name = "\improper Almayer Dropship 2"})
 "Bp" = (/obj/item/mecha_parts/mecha_equipment/tesla_energy_relay{layer = 2.5},/obj/structure/largecrate/random,/turf/open/floor/plating{icon_state = "platebot"},/area/lv624/lazarus/robotics)
 "Bq" = (/obj/structure/largecrate,/obj/item/mecha_parts/mecha_equipment/repair_droid{layer = 2; pixel_y = -10},/obj/machinery/light/small{dir = 4},/turf/open/floor/plating{icon_state = "platebot"},/area/lv624/lazarus/robotics)
@@ -1597,6 +1613,7 @@
 "Fa" = (/obj/structure/largecrate/random,/obj/machinery/atmospherics/unary/vent_pump{dir = 8; on = 1},/obj/machinery/light{dir = 1},/turf/open/floor{dir = 4; icon_state = "whiteyellowfull"},/area/lv624/lazarus/quart)
 "Fb" = (/obj/structure/largecrate/random,/obj/machinery/light/small{dir = 8},/turf/open/floor{dir = 4; icon_state = "loadingarea"},/area/lv624/lazarus/quartstorage)
 "Fc" = (/turf/open/floor/plating,/area/shuttle/drop1/LV624{name = "\improper Almayer Dropship 1"})
+"Fd" = (/obj/machinery/door_control{id = "mining_garage"; name = "Mining Garage"; pixel_x = 24; pixel_y = 0},/turf/open/gm/dirt,/area/lv624/ground/sand5)
 "Fe" = (/turf/open/gm/coast{dir = 4; icon_state = "beachcorner2"},/area/lv624/ground/jungle4)
 "Ff" = (/obj/machinery/landinglight/ds2/delaytwo{tag = "icon-landingstripe (EAST)"; icon_state = "landingstripe"; dir = 4},/turf/open/floor/plating{dir = 4; icon_state = "asteroidwarning"},/area/shuttle/drop2/lz2)
 "Fg" = (/obj/effect/landmark{name = "monkey_spawn"},/obj/machinery/landinglight/ds2/delaytwo{tag = "icon-landingstripe (WEST)"; icon_state = "landingstripe"; dir = 8},/turf/open/floor/plating{dir = 8; icon_state = "asteroidwarning"},/area/shuttle/drop2/lz2)
@@ -1610,6 +1627,7 @@
 "Fo" = (/turf/open/floor/plating,/area/lv624/lazarus/chapel)
 "Fp" = (/obj/structure/cable/yellow{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/open/floor{dir = 8; icon_state = "chapel"},/area/lv624/lazarus/chapel)
 "Fq" = (/obj/structure/window_frame/colony,/turf/open/floor/plating{icon_state = "platebotc"},/area/lv624/lazarus/chapel)
+"Fr" = (/obj/machinery/light/small{dir = 8},/obj/machinery/door_control{id = "mining_garage"; name = "Mining Garage"; pixel_x = -24; pixel_y = 0},/turf/open/floor{tag = "icon-darkyellowcorners2 (EAST)"; icon_state = "darkyellowcorners2"; dir = 4},/area/lv624/ground/sand5)
 "Fs" = (/turf/open/gm/dirtgrassborder{dir = 8; icon_state = "grassdirt_corner2"},/area/lv624/ground/jungle4)
 "Ft" = (/obj/machinery/atmospherics/pipe/simple/hidden/cyan,/turf/open/floor/grass,/area/lv624/lazarus/main_hall)
 "Fu" = (/obj/machinery/door/airlock/almayer/engineering{density = 0; icon_state = "door_open"; name = "\improper Nexus Cargo Storage"; req_access_txt = "100"; req_one_access_txt = "0"},/turf/open/floor{dir = 4; icon_state = "whiteyellowfull"},/area/lv624/lazarus/quart)
@@ -1699,6 +1717,7 @@
 "Ha" = (/obj/machinery/washing_machine,/turf/open/floor{icon_state = "freezerfloor"},/area/lv624/lazarus/toilet)
 "Hb" = (/obj/structure/table,/obj/structure/mirror{pixel_x = 30},/obj/item/explosive/grenade/chem_grenade/cleaner,/obj/item/reagent_container/spray/cleaner,/turf/open/floor{icon_state = "freezerfloor"},/area/lv624/lazarus/toilet)
 "Hc" = (/obj/structure/closet/coffin,/turf/open/floor{dir = 8; icon_state = "chapel"},/area/lv624/lazarus/chapel)
+"Hd" = (/obj/structure/closet/crate,/obj/item/stack/sheet/mineral/silver{amount = 10},/obj/item/stack/sheet/mineral/gold{amount = 10},/obj/item/stack/sheet/metal{pixel_x = 16; pixel_y = 29; amount = 10},/obj/item/tool/pickaxe/plasmacutter,/turf/open/floor{tag = "icon-darkyellowcorners2 (EAST)"; icon_state = "darkyellowcorners2"; dir = 4},/area/lv624/ground/sand5)
 "He" = (/obj/machinery/vending/cigarette/colony,/turf/open/floor{tag = "icon-whiteblue (NORTHWEST)"; icon_state = "whiteblue"; dir = 9},/area/lv624/lazarus/main_hall)
 "Hf" = (/obj/structure/flora/pottedplant,/obj/machinery/light/spot{dir = 1},/turf/open/floor{icon_state = "white"},/area/lv624/lazarus/main_hall)
 "Hg" = (/obj/effect/landmark{name = "good_item"},/turf/open/floor{icon_state = "white"},/area/lv624/lazarus/main_hall)
@@ -1743,9 +1762,11 @@
 "HT" = (/turf/open/gm/coast{dir = 1},/area/lv624/ground/jungle4)
 "HU" = (/obj/structure/largecrate/random,/turf/open/floor{tag = "icon-whiteblue (EAST)"; icon_state = "whiteblue"; dir = 4},/area/lv624/lazarus/internal_affairs)
 "HV" = (/obj/structure/cable/yellow{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/open/floor{tag = "icon-whiteblue (NORTH)"; icon_state = "whiteblue"; dir = 1},/area/lv624/lazarus/internal_affairs)
+"HW" = (/obj/structure/closet/crate,/obj/item/storage/box/lightstick/red,/obj/item/storage/box/lightstick/red,/obj/item/storage/box/lightstick,/obj/item/storage/box/lightstick,/obj/item/tool/pickaxe/plasmacutter,/turf/open/floor{tag = "icon-darkyellowcorners2 (EAST)"; icon_state = "darkyellowcorners2"; dir = 4},/area/lv624/ground/sand5)
 "HX" = (/obj/effect/spawner/random/toolbox,/obj/structure/cable/yellow{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/open/floor{dir = 8; icon_state = "whiteblue"},/area/lv624/lazarus/internal_affairs)
 "HY" = (/obj/structure/flora/grass/green,/turf/open/gm/grass,/area/lv624/ground/jungle9)
 "HZ" = (/turf/open/floor{dir = 4; icon_state = "whiteyellowcorner"},/area/lv624/lazarus/main_hall)
+"Ia" = (/obj/structure/ore_box{anchored = 0},/turf/open/floor{icon_state = "vault"; dir = 8},/area/lv624/ground/sand5)
 "Ib" = (/obj/structure/jungle/plantbot1,/turf/open/gm/grass,/area/lv624/ground/jungle4)
 "Ic" = (/obj/machinery/light/small{dir = 1},/turf/open/floor{icon_state = "white"},/area/lv624/lazarus/main_hall)
 "Id" = (/obj/structure/cable/yellow{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/open/floor{icon_state = "white"},/area/lv624/lazarus/main_hall)
@@ -1786,7 +1807,7 @@
 "IM" = (/obj/structure/jungle/vines{icon_state = "Light2"},/obj/machinery/door/airlock/almayer/engineering{dir = 2; name = "\improper Atmospherics Condenser"},/turf/open/floor/plating{icon_state = "platebotc"},/area/lv624/lazarus/atmos)
 "IN" = (/obj/structure/jungle/vines/heavy{icon_state = "Med2"; pixel_x = 0; pixel_y = 0},/obj/structure/window_frame/colony,/turf/open/floor/plating,/area/lv624/lazarus/atmos)
 "IO" = (/obj/structure/jungle/vines/heavy,/turf/closed/wall,/area/lv624/lazarus/atmos)
-"IP" = (/obj/machinery/door/airlock/multi_tile/almayer/generic{dir = 1; name = "\improper Nexus Dome"; req_access_txt = "100"},/turf/open/floor{dir = 4; icon_state = "whiteyellowcorner"},/area/lv624/lazarus/main_hall)
+"IP" = (/obj/structure/ore_box{anchored = 0},/obj/machinery/light/small{dir = 4},/turf/open/floor{icon_state = "vault"; dir = 8},/area/lv624/ground/sand5)
 "IQ" = (/obj/structure/jungle/vines/heavy{icon_state = "Med1"; pixel_x = 0},/turf/open/gm/grass,/area/lv624/ground/jungle4)
 "IR" = (/turf/open/gm/grass,/area/lv624/ground/jungle4)
 "IS" = (/obj/structure/cable/yellow{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/open/floor{icon_state = "white"},/area/lv624/lazarus/main_hall)
@@ -1823,7 +1844,7 @@
 "Jx" = (/obj/structure/jungle/vines/heavy{icon_state = "Hvy3"; pixel_x = 0},/turf/closed/wall,/area/lv624/lazarus/atmos)
 "Jy" = (/obj/structure/jungle/vines/heavy{icon_state = "Med1"; pixel_x = 0},/obj/structure/window_frame/colony,/turf/open/floor/plating,/area/lv624/lazarus/atmos)
 "Jz" = (/obj/structure/jungle/vines,/turf/closed/wall,/area/lv624/lazarus/atmos)
-"JA" = (/obj/item/shard,/obj/structure/window_frame/colony/reinforced,/turf/open/floor/plating,/area/lv624/lazarus/main_hall)
+"JA" = (/obj/machinery/light/small{dir = 4},/turf/open/gm/dirt,/area/lv624/ground/sand5)
 "JB" = (/turf/open/floor{dir = 4; icon_state = "whiteyellow"},/area/lv624/lazarus/main_hall)
 "JC" = (/obj/item/phone{desc = "A model of an ancient Earth communication device."; force = 8},/obj/structure/rack{layer = 2.5},/obj/structure/window/reinforced{dir = 8},/obj/structure/window/reinforced{dir = 1},/obj/structure/window/reinforced,/turf/open/floor{icon_state = "wood"},/area/lv624/lazarus/main_hall)
 "JD" = (/obj/structure/window/reinforced{dir = 1},/obj/structure/window/reinforced,/turf/open/floor{icon_state = "wood"},/area/lv624/lazarus/main_hall)
@@ -2213,6 +2234,7 @@
 "QX" = (/obj/structure/cable/yellow{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/closed/wall/r_wall,/area/lv624/lazarus/internal_affairs)
 "QY" = (/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"; layer = 2.44},/turf/open/gm/grass,/area/lv624/ground/jungle9)
 "QZ" = (/obj/structure/jungle/planttop1,/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"; layer = 2.44},/turf/open/gm/grass,/area/lv624/ground/jungle9)
+"Ra" = (/obj/machinery/door/poddoor/shutters/almayer{id = "nexus_blast"},/turf/open/floor{icon_state = "warnwhite"; dir = 1},/area/lv624/lazarus/main_hall)
 "Rb" = (/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"; layer = 2.44},/obj/structure/window/framed/colony/reinforced,/turf/open/floor/plating,/area/lv624/lazarus/comms)
 "Rc" = (/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"; layer = 2.44},/turf/open/floor{dir = 9; icon_state = "brown"},/area/lv624/lazarus/comms)
 "Rd" = (/obj/structure/table,/obj/item/device/mmi/radio_enabled,/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/open/floor{dir = 9; icon_state = "brown"},/area/lv624/lazarus/comms)
@@ -2407,6 +2429,7 @@
 "UK" = (/obj/structure/closet/secure_closet/freezer/fridge,/obj/machinery/atmospherics/pipe/simple/hidden/cyan{dir = 4},/turf/open/floor{icon_state = "freezerfloor"},/area/lv624/lazarus/kitchen)
 "UL" = (/obj/machinery/atmospherics/pipe/simple/hidden/cyan{dir = 4},/turf/open/floor{icon_state = "freezerfloor"},/area/lv624/lazarus/kitchen)
 "UM" = (/obj/machinery/atmospherics/pipe/simple/hidden/cyan{dir = 4},/obj/effect/landmark{name = "crap_item"},/turf/open/floor{icon_state = "freezerfloor"},/area/lv624/lazarus/kitchen)
+"UN" = (/obj/item/shard,/turf/closed/wall/r_wall,/area/lv624/lazarus/main_hall)
 "UO" = (/obj/item/shard,/turf/open/gm/grass,/area/lv624/ground/jungle1)
 "UP" = (/obj/effect/landmark{name = "crap_item"},/turf/open/gm/grass,/area/lv624/ground/jungle1)
 "UQ" = (/turf/open/floor/greengrid,/area/lv624/lazarus/secure_storage)
@@ -2507,9 +2530,9 @@
 "WH" = (/obj/structure/table/reinforced,/obj/item/folder,/obj/item/device/assembly/signaler,/turf/open/floor{icon_state = "dark"},/area/lv624/lazarus/engineering)
 "WI" = (/obj/structure/table/reinforced,/obj/item/device/flashlight,/obj/effect/spawner/random/tool,/turf/open/floor{icon_state = "dark"},/area/lv624/lazarus/engineering)
 "WJ" = (/obj/effect/landmark{name = "crap_item"},/turf/open/gm/dirt,/area/lv624/ground/compound/se)
-"WK" = (/obj/structure/window_frame/colony/reinforced,/turf/open/floor/plating,/area/lv624/lazarus/main_hall)
-"WL" = (/obj/machinery/door/airlock/multi_tile/almayer/generic{name = "\improper Nexus Dome"; req_access_txt = "100"},/turf/open/floor{icon_state = "white"},/area/lv624/lazarus/main_hall)
-"WM" = (/obj/structure/grille{density = 0; icon_state = "brokengrille"},/obj/item/shard,/obj/structure/window_frame/colony/reinforced,/turf/open/floor/plating,/area/lv624/lazarus/main_hall)
+"WK" = (/obj/machinery/door/poddoor/shutters/almayer{dir = 8; icon_state = "shutter1"; id = "nexus_blast"},/turf/open/floor{dir = 8; icon_state = "warnwhite"},/area/lv624/lazarus/main_hall)
+"WL" = (/obj/machinery/door/poddoor/shutters/almayer{dir = 8; icon_state = "shutter1"; id = "nexus_blast"},/turf/open/floor{dir = 8; icon_state = "warnwhite"},/area/lv624/lazarus/main_hall)
+"WM" = (/obj/machinery/door/poddoor/shutters/almayer{id = "nexus_blast"},/turf/open/floor{dir = 2; icon_state = "warnwhite"},/area/lv624/lazarus/main_hall)
 "WN" = (/turf/open/gm/dirtgrassborder{dir = 4},/area/lv624/ground/jungle3)
 "WO" = (/turf/open/floor{dir = 4; icon_state = "whiteyellowfull"},/area/lv624/ground/jungle3)
 "WP" = (/obj/effect/landmark{name = "monkey_spawn"},/turf/open/gm/dirt,/area/lv624/ground/jungle3)
@@ -2693,18 +2716,18 @@ acbMbMbMbMbMbMbMbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbMbMbMbMbMcpcpcpbZbZbNbMbM
 acbMbMbMbMbMbMbMbNbNbNbNbQbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbMbMbMcpcucucucpbZbNbNbMbMbMbMbMbMbNbNbNbNbNbMbMbMbMbMbMbMbMbSbSbSbSbSbSbSbSbSbSbSbSbScacacYcacabSbSbSbSbSbSbSbSbSbSbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmblbvblblblblblbmbmbmbmbmbmcFcFcQdacJcJcJdbcFcFcfcfcfcfcfcgcgaNcgcgcgcgcgcgcfcfcfcfcfcfcfcfcgcgcgcgcgcgcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfac
 acbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbNbNbQbNbNbNbNbNbNbNbNbNbMbMcpcucucucycucpbNbNbMbNbMbNbNbNbNbNbObNbNbZbMbMbMbMbMbMbMbSbSbSbSbSbSbSbSbSbSbSbSbSczcacacabSbSbSbSbSbSbSbSbSbSbSbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmblblblblblblblbmbmbmbmcAcAcFcFcQddcJcJcTdbcFcFcfcfcfcfcfcgcgcgcgcgcgcgcfcfcfcfcfcfcfcfcfcgcgcgaNcgcgcgcfcfcfcfcfcfcfcCcCcfcfcfcfcfcfcfcfcfac
 acbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbMcpcucudecucucpbNbNbNbNbNbNbNbNbNbNbNbNbNbZbMbMbMbMbMbMbMbSbSbSbSbSbSbSbSbSbSbSbSbSczcacacabSbSbSbSbSbSbSbSbSbSbSbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmblblblblblblbmbmbmcAcAcAcAcFcFdfdgcJddcJdbcFcFcfcfcfcfcfcgcgcgcgcfcfcfcfcfcfcfcfcfcfcfcgcgcgcgcgcgcgcgcfcfcfcfcCcCcCcGaLcGcfcfcfcfcfcfcfcfac
-acbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbNbNbNbNbNbQbNbNbNbNcpcucycucucucpbNbNbNbNbQbNbNbNbNbNbNbNbNbZbZbMbMbMbMbMbMbSbSbSbSbSbSbSbSbSbSbSbSbSbScacacabSbSbSbSbSbSbSbSbSbSbSbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmblblblblblbmbmcAcAcIcAcAcFcFcQcTddcJdhdbcFcFcfcfcfcfcfcgcgcgcfcfcfcfcfcfcfcfcfcfcfcfcgcgcgcgcgcgcgcgaLcfcCcCcGaLaNaLcgaLkhcfcfcfcfcfcfcfac
-acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbMbMbNbNbNbNbNbNbNbNbQbNbNcpcucycucpchbNbNbNbNbNbNbNbNbNbQbNbNbNbNbZcKbMbMbMbMbMbSbSbSbSbSbSbSbSbSbSbSbSbSbScacacaczbSbSbSbSbSbSbSbSbSbSbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmblblblblbmbmcAcAcAcAcAcAdicFcQdjcJcwcJdkcFdicfcfcfcfaNcgcgcfcfcfcfcfcfcfcfcfcfcfcfcfcfaLcgcgcgcgcgcgaLcgcGaLaLcgcgcgcgcgcgaLcfcfcfcfcfcfac
-acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbNbNbNbNbNcpcucpchchbNbNbNbNbNbNbNbNbNbNbNbNbNbNbZbNbNbMbMbMbMbSbSbSbSbSbSbSbSbSbSbSbSbSbScOcOcOczbSbSbSbSbSbSbSbScPcPcPbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmblblblcAcAdlcAcAcAcAcAcAcAcRcFcFcFcwcwcFcFcFdicfcfcfcfcgcgcgcfcfcfcgcgcfcfcgcfcfcfcgcgcgaLcgcgcgcgcgcgaLcgaLcgcgcgcgcgcgcgaLcGcfcfcfcfcfcfac
-acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbNbNbNbNbQbNcSbNbNbNbNbNbNbNbNbNbNbNbNbNbMbMbMbMbSbSbSbSbSbSbSbScacacacacacacacacacabSbSbSbSbSbSbScPcPcPcPcPcPbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmblblcAcIcAcAcAcAcAcAcAcAcAcRdncFdsdsdscFducFcRcfcfcfcfcfaLaLcfcfcgcgcgcgcgcgcgcgcgcgcgcgaLaLaLcfcfaLbtaLcgcgcgcgcgcgcgcgcgcgaLcfcfcfcfcfcfac
-acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbQbNbNbNbNbNcpbNbNbNbMbMbMbMbSbSbSbSbScacacacacacacacacacacqcacacaczbSbSbSbSbScPcPcAcPcAcPbmbmbmbmcPcPcPcPbmbmbmbmbmbmbmbmbmcAcAcAcAcAcAcAcAcAcAcAcAcRcRdwdxdidsdscRcRcRcRcRcRcgcgcgcgcgcgcgaNcgcgcgcgcgcgcgcgcgcgcgcgcgcfcZcgcgcgcgcgcgcgcgcgboaNcgaLcGaLcfcfcfcfcfac
-acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbQbNbNbNbObNbNbNbNbNbNbNbNbNbNbNbNbNbNbNcpbZbNbNbMbMbMbMbSbSdydycacacacacqcadccacacacacacacacacabSbSbSbSbScPcPcAcAcAcPcPcPcPcPcPcAcAcPbmbmbmbmbmbmbmbmcAcAcAcAdzdzdzdzdzdzdzcAcAcRcRcRdsdsdxcRdAcRcRcRcRcRaNcgcgcgcgcgcgcgcgcgdBcgcgaNcgdBcgcgcgcgcgcgcZcfcZcgcgaNcgcgcgcgcgcgcgcgaLcfcfcfcfcfcfac
-acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbZbNbNbNbMbMbMbSbSdycacacacacacacacacacacacaczczczcacacabScPcPcPcAcAcAcAcAcAcPcPcPcPcAcAcAcAcPcPcPcPcPcPcPcAcAcAcAcAdzdCdDdEdFdFdzcIcAcFcFcRcRcRcRdAcJcFcRcRcRcRcgcgcgcocgcgcgcgcfcfdGdHcgdBdHcgdHcgcgcgcgcgcfcfcfcfkhcgcgaLcgcgcgcgcgaLcGcfcfcfcfcfcfac
-acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbNbNbNbNbNbQbNbNbNbNbNbNbNbNbQbNbNbNbNbNbNbNbMbMbMbSbSdycacacacacacacacabSbSbSbSbSbSbScaczcacabScPcAcAcAcAcAcAcAcAcAcAcAcAcAcAcAcAcAcAcAdmcAcAcAcAcAcAcAdIdMdMdMdMdNdzcAcAcRcRcRcRcRdqcRcRcRcRcRcRcRcgcgcgcgcgcfcfcfcfcfdOdOdBcgcgcgcgdBcgcgcgcgcgcfcfcfcfcfcfcGaLcgaLcgaLcgcfcfcfcfcfcfcfac
-acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbQbNbNbNbNbNbNbNbNbNbNbNbNbZbNbQchbNbNbNbNbNbNbNbNcacacacacacacacacacacadPcacacacabSbSbSbSbSbSbSbScacacacqcOcAcAcAcAcAdtcAcAcAcAcAcAcAcAcAcAcAcIcAcAdmcAcAcAcAcIcAcAdzdQdRdSdTdSdzcAcAcRcFdUcRcRdVcRdicRdWcRcRcRcfcfcgcgcfcfcfcfdXdYdZdOdGdHcgdHcgcgaNdBcgcgcgcfcfcfcfcfcfcfcfcfcGaLcGcfcfcfcfcfcfcfcfac
-acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbZbZbZbNbNbNbNbNbNbNbNchcpbObNbNbNbNbNbNbNbObNczcacacadccacacacacacacacacacacabSbSbSbSbSbSbSbSbScacacacOcAcAcAcAcIcAcAcAcAcAcAcAcIcAcAcAcAcAcAcAcPcPcAcAcAcAcAcAdzdzdzdzdzdzdzcAcAcRcRcJdAcRcRcRcRcReacRcRcRcfcfcfcfcfcfcfcfdGdGdGdOebdGdOcgcgdBcgcgcgcgcfdOdOdOcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfac
-acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbZbZbNbNbNbNbNbNbZbNbNbNbNchcpcpcpcpcpbNbNbZbNbNbNcacacqcacacacacadPdPcacqcadPcacabSbSbSbSbSbSbSbSbScPcPbScOcAcAcAcAcAcAcAcAcAececcAcAcAcAcAcAcAcPcPcPcAcAcAcAcAcAcAcAcAcAcAcAcAcAcAcAcRcRdqcRcRcRdAcRcRcRcRcRbTcfcfcfcfcfcfcfcfdGcgdGdGededdOcfcfcfcfcfdOdOdOdOeeeeeeeeeenncfehehehehehehehehehcfcfcfac
-acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbQbNbZbNbNdJbNchcpbZchchcpbNbNbNbNbNbNcacacaczczczczcacacacacacacacacabSbSbSbSbSbSbSbScPcPcPcPcPcAcAcAcAcAcAcAcAcPcPcPeccAecececcPcPcPcPcPcAcAcAcAcAcAcAcAcAcAcAcIcAcAcAcAcRcRcRdicRcRcJcFcRcRdqcRbTbTbTbTbTbTbTbTcfcgdGcgdOdGdGdOcfcfcfcfeeeeeeeeeeeeeeeeeeeeeeehehejeeejnneeekmVehbTbTbTac
+acbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbNbNbNbNbNbQbNbNbNbNcpcucycucucucpbNbNbNbNbQbNbNbNbNbNbNbNbNbZbZbMbMbMbMbMbMbSbSbSbSbSbSbSbSbSbSbSbSbSbScacacabSbSbSbSbSbSbSbSbSbSbSbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmblblbldCdNdNdNdzdzdzdzcAcFcFcQcTddcJdhdbcFcFcfcfcfcfcfcgcgcgcfcfcfcfcfcfcfcfcfcfcfcfcgcgcgcgcgcgcgcgaLcfcCcCcGaLaNaLcgaLkhcfcfcfcfcfcfcfac
+acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbMbMbNbNbNbNbNbNbNbNbQbNbNcpcucycucpchbNbNbNbNbNbNbNbNbNbQbNbNbNbNbZcKbMbMbMbMbMbSbSbSbSbSbSbSbSbSbSbSbSbSbScacacaczbSbSbSbSbSbSbSbSbSbSbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmblblblbldNpMdDdEdFdFdzcAdicFcQdjcJcwcJdkcFdicfcfcfcfaNcgcgcfcfcfcfcfcfcfcfcfcfcfcfcfcfaLcgcgcgcgcgcgaLcgcGaLaLcgcgcgcgcgcgaLcfcfcfcfcfcfac
+acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbNbNbNbNbNcpcucpchchbNbNbNbNbNbNbNbNbNbNbNbNbNbNbZbNbNbMbMbMbMbSbSbSbSbSbSbSbSbSbSbSbSbSbScOcOcOczbSbSbSbSbSbSbSbScPcPcPbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmblblblcAcIdIdMdMdMdMpQdzcAcRcFcFcFcwcwcFcFcFdicfcfcfcfcgcgcgcfcfcfcgcgcfcfcgcfcfcfcgcgcgaLcgcgcgcgcgcgaLcgaLcgcgcgcgcgcgcgaLcGcfcfcfcfcfcfac
+acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbNbNbNbNbQbNcSbNbNbNbNbNbNbNbNbNbNbNbNbNbMbMbMbMbSbSbSbSbSbSbSbScacacacacacacacacacabSbSbSbSbSbSbScPcPcPcPcPcPbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmbmblblcAcAcAdzdQdRdTpTdSdzcAcRdncFdsdsdscFducFcRcfcfcfcfcfaLaLcfcfcgcgcgcgcgcgcgcgcgcgcgcgaLaLaLcfcfaLbtaLcgcgcgcgcgcgcgcgcgcgaLcfcfcfcfcfcfac
+acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbQbNbNbNbNbNcpbNbNbNbMbMbMbMbSbSbSbSbScacacacacacacacacacacqcacacaczbSbSbSbSbScPcPcAcPcAcPbmbmbmbmcPcPcPcPbmbmbmbmbmbmbmbmbmcAcAcAcAdzdzdzdzqfdzdzcAcRcRdwdxdidsdscRcRcRcRcRcRcgcgcgcgcgcgcgaNcgcgcgcgcgcgcgcgcgcgcgcgcgcfcZcgcgcgcgcgcgcgcgcgboaNcgaLcGaLcfcfcfcfcfac
+acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbQbNbNbNbObNbNbNbNbNbNbNbNbNbNbNbNbNbNbNcpbZbNbNbMbMbMbMbSbSdydycacacacacqcadccacacacacacacacacabSbSbSbSbScPcPcAcAcAcPcPcPcPcPcPcAcAcPbmbmbmbmbmbmbmbmcAcAcAcAcAdzqgqvqwqxrfdzcAcRcRcRdsdsdxcRdAcRcRcRcRcRaNcgcgcgcgcgcgcgcgcgdBcgcgaNcgdBcgcgcgcgcgcgcZcfcZcgcgaNcgcgcgcgcgcgcgcgaLcfcfcfcfcfcfac
+acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbZbNbNbNbMbMbMbSbSdycacacacacacacacacacacacaczczczcacacabScPcPcPcAcAcAcAcAcAcPcPcPcPcAcAcAcAcPcPcPcPcPcPcPcAcAcAcAcAcAutvnxzywdMyQdzcAcFcFcRcRcRcRdAcJcFcRcRcRcRcgcgcgcocgcgcgcgcfcfdGdHcgdBdHcgdHcgcgcgcgcgcfcfcfcfkhcgcgaLcgcgcgcgcgaLcGcfcfcfcfcfcfac
+acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbNbNbNbNbNbQbNbNbNbNbNbNbNbNbQbNbNbNbNbNbNbNbMbMbMbSbSdycacacacacacacacabSbSbSbSbSbSbScaczcacabScPcAcAcAcAcAcAcAcAcAcAcAcAcAcAcAcAcAcAcAdmcAcAcAcAcAcAcAcAyRAKAKALAKAVdzcAcRcRcRcRcRdqcRcRcRcRcRcRcRcgcgcgcgcgcfcfcfcfcfdOdOdBcgcgcgcgdBcgcgcgcgcgcfcfcfcfcfcfcGaLcgaLcgaLcgcfcfcfcfcfcfcfac
+acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbQbNbNbNbNbNbNbNbNbNbNbNbNbZbNbQchbNbNbNbNbNbNbNbNcacacacacacacacacacacadPcacacacabSbSbSbSbSbSbSbScacacacqcOcAcAcAcAcAdtcAcAcAcAcAcAcAcAcAcAcAcIcAcAdmcAcAcAcAcIcAcAcAutqxqxqxqxBndzcAcRcFdUcRcRdVcRdicRdWcRcRcRcfcfcgcgcfcfcfcfdXdYdZdOdGdHcgdHcgcgaNdBcgcgcgcfcfcfcfcfcfcfcfcfcGaLcGcfcfcfcfcfcfcfcfac
+acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbZbZbZbNbNbNbNbNbNbNbNchcpbObNbNbNbNbNbNbNbObNczcacacadccacacacacacacacacacacabSbSbSbSbSbSbSbSbScacacacOcAcAcAcAcIcAcAcAcAcAcAcAcIcAcAcAcAcAcAcAcPcPcAcAcAcAcAcAFddzFrHdHWIaIPdzcAcRcRcJdAcRcRcRcRcReacRcRcRcfcfcfcfcfcfcfcfdGdGdGdOebdGdOcgcgdBcgcgcgcgcfdOdOdOcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfac
+acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbZbZbNbNbNbNbNbNbZbNbNbNbNchcpcpcpcpcpbNbNbZbNbNbNcacacqcacacacacadPdPcacqcadPcacabSbSbSbSbSbSbSbSbScPcPbScOcAcAcAcAcAcAcAcAcAececcAcAcAcAcAcAcAcPcPcPcAcAcAcAcAcAcAJAdzdzdzdzdzdzdzcAcRcRdqcRcRcRdAcRcRcRcRcRbTcfcfcfcfcfcfcfcfdGcgdGdGededdOcfcfcfcfcfdOdOdOdOeeeeeeeeeenncfehehehehehehehehehcfcfcfac
+acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbQbNbZbNbNdJbNchcpbZchchcpbNbNbNbNbNbNcacacaczczczczcacacacacacacacacabSbSbSbSbSbSbSbScPcPcPcPcPcAcAcAcAcAcAcAcAcPcPcPeccAecececcPcPcPcPcPcAcAcAcAcAcAcAcAcAcAcAcAcAcAcAcAcRcRcRdicRcRcJcFcRcRdqcRbTbTbTbTbTbTbTbTcfcgdGcgdOdGdGdOcfcfcfcfeeeeeeeeeeeeeeeeeeeeeeehehejeeejnneeekmVehbTbTbTac
 acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbZcpbNbNbNbZbNbNcacacacacacacacacacacacacacacabSbSbSbSbSbSbScAcAcAcAcAcPcPcPcPcPcPcPcPcPcPcPcPcPcPcPcPcPcPcPcPcPcPcPcAcAcAcAefcAcAcAcAcAcAcAcAcAcAcAcRcRcRcRcRcRcRcRcRcRcRcRbTbTbTbTcRcRbTcRcRcReeegeeeeeeeeeeeheibTeeeeeeeeeeeeeeeheheeeeehnceeeeeeeemVeeeeehbTbTbTac
 acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbZbNbZbNbNbNbNbNbNbNbNbNbNbNbZcpbNbZbNbQbNchbNcacacacacqcacacacacacacacabSbSbSbSbSbSbSbScIcAcAcAcAcAcPcPcPcPcPcPcPcPcPcPcPcPcPcPcPcPcPcPcPelemememememememememememememememeneneneoeoeoeoeoeobTcRcRcRbTbTbTbTbTcRcRcRcRcRcRcReeeeeheiepeeeeeheqbTeeerbTbTbTbTbTbTeheeeenbeeeeeeeeeeeeeenhehbTbTbTac
 acbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbMbNbNbNbNbNbNbZbNbNbNbNbNbNbNbNbNbZbNbNbNbNbRbNbNbNbNbNchbZcacadPcacacacacacacacqcacabSbSbSbSbSbSbScAcAcAcAdlcAcAcAcAcAcAcPcPcPcPcPcPcPcPcPcPcPcPcPcPcPeteueueueueueueueueueueueueueucAcAcAcAcRcRcRcRcReocRcRcRcRbTbTbTbTbTbTcRcRcRcRcReheveheeeheheeeeeheeeeeeeebTcRcRcRbTbTbTeeeeeheeeeeeeeeemVeemNehbTbTbTac
@@ -2780,7 +2803,7 @@ acsrssvfvfninininininisrnipPpDuQusususwfwgwAwiwCzXmOnirXsrsSsrrxsrsrsrsrsrsrsrni
 acsrrdqjnininiqyninininininivzuQwJusususususxcAGzXninirXqzsHsrqzsrsrsrsrqzsrsrninininininivIxexfxgvHxhxixjvHxkxexlvInininisrninininininivpsTsTtUvqtUtUtUvrtUsTsTvqxmxnxnxoxpxqxrtXxtxuxvtXtXtXtXtXtXtXtXtxtftftftftftfthtftftftftfthtftftCsgsgsgsxwbwbwcwcwbwcwcwbxwriririrKrKrKskskskskrKrKririqJriritetitititititititititititeqZqZqZqZqZqZqZqZqZqZqcqZqcqcac
 acsrnininisrninininininimOmOvzuQususxdusxxxdusAGxytLnininirXrdsSsrsrqjsSrXsrsrninininininivImtxAxexBxCxixjxBxexexfvInininininipUnininixDninitOxExFxGtUxHtpxItUxJumxLtOxsxstftwxMxNxOxPxQxRxRxRxRxRxRxSxqxTthtftftftfththtfththtftftfxUxVxWswsgsgtZsfxUwbwcwbwcwcwcxXririririxYsNsNxZxZsNsNyaririririritetititivjtitititititititeqZqZqZqZqZqZqcqZqZqZqZqcqcqcac
 acsrninininininisrnininiycvZyeuQxcusususuSususwfxKzXsrsrnisHqjsrsrsHrdyfqjrXnininipUnininivIygxeyjvHykymxjvHynxeyovIninininininininininininitOypyqxFyrumtpumyrumystotOxstftftftxuzytyvyxtXtXyytXvMtXyztxybthtftftftftftftftftfthtftfxUyAsgsgsgsgsgydxUwbwbwbwcwcwbwbwbsNtetetesNyCtitiyCsNtetetesNxwriteyDtitEyEtitititiubtititeqZqcqZqZqZqZqZqZqZqcqZvkqcqcac
-acsrninininininininimOycyeyhwiyiusxdusuSusususwJAGzXninininisrsrsrrXsrqPqznininininininivHvHvHyFvHvHxjxiyGvHvHyFvHvHvHylylylylylylylyHnininitOxFxFyItUyJyKumtUyLyMtotOxstftftftxuzytyvyxtXtXtXtXtXtXyOtxybtftftftftftfthtftftftftftfyPyuyQywyuyQywyRyPwbySwbwbwbwbyTwbtetiubtHtitititititGtitititeyUrisNtetetesNtititisNtetetesNqZqZqLqZqZqZqZqZqZqcqcqcqcqcac
+acsrninininininininimOycyeyhwiyiusxdusuSusususwJAGzXninininisrsrsrrXsrqPqznininininininivHvHvHyFvHvHxjxiyGvHvHyFvHvHvHylylylylylylylyHnininitOxFxFyItUyJyKumtUyLyMtotOxstftftftxuzytyvyxtXtXtXtXtXtXyOtxybtftftftftftfthtftftftftftfyPyPRaRaRaRaRaUNyPwbySwbwbwbwbyTwbtetiubtHtitititititGtitititeyUrisNtetetesNtititisNtetetesNqZqZqLqZqZqZqZqZqZqcqcqcqcqcac
 acsrniqysrniniuxnininivzyByVususususususususususAGzXmOnininisrsrsrsrsrnininininininininivIyWyXxjyYyZxjzazbzczdxjzezfvIyNyNyNyNyNyNyNzgnipUnisTsUsUsUsTvBtpzhsTsUsUsUsTxstftgtftzzizjzkzltXtXtXzmznzouztxybtftftftftgtftftftftfzpzqzqzpzrztztzuzuzuzvzwzxzyzwwbwbwbwcwbtetitititititivjtiubtititHterirLririririsNvyxZvysNqZqZqZqZsQqZraqZqZqZqZqZqZqcqZqcqcqcac
 acsrsrsrsrsrnininininivzuQuswJuSusususzzuszAusvXAGzXnisrzBzCzCzCzCzCzCzCzCzCzCzCzCzCzDnizEzFxixixixixizGxizHxixizIzJzKyNzsyNyNyNyNyNzgnininininininisTsUsVsUsTtftftftfththtftftwtYtxtwtwzLtXzMtwtwtxtxtwybvstftftftftftftfzpzpzpzNzOzPztztztzuztzQzuzRzSzTzwzwzwzUzUwbteubtitizVtitititititititHteririririririrwqWqWqWzWqZqZqZqZqZqZqZqZqZqZqZqZqZqZqZqcqcqcac
 acsrsrsrsrsrnininimOycyeuQusususususususususususAGzXninizYzZAaAbAcAdAeAbAcAdAaAbAfzZAgtfvIAhxjxjAiAjxjAkxjAlAmxjAnzJvIyNyNyNyNyNyNyNzgnisrnininininiAoyNyNAqArtftfthtftftftftftftftftftwtxtytxtwthtftftfybtftftftfthzpzqzqzpAvzPAwAxzPAyzQzQztzQztAzzRAAABzRACzwzyzyzwsNtivdvdvTvdxavdADAEvdwZtisNsNqGqGqGqGqGqVqWqWqWzWqZqZvkqZqZsDqZqZqZqcqZqZqZqZqZqcqcqcac
@@ -2797,13 +2820,13 @@ acYtYtYtIRIRYtYtIxFsCeBmAQAQBNAQAQAQAQAQAQAQAQBuCfIRYtIRzYDlAIBoBoBoBoBoBoEqBoBo
 acYtYtYtIRDQYtYtCgBKCeAQAQGgBNAQAQAQBNAQDkAQBmBuCfIRYtIRzYBPCiBoBoBoBoBoBoBoBoBoCiDOGhGiGiGiGiGiGlDvDvEuENDvAgtfwBtftftftftftftftfthtftfAtyNyNyNzgtfthtfththtftftftfthtfAtyNyNyNCNApApApApANyNyNzgtftfDSFhGmGnFjDyGoDyDyFmFnFoFoFpFnFzztztCwFtCyztztDYGpGqGrFvGtFBGuGvFBDYGwGxGxGyFZDGGzDMFIFIFIGADGGBEkFcFcGCFcFcFcFcFcFcEkGEDMCHqZqZqZqZqZqZqZqZqcqcuLqcqcac
 acYtYtYtIRIRIRIRCgBKCeAQGFAQDkAQBmAQAQAQAQAQGjGkCfIRYtIRzYChAIBoBoBoBoBoBoBoBoEqAIErAgtftftftftfGGGiGlDvENDvAgtftfthtftfththtfthtftftftfAtyNyNyNzgtfwatftfthtftfthtftftfAtyNyNyNzgtftftgtfAtyNyNzgtftfDSFhGHFiGHGIGJGKDyGLFRFoFoGMGsGsztztCwGNCyztztDYDYDYGOFvFvFvFvFXDYDYsNGPGPsNFGGQGRDMGSGTFIFIDGEjFcFcFcFcFcFcGUFcFcFcFcElDMCHqZqZqZvkqZqZqZqcqcqcqcqcqcac
 acYtYtYtIRIRIRIRYtBKCeAQAQAQAQAQAQAQGVAQAQDkBuBOBwCgIRIRzYCIAIBoBoBoBoBoBoBoBoBoAIGXAgtftftgtftftftfzYDvENDvAgtftftftftfthtftftftftftftfAtyNyNyNzgtfwBtftftftftftftfGDtfAtyNzsyNzgtftftftfAtyNyNzgGYyPDSDyDyGZHaGHGHHbDyHcFnFoFoGMHeHfztztHgHhztztzvHfHiDYHjGtHkHlHmHnDYHoHpztztHqGWyPHrHsDiDiDiHtHuFKFcFcFcFcFcFcFcFcFcFcFcFMDMCHqZqZqZqZqZqLqZqcqcqcqcqcqcac
-acYtYtYtIRIRHvIRYtBKHSFeBmAQGVGjHwHTHTHxBmAQBuCfCgIRIRIRzYDlAIAIBoBoBoBoBoBoBoAIAIFNAgtftftftftftftfHyHzHBHzHytftftftftftftftftftftfthtfAtyNyNyNzgtftftftftftfHCtftftftfAtyNyNyNzgtfGDtftfAtyNyNHDHEyuztHFDyHGDyGoDyDyDyGWFzHHHIGMHJztztBBztHKztztztztHJDYDYDYDYDYDYEcDYztztztztztHLyuDGHMHMHMHMHMGzGeFcFcFcFcFcFcFcGCFcFcFcGfDMCHqZqZqZqZqZraqZqZqcqcqcqcqcac
-acYtYtYtIRIRIRIRCgIxFsHNHTHTHTHOHPHQHRHSHTHTGkCfCgHAIRYtzYBPBoBoBoBoBoBoBoBoBoBoBoBQAgtftftfHyHzHzHzHyHUHVHXHyHzHzHzHytftftftftfthtftftfAtyNyNyNzgtftfthGDtftftftfHYtfGDAtyNyNyNzgvstfHCtfAtyNyNyNyNHZztztIcIdIeztztHpIgIhIiztztIdztztIjztIkHKIkztztztztIlIpIrIsItIcIuztztIvztAYztAYztDGIwGzGzGzGzGzGBEkFcFcFcFcFcFcFcFcFcEkGEDMCHqZqZqZqZqZqcqZqZqZqcqcqcqcac
-acYtYtYtIQYtIRIRIRYtIxIyIyIyIyIzIyIyIyIyIyIyIyBwCgIbIRYtzYEpBoBoBoBoBoBoBoBoBoBoBoCjAgtftftfIAIBICICIfIDIEIFIfIGIHIIIAtftfthtfththtgtftfImInInInIotftftgvstfthIJIqIqIqIqIKILIMINIOIqIqIqIJAtyNzsyNyNIPzuAZztISITIUIVIVIVIWIVIYITIZJaJbJbJcJdJeJfJcJbJbJaJaztJgJhJhJhJiJhJjztzvztztAYJkDGJlHMHMHMHMGzEjEkFcFcFcFcFcFcFcFcFcEkElDMCHqZqcqZqZsQqZqZqZqZqcqcqcqcac
-acYtYtYtIQYtYtIRIRIRCgIRYtIRIRIRYtYtYtYtIRIRIRIRCgIRIRIRzYFfBoBoBoBoBoBoBoBoBoBoBoCJAgtftftfIAJmJnJnJoIDIEJpJoJnJnJnIAtftftftftfJqtftftfImInIXInIotftftftftftfIqJrJsILINJtJuJvJwJxINJyJzIKAtyNyNyNyNJAztzuztztztJBJCJDJEJFJGJHztHZJaJaJcJIJIJJJfJfJbJaJaJKztJBJLJMJNJOJPJHztztztztJQyuJRIwGzGzJSGzDgJTFLFcFcFcFcFcFcFcFcFcFLJUDgCHqZqZqZqZqZqZqZqcqcqcqcqcqcac
-acYtYtYtIRIRYtYtYtIRIRIRYtYtIRIRIRIRYtIRYtIRIRIRIRIRIRIRzYDlBoBoBoBoBoBoBoBoBoBoBoAJAgthtftfIAJVJWJXIfJYIEJpIfJZJnKaIAtftftftftftftftftfImInInInIotfthtftfthtfKfKgJwKhKiKjKkKlKmKnKoKpKqKrAtyNyNyNyNHZztAZztztztHZKvKvKvKwKvJKztztHZJaJfKxJfKyJIJaJaJaJKztztHZKvKvKvKwKvJKztztztAYztztDGIwHMHMHMHMGzGeEkFcFcGCFcFcFcFcFcFcEkGfDMCHqZqZqZqcqZqZqZqcqcqcqcqcqcac
-acYtYtIRIRIRIRIRIRIRCgIRIRIRIRDQYtIRIRCgIRIRIRIRDRIRYtIRzYBPAICiBoBoBoBoBoBoBoCiAIBQAgtftfHyHyIfKzIfIfIDIEJpIfIfKAIfHyHyKbKbKbKbKbKbKbKbKcInInInKdKbKbKetftftfIqINKBKCKDKEKFKGKGKFKHJvKIILAtyNyNyNyNIPztAZKJztztztztztKKKLztztztztztHZJaJfJcKMJcJfJaJKztIlIpIiztIeztKNztztztztztztAYJkDGIwGzGzGzGzGzGBEkFcFcFcFcFcFcFcFcFcEkGEDMCHqZqZqLqZqZqZqcqcqcqcqcqcqcac
-acYtYtIRIRIRIRIRIRIRCgIRIRYtIRIRIRCgIRIRIRIRYtIRCgKsKtKuzYChAIKOAIBoAIAIAIBoAIAIAICjAgtftfIAKPKRKRKSKRIDKTJpKUKVKRKWKRIAInInInInInInInInInInInInInInInIotfKZIqIqILLbLcLdLeLeLeLeLfLfLgLhLiCMLjLjLjLjJAztAZLkLkLkLkLlLlLlLmKQKQKQLlHJztIkIkztHKztztztztLnLpLqLqLrLsLqLtLpztztztAYztJQyuDGHMHMHMHMHMGzEjEkEkFcFcFcFcFcFcFcEkEkElDMCHqLqZraqZvkqZqcqcqcqcqcqcqcac
+acYtYtYtIRIRHvIRYtBKHSFeBmAQGVGjHwHTHTHxBmAQBuCfCgIRIRIRzYDlAIAIBoBoBoBoBoBoBoAIAIFNAgtftftftftftftfHyHzHBHzHytftftftftftftftftftftfthtfAtyNyNyNzgtftftftftftfHCtftftftfAtyNyNyNzgtfGDtftfAtyNyNHDHEyPztHFDyHGDyGoDyDyDyGWFzHHHIGMHJztztBBztHKztztztztHJDYDYDYDYDYDYEcDYztztztztztHLyuDGHMHMHMHMHMGzGeFcFcFcFcFcFcFcGCFcFcFcGfDMCHqZqZqZqZqZraqZqZqcqcqcqcqcac
+acYtYtYtIRIRIRIRCgIxFsHNHTHTHTHOHPHQHRHSHTHTGkCfCgHAIRYtzYBPBoBoBoBoBoBoBoBoBoBoBoBQAgtftftfHyHzHzHzHyHUHVHXHyHzHzHzHytftftftftfthtftftfAtyNyNyNzgtftfthGDtftftftfHYtfGDAtyNyNyNzgvstfHCtfAtyNyNyNyNWKztztIcIdIeztztHpIgIhIiztztIdztztIjztIkHKIkztztztztIlIpIrIsItIcIuztztIvztAYztAYztDGIwGzGzGzGzGzGBEkFcFcFcFcFcFcFcFcFcEkGEDMCHqZqZqZqZqZqcqZqZqZqcqcqcqcac
+acYtYtYtIQYtIRIRIRYtIxIyIyIyIyIzIyIyIyIyIyIyIyBwCgIbIRYtzYEpBoBoBoBoBoBoBoBoBoBoBoCjAgtftftfIAIBICICIfIDIEIFIfIGIHIIIAtftfthtfththtgtftfImInInInIotftftgvstfthIJIqIqIqIqIKILIMINIOIqIqIqIJAtyNzsyNyNWKzuAZztISITIUIVIVIVIWIVIYITIZJaJbJbJcJdJeJfJcJbJbJaJaztJgJhJhJhJiJhJjztzvztztAYJkDGJlHMHMHMHMGzEjEkFcFcFcFcFcFcFcFcFcEkElDMCHqZqcqZqZsQqZqZqZqZqcqcqcqcac
+acYtYtYtIQYtYtIRIRIRCgIRYtIRIRIRYtYtYtYtIRIRIRIRCgIRIRIRzYFfBoBoBoBoBoBoBoBoBoBoBoCJAgtftftfIAJmJnJnJoIDIEJpJoJnJnJnIAtftftftftfJqtftftfImInIXInIotftftftftftfIqJrJsILINJtJuJvJwJxINJyJzIKAtyNyNyNyNWKztzuztztztJBJCJDJEJFJGJHztHZJaJaJcJIJIJJJfJfJbJaJaJKztJBJLJMJNJOJPJHztztztztJQyuJRIwGzGzJSGzDgJTFLFcFcFcFcFcFcFcFcFcFLJUDgCHqZqZqZqZqZqZqZqcqcqcqcqcqcac
+acYtYtYtIRIRYtYtYtIRIRIRYtYtIRIRIRIRYtIRYtIRIRIRIRIRIRIRzYDlBoBoBoBoBoBoBoBoBoBoBoAJAgthtftfIAJVJWJXIfJYIEJpIfJZJnKaIAtftftftftftftftftfImInInInIotfthtftfthtfKfKgJwKhKiKjKkKlKmKnKoKpKqKrAtyNyNyNyNWKztAZztztztHZKvKvKvKwKvJKztztHZJaJfKxJfKyJIJaJaJaJKztztHZKvKvKvKwKvJKztztztAYztztDGIwHMHMHMHMGzGeEkFcFcGCFcFcFcFcFcFcEkGfDMCHqZqZqZqcqZqZqZqcqcqcqcqcqcac
+acYtYtIRIRIRIRIRIRIRCgIRIRIRIRDQYtIRIRCgIRIRIRIRDRIRYtIRzYBPAICiBoBoBoBoBoBoBoCiAIBQAgtftfHyHyIfKzIfIfIDIEJpIfIfKAIfHyHyKbKbKbKbKbKbKbKbKcInInInKdKbKbKetftftfIqINKBKCKDKEKFKGKGKFKHJvKIILAtyNyNyNyNWLztAZKJztztztztztKKKLztztztztztHZJaJfJcKMJcJfJaJKztIlIpIiztIeztKNztztztztztztAYJkDGIwGzGzGzGzGzGBEkFcFcFcFcFcFcFcFcFcEkGEDMCHqZqZqLqZqZqZqcqcqcqcqcqcqcac
+acYtYtIRIRIRIRIRIRIRCgIRIRYtIRIRIRCgIRIRIRIRYtIRCgKsKtKuzYChAIKOAIBoAIAIAIBoAIAIAICjAgtftfIAKPKRKRKSKRIDKTJpKUKVKRKWKRIAInInInInInInInInInInInInInInInIotfKZIqIqILLbLcLdLeLeLeLeLfLfLgLhLiCMLjLjLjLjUNztAZLkLkLkLkLlLlLlLmKQKQKQLlHJztIkIkztHKztztztztLnLpLqLqLrLsLqLtLpztztztAYztJQyuDGHMHMHMHMHMGzEjEkEkFcFcFcFcFcFcFcEkEkElDMCHqLqZraqZvkqZqcqcqcqcqcqcqcac
 acKXKYKYKYKXKXKXKYKYLuLuKYKYKXKYKYKYKYKYLaKYKXKYLvLwLxLwzYLyLzBoBoBoAIAIAIBoBoBoAICJAgKYKYLALBLBLCLBLBLDLELFLGLHLBLBLBLAInInInInInInIXInInInInIXInInInKdLoLoLoIKLIKBLJLKLeLeLLLMLNLeLOLPIKLQGYLRGYGYyPLkLkLkLSLTLkLXLZKQMaMbMcMdKQMeMfMgztztMhztHgztMfMiLpMjMkMlMlMlMmLpMnztztHLMoyPyPMpMqMqMqMqMqGRFKFcFcFcFcFcGCFcFcFcFcFcFMDMCHLULVLVLVLVLWLWLWLWLWLWLWLWac
 acKXMrKYLYKXKXKXKXMsMuKYMvKXKXKXKXKXKXKYKYKYKXKXKXKYMwKXzYzZMxMyMzMAMxMyMBMCMDMyMzzZAgKXKYIAIEMEIEMFIEMGMHMIMJMKMLIEMMIAInInInInInInInInInInInInInInInInMtMtMtMNMOMPMQLNMRMSMTMULMMVLeMWKCJyIqHYtftftfLkMXMYMZNaLkNbNcKQNdNeNhNiLlKQLlztztCwNjCyztztNkNkLpNlNlNlNlMlNmLpLpLqNnLqLpNoFIDGGzGzOfOgOhDGNpFcFcFcFcFcFcFcFcFcFcFcGfDMCHLVLVLWLVLVLWLWLWLWLWLWLWLWac
 acKXKXKXNqNrNsKXKXKXNtNuNqKXKYKYKYKXKXKYKYLuKYKXKYLuLuKXGGGiGiGiGiGiOSOSOSGiGiGiGiGiNvKYKYHyHyIfKAIfIfNwNxNyNzIfKAIfHyHyNfNfNfNfNfNfNfNfNfNfNfNgInInInIXMtMtMtNAKBNBNCNDLNNEMUNFNGLMNHNINJNKIqtfGDtfthLkNLMZMZNMLkNNNcKQNONeNPNQNRNSNTztztCwFtCyBBztNUNVNWNXNYNZOaObNmMlOcMlMlMlOdOeFIDGGzGzGzGzGzDGGBFcFcFcFcFcFcFcFcFcFcFcGEDMCHLVLVLVLVLVLVLWLWLWLWLWLWLWac
@@ -2820,7 +2843,7 @@ acKXKXKYKYKYKYKXKYKXKYKYKYKYUiKYKXKXKYKYKYKYKYKYKYKYKYKYKYKYKYKYTfTfTfTfUjUjUjTf
 acKXKXPlNqKYKXKXKYKYKXKXKYKYKXKYKYKYKYKYKYKYKYKYKYQCKYKYKYKYKYTfTfTfUQURUQUQUQUQUSTfTfUTUUUVUUUUUWUUUXUYUYUYUZUYUYUYUYUYUYUYUZUYUYUYVaRgRgRgRgVbRgRgRgVbRgVcQnQnPTTKSLSLVdVeVfVgVhSXSXViVjSXSXSLSLVkVlVlVlVlVlVlVmtftfQMQMQMVnVoVpVqQMAyztztztztzuztTbSEVrVsVtVuNoNoRJLVLVLVLVVvLVLVLVLVLVLVLVLVLVLVLVLWLVLVLVVvLVLVLVLVLVLVLVLVLVLVLVLVLVLVLWLVLWLWLWLWLWLWac
 acKXKXNqKXKXKXKXVwKXKXKXVwNqKXKXKYKYKYKYKYKYKYLYKYQAKYKYKYKYKYTfTfUjUQVxVyVyVyVyVyVyVzVATfKYKYKYKYKYImInInInInInInInInInInInInInInInPtPtQnQnSoSoThQnTiSoSoQnTHPtPtTKVBTqVCVeVfVgVDVEVFVGTMVHTMVIVBVJVJVJVJVJVJVJVKtftftftfQMQMQMVLVMQMVNzuIeztVNVOztNkVPVQVuVuVuLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLWLWLVLVVRLVLVLVLWLWLWLWLWLWac
 acKXKXOiVSVSVSVSVTVUVSVSVSVSVSKXKXKYKYQCKYKYKYKYKYKYKYKYKXKYTfTfTfVVVWVXVWVYVZWaVWWbTfWcTfKbKbKbKbKbKcInInInInInInInInInInInInInInInInPTQnQnWdSoQnQnQnSoWeQnQnPTTKTKWfTqTMVeWgVgWhTMTMTMTMWiTqTqWfVJVJVJVJVJVJVJVKtfwatftftfJqQMSBSBQMztVNVNztVNWjztVuVuVuVuLVLVLVLVLVLVLVLVLVLVLWLVLVLVLWLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLWLVLVLVLVLWLVLWLVLWLVLVLWLWLWLWLWLWac
-acKXKYOiVSWkWlWmWnWoWlWpWlWqVSWsKXKYKYQAKYKXKYKYKYKYKYKYKYKYTfTfUjUQUQUQUQUQUQUQUQUQWuUQWvWwInInInInInInInInOLNfNfNfNfNfNfNfNfNfNfNfNfPTSgQnSdQnQnQnQnTGWxQnQnPTTKWyWzWAWBTMWDWETMWFTMTMWGWHWIVIVBVJVJWJVJVJVJVJVKtgwBtftftftftftftfyPWKWLztWMWLztWKyPWrLVLVLVLVLVLWLVLVLVQzLVLVLVLVLVLVLVLVLVLVLVLVLWLVLVLVLVLVLWLVLVLVLVQzLVLVLVLVQzLVLWLWLVLVLWLWLWLWLWLWac
+acKXKYOiVSWkWlWmWnWoWlWpWlWqVSWsKXKYKYQAKYKXKYKYKYKYKYKYKYKYTfTfUjUQUQUQUQUQUQUQUQUQWuUQWvWwInInInInInInInInOLNfNfNfNfNfNfNfNfNfNfNfNfPTSgQnSdQnQnQnQnTGWxQnQnPTTKWyWzWAWBTMWDWETMWFTMTMWGWHWIVIVBVJVJWJVJVJVJVJVKtgwBtftftftftftftfyPyPWMWMWMWMWMyPyPWrLVLVLVLVLVLWLVLVLVQzLVLVLVLVLVLVLVLVLVLVLVLVLWLVLVLVLVLVLWLVLVLVLVQzLVLVLVLVQzLVLWLWLVLVLWLWLWLWLWLWac
 acKXKYKYWNWtWtWOWOWPWOWOWOWpVSWQKXKYKXKYKYKYKYKYKYKYKYUiKYKYTfTfWRUQVWWTVWWUWVWWWWUQWuUQWvInWwIXInInInIXInInIoWCWrWrWrWrWrWrWrWrWrWrWrPTSgWXWYWZQnQnQnXaXbXcQnPNXdXeSLSLSXXfSXSXSXSXXgXgSXSXSXSLSLXhXhXhXiVJVJVJXjVlVlVlVlVlVlVlVlVlXkVJVJVJVJVJVJVJVKWrLVLVLVLVLVLWLVLVLVLULVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVRJLVLULVLVLVLVLULVLVLVLVLVLVLWLWLWLWLWac
 acKXKYMuVSWtWOWOWOWOWOWtWOWlVSXlKXKYKXKXKYKYKYKYKYKYPPKYKYKYTfTfUjUQUQUQUQUQUQUQUQUQWuUQWvInInInInInInInInInIoWrWrWrWrWrWrWrWrWSWrWrWrPtPTPTPTPtQnQnQnPtPTPTPTPtXmXmXnSLXpTMXqSXXrXsTMTMXtXuXwVBWrWrWrWrXxVJVJWJVJVJVJVJVJVJVJVJVJVJVJVJVJVJVJVJVJVJVKWrLWLVLWLWLVLVLVLVLVLVLVLVLVLWLVLVLVLVLVQzLVLVLVLVLVLVLVLWLVLVLVLVLVLVLVLVLVLVLVLVLVLWLWLVLVLWLWLWLWLWac
 acKXKXOVXyXzWOWOWOWtWOXAWlVSVSXBKXKXKXKXKXKXKYKYKYKYKYKYKYKYTfTfTfUQVWXCVWXDXEXFXGUQTfTfTfXHNfNfNfNfNfNfNfNfXIWrWrWSWrWrWrWrWrWrWrWrWrWrWrWrWrPtPTPOPTPtWrWrWrXoWrWrWrVBXJTMXKSXXLTMVCTMWiXNXOVBWrWrWrWrXxVJVJVJVJVJVJVJVJVJVJVJVJVJVJWJVJVJVJVJVJVJVKXPLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLULVXvLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVLVRJLWLWLWLWLWLWac
