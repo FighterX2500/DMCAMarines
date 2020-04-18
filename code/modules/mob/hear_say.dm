@@ -40,6 +40,8 @@
 	if(italics)
 		message = "<i>[message]</i>"
 
+	message = sanitize(message)
+
 	if(sdisabilities & DEAF || ear_deaf)
 		if(speaker == src)
 			to_chat(src, "<span class='warning'>You cannot hear yourself speak!</span>")
