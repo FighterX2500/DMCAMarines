@@ -35,7 +35,7 @@
 	desc = "A light and compact military fibreglass-framed model fire extinguisher. Despite small size, contains a lot of water."
 	icon_state = "pyroFE0"
 	item_state = "pyroFE"
-	hitsound = null.
+	hitsound = null
 	throwforce = 2
 	w_class = 2.0
 	force = 3.0
