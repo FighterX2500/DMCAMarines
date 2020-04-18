@@ -86,7 +86,8 @@
 			if(prob(20))
 				affected_mob.halloss = max(affected_mob.halloss, min(80, withdrawal_progression*2) )
 				if(prob(50))
-					affected_mob. << "<span class='danger'>[pick("You need another dose, now. NOW.", "You can't stand it. You have to go back. You have to go back.", "You need more. YOU NEED MORE.", "MORE", "TAKE MORE.")]</span>"
+					var/message = pick("You need another dose, now. NOW.", "You can't stand it. You have to go back. You have to go back.", "You need more. YOU NEED MORE.", "MORE", "TAKE MORE.")
+					to_chat(affected_mob, "<span class='danger'>[message]</span>")
 				if(prob(25))
 					affected_mob.emote("me",1, pick("groans painfully!", "contorts with pain!") )
 
