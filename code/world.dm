@@ -362,7 +362,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	return 1
 
 /world/proc/load_motd()
-	join_motd = sanitize_local(file2text("config/motd.txt"))
+	join_motd = sanitize(file2text("config/motd.txt"))
 
 /proc/load_configuration()
 	config = new /datum/configuration()

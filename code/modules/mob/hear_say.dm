@@ -38,6 +38,8 @@
 	if(italics)
 		message = "<i>[message]</i>"
 
+	message = sanitize(message)
+
 	if(sdisabilities & DEAF || ear_deaf)
 		if(speaker == src)
 			to_chat(src, "<span class='warning'>You cannot hear yourself speak!</span>")
@@ -141,11 +143,11 @@
 
 		if(changed_voice)
 			if(impersonating)
-				track = "<a href='byond://?src=\ref[src];trackname=[lhtml_encode(speaker_name)];track=\ref[impersonating]'>[speaker_name] ([jobname])</a>"
+				track = "<a href='byond://?src=\ref[src];trackname=[html_encode(speaker_name)];track=\ref[impersonating]'>[speaker_name] ([jobname])</a>"
 			else
 				track = "[speaker_name] ([jobname])"
 		else
-			track = "<a href='byond://?src=\ref[src];trackname=[lhtml_encode(speaker_name)];track=\ref[speaker]'>[speaker_name] ([jobname])</a>"
+			track = "<a href='byond://?src=\ref[src];trackname=[html_encode(speaker_name)];track=\ref[speaker]'>[speaker_name] ([jobname])</a>"
 
 	if(istype(src, /mob/dead/observer))
 		if(speaker_name != speaker.real_name && !isAI(speaker)) //Announce computer and various stuff that broadcasts doesn't use it's real name but AI's can't pretend to be other mobs.
@@ -198,7 +200,7 @@
 		if(copytext(heardword,1, 1) in punctuation)
 			heardword = copytext(heardword,2)
 		if(copytext(heardword,-1) in punctuation)
-			heardword = copytext(heardword,1,lentext(heardword))
+			heardword = copytext(heardword,1,length(heardword))
 		heard = "<span class = 'game_say'>...You hear something about...[heardword]</span>"
 
 	else
