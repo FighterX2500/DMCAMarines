@@ -47,7 +47,7 @@
 		if(alien && alien == IS_SKRELL) //Skrell get very drunk very quickly.
 			d*=5
 
-		M.dizziness += dizzy_adj.
+		M.dizziness += dizzy_adj
 		if(d >= slur_start && d < pass_out)
 			if(!M:slurring) M:slurring = 1
 			M:slurring += slurr_adj
