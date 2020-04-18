@@ -62,7 +62,7 @@
 	dat += "<BR>----------------------<BR></Body>"
 	dat += "<A href='?src=\ref[src];operation=refresh'>{Refresh}</a></Body>"
 
-	user << browse(sanitize_local(dat, SANITIZE_BROWSER), "window=supplydrop;size=550x550")
+	user << browse((dat), "window=supplydrop;size=550x550")
 	onclose(user, "supplydrop")
 	return
 
