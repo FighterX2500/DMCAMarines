@@ -35,10 +35,10 @@
 		speaker_name = H.GetVoice()
 		comm_paygrade = H.get_paygrade()
 
+	message = sanitize(message)
+
 	if(italics)
 		message = "<i>[message]</i>"
-
-	message = sanitize(message)
 
 	if(sdisabilities & DEAF || ear_deaf)
 		if(speaker == src)
