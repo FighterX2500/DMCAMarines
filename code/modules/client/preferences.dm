@@ -913,13 +913,13 @@ datum/preferences
 					var/msg = input(usr,"Give a physical description of your character. This will be shown regardless of clothing.","Flavor Text",html_decode(flavor_texts[href_list["task"]])) as message
 					if(msg != null)
 						msg = copytext(msg, 1, 256)
-						msg = lhtml_encode(msg)
+						msg = html_encode(msg)
 					flavor_texts[href_list["task"]] = msg
 				else
 					var/msg = input(usr,"Set the flavor text for your [href_list["task"]].","Flavor Text",html_decode(flavor_texts[href_list["task"]])) as message
 					if(msg != null)
 						msg = copytext(msg, 1, 256)
-						msg = lhtml_encode(msg)
+						msg = html_encode(msg)
 					flavor_texts[href_list["task"]] = msg
 			SetFlavorText(user)
 			return
@@ -937,7 +937,7 @@ datum/preferences
 
 					if(medmsg != null)
 						medmsg = copytext(medmsg, 1, MAX_PAPER_MESSAGE_LEN)
-						medmsg = lhtml_encode(medmsg)
+						medmsg = html_encode(medmsg)
 
 						med_record = medmsg
 						SetRecords(user)
@@ -947,7 +947,7 @@ datum/preferences
 
 					if(secmsg != null)
 						secmsg = copytext(secmsg, 1, MAX_PAPER_MESSAGE_LEN)
-						secmsg = lhtml_encode(secmsg)
+						secmsg = html_encode(secmsg)
 
 						sec_record = secmsg
 						SetRecords(user)
@@ -956,7 +956,7 @@ datum/preferences
 
 					if(genmsg != null)
 						genmsg = copytext(genmsg, 1, MAX_PAPER_MESSAGE_LEN)
-						genmsg = lhtml_encode(genmsg)
+						genmsg = html_encode(genmsg)
 
 						gen_record = genmsg
 						SetRecords(user)
@@ -966,7 +966,7 @@ datum/preferences
 
 					if(exploitmsg != null)
 						exploitmsg = copytext(exploitmsg, 1, MAX_PAPER_MESSAGE_LEN)
-						exploitmsg = lhtml_encode(exploitmsg)
+						exploitmsg = html_encode(exploitmsg)
 
 						exploit_record = exploitmsg
 						SetAntagoptions(user)
