@@ -107,7 +107,7 @@ datum/mind
 				output += "<B>Objective #[obj_count]</B>: [objective.explanation_text]"
 				obj_count++
 
-		recipient << browse(sanitize_local(output, SANITIZE_BROWSER),"window=memory")
+		recipient << browse(sanitize(output),"window=memory")
 
 	proc/edit_memory()
 		if(!ticker || !ticker.mode)
@@ -170,7 +170,7 @@ datum/mind
 
 		out += "<a href='?src=\ref[src];obj_announce=1'>Announce objectives</a><br><br>"
 
-		usr << browse(sanitize_local(out, SANITIZE_BROWSER), "window=edit_memory[src]")
+		usr << browse(sanitize(out), "window=edit_memory[src]")
 
 	Topic(href, href_list)
 		if(!check_rights(R_ADMIN))	return

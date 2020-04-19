@@ -281,7 +281,7 @@
 				dat += "<A href='?src=\ref[src];operation=refresh'>{Refresh}</a><br>"
 				dat += "<A href='?src=\ref[src];operation=back'>{Back}</a></body>"
 
-	user << browse(sanitize_local(dat, SANITIZE_BROWSER), "window=overwatch;size=550x550")
+	user << browse((dat), "window=overwatch;size=550x550")
 	onclose(user, "overwatch")
 	return
 
@@ -732,7 +732,7 @@
 
 	var/obj/item/card/id/ID = transfer_marine.wear_id
 	ID.assigned_fireteam = 0 //reset fireteam assignment
-	
+
 	//Changes headset frequency to match new squad
 	var/obj/item/device/radio/headset/almayer/marine/H = transfer_marine.wear_ear
 	if(istype(H, /obj/item/device/radio/headset/almayer/marine))
