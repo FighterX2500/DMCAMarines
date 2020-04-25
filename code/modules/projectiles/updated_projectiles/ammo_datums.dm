@@ -971,20 +971,20 @@
 	accuracy = config.med_hit_accuracy
 	accurate_range = config.long_shell_range
 	max_range = config.max_shell_range
-	damage = config.low_hit_damage
+	damage = config.high_hit_damage
 	shell_speed = config.fast_shell_speed
 
 /datum/ammo/rocket/ltb/on_hit_mob(mob/M, obj/item/projectile/P)
-	explosion(get_turf(M), 1, 1, 5, 6)
+	explosion(get_turf(M), 1, 3, 5, 6)
 
 /datum/ammo/rocket/ltb/on_hit_obj(obj/O, obj/item/projectile/P)
-	explosion(get_turf(P), 1, 1, 5, 6)
+	explosion(get_turf(P), 1, 3, 5, 6)
 
 /datum/ammo/rocket/ltb/on_hit_turf(turf/T, obj/item/projectile/P)
-	explosion(get_turf(P), 1, 1, 5, 6)
+	explosion(get_turf(P), 1, 3, 5, 6)
 
 /datum/ammo/rocket/ltb/do_at_max_range(obj/item/projectile/P)
-	explosion(get_turf(P), 1, 1, 5, 6)
+	explosion(get_turf(P), 1, 3, 5, 6)
 
 /datum/ammo/rocket/autocannon
 	name = "autocannon round"

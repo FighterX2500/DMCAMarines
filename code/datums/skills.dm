@@ -223,9 +223,9 @@
 
 /datum/skills/CMP
 	name = "Chief MP"
-	cqc = SKILL_CQC_MP
+	cqc = SKILL_CQC_MASTER
 	police = SKILL_POLICE_MP
-	leadership = SKILL_LEAD_TRAINED
+	leadership = SKILL_LEAD_EXPERT
 
 
 /datum/skills/CE
