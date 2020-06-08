@@ -6,7 +6,7 @@
 	name = "M42A marksman magazine (10x28mm Caseless)"
 	desc = "A magazine of sniper rifle ammo."
 	caliber = "10x28mm"
-	icon_state = "m42c" //PLACEHOLDER
+	icon_state = "m42a"
 	w_class = 3
 	max_rounds = 15
 	default_ammo = /datum/ammo/bullet/sniper
@@ -19,10 +19,12 @@
 /obj/item/ammo_magazine/sniper/incendiary
 	name = "M42A incendiary magazine (10x28mm)"
 	default_ammo = /datum/ammo/bullet/sniper/incendiary
+	icon_state = "m42a_incendiary"
 
 /obj/item/ammo_magazine/sniper/flak
 	name = "M42A flak magazine (10x28mm)"
 	default_ammo = /datum/ammo/bullet/sniper/flak
+	icon_state = "m42a_flack"
 
 
 //M42C magazine
