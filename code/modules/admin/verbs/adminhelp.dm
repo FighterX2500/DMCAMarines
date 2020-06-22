@@ -20,14 +20,14 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 	adminhelped = 1 //Determines if they get the message to reply by clicking the name.
 
 	var/msg
-	/*var/list/type = list ("Предложение / Баги", "Геимплей / Ролеплей")
-	var/selected_type = input("Выберите категорию.", "Admin Help", null, null) as null|anything in type
-	if(selected_type == "Геимплей / Ролеплей")
-		msg = input("Опишите ситуацию:", "Admin Help", null, null) as message|null
+	/*var/list/type = list ("РџСЂРµРґР»РѕР¶РµРЅРёРµ / РџР°РіРё", "в€љРµРёРјРїР»РµР№ / Р РѕР»РµРїР»РµР№")
+	var/selected_type = input("Р’С‹Р±РµСЂРёС‚Рµ РєР°С‚РµРіРѕСЂРёСЋ.", "Admin Help", null, null) as null|anything in type
+	if(selected_type == "в€љРµРёРјРїР»РµР№ / Р РѕР»РµРїР»РµР№")
+		msg = input("РћРїРёС€РёС‚Рµ СЃРёС‚СѓР°С†РёСЋ:", "Admin Help", null, null) as message|null
 	*/
-	msg = input("Шаблон ахелпа, если вы сообщаете о нарушении: \n1. Полное имЯ игрока(ов) (Скопируйте из описаниЯ или логов в чате). \n2. Четко опишите что именно не так сделал игрок, чем больше полезных деталей - тем быстрее разберут ахелп. \n3. Ахелпать надо сразу, как поЯвитсЯ вохможность. Ситуацию, котораЯ случилась больше 30 минут назад никто не станет разбирать. \n4. Репорты игроков не по шаблону имеют высокий шанс не рассматриватьсЯ. \n\nIf you report player, copy his full name and then describe what did he do and don't ahelp things that happened more than 30 mins ago. \nПо поводу багов писать сюда | Bug reports go here: https://github.com/FighterX2500/DMCAMarines/issues", "Admin Help", null, null) as message|null
-	/*if(selected_type == "Предложение / Баги")
-		switch(alert(sanitize("Adminhelp не длЯ предложений или сообщений о багах - длЯ этого существует GitHub.",,"Go to GitHub","Cancel")))
+	msg = input("РЁР°Р±Р»РѕРЅ Р°С…РµР»РїР°, РµСЃР»Рё РІС‹ СЃРѕРѕР±С‰Р°РµС‚Рµ Рѕ РЅР°СЂСѓС€РµРЅРёРё: \n1. РџРѕР»РЅРѕРµ РёРјСЏ РёРіСЂРѕРєР°(РѕРІ) (РЎРєРѕРїРёСЂСѓР№С‚Рµ РёР· РѕРїРёСЃР°РЅРёСЏ РёР»Рё Р»РѕРіРѕРІ РІ С‡Р°С‚Рµ). \n2. Р§РµС‚РєРѕ РѕРїРёС€РёС‚Рµ С‡С‚Рѕ РёРјРµРЅРЅРѕ РЅРµ С‚Р°Рє СЃРґРµР»Р°Р» РёРіСЂРѕРє, С‡РµРј Р±РѕР»СЊС€Рµ РїРѕР»РµР·РЅС‹С… РґРµС‚Р°Р»РµР№ - С‚РµРј Р±С‹СЃС‚СЂРµРµ СЂР°Р·Р±РµСЂСѓС‚ Р°С…РµР»Рї. \n3. РђС…РµР»РїР°С‚СЊ РЅР°РґРѕ СЃСЂР°Р·Сѓ, РєР°Рє РїРѕСЏРІРёС‚СЃСЏ РІРѕС…РјРѕР¶РЅРѕСЃС‚СЊ. РЎРёС‚СѓР°С†РёСЋ, РєРѕС‚РѕСЂР°СЏ СЃР»СѓС‡РёР»Р°СЃСЊ Р±РѕР»СЊС€Рµ 30 РјРёРЅСѓС‚ РЅР°Р·Р°Рґ РЅРёРєС‚Рѕ РЅРµ СЃС‚Р°РЅРµС‚ СЂР°Р·Р±РёСЂР°С‚СЊ. \n4. Р РµРїРѕСЂС‚С‹ РёРіСЂРѕРєРѕРІ РЅРµ РїРѕ С€Р°Р±Р»РѕРЅСѓ РёРјРµСЋС‚ РІС‹СЃРѕРєРёР№ С€Р°РЅСЃ РЅРµ СЂР°СЃСЃРјР°С‚СЂРёРІР°С‚СЊСЃСЏ. \n\nIf you report player, copy his full name and then describe what did he do and don't ahelp things that happened more than 30 mins ago. \nРџРѕ РїРѕРІРѕРґСѓ Р±Р°РіРѕРІ РїРёСЃР°С‚СЊ СЃСЋРґР° | Bug reports go here: https://github.com/FighterX2500/DMCAMarines/issues", "Admin Help", null, null) as message|null
+	/*if(selected_type == "РџСЂРµРґР»РѕР¶РµРЅРёРµ / РџР°РіРё")
+		switch(alert(sanitize("Adminhelp РЅРµ РґР»СЏ РїСЂРµРґР»РѕР¶РµРЅРёР№ РёР»Рё СЃРѕРѕР±С‰РµРЅРёР№ Рѕ Р±Р°РіР°С… - РґР»СЏ СЌС‚РѕРіРѕ СЃСѓС‰РµСЃС‚РІСѓРµС‚ GitHub.",,"Go to GitHub","Cancel")))
 			if("Go to GitHub")
 				src << link("https://github.com/FighterX2500/DMCAMarines/issues")
 			else
@@ -130,7 +130,7 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 			if(X.is_afk())
 				admin_number_afk++
 
-	if("Геимплей / Ролеплей")
+	if("в€љРµРёРјРїР»РµР№ / Р РѕР»РµРїР»РµР№")
 		if(mentorholders.len)
 			for(var/client/X in mentorholders) // Mentors get a message without buttons and no character name
 				if(X.prefs.toggles_sound & SOUND_ADMINHELP)
@@ -189,10 +189,10 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 			(<A HREF='?_src_=holder;adminmoreinfo=[ref_mob]'>?</A>)</b>"
 		if(2)
 			return "<b>[key_name(C, link, name, highlight_special)] \
-			(<A HREF='?_src_=holder;mark=[ref_mob]'>Пометить</A>) \
-			(<A HREF='?_src_=holder;noresponse=[ref_mob]'>Нет Ответа</A>) \
-			(<A HREF='?_src_=holder;warning=[ref_mob]'>Предупреждение</A>) \
-			(<A HREF='?_src_=holder;autoresponse=[ref_mob]'>Авто-ответ...</A>) \
+			(<A HREF='?_src_=holder;mark=[ref_mob]'>РџРѕРјРµС‚РёС‚СЊ</A>) \
+			(<A HREF='?_src_=holder;noresponse=[ref_mob]'>РќРµС‚ РћС‚РІРµС‚Р°</A>) \
+			(<A HREF='?_src_=holder;warning=[ref_mob]'>РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ</A>) \
+			(<A HREF='?_src_=holder;autoresponse=[ref_mob]'>РђРІС‚Рѕ-РѕС‚РІРµС‚...</A>) \
 			(<A HREF='?_src_=holder;adminmoreinfo=[ref_mob]'>?</A>) \
 			(<A HREF='?_src_=holder;adminplayeropts=[ref_mob]'>PP</A>) \
 			(<A HREF='?_src_=vars;Vars=[ref_mob]'>VV</A>) \
