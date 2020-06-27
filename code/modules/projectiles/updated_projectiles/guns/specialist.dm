@@ -225,8 +225,7 @@
 						/obj/item/attachable/extended_barrel,
 						/obj/item/attachable/heavy_barrel,
 						/obj/item/attachable/flashlight,
-						/obj/item/attachable/burstfire_assembly,
-						/obj/item/attachable/bipod)
+						/obj/item/attachable/burstfire_assembly)
 
 	flags_gun_features = GUN_INTERNAL_MAG|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_AMMO_COUNTER|GUN_TRIGGER_SAFETY
 	starting_attachment_types = list(/obj/item/attachable/flashlight)
