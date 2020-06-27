@@ -2404,15 +2404,15 @@
 	if(href_list["mark"])
 		var/mob/ref_person = locate(href_list["mark"])
 		if(!istype(ref_person))
-			to_chat(usr, "\blue Этот игрок куда-то пропал!")
+			to_chat(usr, "\blue Р­С‚РѕС‚ РёРіСЂРѕРє РєСѓРґР°-С‚Рѕ РїСЂРѕРїР°Р»!")
 			return
 		if(ref_person && ref_person.adminhelp_marked)
-			to_chat(usr, "<b>Этим ахелпом уже занимаютсЯ.</b>")
+			to_chat(usr, "<b>Р­С‚РёРј Р°С…РµР»РїРѕРј СѓР¶Рµ Р·Р°РЅРёРјР°СЋС‚СЃСЏ.</b>")
 			usr << sound('sound/effects/adminhelp-error.ogg')
 			return
 
-		message_staff("[usr.key] пометил Ахелп от [key_name_admin(ref_person)] и готовитсЯ ответить...", 1)
-		var/msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> пометил ваш Админхелп и готовитсЯ ответить | Your request was marked, please wait...</b>"
+		message_staff("[usr.key] РїРѕРјРµС‚РёР» РђС…РµР»Рї РѕС‚ [key_name_admin(ref_person)] Рё РіРѕС‚РѕРІРёС‚СЃСЏ РѕС‚РІРµС‚РёС‚СЊ...", 1)
+		var/msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РїРѕРјРµС‚РёР» РІР°С€ РђРґРјРёРЅС…РµР»Рї Рё РіРѕС‚РѕРІРёС‚СЃСЏ РѕС‚РІРµС‚РёС‚СЊ | Your request was marked, please wait...</b>"
 
 		to_chat(ref_person, msgplayer)
 
@@ -2426,15 +2426,15 @@
 	if(href_list["noresponse"])
 		var/mob/ref_person = locate(href_list["noresponse"])
 		if(!istype(ref_person))
-			to_chat(usr, "\blue Этот игрок куда-то пропал!")
+			to_chat(usr, "\blue Р­С‚РѕС‚ РёРіСЂРѕРє РєСѓРґР°-С‚Рѕ РїСЂРѕРїР°Р»!")
 			return
 		if(ref_person && ref_person.adminhelp_marked)
-			to_chat(usr, "<b>Этим ахелпом уже занимаютсЯ.</b>")
+			to_chat(usr, "<b>Р­С‚РёРј Р°С…РµР»РїРѕРј СѓР¶Рµ Р·Р°РЅРёРјР°СЋС‚СЃСЏ.</b>")
 			usr << sound('sound/effects/adminhelp-error.ogg')
 			return
 
-		message_staff("[usr.key] Пометил ахелп игрока [key_name_admin(ref_person)] 'Вмешательство не требуетсЯ'. Игроку было сказано, что его Ахелп 'уже расследуют, уже решили, либо в нем нет смысла'.", 1)
-		var/msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> пометил ваш ахелп и 'Вмешательство не требуетсЯ'. Либо его уже расследуют, решили или в нем нет смысла. | <font color=red>[usr.key]</font> marked your Adminhelp as 'No response necessary'. Either your Adminhelp is being handled, it's fixed, or it's nonsensical.</font></b>"
+		message_staff("[usr.key] РџРѕРјРµС‚РёР» Р°С…РµР»Рї РёРіСЂРѕРєР° [key_name_admin(ref_person)] 'Р’РјРµС€Р°С‚РµР»СЊСЃС‚РІРѕ РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ'. РРіСЂРѕРєСѓ Р±С‹Р»Рѕ СЃРєР°Р·Р°РЅРѕ, С‡С‚Рѕ РµРіРѕ РђС…РµР»Рї 'СѓР¶Рµ СЂР°СЃСЃР»РµРґСѓСЋС‚, СѓР¶Рµ СЂРµС€РёР»Рё, Р»РёР±Рѕ РІ РЅРµРј РЅРµС‚ СЃРјС‹СЃР»Р°'.", 1)
+		var/msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РїРѕРјРµС‚РёР» РІР°С€ Р°С…РµР»Рї Рё 'Р’РјРµС€Р°С‚РµР»СЊСЃС‚РІРѕ РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ'. Р‹РёР±Рѕ РµРіРѕ СѓР¶Рµ СЂР°СЃСЃР»РµРґСѓСЋС‚, СЂРµС€РёР»Рё РёР»Рё РІ РЅРµРј РЅРµС‚ СЃРјС‹СЃР»Р°. | <font color=red>[usr.key]</font> marked your Adminhelp as 'No response necessary'. Either your Adminhelp is being handled, it's fixed, or it's nonsensical.</font></b>"
 
 		to_chat(ref_person, msgplayer)
 		ref_person << sound('sound/effects/adminhelp-error.ogg')
@@ -2449,15 +2449,15 @@
 	if(href_list["warning"])
 		var/mob/ref_person = locate(href_list["warning"])
 		if(!istype(ref_person))
-			to_chat(usr, "\blue Этот игрок куда-то пропал!")
+			to_chat(usr, "\blue Р­С‚РѕС‚ РёРіСЂРѕРє РєСѓРґР°-С‚Рѕ РїСЂРѕРїР°Р»!")
 			return
 		if(ref_person && ref_person.adminhelp_marked)
-			to_chat(usr, "<b>Этим ахелпом уже занимаютсЯ.</b>")
+			to_chat(usr, "<b>Р­С‚РёРј Р°С…РµР»РїРѕРј СѓР¶Рµ Р·Р°РЅРёРјР°СЋС‚СЃСЏ.</b>")
 			usr << sound('sound/effects/adminhelp-error.ogg')
 			return
 
-		message_staff("[usr.key] выдал 'Предупреждние' игроку [key_name_admin(ref_person)]. Игрок был предупрежден насчет неправильного использованиЯ Ахелпа.", 1)
-		var/msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> выдал вам <font color=red>предупреждение</font> за неправильное использование системы Админхелпа. | <font color=red>[usr.key]</font> has given you a <font color=red>warning</font> for abusing Adminhelp system.</b>"
+		message_staff("[usr.key] РІС‹РґР°Р» 'РџСЂРµРґСѓРїСЂРµР¶РґРЅРёРµ' РёРіСЂРѕРєСѓ [key_name_admin(ref_person)]. РРіСЂРѕРє Р±С‹Р» РїСЂРµРґСѓРїСЂРµР¶РґРµРЅ РЅР°СЃС‡РµС‚ РЅРµРїСЂР°РІРёР»СЊРЅРѕРіРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РђС…РµР»РїР°.", 1)
+		var/msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІС‹РґР°Р» РІР°Рј <font color=red>РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ</font> Р·Р° РЅРµРїСЂР°РІРёР»СЊРЅРѕРµ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ СЃРёСЃС‚РµРјС‹ РђРґРјРёРЅС…РµР»РїР°. | <font color=red>[usr.key]</font> has given you a <font color=red>warning</font> for abusing Adminhelp system.</b>"
 
 		to_chat(ref_person, msgplayer)
 		ref_person << sound('sound/effects/adminhelp-error.ogg')
@@ -2472,57 +2472,57 @@
 	if(href_list["autoresponse"]) // new verb on the Ahelp.  Will tell the person their message was received, and they probably won't get a response
 		var/mob/ref_person = locate(href_list["autoresponse"])
 		if(!istype(ref_person))
-			to_chat(usr, "\blue Этот игрок куда-то пропал!")
+			to_chat(usr, "\blue Р­С‚РѕС‚ РёРіСЂРѕРє РєСѓРґР°-С‚Рѕ РїСЂРѕРїР°Р»!")
 			return
 		if(ref_person && ref_person.adminhelp_marked)
-			to_chat(usr, "<b>Этим ахелпом уже занимаютсЯ, но вы можете продолжить, если считаете нужным.</b>")
+			to_chat(usr, "<b>Р­С‚РёРј Р°С…РµР»РїРѕРј СѓР¶Рµ Р·Р°РЅРёРјР°СЋС‚СЃСЏ, РЅРѕ РІС‹ РјРѕР¶РµС‚Рµ РїСЂРѕРґРѕР»Р¶РёС‚СЊ, РµСЃР»Рё СЃС‡РёС‚Р°РµС‚Рµ РЅСѓР¶РЅС‹Рј.</b>")
 			usr << sound('sound/effects/adminhelp-error.ogg')
-			if(alert(usr, "Вы уверены, что хотите ответить на уже помеченный Ахелп?", "Подтверждение", "Yes", "No") != "Yes")
+			if(alert(usr, "Р’С‹ СѓРІРµСЂРµРЅС‹, С‡С‚Рѕ С…РѕС‚РёС‚Рµ РѕС‚РІРµС‚РёС‚СЊ РЅР° СѓР¶Рµ РїРѕРјРµС‡РµРЅРЅС‹Р№ РђС…РµР»Рї?", "РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ", "Yes", "No") != "Yes")
 				return
 
 
-		//var/choice = input("Какой Авто-ответ вы хотите отправить игроку?\n\n L - Ссылка.\n A - Ответ на распространенный вопрос", "Autoresponse", "--ОТМЕНА--") in list ("--CANCEL--", "Внутри-ИгроваЯ СитуациЯ", "Уже ПроверЯетсЯ", "Fixed", "Thanks", "Guilty", "L: Xeno Quickstart Guide", "L: Marine quickstart guide", "L: Current Map", "A: No plasma regen", "A: Devour as Xeno", "J: Job bans", "E: Event in progress", "R: Radios", "D: Joining disabled", "M: Macros")
+		//var/choice = input("РљР°РєРѕР№ РђРІС‚Рѕ-РѕС‚РІРµС‚ РІС‹ С…РѕС‚РёС‚Рµ РѕС‚РїСЂР°РІРёС‚СЊ РёРіСЂРѕРєСѓ?\n\n L - РЎСЃС‹Р»РєР°.\n A - РћС‚РІРµС‚ РЅР° СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРЅС‹Р№ РІРѕРїСЂРѕСЃ", "Autoresponse", "--РћРўРњР•РќРђ--") in list ("--CANCEL--", "Р’РЅСѓС‚СЂРё-РРіСЂРѕРІР°СЏ РЎРёС‚СѓР°С†РёСЏ", "РЈР¶Рµ РџСЂРѕРІРµСЂСЏРµС‚СЃСЏ", "Fixed", "Thanks", "Guilty", "L: Xeno Quickstart Guide", "L: Marine quickstart guide", "L: Current Map", "A: No plasma regen", "A: Devour as Xeno", "J: Job bans", "E: Event in progress", "R: Radios", "D: Joining disabled", "M: Macros")
 		//var/choice = input("Which autoresponse option do you want to send to the player?\n\n L - A webpage link.\n A - An answer to a common question.", "Autoresponse", "--CANCEL--") in list ("--CANCEL--", "IC Issue", "Being Handled", "Fixed", "Thanks", "Guilty", "L: Xeno Quickstart Guide", "L: Marine quickstart guide", "L: Current Map", "A: No plasma regen", "A: Devour as Xeno", "J: Job bans", "E: Event in progress", "R: Radios", "D: Joining disabled", "M: Macros")
-		var/choice = input("Какой Авто-ответ вы хотите отправить игроку?\n\n L - Ссылка.\n A - Ответ на распространенный вопрос", "Autoresponse", "--ОТМЕНА--") in list ("--ОТМЕНА--", "Внутри-ИгроваЯ СитуациЯ", "Уже ПроверЯетсЯ", "Меры Были ПринЯты", "Спасибо", "Виновен", "L: Первичное Руководство Ксеноморфа", "L: Первичное Руководство Морпеха", "L: Экипировка Морпехов", "L: ТекущаЯ Карта", "A: Нет Регенерации Плазмы", "A: Проглатывание За Ксеноморфа", "A: Использование Медэвака", "J: Джоб Баны", "E: Идет Ивент", "R: Рации", "S: Предохранитель", "D: Присоединение Отключено", "M: Макросы", "IC Issue", "Being Handled", "Fixed", "Thanks", "Guilty", "L: Xeno Quickstart Guide", "L: Marine quickstart guide", "L: Current Map", "A: No plasma regen", "A: Devour as Xeno", "J: Job bans", "E: Event in progress", "R: Radios", "S: Safety", "D: Joining disabled", "M: Macros")
+		var/choice = input("РљР°РєРѕР№ РђРІС‚Рѕ-РѕС‚РІРµС‚ РІС‹ С…РѕС‚РёС‚Рµ РѕС‚РїСЂР°РІРёС‚СЊ РёРіСЂРѕРєСѓ?\n\n L - РЎСЃС‹Р»РєР°.\n A - РћС‚РІРµС‚ РЅР° СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРЅС‹Р№ РІРѕРїСЂРѕСЃ", "Autoresponse", "--РћРўРњР•РќРђ--") in list ("--РћРўРњР•РќРђ--", "Р’РЅСѓС‚СЂРё-РРіСЂРѕРІР°СЏ РЎРёС‚СѓР°С†РёСЏ", "РЈР¶Рµ РџСЂРѕРІРµСЂСЏРµС‚СЃСЏ", "РњРµСЂС‹ Р‘С‹Р»Рё РџСЂРёРЅСЏС‚С‹", "РЎРїР°СЃРёР±Рѕ", "Р’РёРЅРѕРІРµРЅ", "L: РџРµСЂРІРёС‡РЅРѕРµ Р СѓРєРѕРІРѕРґСЃС‚РІРѕ РљСЃРµРЅРѕРјРѕСЂС„Р°", "L: РџРµСЂРІРёС‡РЅРѕРµ Р СѓРєРѕРІРѕРґСЃС‚РІРѕ РњРѕСЂРїРµС…Р°", "L: Р­РєРёРїРёСЂРѕРІРєР° РњРѕСЂРїРµС…РѕРІ", "L: РўРµРєСѓС‰Р°СЏ РљР°СЂС‚Р°", "A: РќРµС‚ Р РµРіРµРЅРµСЂР°С†РёРё РџР»Р°Р·РјС‹", "A: РџСЂРѕРіР»Р°С‚С‹РІР°РЅРёРµ Р—Р° РљСЃРµРЅРѕРјРѕСЂС„Р°", "A: РСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РњРµРґСЌРІР°РєР°", "J: Р”Р¶РѕР± Р‘Р°РЅС‹", "E: РРґРµС‚ РРІРµРЅС‚", "R: Р Р°С†РёРё", "S: РџСЂРµРґРѕС…СЂР°РЅРёС‚РµР»СЊ", "D: РџСЂРёСЃРѕРµРґРёРЅРµРЅРёРµ РћС‚РєР»СЋС‡РµРЅРѕ", "M: РњР°РєСЂРѕСЃС‹", "IC Issue", "Being Handled", "Fixed", "Thanks", "Guilty", "L: Xeno Quickstart Guide", "L: Marine quickstart guide", "L: Current Map", "A: No plasma regen", "A: Devour as Xeno", "J: Job bans", "E: Event in progress", "R: Radios", "S: Safety", "D: Joining disabled", "M: Macros")
 
 		var/msgplayer
 		switch(choice)
-			if("Внутри-ИгроваЯ СитуациЯ")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. Это ЯвлЯетсЯ внутри-игровой ситуацией и вмешательства со стороны администрации не требуетсЯ. Если это важно, вы можете сообщить старшему по званию, если уверены, что был нарушен закон.</b>"
-			if("Уже ПроверЯетсЯ")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. Проблемой уже занимаютсЯ.</b>"
-			if("Меры Были ПринЯты")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. Меры уже были принЯты.</b>"
-			if("Спасибо")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>! ПриЯтной игры!</b>"
-			if("Виновен")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. Вы нарушили закон.</b>"
-			if("L: Первичное Руководство Ксеноморфа")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. Ответ на ваш вопрос может быть найден в Первичном Руководстве Ксеноморфа. <font color='#009900'><a href='http://wiki.ss13marines.ru/index.php?title=Xeno_Quickstart_Guide'>Ссылка на руководство</a></font>.</b>"
-			if("L: Первичное Руководство Морпеха")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. Ответ на ваш вопрос может быть найден в Первичном Руководстве Морпеха. <font color='#009900'><a href='wiki.ss13marines.ru/index.php?title=Marine_Quickstart_Guide'>Ссылка на руководство</a></font>.</b>"
-			if("L: Экипировка Морпехов")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. Ответ на ваш вопрос может быть найден на странице вики \"Экипировка Морпехов\". <font color='#009900'><a href='http://wiki.ss13marines.ru/index.php?title=%D0%AD%D0%BA%D0%B8%D0%BF%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D0%BC%D0%BE%D1%80%D0%BF%D0%B5%D1%85%D0%BE%D0%B2'>Ссылка на страницу</a></font>.</b>"
-			if("L: ТекущаЯ Карта")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. Ссылки на карты находЯтсЯ <font color='#009900'><a href='http://cm.ss13.ru/index.php'>здесь</a></font>.</b>"
-			if("A: Нет Регенерации Плазмы")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. Если у вас не восстанавливаетсЯ плазма, это значит, что вы либо находитесь вне травы ксеноморфов, либо используете переключаемые умениЯ, расходующие плазму или препЯтствующие ее восстановлению, такие как Hide (Скрытность) у Runner или Emit Pheromones (Распространение Феромонов).</b>"
-			if("A: Проглатывание За Ксеноморфа")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. Проглатывание живых существ способствует их быстрой транспортировке к Яйцам. ДлЯ того, чтобы проглотить жертву, схватите ее (CTRL+Click) и затем нажмите на себЯ. ДлЯ того, чтобы срыгнуть жертву, нажмите кнопку 'Regurgitate' на интерфейсе слева вверху. Держать людей в себе можно в течении минуты, после которой вы их срыгнете, а жертве расплавит случайную конечность.</b>"
-			if("A: Использование Медэвака")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. Медэвак позволЯет эвакуировать раненных бойцов с полЯ боЯ при условии, что над ними нет крыши или она стеклЯннаЯ. ДлЯ проверки осмотрите тайл (SHIFT+Click). Положив пациента в Medevac Stretcher таким же способом, как и на Roller Bed, нажмите правой кнопкой и нажмите Activate Medevac. Чтобы забрать пациента с помощью установленного на шаттле системе медэвака, необходимо дождатьсЯ сигнала от медика, взлететь в FlyBy режиме, в консоли управлениЯ оружием шаттла выбрать систему медэвака и затем выбрать имЯ морпеха. Затем, необходимо пройти в салон непосредственно к самой системе медэвака и активировать ее кликом.</b>"
-			if("J: Джоб Баны")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. Все джоб баны, в том числе на ксеноморфов, перманентны.</b>"
-			if("E: Идет Ивент")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. В данном раунде идет специальный ивент и некоторые вещи могут работать по-другому, однако обычные правила в силе, за исключением случаев, указанных администраторами.</b>"
-			if("R: Рации")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. Рации были изменены: теперь ; позволит говорить в канал отрЯда, в то времЯ как :z дает доступ в General (Общий) канал. Полевым медикам доступен медицинский канал через :m (:ь), полевым инженерам доступен Engineering (Инденерный) через :e (:у), а Squad Leader и Acting Squad Leader (Командир ОтрЯда и ИсполнЯющий Роль Командира ОтрЯда) имеют доступ к командному каналу через :v (:м). (В скобках указаны кириллические буквы длЯ каналов, они также работают). Осмотр своего наушника показывает доступные вам каналы.</b>"
-			if("S: Предохранитель")
-				msgplayer = "\blue <b>ЗАМЕТКА: <fond color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. ДлЯ того, чтобы переключить предохранитель, используйте (ALT+Click) на оружие в вашей руке, либо Toggle Gun Safety во вкладке Weapons. Осматривание оружиЯ через (SHIFT+Click) покажет информацию о текущем состоЯнии предохранителЯ.</b>"
-			if("D: Присоединение Отключено")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. АдминистрациЯ отключила присоединение, так как раунд близитсЯ к концу. Вы можете зайти в Observe (Наблюдать), чтобы посмотреть конец раунда и дождатьсЯ начала нового.</b>"
-			if("M: Макросы")
-				msgplayer = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font>. ДлЯ настройки макроса, нажмите правой кнопкой на самую верхнюю часть клиента игры, выберите Clien -> Macros. Создание макроса длЯ unique-action позволит нормально пользоватьсЯ стандартным дробовиком морпехов; макрос на resist поможет быстрей начать сопротивлЯтьсЯ в некоторых ситуациЯх. ДлЯ более подробной информации посетите эту <font color='#009900'><a href='http://cm.ss13.ru/index.php?title=Macros'>ссылку</a></font>.</b>"
+			if("Р’РЅСѓС‚СЂРё-РРіСЂРѕРІР°СЏ РЎРёС‚СѓР°С†РёСЏ")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. Р­С‚Рѕ СЏРІР»СЏРµС‚СЃСЏ РІРЅСѓС‚СЂРё-РёРіСЂРѕРІРѕР№ СЃРёС‚СѓР°С†РёРµР№ Рё РІРјРµС€Р°С‚РµР»СЊСЃС‚РІР° СЃРѕ СЃС‚РѕСЂРѕРЅС‹ Р°РґРјРёРЅРёСЃС‚СЂР°С†РёРё РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ. Р•СЃР»Рё СЌС‚Рѕ РІР°Р¶РЅРѕ, РІС‹ РјРѕР¶РµС‚Рµ СЃРѕРѕР±С‰РёС‚СЊ СЃС‚Р°СЂС€РµРјСѓ РїРѕ Р·РІР°РЅРёСЋ, РµСЃР»Рё СѓРІРµСЂРµРЅС‹, С‡С‚Рѕ Р±С‹Р» РЅР°СЂСѓС€РµРЅ Р·Р°РєРѕРЅ.</b>"
+			if("РЈР¶Рµ РџСЂРѕРІРµСЂСЏРµС‚СЃСЏ")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. РџСЂРѕР±Р»РµРјРѕР№ СѓР¶Рµ Р·Р°РЅРёРјР°СЋС‚СЃСЏ.</b>"
+			if("РњРµСЂС‹ Р‘С‹Р»Рё РџСЂРёРЅСЏС‚С‹")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. РњРµСЂС‹ СѓР¶Рµ Р±С‹Р»Рё РїСЂРёРЅСЏС‚С‹.</b>"
+			if("РЎРїР°СЃРёР±Рѕ")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>! РџСЂРёСЏС‚РЅРѕР№ РёРіСЂС‹!</b>"
+			if("Р’РёРЅРѕРІРµРЅ")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. Р’С‹ РЅР°СЂСѓС€РёР»Рё Р·Р°РєРѕРЅ.</b>"
+			if("L: РџРµСЂРІРёС‡РЅРѕРµ Р СѓРєРѕРІРѕРґСЃС‚РІРѕ РљСЃРµРЅРѕРјРѕСЂС„Р°")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. РћС‚РІРµС‚ РЅР° РІР°С€ РІРѕРїСЂРѕСЃ РјРѕР¶РµС‚ Р±С‹С‚СЊ РЅР°Р№РґРµРЅ РІ РџРµСЂРІРёС‡РЅРѕРј Р СѓРєРѕРІРѕРґСЃС‚РІРµ РљСЃРµРЅРѕРјРѕСЂС„Р°. <font color='#009900'><a href='http://wiki.ss13marines.ru/index.php?title=Xeno_Quickstart_Guide'>РЎСЃС‹Р»РєР° РЅР° СЂСѓРєРѕРІРѕРґСЃС‚РІРѕ</a></font>.</b>"
+			if("L: РџРµСЂРІРёС‡РЅРѕРµ Р СѓРєРѕРІРѕРґСЃС‚РІРѕ РњРѕСЂРїРµС…Р°")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. РћС‚РІРµС‚ РЅР° РІР°С€ РІРѕРїСЂРѕСЃ РјРѕР¶РµС‚ Р±С‹С‚СЊ РЅР°Р№РґРµРЅ РІ РџРµСЂРІРёС‡РЅРѕРј Р СѓРєРѕРІРѕРґСЃС‚РІРµ РњРѕСЂРїРµС…Р°. <font color='#009900'><a href='wiki.ss13marines.ru/index.php?title=Marine_Quickstart_Guide'>РЎСЃС‹Р»РєР° РЅР° СЂСѓРєРѕРІРѕРґСЃС‚РІРѕ</a></font>.</b>"
+			if("L: Р­РєРёРїРёСЂРѕРІРєР° РњРѕСЂРїРµС…РѕРІ")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. РћС‚РІРµС‚ РЅР° РІР°С€ РІРѕРїСЂРѕСЃ РјРѕР¶РµС‚ Р±С‹С‚СЊ РЅР°Р№РґРµРЅ РЅР° СЃС‚СЂР°РЅРёС†Рµ РІРёРєРё \"Р­РєРёРїРёСЂРѕРІРєР° РњРѕСЂРїРµС…РѕРІ\". <font color='#009900'><a href='http://wiki.ss13marines.ru/index.php?title=%D0%AD%D0%BA%D0%B8%D0%BF%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_%D0%BC%D0%BE%D1%80%D0%BF%D0%B5%D1%85%D0%BE%D0%B2'>РЎСЃС‹Р»РєР° РЅР° СЃС‚СЂР°РЅРёС†Сѓ</a></font>.</b>"
+			if("L: РўРµРєСѓС‰Р°СЏ РљР°СЂС‚Р°")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. РЎСЃС‹Р»РєРё РЅР° РєР°СЂС‚С‹ РЅР°С…РѕРґСЏС‚СЃСЏ <font color='#009900'><a href='http://cm.ss13.ru/index.php'>Р·РґРµСЃСЊ</a></font>.</b>"
+			if("A: РќРµС‚ Р РµРіРµРЅРµСЂР°С†РёРё РџР»Р°Р·РјС‹")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. Р•СЃР»Рё Сѓ РІР°СЃ РЅРµ РІРѕСЃСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ РїР»Р°Р·РјР°, СЌС‚Рѕ Р·РЅР°С‡РёС‚, С‡С‚Рѕ РІС‹ Р»РёР±Рѕ РЅР°С…РѕРґРёС‚РµСЃСЊ РІРЅРµ С‚СЂР°РІС‹ РєСЃРµРЅРѕРјРѕСЂС„РѕРІ, Р»РёР±Рѕ РёСЃРїРѕР»СЊР·СѓРµС‚Рµ РїРµСЂРµРєР»СЋС‡Р°РµРјС‹Рµ СѓРјРµРЅРёСЏ, СЂР°СЃС…РѕРґСѓСЋС‰РёРµ РїР»Р°Р·РјСѓ РёР»Рё РїСЂРµРїСЏС‚СЃС‚РІСѓСЋС‰РёРµ РµРµ РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёСЋ, С‚Р°РєРёРµ РєР°Рє Hide (РЎРєСЂС‹С‚РЅРѕСЃС‚СЊ) Сѓ Runner РёР»Рё Emit Pheromones (Р Р°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёРµ вЂРµСЂРѕРјРѕРЅРѕРІ).</b>"
+			if("A: РџСЂРѕРіР»Р°С‚С‹РІР°РЅРёРµ Р—Р° РљСЃРµРЅРѕРјРѕСЂС„Р°")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. РџСЂРѕРіР»Р°С‚С‹РІР°РЅРёРµ Р¶РёРІС‹С… СЃСѓС‰РµСЃС‚РІ СЃРїРѕСЃРѕР±СЃС‚РІСѓРµС‚ РёС… Р±С‹СЃС‚СЂРѕР№ С‚СЂР°РЅСЃРїРѕСЂС‚РёСЂРѕРІРєРµ Рє СЏР№С†Р°Рј. Р”Р»СЏ С‚РѕРіРѕ, С‡С‚РѕР±С‹ РїСЂРѕРіР»РѕС‚РёС‚СЊ Р¶РµСЂС‚РІСѓ, СЃС…РІР°С‚РёС‚Рµ РµРµ (CTRL+Click) Рё Р·Р°С‚РµРј РЅР°Р¶РјРёС‚Рµ РЅР° СЃРµР±СЏ. Р”Р»СЏ С‚РѕРіРѕ, С‡С‚РѕР±С‹ СЃСЂС‹РіРЅСѓС‚СЊ Р¶РµСЂС‚РІСѓ, РЅР°Р¶РјРёС‚Рµ РєРЅРѕРїРєСѓ 'Regurgitate' РЅР° РёРЅС‚РµСЂС„РµР№СЃРµ СЃР»РµРІР° РІРІРµСЂС…Сѓ. Р”РµСЂР¶Р°С‚СЊ Р»СЋРґРµР№ РІ СЃРµР±Рµ РјРѕР¶РЅРѕ РІ С‚РµС‡РµРЅРёРё РјРёРЅСѓС‚С‹, РїРѕСЃР»Рµ РєРѕС‚РѕСЂРѕР№ РІС‹ РёС… СЃСЂС‹РіРЅРµС‚Рµ, Р° Р¶РµСЂС‚РІРµ СЂР°СЃРїР»Р°РІРёС‚ СЃР»СѓС‡Р°Р№РЅСѓСЋ РєРѕРЅРµС‡РЅРѕСЃС‚СЊ.</b>"
+			if("A: РСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РњРµРґСЌРІР°РєР°")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. РњРµРґСЌРІР°Рє РїРѕР·РІРѕР»СЏРµС‚ СЌРІР°РєСѓРёСЂРѕРІР°С‚СЊ СЂР°РЅРµРЅРЅС‹С… Р±РѕР№С†РѕРІ СЃ РїРѕР»СЏ Р±РѕСЏ РїСЂРё СѓСЃР»РѕРІРёРё, С‡С‚Рѕ РЅР°Рґ РЅРёРјРё РЅРµС‚ РєСЂС‹С€Рё РёР»Рё РѕРЅР° СЃС‚РµРєР»СЏРЅРЅР°СЏ. Р”Р»СЏ РїСЂРѕРІРµСЂРєРё РѕСЃРјРѕС‚СЂРёС‚Рµ С‚Р°Р№Р» (SHIFT+Click). РџРѕР»РѕР¶РёРІ РїР°С†РёРµРЅС‚Р° РІ Medevac Stretcher С‚Р°РєРёРј Р¶Рµ СЃРїРѕСЃРѕР±РѕРј, РєР°Рє Рё РЅР° Roller Bed, РЅР°Р¶РјРёС‚Рµ РїСЂР°РІРѕР№ РєРЅРѕРїРєРѕР№ Рё РЅР°Р¶РјРёС‚Рµ Activate Medevac. вЂћС‚РѕР±С‹ Р·Р°Р±СЂР°С‚СЊ РїР°С†РёРµРЅС‚Р° СЃ РїРѕРјРѕС‰СЊСЋ СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅРѕРіРѕ РЅР° С€Р°С‚С‚Р»Рµ СЃРёСЃС‚РµРјРµ РјРµРґСЌРІР°РєР°, РЅРµРѕР±С…РѕРґРёРјРѕ РґРѕР¶РґР°С‚СЊСЃСЏ СЃРёРіРЅР°Р»Р° РѕС‚ РјРµРґРёРєР°, РІР·Р»РµС‚РµС‚СЊ РІ FlyBy СЂРµР¶РёРјРµ, РІ РєРѕРЅСЃРѕР»Рё СѓРїСЂР°РІР»РµРЅРёСЏ РѕСЂСѓР¶РёРµРј С€Р°С‚С‚Р»Р° РІС‹Р±СЂР°С‚СЊ СЃРёСЃС‚РµРјСѓ РјРµРґСЌРІР°РєР° Рё Р·Р°С‚РµРј РІС‹Р±СЂР°С‚СЊ РёРјСЏ РјРѕСЂРїРµС…Р°. Р—Р°С‚РµРј, РЅРµРѕР±С…РѕРґРёРјРѕ РїСЂРѕР№С‚Рё РІ СЃР°Р»РѕРЅ РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ Рє СЃР°РјРѕР№ СЃРёСЃС‚РµРјРµ РјРµРґСЌРІР°РєР° Рё Р°РєС‚РёРІРёСЂРѕРІР°С‚СЊ РµРµ РєР»РёРєРѕРј.</b>"
+			if("J: Р”Р¶РѕР± Р‘Р°РЅС‹")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. Р’СЃРµ РґР¶РѕР± Р±Р°РЅС‹, РІ С‚РѕРј С‡РёСЃР»Рµ РЅР° РєСЃРµРЅРѕРјРѕСЂС„РѕРІ, РїРµСЂРјР°РЅРµРЅС‚РЅС‹.</b>"
+			if("E: РРґРµС‚ РРІРµРЅС‚")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. Р’ РґР°РЅРЅРѕРј СЂР°СѓРЅРґРµ РёРґРµС‚ СЃРїРµС†РёР°Р»СЊРЅС‹Р№ РёРІРµРЅС‚ Рё РЅРµРєРѕС‚РѕСЂС‹Рµ РІРµС‰Рё РјРѕРіСѓС‚ СЂР°Р±РѕС‚Р°С‚СЊ РїРѕ-РґСЂСѓРіРѕРјСѓ, РѕРґРЅР°РєРѕ РѕР±С‹С‡РЅС‹Рµ РїСЂР°РІРёР»Р° РІ СЃРёР»Рµ, Р·Р° РёСЃРєР»СЋС‡РµРЅРёРµРј СЃР»СѓС‡Р°РµРІ, СѓРєР°Р·Р°РЅРЅС‹С… Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°РјРё.</b>"
+			if("R: Р Р°С†РёРё")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. Р Р°С†РёРё Р±С‹Р»Рё РёР·РјРµРЅРµРЅС‹: С‚РµРїРµСЂСЊ ; РїРѕР·РІРѕР»РёС‚ РіРѕРІРѕСЂРёС‚СЊ РІ РєР°РЅР°Р» РѕС‚СЂСЏРґР°, РІ С‚Рѕ РІСЂРµРјСЏ РєР°Рє :z РґР°РµС‚ РґРѕСЃС‚СѓРї РІ General (РћР±С‰РёР№) РєР°РЅР°Р». РџРѕР»РµРІС‹Рј РјРµРґРёРєР°Рј РґРѕСЃС‚СѓРїРµРЅ РјРµРґРёС†РёРЅСЃРєРёР№ РєР°РЅР°Р» С‡РµСЂРµР· :m (:СЊ), РїРѕР»РµРІС‹Рј РёРЅР¶РµРЅРµСЂР°Рј РґРѕСЃС‚СѓРїРµРЅ Engineering (РРЅРґРµРЅРµСЂРЅС‹Р№) С‡РµСЂРµР· :e (:Сѓ), Р° Squad Leader Рё Acting Squad Leader (РљРѕРјР°РЅРґРёСЂ РћС‚СЂСЏРґР° Рё РСЃРїРѕР»РЅСЏСЋС‰РёР№ Р РѕР»СЊ РљРѕРјР°РЅРґРёСЂР° РћС‚СЂСЏРґР°) РёРјРµСЋС‚ РґРѕСЃС‚СѓРї Рє РєРѕРјР°РЅРґРЅРѕРјСѓ РєР°РЅР°Р»Сѓ С‡РµСЂРµР· :v (:Рј). (Р’ СЃРєРѕР±РєР°С… СѓРєР°Р·Р°РЅС‹ РєРёСЂРёР»Р»РёС‡РµСЃРєРёРµ Р±СѓРєРІС‹ РґР»СЏ РєР°РЅР°Р»РѕРІ, РѕРЅРё С‚Р°РєР¶Рµ СЂР°Р±РѕС‚Р°СЋС‚). РћСЃРјРѕС‚СЂ СЃРІРѕРµРіРѕ РЅР°СѓС€РЅРёРєР° РїРѕРєР°Р·С‹РІР°РµС‚ РґРѕСЃС‚СѓРїРЅС‹Рµ РІР°Рј РєР°РЅР°Р»С‹.</b>"
+			if("S: РџСЂРµРґРѕС…СЂР°РЅРёС‚РµР»СЊ")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <fond color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. Р”Р»СЏ С‚РѕРіРѕ, С‡С‚РѕР±С‹ РїРµСЂРµРєР»СЋС‡РёС‚СЊ РїСЂРµРґРѕС…СЂР°РЅРёС‚РµР»СЊ, РёСЃРїРѕР»СЊР·СѓР№С‚Рµ (ALT+Click) РЅР° РѕСЂСѓР¶РёРµ РІ РІР°С€РµР№ СЂСѓРєРµ, Р»РёР±Рѕ Toggle Gun Safety РІРѕ РІРєР»Р°РґРєРµ Weapons. РћСЃРјР°С‚СЂРёРІР°РЅРёРµ РѕСЂСѓР¶РёСЏ С‡РµСЂРµР· (SHIFT+Click) РїРѕРєР°Р¶РµС‚ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ С‚РµРєСѓС‰РµРј СЃРѕСЃС‚РѕСЏРЅРёРё РїСЂРµРґРѕС…СЂР°РЅРёС‚РµР»СЏ.</b>"
+			if("D: РџСЂРёСЃРѕРµРґРёРЅРµРЅРёРµ РћС‚РєР»СЋС‡РµРЅРѕ")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. РђРґРјРёРЅРёСЃС‚СЂР°С†РёСЏ РѕС‚РєР»СЋС‡РёР»Р° РїСЂРёСЃРѕРµРґРёРЅРµРЅРёРµ, С‚Р°Рє РєР°Рє СЂР°СѓРЅРґ Р±Р»РёР·РёС‚СЃСЏ Рє РєРѕРЅС†Сѓ. Р’С‹ РјРѕР¶РµС‚Рµ Р·Р°Р№С‚Рё РІ Observe (РќР°Р±Р»СЋРґР°С‚СЊ), С‡С‚РѕР±С‹ РїРѕСЃРјРѕС‚СЂРµС‚СЊ РєРѕРЅРµС† СЂР°СѓРЅРґР° Рё РґРѕР¶РґР°С‚СЊСЃСЏ РЅР°С‡Р°Р»Р° РЅРѕРІРѕРіРѕ.</b>"
+			if("M: РњР°РєСЂРѕСЃС‹")
+				msgplayer = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font>. Р”Р»СЏ РЅР°СЃС‚СЂРѕР№РєРё РјР°РєСЂРѕСЃР°, РЅР°Р¶РјРёС‚Рµ РїСЂР°РІРѕР№ РєРЅРѕРїРєРѕР№ РЅР° СЃР°РјСѓСЋ РІРµСЂС…РЅСЋСЋ С‡Р°СЃС‚СЊ РєР»РёРµРЅС‚Р° РёРіСЂС‹, РІС‹Р±РµСЂРёС‚Рµ Client -> Macros. РЎРѕР·РґР°РЅРёРµ РјР°РєСЂРѕСЃР° РґР»СЏ unique-action РїРѕР·РІРѕР»РёС‚ РЅРѕСЂРјР°Р»СЊРЅРѕ РїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ СЃС‚Р°РЅРґР°СЂС‚РЅС‹Рј РґСЂРѕР±РѕРІРёРєРѕРј РјРѕСЂРїРµС…РѕРІ; РјР°РєСЂРѕСЃ РЅР° resist РїРѕРјРѕР¶РµС‚ Р±С‹СЃС‚СЂРµР№ РЅР°С‡Р°С‚СЊ СЃРѕРїСЂРѕС‚РёРІР»СЏС‚СЊСЃСЏ РІ РЅРµРєРѕС‚РѕСЂС‹С… СЃРёС‚СѓР°С†РёСЏС…. Р”Р»СЏ Р±РѕР»РµРµ РїРѕРґСЂРѕР±РЅРѕР№ РёРЅС„РѕСЂРјР°С†РёРё РїРѕСЃРµС‚РёС‚Рµ СЌС‚Сѓ <font color='#009900'><a href='http://cm.ss13.ru/index.php?title=Macros'>СЃСЃС‹Р»РєСѓ</a></font>.</b>"
 			if("IC Issue")
 				msgplayer = "\blue <b>NOTICE: <font color=red>[usr.key]</font> is autoresponding with <font color='#009900'>'[choice]'</font>. This issue has been deemed an IC (In-Character) issue, and will not be handled by staff. In case it's relevant, you may wish to ask your <a href='http://wiki.ss13marines.ru/index.php?title=Rank'>Chain Of Command</a> about your issue if you believe <a href='http://wiki.ss13marines.ru/index.php?title=Marine_Law'>Marine Law</a> has been broken.</b>"
 			if("Being Handled")
@@ -2557,7 +2557,7 @@
 				msgplayer = "\blue <b>NOTICE: <font color=red>[usr.key]</font> is autoresponding with <font color='#009900'>'[choice]'</font>. To set a macro right click the title bar, select Client->Macros. Binding unique-action to a key is useful for pumping shotguns etc; Binding load-from-attachment will activate any scopes etc; Binding resist and give to seperate keys is also handy. For more information on macros can be found <a href='http://cm-ss13.com/wiki/Macros'>here.</a></b>"
 			else return
 
-		message_staff("[usr.key] воспользовалсЯ авто-ответом <font color='#009900'>'[choice]'</font> игроку [ref_person]. Ему было показано:\n[msgplayer]", 1)
+		message_staff("[usr.key] РІРѕСЃРїРѕР»СЊР·РѕРІР°Р»СЃСЏ Р°РІС‚Рѕ-РѕС‚РІРµС‚РѕРј <font color='#009900'>'[choice]'</font> РёРіСЂРѕРєСѓ [ref_person]. Р•РјСѓ Р±С‹Р»Рѕ РїРѕРєР°Р·Р°РЅРѕ:\n[msgplayer]", 1)
 
 		to_chat(ref_person, msgplayer)
 		ref_person << sound('sound/effects/adminhelp-reply.ogg')
@@ -2572,7 +2572,7 @@
 
 	if(href_list["ccmark"]) // CentComm-mark. We want to let all Admins know that something is "Marked", but not let the player know because it's not very RP-friendly.
 		var/mob/ref_person = locate(href_list["ccmark"])
-		var/msg = "\blue <b>ЗАМЕТКА: <font color=red>[usr.key]</font> отвечает игроку <font color=red>[ref_person.ckey]/([ref_person]) на HQ запрос.</font>.</b>"
+		var/msg = "\blue <b>Р—РђРњР•РўРљРђ: <font color=red>[usr.key]</font> РѕС‚РІРµС‡Р°РµС‚ РёРіСЂРѕРєСѓ <font color=red>[ref_person.ckey]/([ref_person]) РЅР° HQ Р·Р°РїСЂРѕСЃ.</font>.</b>"
 
 		//send this msg to all admins
 		for(var/client/X in admins)
@@ -2583,31 +2583,31 @@
 
 	if(href_list["ccdeny"]) // CentComm-deny. The distress call is denied, without any further conditions
 		var/mob/ref_person = locate(href_list["ccdeny"])
-		command_announcement.Announce("На аварийный маЯк никто не откликнулсЯ, рекалибровка системы запуска аварийного маЯка...", "Distress Beacon")
+		command_announcement.Announce("РќР° Р°РІР°СЂРёР№РЅС‹Р№ РјР°СЏРє РЅРёРєС‚Рѕ РЅРµ РѕС‚РєР»РёРєРЅСѓР»СЃСЏ, СЂРµРєР°Р»РёР±СЂРѕРІРєР° СЃРёСЃС‚РµРјС‹ Р·Р°РїСѓСЃРєР° Р°РІР°СЂРёР№РЅРѕРіРѕ РјР°СЏРєР°...", "Distress Beacon")
 		log_game("[key_name_admin(usr)] has denied a distress beacon, requested by [key_name_admin(ref_person)]")
-		message_mods("[key_name_admin(usr)] отказал в аварийном маЯке игроку [key_name_admin(ref_person)]", 1)
+		message_mods("[key_name_admin(usr)] РѕС‚РєР°Р·Р°Р» РІ Р°РІР°СЂРёР№РЅРѕРј РјР°СЏРєРµ РёРіСЂРѕРєСѓ [key_name_admin(ref_person)]", 1)
 
 		//unanswered_distress -= ref_person
 
 	if(href_list["distresscancel"])
 		if(distress_cancel)
-			to_chat(usr, "Аварийный маЯк уже был отклонен.")
+			to_chat(usr, "РђРІР°СЂРёР№РЅС‹Р№ РјР°СЏРє СѓР¶Рµ Р±С‹Р» РѕС‚РєР»РѕРЅРµРЅ.")
 			return
 		if(ticker.mode.waiting_for_candidates)
-			to_chat(usr, "Слишком подзно, аварийный маЯк уже был запущен.")
+			to_chat(usr, "РЎР»РёС€РєРѕРј РїРѕРґР·РЅРѕ, Р°РІР°СЂРёР№РЅС‹Р№ РјР°СЏРє СѓР¶Рµ Р±С‹Р» Р·Р°РїСѓС‰РµРЅ.")
 			return
 		log_game("[key_name_admin(usr)] has canceled the distress beacon.")
-		message_staff("[key_name_admin(usr)] отклонил аварийный маЯк.")
+		message_staff("[key_name_admin(usr)] РѕС‚РєР»РѕРЅРёР» Р°РІР°СЂРёР№РЅС‹Р№ РјР°СЏРє.")
 		distress_cancel = 1
 		return
 
 	if(href_list["distress"]) //Distress Beacon, sends a random distress beacon when pressed
 		distress_cancel = 0
-		message_staff("[key_name_admin(usr)] подтвердил запрос на аварийный маЯк! Запуск через 10 секунд... (<A HREF='?_src_=holder;distresscancel=\ref[usr]'>ОТМЕНИТЬ</A>)")
+		message_staff("[key_name_admin(usr)] РїРѕРґС‚РІРµСЂРґРёР» Р·Р°РїСЂРѕСЃ РЅР° Р°РІР°СЂРёР№РЅС‹Р№ РјР°СЏРє! Р—Р°РїСѓСЃРє С‡РµСЂРµР· 10 СЃРµРєСѓРЅРґ... (<A HREF='?_src_=holder;distresscancel=\ref[usr]'>РћРўРњР•РќРРўв„–</A>)")
 		spawn(100)
 			if(distress_cancel) return
 			var/mob/ref_person = locate(href_list["distress"])
 			ticker.mode.activate_distress()
 			log_game("[key_name_admin(usr)] has sent a randomized distress beacon, requested by [key_name_admin(ref_person)]")
-			message_admins("[key_name_admin(usr)] подтвердил отправку случайного аварийного маЯка, запрошенного игроком [key_name_admin(ref_person)]", 1)
+			message_admins("[key_name_admin(usr)] РїРѕРґС‚РІРµСЂРґРёР» РѕС‚РїСЂР°РІРєСѓ СЃР»СѓС‡Р°Р№РЅРѕРіРѕ Р°РІР°СЂРёР№РЅРѕРіРѕ РјР°СЏРєР°, Р·Р°РїСЂРѕС€РµРЅРЅРѕРіРѕ РёРіСЂРѕРєРѕРј [key_name_admin(ref_person)]", 1)
 		//unanswered_distress -= ref_person
