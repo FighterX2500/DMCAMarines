@@ -1148,6 +1148,13 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/hitbox/cm_armored/attack_alien(var/mob/living/carbon/Xenomorph/M, var/dam_bonus)
 	return root.attack_alien(M, dam_bonus)
 
+/obj/vehicle/multitile/hitbox/cm_armored/hear_talk(mob/M, text, verb, var/datum/language/speaking = null, italics=0)
+	return root.hear_talk(M, text, verb, null, italics)
+
+/obj/vehicle/multitile/root/cm_armored/hear_talk(mob/M, text, verb, var/datum/language/speaking = null, italics=0)
+	for(var/mob/living/l in src)
+		l.hear_say(text, verb, speaking, null, italics, M)
+
 //A bit icky, but basically if you're adjacent to the tank hitbox, you are then adjacent to the root object
 /obj/vehicle/multitile/root/cm_armored/Adjacent(var/atom/A)
 	for(var/i in linked_objs)
