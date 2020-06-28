@@ -766,7 +766,7 @@
 /datum/ammo/bullet/smartgun/lethal/New()
 	..()
 	damage = config.low_hit_damage
-	penetration = config.mlow_armor_penetration
+	penetration = config.low_armor_penetration
 
 /datum/ammo/bullet/smartgun/dirty
 	name = "irradiated smartgun bullet"
@@ -994,15 +994,15 @@
 
 /datum/ammo/rocket/autocannon/New()
 	..()
-	accuracy = config.med_hit_accuracy
+	accuracy = config.hmed_hit_accuracy
 	accurate_range = config.long_shell_range
 	max_range = config.max_shell_range
-	damage = config.hlow_hit_damage
+	damage = config.lmed_hit_damage
 	penetration= config.mlow_armor_penetration
 	shell_speed = config.fast_shell_speed
 
 /datum/ammo/rocket/autocannon/on_hit_mob(mob/M, obj/item/projectile/P)
-	staggerstun(M, P, config.max_shell_range, 0, 0, 3, 7, 0, 1, 3, 2)
+	staggerstun(M, P, config.max_shell_range, 0, 0, 5, 9, 0, 3, 3, 2)
 
 /datum/ammo/rocket/autocannon/on_hit_obj(obj/O, obj/item/projectile/P)
 	area_stagger_burst(get_turf(P), P, 0, 0, 3, 5, 0, 1, 3, 2)

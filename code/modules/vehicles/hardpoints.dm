@@ -228,11 +228,11 @@ All of the hardpoints, for the tank and APC
 
 	ammo_type = new /obj/item/ammo_magazine/tank/autocannon
 
-	max_clips = 3
+	max_clips = 5
 	max_angle = 60
 
 	apply_buff()
-		owner.cooldowns["primary"] = 5
+		owner.cooldowns["primary"] = 2.5
 		owner.accuracies["primary"] = 0.97
 	is_ready()
 		if(world.time < next_use)
@@ -918,9 +918,9 @@ All of the hardpoints, for the tank and APC
 
 	apply_buff()
 		owner.dmg_multipliers["acid"] = 0.9
-		owner.dmg_multipliers["slash"] = 0.67
-		owner.dmg_multipliers["explosive"] = 0.7
-		owner.dmg_multipliers["blunt"] = 0.7
+		owner.dmg_multipliers["slash"] = 0.45
+		owner.dmg_multipliers["explosive"] = 0.6
+		owner.dmg_multipliers["blunt"] = 0.6
 		owner.dmg_multipliers["bullet"] = 0.2
 
 	remove_buff()
@@ -1200,8 +1200,8 @@ All of the hardpoints, for the tank and APC
 	icon_state = "autocannon_1"
 	w_class = 10
 	default_ammo = /datum/ammo/rocket/autocannon
-	current_rounds = 40
-	max_rounds = 40
+	current_rounds = 50
+	max_rounds = 50
 	point_cost = 0
 	gun_type = /obj/item/hardpoint/tank/primary/autocannon
 
@@ -1244,8 +1244,8 @@ All of the hardpoints, for the tank and APC
 	icon_state = "quad_rocket"
 	w_class = 10
 	default_ammo = /datum/ammo/rocket/tow //Fun fact, AP rockets seem to be a straight downgrade from normal rockets. Maybe I'm missing something...
-	current_rounds = 3
-	max_rounds = 3
+	current_rounds = 6
+	max_rounds = 6
 	point_cost = 0
 	gun_type = /obj/item/hardpoint/tank/secondary/towlauncher
 
