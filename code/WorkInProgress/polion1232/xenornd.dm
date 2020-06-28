@@ -173,7 +173,7 @@
 							return
 						linked_dissector.loaded_item.loc = linked_dissector.loc
 						linked_dissector.loaded_item = null
-						linked_dissector.icon_state = "d_analyzer"
+						linked_dissector.update_icon()
 						screen = 2.1
 			if("modifyer")
 				if(linked_modifyer)
@@ -183,7 +183,7 @@
 					else if(linked_modifyer.loaded_item)
 						linked_modifyer.loaded_item.loc = linked_modifyer.loc
 						linked_modifyer.loaded_item = null
-						linked_modifyer.icon_state = "bronya_pusta"
+						linked_modifyer.update_icon()
 						screen = 3.1
 
 	else if(href_list["deconstruct"]) //Deconstruct the item in the destructive analyzer and update the research holder.
@@ -204,10 +204,10 @@
 							to_chat(usr, "\red The organic dissector appears to be empty.")
 							screen = 1.0
 							return
-						linked_dissector.icon_state = "d_analyzer"
 						files.AddToAvail(linked_dissector.loaded_item)
 						linked_dissector.loaded_item = null
 						use_power(linked_dissector.active_power_usage)
+						linked_dissector.update_icon()
 						screen = 1.0
 						updateUsrDialog()
 

@@ -161,9 +161,13 @@
 				continue					// They don't give a fuck
 			if(isXeno(target))
 				var/mob/living/carbon/Xenomorph/xeno = target
-				xeno.adjust_stagger(5)
-				xeno.adjust_slowdown(2)
-				to_chat(xeno, "<span class='danger'>Your entire body shaken!</span>")
+				if(prob(30) && !(isXenoQueen(xeno) || isXenoRavager(xeno)))
+					xeno.apply_effects(8,8)
+					to_chat(xeno, "<span class='xenodanger'>Your muscles stopped responding!</span>")
+				else
+					xeno.adjust_stagger(10)
+					xeno.adjust_slowdown(4)
+					to_chat(xeno, "<span class='danger'>Your entire body shaken!</span>")
 				continue
 			to_chat(target, "<span class='danger'>You feel like electricity goes through your muscles!</span>")
 			target.apply_effects(4,4)
@@ -349,7 +353,7 @@
 
 /obj/item/weapon/gun/energy/lasgan
 	name = "SR-LG \"Stellar Strike\""
-	desc = "First working prototype of \"Laser Gun\"-series of 1st generation laser weapon, deliver death and destruction on its path."
+	desc = "First working prototype of \"Laser Gun\"-series is the 1st generation of portable laser weapon, deliver death and destruction on its path."
 	icon = 'icons/obj/old_guns/old_guns.dmi'
 	icon_state = "laser"
 	item_state = "FP9000"
