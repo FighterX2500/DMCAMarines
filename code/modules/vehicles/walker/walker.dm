@@ -76,6 +76,10 @@
 		var/image/occupied = image(icon, icon_state = "mech-face")
 		overlays += occupied
 
+/obj/vehicle/walker/hear_talk(mob/M, text, verb, var/datum/language/speaking = null, italics=0)
+	if(pilot)
+		pilot.hear_say(text, verb, speaking, null, italics, M)
+
 /obj/vehicle/walker/examine(mob/user)
 	..()
 	var/integrity = round(health/maxHealth*100)

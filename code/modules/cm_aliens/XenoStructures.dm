@@ -814,8 +814,7 @@ TUNNEL
 		return
 	else
 		if(M)
-			visible_message("<span class='xenonotice'>You tap to your sisters underground.</span>", \
-			"")
+			to_chat(M, "<span class='xenonotice'>You tap to your sisters underground.</span>")
 		time_emerged = world.time
 		spawn(rand(100, 200))
 			spawn_aliens()

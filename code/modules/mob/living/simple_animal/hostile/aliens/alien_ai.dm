@@ -159,6 +159,7 @@
 	if(isliving(target_mob))
 		var/mob/living/L = target_mob
 		L.attack_animal(src)
+		animation_attack_on(L)
 		return L
 
 /mob/living/simple_animal/alien/proc/LoseTarget()
@@ -224,6 +225,8 @@
 
 	if(get_dist(src, leader) > 5)					//Too close
 		walk_to(src, leader, 2, move_to_delay+2)
+	else
+		walk(src, 0)
 
 /mob/living/simple_animal/alien/proc/DestroySurroundings()
 	if(prob(break_stuff_probability))
@@ -344,6 +347,9 @@
 		melee_damage_upper -= 5*rage
 		melee_damage_lower -= 5
 		rage--
+	if(rage >= maxrage)
+		if(health < maxHealth)
+			health += min(25, 5*rage)
 
 // Alpha things
 

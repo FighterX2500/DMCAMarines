@@ -383,6 +383,11 @@
 		burnlevel = burn_lvl
 	processing_objects.Add(src)
 
+	for(var/mob/living/L in loc)
+		if(L.on_fire)
+			continue
+		Crossed(L)
+
 	if(fire_spread_amount > 0)
 		var/turf/T
 		for(var/dirn in cardinal)
