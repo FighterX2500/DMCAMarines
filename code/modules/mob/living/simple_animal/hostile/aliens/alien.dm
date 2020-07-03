@@ -39,7 +39,7 @@
 	var/attack_same = 0
 	var/list/friends = list()
 	var/stance = HOSTILE_STANCE_IDLE
-	var/mob/living/target_mob
+	var/atom/target = null
 	var/mob/living/leader
 	var/destroy_surroundings = 1
 	var/move_to_delay = 3
@@ -113,6 +113,9 @@
 	melee_damage_upper = 45
 	maxHealth = 400
 	health = 400
+
+	pixel_x = -16
+	old_x = -16
 
 	var/rage = 0								//The more you hit with bullets, meanier it would be
 	var/maxrage = 3

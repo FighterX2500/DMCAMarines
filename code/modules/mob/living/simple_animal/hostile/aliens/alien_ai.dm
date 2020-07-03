@@ -48,6 +48,20 @@
 			T = F
 			break
 
+		if(isMech(A))
+			var/obj/vehicle/walker/W = A
+			stance = HOSTILE_STANCE_ATTACK
+			T = W
+			continue					//Too hard of a target. Will attack if no other options present
+
+		if(isTank(A))
+			var/obj/vehicle/multitile/hitbox/cm_armored/Tank = A
+			if(Tank.root.health == 0)
+				continue
+			stance = HOSTILE_STANCE_ATTACK
+			T = Tank
+			continue					//Too hard of a target. Will attack if no other options present
+
 		if(isliving(A))
 			var/mob/living/L = A
 			if(L in friends)
@@ -132,39 +146,54 @@
 
 /mob/living/simple_animal/alien/proc/MoveToTarget()
 	stop_automated_movement = 1
-	if(!target_mob || SA_attackable(target_mob))
+	if(!target || SA_attackable(target))
 		stance = HOSTILE_STANCE_IDLE
-	if(target_mob in ListTargets(10))
+	if(target in ListTargets(10))
 		stance = HOSTILE_STANCE_ATTACKING
-		walk_to(src, target_mob, 1, move_to_delay)
+		walk_to(src, target, 1, move_to_delay)
 	else
 		LoseTarget()
 
 /mob/living/simple_animal/alien/proc/AttackTarget()
 
 	stop_automated_movement = 1
-	if(!target_mob || SA_attackable(target_mob))
+	if(!target || SA_attackable(target))
 		LoseTarget()
 		return 0
-	if(!(target_mob in ListTargets(10)))
+	if(!(target in ListTargets(10)))
 		LostTarget()
 		return 0
-	if(get_dist(src, target_mob) <= 1)	//Attacking
+	if(isTank(target))
+		var/obj/vehicle/multitile/hitbox/cm_armored/TNK = target
+		if(TNK.root.health == 0)
+			LoseTarget()
+			return 0
+	if(get_dist(src, target) <= 1)	//Attacking
 		AttackingTarget()
 		return 1
 
 /mob/living/simple_animal/alien/proc/AttackingTarget()
-	if(!Adjacent(target_mob))
+	if(!Adjacent(target))
 		return
-	if(isliving(target_mob))
-		var/mob/living/L = target_mob
+	if(isliving(target))
+		var/mob/living/L = target
 		L.attack_animal(src)
 		animation_attack_on(L)
 		return L
+	if(isMech(target))
+		var/obj/vehicle/walker/W = target
+		W.attack_animal(src)
+		animation_attack_on(W)
+		return W
+	if(isTank(target))
+		var/obj/vehicle/multitile/hitbox/cm_armored/TNK = target
+		TNK.attack_animal(src)
+		animation_attack_on(TNK)
+		return TNK
 
 /mob/living/simple_animal/alien/proc/LoseTarget()
 	stance = HOSTILE_STANCE_IDLE
-	target_mob = null
+	target = null
 	walk(src, 0)
 
 /mob/living/simple_animal/alien/proc/LostTarget()
@@ -174,12 +203,21 @@
 
 /mob/living/simple_animal/alien/proc/ListTargets(var/dist = 7)
 	var/list/L = hearers(src, dist)
+	var/obj/vehicle/walker/V = locate(/obj/vehicle/walker) in view(dist, src)
+	var/obj/vehicle/multitile/root/cm_armored/TNK = locate(/obj/vehicle/multitile/root/cm_armored) in view(dist, src)
+	if(V)
+		L += V
+	if(TNK)
+		for(var/targ in TNK.linked_objs)
+			if(isTank(TNK.linked_objs[targ]))
+				L += TNK.linked_objs[targ]
+				break
 	return L
 
 /mob/living/simple_animal/alien/proc/handle_bot_alien_behavior()
 	switch(stance)
 		if(HOSTILE_STANCE_IDLE, HOSTILE_STANCE_AWAY)
-			target_mob = FindTarget()
+			target = FindTarget()
 
 		if(HOSTILE_STANCE_ATTACK)
 			if(destroy_surroundings)
@@ -197,8 +235,8 @@
 	return
 
 /mob/living/simple_animal/alien/proc/handle_follow()
-	target_mob = FindTarget()
-	if(target_mob)
+	target = FindTarget()
+	if(target)
 		return
 
 	if(!leader)
@@ -286,7 +324,7 @@
 				enemies+=L
 	if(enemies.len > max_enemies)
 		stance = HOSTILE_STANCE_AWAY
-		target_mob = null
+		target = null
 		walk_away(src, pick(ListTargets(7)), 7, move_to_delay)
 		return null
 	else
@@ -309,7 +347,7 @@
 				enemies+=L
 	if(enemies.len > max_enemies)
 		stance = HOSTILE_STANCE_AWAY
-		target_mob = null
+		target = null
 		walk_away(src, pick(ListTargets(7)), 7, move_to_delay)
 		return null
 	else
@@ -332,7 +370,7 @@
 				enemies+=L
 	if(enemies.len > max_enemies)
 		stance = HOSTILE_STANCE_AWAY
-		target_mob = null
+		target = null
 		walk_away(src, pick(ListTargets(7)), 7, move_to_delay)
 		return 0
 	else
@@ -354,12 +392,12 @@
 // Alpha things
 
 /mob/living/simple_animal/alien/leader/AttackingTarget()
-	if(!Adjacent(target_mob))
+	if(!Adjacent(target))
 		return
-	if(isliving(target_mob))
-		var/mob/living/L = target_mob
+	if(isliving(target))
+		var/mob/living/L = target
 		if(prob(10))
-			tail_sweep(target_mob)
+			tail_sweep(target)
 		else
 			L.attack_animal(src)
 		return L
