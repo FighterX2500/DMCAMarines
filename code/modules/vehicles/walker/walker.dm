@@ -563,6 +563,13 @@
 		playsound(loc, 'sound/effects/metal_crash.ogg', 75)
 		cdel(src)
 
+/obj/vehicle/walker/attack_animal(mob/living/M)
+	M.animation_attack_on(src)
+	playsound(loc, "alien_claw_metal", 25, 1)
+	M.flick_attack_overlay(src, "slash")
+	visible_message("<span class='danger'>[M] slashes [src].</span>")
+	take_damage(rand(M.melee_damage_lower, M.melee_damage_upper), "slash")
+
 /obj/vehicle/walker/bullet_act(var/obj/item/projectile/Proj)
 	if(!Proj)
 		return

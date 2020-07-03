@@ -343,6 +343,8 @@
 		var/mob/living/L = target_mob
 		if(!L.stat)
 			return (0)
+	if(isMech(target_mob) || isTank(target_mob))
+		return (0)
 	if (istype(target_mob,/obj/mecha))
 		var/obj/mecha/M = target_mob
 		if (M.occupant)
