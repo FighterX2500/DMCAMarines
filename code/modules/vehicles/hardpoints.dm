@@ -232,8 +232,8 @@ All of the hardpoints, for the tank and APC
 	max_angle = 60
 
 	apply_buff()
-		owner.cooldowns["primary"] = 2.5
-		owner.accuracies["primary"] = 0.97
+		owner.cooldowns["primary"] = 5
+		owner.accuracies["primary"] = 0.77
 	is_ready()
 		if(world.time < next_use)
 			to_chat(usr, "<span class='warning'>This module is not ready to be used yet.</span>")
