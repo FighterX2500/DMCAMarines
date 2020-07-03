@@ -233,7 +233,7 @@ All of the hardpoints, for the tank and APC
 
 	apply_buff()
 		owner.cooldowns["primary"] = 5
-		owner.accuracies["primary"] = 0.77
+		owner.accuracies["primary"] = 0.9
 	is_ready()
 		if(world.time < next_use)
 			to_chat(usr, "<span class='warning'>This module is not ready to be used yet.</span>")
