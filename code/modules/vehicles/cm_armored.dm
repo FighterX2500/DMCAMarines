@@ -649,6 +649,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	var/obj/vehicle/multitile/root/cm_armored/CA = root
 	if(isliving(A))
 		var/mob/living/M = A
+		if(isXenoBot(M))
+			var/mob/living/simple_animal/alien/XB = M
+			XB.adjustBruteLoss(25)
 		if(isXeno(M))
 			var/mob/living/carbon/Xenomorph/XEN = M
 			switch(CA.vehicle_class)
@@ -716,7 +719,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 							step_away(M,root,0)
 							//M.visible_message("<span class='danger'>[M] pushes against the [src], trying to hold it in place, but fails!</span>", "<span class='danger'>[src] is much heavier, you can't hold it in place!</span>")
 							return
-		if (!isXeno(M))
+		if (!isXeno(M) && !isXenoBot(M))
 			if(M.buckled)
 				M.buckled.unbuckle()
 			step_away(M,root,0,0)

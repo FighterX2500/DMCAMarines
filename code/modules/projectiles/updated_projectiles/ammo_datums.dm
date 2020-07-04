@@ -935,8 +935,8 @@
 		accuracy_var_low = config.med_proj_variance
 		accurate_range = config.short_shell_range
 		max_range = config.max_shell_range
-		damage = config.ultra_hit_damage
-		penetration= config.max_armor_penetration
+		damage = config.med_hit_damage
+		penetration = config.max_armor_penetration
 
 /datum/ammo/rocket/tow/on_hit_mob(mob/M, obj/item/projectile/P)
 		explosion(get_turf(M), 1, 1, 2, 5)
