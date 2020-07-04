@@ -206,10 +206,10 @@
 		if (S.slayer > 0)
 			S.slayer -= 1
 			S.update_icon(1, 0)
-	
+
 	for(var/obj/structure/jungle/vines/V in T)
 		cdel(V)
-		
+
 	for(var/mob/living/M in T) //Deal bonus damage if someone's caught directly in initial stream
 		if(M.stat == DEAD)
 			continue
@@ -382,11 +382,6 @@
 	if(burn_lvl)
 		burnlevel = burn_lvl
 	processing_objects.Add(src)
-
-	for(var/mob/living/L in loc)
-		if(L.on_fire)
-			continue
-		Crossed(L)
 
 	if(fire_spread_amount > 0)
 		var/turf/T
