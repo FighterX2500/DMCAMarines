@@ -20,6 +20,11 @@
 	var/muzzle_flash 	= "muzzle_flash"
 	var/muzzle_flash_lum = 3 //muzzle flash brightness
 
+/obj/item/walker_gun/Dispose()
+	. = ..()
+	if(ammo)
+		cdel(ammo)
+
 /obj/item/walker_gun/proc/get_icon_image(var/hardpoint)
 	if(!owner)
 		return
@@ -46,7 +51,7 @@
 			to_chat(owner.pilot , "<span class='warning'>[name] fired! [ammo.current_rounds]/[ammo.max_rounds] remaining!")
 			visible_message("<span class='danger'>[owner.name] fires from [name]!</span>", "<span class='warning'>You hear [istype(P.ammo, /datum/ammo/bullet) ? "gunshot" : "blast"]!</span>")
 			return
-		P = new
+		P = rnew(/obj/item/projectile, src.loc)
 		P.generate_bullet(new ammo.default_ammo)
 		playsound(src, fire_sound, 60)
 		target = simulate_scatter(target, P)
