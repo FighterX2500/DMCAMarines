@@ -43,6 +43,8 @@
 		/datum/action/xeno_action/regurgitate,
 		/datum/action/xeno_action/call_xeno,
 		/datum/action/xeno_action/activable/charge,
+		/datum/action/xeno_action/enrage,
+		/datum/action/xeno_action/reap,
 		)
 
 
