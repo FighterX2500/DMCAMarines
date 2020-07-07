@@ -26,9 +26,15 @@
 	var/mob/living/carbon/Xenomorph/Ravager/X = owner
 	if(!X.check_state())
 		return
-	if(world.time < last_use + cooldown)
+	if(world.time < last_use + cooldown || !X.check_plasma(plasma_cost))
 		to_chat(X, "<span class='xenowarning'>You are too exhausted to hate again! Try after [world.time - (last_use + cooldown)]</span>")
 		return
+
+	X.use_plasma(plasma_cost)
+
+	X.visible_message("<span class='danger'>[X] roared in rage!</span>", "<span class='xenodanger'>You flailing your scythes around!</span>")
+	for(var/mob/living/carbon/human/H in range(1))
+		H.attack_alien(X, rand(15, 25))
 
 /datum/action/xeno_action/enrage
 	name = "Carnage (100)"
@@ -42,9 +48,11 @@
 	var/mob/living/carbon/Xenomorph/Ravager/X = owner
 	if(!X.check_state())
 		return
-	if(world.time < last_use + cooldown)
+	if(world.time < last_use + cooldown || !X.check_plasma(plasma_cost))
 		to_chat(X, "<span class='xenowarning'>You are too exhausted to hate again! Try after [((last_use + cooldown) - world.time)]</span>")
 		return
+
+	X.use_plasma(plasma_cost)
 
 	last_use = world.time
 	for(var/mob/living/carbon/human/H in view(7))
@@ -52,13 +60,11 @@
 			enemy_count++
 		if(enemy_count >= 5)
 			break
-	world << "health is [X.health]"
 	X.health += min(enemy_count * BUFF_PER_ENEMY, X.maxHealth)
 	X.speed -= enemy_count/5
 	X.visible_message("<span class='danger'>[X] wounds healed in the blink of an eye!</span>", "<span class='xenodanger'>Your muscles flex!</span>")
-	world << "health is [X.health]"
 
-	spawn(last_use + 60)
+	spawn(last_use + 20)
 		X.speed += enemy_count/5
 		to_chat(X, "<span class='xenonotice'>Your muscles relaxed...</span>")
 		enemy_count = 0
