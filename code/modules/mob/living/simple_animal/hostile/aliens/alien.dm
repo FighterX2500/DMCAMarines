@@ -43,6 +43,7 @@
 	var/mob/living/leader
 	var/destroy_surroundings = 1
 	var/move_to_delay = 3
+	var/xeno_forbid_retract = 0
 
 /mob/living/simple_animal/alien/IgniteMob()			//Crowd control!
 	health = -maxHealth
