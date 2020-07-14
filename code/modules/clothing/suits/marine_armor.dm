@@ -205,7 +205,7 @@ var/list/squad_colors = list(rgb(230,25,25), rgb(255,195,45), rgb(200,100,200), 
 
 	(loc,expected_type	 = type,
 		new_name[]		 = list(MAP_ICE_COLONY = "M3-R pattern marine heavy snow armor"))
- 	.. (loc,expected_type,new_name)
+	.. (loc,expected_type,new_name)
 
 /obj/item/clothing/suit/storage/marine/light
 	name = "M3-S pattern marine light armor"
