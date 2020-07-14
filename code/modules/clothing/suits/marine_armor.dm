@@ -205,7 +205,7 @@ var/list/squad_colors = list(rgb(230,25,25), rgb(255,195,45), rgb(200,100,200), 
 	slowdown = 0.80
 	armor = list(melee = 55, bullet = 50, laser = 40, energy = 30, bomb = 35, bio = 10, rad = 10)     
 
-	New(loc,expected_type	 = type,        
+	(loc,expected_type	 = type,        
 		new_name[]		 = list(MAP_ICE_COLONY = "M3-R pattern marine heavy snow armor"))
  		.. (loc,expected_type,new_name)
 
@@ -216,8 +216,8 @@ var/list/squad_colors = list(rgb(230,25,25), rgb(255,195,45), rgb(200,100,200), 
 	slowdown = SLOWDOWN_ARMOR_LIGHT
 	armor = list(melee = 40, bullet = 30, laser = 30, energy = 15, bomb = 10, bio = 0, rad = 0) 
 
-	New(loc,expected_type	 = type,        
-		new_name[]		 = list(MAP_ICE_COLONY = "M4 pattern marine light snow armor"))
+	(loc,expected_type	 = type,        
+		new_name[]		 = list(MAP_ICE_COLONY = "M3-S pattern marine light snow armor"))
 		.. (loc,expected_type,new_name)
 
 /obj/item/clothing/suit/storage/marine/melee
@@ -227,8 +227,8 @@ var/list/squad_colors = list(rgb(230,25,25), rgb(255,195,45), rgb(200,100,200), 
 	slowdown = SLOWDOWN_ARMOR_MEDIUM
 	armor = list(melee = 65, bullet = 30, laser = 30, energy = 15, bomb = 10, bio = 0, rad = 0) 
 
-	New(loc,expected_type	 = type,		
-		new_name[]		 = list(MAP_ICE_COLONY = "M3-S pattern marine CQC snow armor"))
+	(loc,expected_type	 = type,		
+		new_name[]		 = list(MAP_ICE_COLONY = "M3-B pattern marine CQC snow armor"))
 		.. (loc,expected_type,new_name)
 
 /obj/item/clothing/suit/storage/marine/MP
