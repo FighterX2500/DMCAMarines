@@ -15,3 +15,4 @@ tools/MapDaemon/logs/*.txt
 *.txt
 code/world.dm
 code/world.dm
+process.pid
