@@ -99,8 +99,7 @@ var/list/squad_colors = list(rgb(230,25,25), rgb(255,195,45), rgb(200,100,200), 
 	time_to_unequip = 20
 	time_to_equip = 20
 
-/obj/item/clothing/suit/storage/marine/New(loc,expected_type 		= /obj/item/clothing/suit/storage/marine,
-	new_name[] 			= list(MAP_ICE_COLONY = "M3 pattern marine snow armor"))
+/obj/item/clothing/suit/storage/marine/New(loc,expected_type = /obj/item/clothing/suit/storage/marine, new_name[] = list(MAP_ICE_COLONY = "M3 pattern marine snow armor"))
 	if(type == /obj/item/clothing/suit/storage/marine)
 		var/armor_variation = rand(1,6)
 		icon_state = "[armor_variation]"
@@ -195,6 +194,49 @@ var/list/squad_colors = list(rgb(230,25,25), rgb(255,195,45), rgb(200,100,200), 
 		var/datum/action/A = X
 		A.update_button_icon()
 
+/obj/item/clothing/suit/storage/marine/heavy
+	name = "M3-R pattern marine heavy armor"
+	desc = "A heavy Colonial Marines M3 Pattern Chestplate modification, which will surely protect the user from external threats. By less weight and convenience, that armor have some additional armor plates"
+	icon_state = "fixme_heavy"
+	slowdown = SLOWDOWN_ARMOR_HEAVY
+	armor = list(melee = 55, bullet = 50, laser = 40, energy = 30, bomb = 35, bio = 10, rad = 10)
+
+/obj/item/clothing/suit/storage/marine/light
+	name = "M3-S pattern marine light armor"
+	desc = "A light Colonial Marines M3 Pattern Chestplate modification. Almost does not slow down the movement, but gives poor protection to the user. "
+	icon_state = "fixme_light"
+	slowdown = SLOWDOWN_ARMOR_LIGHT
+	armor = list(melee = 40, bullet = 30, laser = 30, energy = 15, bomb = 10, bio = 0, rad = 0)
+
+/obj/item/clothing/suit/storage/marine/melee
+	name = "M3-B pattern marine CQC armor"
+	desc = "An Colonial Marines M3-B Chestplate Armor, that provides good protection from melee attacks."
+	icon_state = "cqc_fixme"
+	slowdown = SLOWDOWN_ARMOR_MEDIUM
+	armor = list(melee = 65, bullet = 30, laser = 30, energy = 15, bomb = 10, bio = 0, rad = 0)
+
+
+//TODO: fix bullshit beneath this comment - rewrite /obj/item/clothing/suit/storage/marine/New, maybe add switch-case
+/obj/item/clothing/suit/storage/marine/heavy/New(loc,expected_type = /obj/item/clothing/suit/storage/marine/heavy, new_name[] = list(MAP_ICE_COLONY = "M3-R pattern marine heavy snow armor"))
+	if(type == /obj/item/clothing/suit/storage/marine/light)
+		var/armor_variation = rand(1,6)
+		icon_state = "hvy_[armor_variation]"
+		select_gamemode_skin(expected_type,,new_name)
+		. = ..()
+
+/obj/item/clothing/suit/storage/marine/light/New(loc,expected_type = /obj/item/clothing/suit/storage/marine/light, new_name[] = list(MAP_ICE_COLONY = "M3-S pattern marine light snow armor"))
+	if(type == /obj/item/clothing/suit/storage/marine/light)
+		var/armor_variation = rand(1,6)
+		icon_state = "lgt_[armor_variation]"
+		select_gamemode_skin(expected_type,,new_name)
+		. = ..()
+
+/obj/item/clothing/suit/storage/marine/melee/New(loc,expected_type = /obj/item/clothing/suit/storage/marine/melee, new_name[] = list(MAP_ICE_COLONY = "M3-b pattern marine CQC snow armor"))
+	if(type == /obj/item/clothing/suit/storage/marine/light)
+		var/armor_variation = rand(1,6)
+		icon_state = "cqc_[armor_variation]"
+		select_gamemode_skin(expected_type,,new_name)
+		. = ..()
 
 
 
