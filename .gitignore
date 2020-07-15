@@ -6,6 +6,8 @@ Thumbs.db
 *.dmb
 *.lk
 *.backup
+*.swp
+*.swo
 data/
 cfg/
 tools/Runtime Condenser/Input.txt
@@ -15,3 +17,4 @@ tools/MapDaemon/logs/*.txt
 *.txt
 code/world.dm
 code/world.dm
+process.pid
