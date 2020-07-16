@@ -84,6 +84,17 @@
 			new /obj/effect/alien/weeds(T, node)
 
 
+/obj/effect/alien/weeds/proc/wither(obj/effect/alien/weeds/node/start)
+	if(istype(src, /obj/effect/alien/weeds/node))
+		return
+
+	var/obj/effect/alien/weeds/node/N = locate(/obj/effect/alien/weeds/node) in view(3, src.loc)
+	if(N)
+		return
+	spawn(rand(50,200))
+		cdel(src)
+
+
 /obj/effect/alien/weeds/proc/update_neighbours(turf/U)
 	if(!U)
 		U = loc
@@ -223,6 +234,12 @@
 	icon_state = "weednode"
 	var/node_range = NODERANGE
 	health = 15
+
+
+/obj/effect/alien/weeds/node/Dispose()
+	. = ..()
+	for(var/obj/effect/alien/weeds/W in oview(3, src.loc))
+		W.wither(src)
 
 
 /obj/effect/alien/weeds/node/update_icon()
