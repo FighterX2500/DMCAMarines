@@ -167,7 +167,7 @@
 		to_chat(X, "<span class='warning'>You can't do that here.</span>")
 		return
 
-	var/obj/structure/alien_spawner/SPW = locate() in range(15)
+	var/obj/structure/alien_spawner/SPW = locate() in range(10)
 	if(SPW)
 		to_chat(X, "<span class='warning'>There is tunnel nearby!</span>")
 		return
@@ -180,7 +180,7 @@
 		X.use_plasma(500)
 		X.visible_message("<span class='xenonotice'>\The [X] dug a tunnel on the ground!</span>", \
 		"<span class='xenonotice'>You dug a tunnel on the ground!</span>", null, 5)
-		new /obj/structure/alien_spawner(X.loc)
+		new /obj/structure/alien_spawner(X.loc, X.hivenumber)
 		return
 	else
 		to_chat(X, "<span class='warning'>We can dig a tunnel only in weed's presense!</span>")

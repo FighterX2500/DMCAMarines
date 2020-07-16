@@ -281,6 +281,8 @@
 	. = ..()
 	if(!.) return //If they were already dead, it will return.
 	walk(src, 0)
+	if(xeno_number > 0 && xeno_number <= hive_datum[xeno_number].len)
+		hive_datum[xeno_number].xeno_lessers_list -= src
 	if(leader)
 		if(isXeno(leader))
 			var/mob/living/carbon/Xenomorph/X = leader

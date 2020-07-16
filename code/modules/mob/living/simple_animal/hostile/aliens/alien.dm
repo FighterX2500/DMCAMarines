@@ -44,6 +44,15 @@
 	var/destroy_surroundings = 1
 	var/move_to_delay = 3
 	var/xeno_forbid_retract = 0
+	var/xeno_number = XENO_HIVE_NORMAL
+
+/mob/living/simple_animal/alien/New(loc, number=XENO_HIVE_NORMAL)
+	. = ..()
+	if(number > 0 && number <= hive_datum.len && z != 2)
+		xeno_number = number
+		hive_datum[number].xeno_lessers_list += src
+		color = hive_datum[number].color
+		name = "[hive_datum[number].prefix][name]"
 
 /mob/living/simple_animal/alien/IgniteMob()			//Crowd control!
 	health = -maxHealth
