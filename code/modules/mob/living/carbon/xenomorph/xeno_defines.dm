@@ -179,7 +179,7 @@
 	var/obj/machinery/computer/hive_controller/console_link = null		//used only whel enslaved is 1
 	var/list/xeno_leader_list = list()
 	var/list/xeno_lessers_list = list()
-	var/list/xeno_buildings = list()
+	var/list/xeno_buildings = list(SUNKEN_COLONY = 0, COLONY_TUNNELS = 0)
 
 /datum/hive_status/corrupted
 	hivenumber = XENO_HIVE_CORRUPTED
