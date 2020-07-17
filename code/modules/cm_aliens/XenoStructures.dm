@@ -786,12 +786,23 @@ TUNNEL
 	var/time_emerged
 	var/spawn_delay = 18000
 
-/obj/structure/alien_spawner/New()
+	var/hivenumber
+
+/obj/structure/alien_spawner/New(loc, hivenum=XENO_HIVE_NORMAL)
 	..()
 	time_emerged = world.time
+	hivenumber = hivenum <= hive_datum.len ? hivenum : XENO_HIVE_NORMAL
+
+	var/datum/hive_status/hive = hive_datum[hivenumber]
+	hive.xeno_buildings[COLONY_TUNNELS]++
 
 	spawn(rand(100, 200))
 		spawn_aliens()
+
+/obj/structure/alien_spawner/Dispose()
+	. = ..()
+	var/datum/hive_status/hive = hive_datum[hivenumber]
+	hive.xeno_buildings[COLONY_TUNNELS]--
 
 /obj/structure/alien_spawner/proc/spawn_aliens()
 	visible_message("<span class='xenodanger'>Squad of xenomorphs emerging from the tunnel!</span>", \
@@ -800,13 +811,13 @@ TUNNEL
 		spawn(i*10)
 			switch(rand(0, 40))
 				if(10, 20)
-					new /mob/living/simple_animal/alien/ravager(src.loc)
+					new /mob/living/simple_animal/alien/ravager(src.loc, hivenumber)
 				if(7 to 12)
-					new /mob/living/simple_animal/alien/drone(src.loc)
+					new /mob/living/simple_animal/alien/drone(src.loc, hivenumber)
 				if(1 to 3)
-					new /mob/living/simple_animal/alien/leader(src.loc)
+					new /mob/living/simple_animal/alien/leader(src.loc, hivenumber)
 				else
-					new /mob/living/simple_animal/alien(src.loc)
+					new /mob/living/simple_animal/alien(src.loc, hivenumber)
 
 /obj/structure/alien_spawner/attack_alien(mob/living/carbon/Xenomorph/M)
 	if(world.time < time_emerged + spawn_delay)

@@ -1316,6 +1316,11 @@
 	var/larva_count = 0
 	var/stored_larva_count = ticker.mode.stored_larva
 	var/leader_list = ""
+	var/lessers_count = 0
+
+	if(user.hivenumber != 0 && user.hivenumber <= hive_datum.len)
+		var/datum/hive_status/hive = hive_datum[user.hivenumber]
+		lessers_count = hive.xeno_lessers_list.len
 
 	for(var/mob/living/carbon/Xenomorph/X in living_mob_list)
 		if(X.z == ADMIN_Z_LEVEL) continue //don't show xenos in the thunderdome when admins test stuff.
@@ -1403,10 +1408,11 @@
 	dat += "<b>Tier 3: [boiler_count + crusher_count + praetorian_count + ravager_count] Sisters</b> | Boilers: [boiler_count] | Crushers: [crusher_count] | Praetorians: [praetorian_count] | Ravagers: [ravager_count]<BR>"
 	dat += "<b>Tier 2: [carrier_count + hivelord_count + hunter_count + spitter_count + warrior_count] Sisters</b> | Carriers: [carrier_count] | Hivelords: [hivelord_count] | Warriors: [warrior_count] | Lurkers: [hunter_count] | Spitters: [spitter_count]<BR>"
 	dat += "<b>Tier 1: [drone_count + runner_count + sentinel_count + defender_count] Sisters</b> | Drones: [drone_count] | Runners: [runner_count] | Sentinels: [sentinel_count] | Defenders: [defender_count]<BR>"
-	dat += "<b>Larvas: [larva_count] Sisters<BR>"
+	dat += "<b>Larvas: [larva_count] Sisters</b><BR>"
 	if(istype(user)) // cover calling it without parameters
 		if(user.hivenumber == XENO_HIVE_NORMAL)
 			dat += "<b>Burrowed Larva: [stored_larva_count] Sisters<BR>"
+	dat +="<b>Lesser Sisters: [lessers_count]</b><BR>"
 	dat += "<table cellspacing=4>"
 	dat += queen_list + leader_list + boiler_list + crusher_list + praetorian_list + ravager_list + carrier_list + hivelord_list + warrior_list + hunter_list + spitter_list + drone_list + runner_list + sentinel_list + defender_list + larva_list
 	dat += "</table></body>"
