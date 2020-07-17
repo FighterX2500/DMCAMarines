@@ -17,3 +17,7 @@
 
 //subtypesof(), typesof() without the parent path
 #define subtypesof(typepath) ( typesof(typepath) - typepath )
+
+//Some xeno defines, that didn't fit in other
+#define SUNKEN_COLONY	"Sunken Colonies"
+#define COLONY_TUNNELS	"Colony Tunnels"
