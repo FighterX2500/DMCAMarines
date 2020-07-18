@@ -45,14 +45,14 @@
 	item_state = "sledgehammer"
 	force = 30
 	flags_item = TWOHANDED
-	force_wielded = 50
+	force_wielded = 45
 	w_class = 4
 	sharp = IS_SHARP_ITEM_BIG
 	flags_equip_slot = SLOT_WAIST|SLOT_BACK
 
 /obj/item/weapon/twohanded/hammer/attack(mob/M, mob/user)
     ..()
-    if(flags_item & WIELDED && prob(50))
+    if(flags_item & WIELDED && prob(40))
         M.KnockDown(6)
 
 /obj/item/weapon/claymore/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
