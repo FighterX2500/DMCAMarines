@@ -3,7 +3,7 @@
 	config_tag = "Distress Signal"
 	required_players = 1 //Need at least one player, but really we need 2.
 	xeno_required_num = 1 //Need at least one xeno.
-	monkey_amount = 5
+	monkey_amount = 10
 	flags_round_type = MODE_INFESTATION|MODE_FOG_ACTIVATED
 
 ////////////////////////////////////////////////////////////////////////////////////////
