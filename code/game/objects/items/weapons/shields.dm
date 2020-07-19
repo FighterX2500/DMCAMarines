@@ -46,7 +46,7 @@
 	var/active = 0
 
 /obj/item/weapon/shield/montage
-	name = "Montage"
+	name = "N30 montage shield"
 	desc = "A shield adept at blocking blunt objects from connecting with the torso of the shield wielder."
 	icon = 'icons/obj/items/weapons.dmi'
 	icon_state = "metal"
@@ -78,3 +78,28 @@
 
 /obj/item/weapon/shield/montage/Get_shield_chance()
 	return block_chance
+
+/obj/item/weapon/shield/montage/marine
+	name = "N30-2 standard defensive shield"
+	desc = "A heavy shield adept at blocking blunt or sharp objects from connecting with the shield wielder."
+	icon = 'icons/obj/items/weapons.dmi'
+	icon_state = "marine_shield"
+	flags_equip_slot = SLOT_BACK
+	block_chance = 70
+	force = 15
+	throwforce = 6
+	throw_speed = 1
+	throw_range = 4
+	w_class = 4.0
+	origin_tech = "materials=2"
+	attack_verb = list("shoved", "bashed", "slash")
+	cooldown = 4 //shield bash cooldown. based on world.time
+
+/obj/item/weapon/shield/montage/marine/attack(mob/M, mob/user)
+	. = ..()
+	if(prob(40))
+		if(isXeno(M))
+			if(isXenoQueen(M))
+				return
+			M.KnockDown(4)
+		M.KnockDown(8)
