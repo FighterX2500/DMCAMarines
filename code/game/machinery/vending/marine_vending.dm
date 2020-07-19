@@ -115,6 +115,7 @@
 					/obj/item/weapon/gun/rifle/m41a = 20,
 					/obj/item/weapon/gun/shotgun/pump = 10,
 					/obj/item/device/motiondetector = 4,
+					/obj/item/weapon/shield/montage/marine = 6,
 					// /obj/item/weapon/gun/shotgun/combat = 1,
 					/obj/item/explosive/mine = 2,
 					/obj/item/weapon/shield/montage/marine = 4,
