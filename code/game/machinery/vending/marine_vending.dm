@@ -117,6 +117,7 @@
 					/obj/item/device/motiondetector = 4,
 					// /obj/item/weapon/gun/shotgun/combat = 1,
 					/obj/item/explosive/mine = 2,
+					/obj/item/weapon/shield/montage/marine = 4,
 					/obj/item/storage/box/nade_box = 2,
 					/obj/item/explosive/grenade/frag/m15 = 2,
 					/obj/item/explosive/grenade/incendiary = 4,
