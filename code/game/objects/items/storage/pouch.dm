@@ -365,7 +365,7 @@
 	name = "flare pouch"
 	desc = "A pouch designed to hold flares. Refillable with a M94 flare pack."
 	max_w_class = 2
-	storage_slots = 5
+	storage_slots = 10
 	draw_mode = 1
 	icon_state = "flare"
 	can_hold = list("/obj/item/device/flashlight/flare")

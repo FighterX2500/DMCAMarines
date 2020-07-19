@@ -338,9 +338,6 @@
 			new /obj/item/clothing/suit/storage/marine/M3T(src)
 			new /obj/item/clothing/head/helmet/marine(src)
 			new /obj/item/weapon/gun/launcher/rocket(src)
-			new /obj/item/ammo_magazine/rocket/ap(src)
-			new /obj/item/ammo_magazine/rocket/ap(src)
-			new /obj/item/ammo_magazine/rocket/ap(src)
 			new /obj/item/ammo_magazine/rocket/wp(src)
 			new /obj/item/ammo_magazine/rocket/wp(src)
 			new /obj/item/explosive/mine(src)
@@ -348,7 +345,7 @@
 			new /obj/item/explosive/plastique(src)
 			new /obj/item/explosive/plastique(src)
 			new /obj/item/storage/pouch/rpg/full(src)
-
+			new /obj/item/storage/pouch/rpg/full_ap(src)
 
 
 /obj/item/storage/box/spec/sniper

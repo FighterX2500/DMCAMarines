@@ -148,7 +148,7 @@
 
 /datum/marine_design/disruptorcircuit									//You must REALLY hate xeno, if you creating that
 	name = "Hivelink Disruptor Prototype"
-	desc = "Powerful machinery, what can throw entire Hive chain of command into chaos. But we must deply that machine on surface under protection of planetary magnetic field."
+	desc = "Powerful machinery, what can throw entire Hive chain of command into chaos. But we must deploy that machine on surface under protection of planetary magnetic field."
 	id = "disruptor"
 	build_path = /obj/item/circuitboard/machine/hive_disruptor
 	build_type = MARINE_PROTHOLATHE

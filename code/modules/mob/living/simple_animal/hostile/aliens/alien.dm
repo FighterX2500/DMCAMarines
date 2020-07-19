@@ -1,5 +1,6 @@
 /mob/living/simple_animal/alien
 	name = "alien trooper"
+	desc = "Common hivetrooper. Weak, but can overwhelm with numbers"
 	icon = 'icons/Xeno/1x1_Xenos.dmi'
 	icon_state = "Hunter Running"
 	icon_living = "Hunter Running"
@@ -38,10 +39,20 @@
 	var/attack_same = 0
 	var/list/friends = list()
 	var/stance = HOSTILE_STANCE_IDLE
-	var/mob/living/target_mob
+	var/atom/target = null
 	var/mob/living/leader
 	var/destroy_surroundings = 1
 	var/move_to_delay = 3
+	var/xeno_forbid_retract = 0
+	var/xeno_number = XENO_HIVE_NORMAL
+
+/mob/living/simple_animal/alien/New(loc, number=XENO_HIVE_NORMAL)
+	. = ..()
+	if(number > 0 && number <= hive_datum.len && z != 2)
+		xeno_number = number
+		hive_datum[number].xeno_lessers_list += src
+		color = hive_datum[number].color
+		name = "[hive_datum[number].prefix][name]"
 
 /mob/living/simple_animal/alien/IgniteMob()			//Crowd control!
 	health = -maxHealth
@@ -57,7 +68,19 @@
 			death(0)
 
 /mob/living/simple_animal/alien/bullet_act(obj/item/projectile/Proj)
-	. = ..()
+	if(!Proj || Proj.damage <= 0)
+		return 0
+
+	if(Proj.ammo.flags_ammo_behavior & AMMO_BALLISTIC)
+		round_statistics.total_bullet_hits_on_xenos++
+
+	if(Proj.ammo.flags_ammo_behavior & AMMO_INCENDIARY)
+		visible_message("<span class='xenodanger'>[src] bursts into flames!</span>","", null, 5)
+		IgniteMob()
+		return 1
+
+	adjustBruteLoss(Proj.damage)
+
 	Proj.play_damage_effect(src)
 	if(health <= 0)
 		death(0)
@@ -65,6 +88,7 @@
 
 /mob/living/simple_animal/alien/drone
 	name = "alien lesser drone"
+	desc = "A hardy worker, who can be beaten by child born on landmine."
 	icon_state = "Drone Running"
 	icon_living = "Drone Running"
 	icon_dead = "Drone Dead"
@@ -90,6 +114,7 @@
 
 /mob/living/simple_animal/alien/ravager
 	name = "alien tearer"
+	desc = "A vile creature, Tearer can shred any foe and survive under heavy fire."
 	icon = 'icons/Xeno/2x2_Xenos.dmi'
 	icon_state = "Ravager Running"
 	icon_living = "Ravager Running"
@@ -98,6 +123,9 @@
 	melee_damage_upper = 45
 	maxHealth = 400
 	health = 400
+
+	pixel_x = -16
+	old_x = -16
 
 	var/rage = 0								//The more you hit with bullets, meanier it would be
 	var/maxrage = 3
@@ -112,6 +140,13 @@
 		melee_damage_upper += 5*rage
 		melee_damage_lower += 5
 
+/mob/living/simple_animal/alien/ravager/IgniteMob()			//May whatever God you worship have mercy on you, tearer will have none
+	visible_message("<span class='xenodanger'>[src] roars in rage!</span>","", null, 5)
+	for(var/enrage_level in rage+1 to (maxrage+3))
+		rage++
+		melee_damage_upper += 5*rage
+		melee_damage_lower += 5
+
 /obj/item/projectile/neurotox
 	damage = 30
 	icon_state = "toxin"
@@ -119,6 +154,7 @@
 
 /mob/living/simple_animal/alien/leader
 	name = "alien alpha trooper"
+	desc = "An oversized alien trooper, that have enough cranial capacity to lead its sisters into battle."
 	icon = 'icons/Xeno/2x2_Xenos.dmi'
 	icon_state = "Warrior Running"
 	icon_living = "Warrior Running"
@@ -131,3 +167,10 @@
 
 	var/bot_followers = 0
 	var/bot_max = 5
+	var/deflect_chance = 25			//He is an alpha for some goddamn reasons
+
+/mob/living/simple_animal/alien/leader/bullet_act(obj/item/projectile/Proj)
+	if(prob(deflect_chance))
+		visible_message("<span class='avoidharm'>[src] easily deflects bullet!</span>","", null, 5)
+		return 1
+	return ..()

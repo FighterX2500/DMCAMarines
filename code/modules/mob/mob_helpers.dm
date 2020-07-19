@@ -216,6 +216,24 @@ proc/isSynth(A)
 			return 1
 	return 0
 
+proc/isVehicle(A)
+	if(istype(A, /obj/vehicle))
+		return 1
+	else
+		return 0
+
+proc/isMech(A)
+	if(istype(A, /obj/vehicle/walker))
+		return 1
+	else
+		return 0
+
+proc/isTank(A)
+	if(istype(A, /obj/vehicle/multitile/hitbox/cm_armored))
+		return 1
+	else
+		return 0
+
 proc/ismaintdrone(A)
 	if(istype(A,/mob/living/silicon/robot/drone))
 		return 1

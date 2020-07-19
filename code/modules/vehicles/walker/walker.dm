@@ -35,7 +35,7 @@
 		"slash" = 0.6,
 		"bullet" = 0.2,
 		"explosive" = 5.0,
-		"blunt" = 0.1,
+		"blunt" = 0.4,
 		"energy" = 1.0,
 		"abstract" = 1.0) //abstract for when you just want to hurt it
 
@@ -62,6 +62,14 @@
 
 	update_icon()
 
+/obj/vehicle/walker/Dispose()
+	. = ..()
+
+	if(left)
+		cdel(left)
+	if(right)
+		cdel(right)
+
 /obj/vehicle/walker/update_icon()
 	overlays.Cut()
 
@@ -75,6 +83,10 @@
 	if(pilot)
 		var/image/occupied = image(icon, icon_state = "mech-face")
 		overlays += occupied
+
+/obj/vehicle/walker/hear_talk(mob/M, text, verb, var/datum/language/speaking = null, italics=0)
+	if(pilot)
+		pilot.hear_say(text, verb, speaking, null, italics, M)
 
 /obj/vehicle/walker/examine(mob/user)
 	..()
@@ -161,7 +173,7 @@
 		var/obj/structure/window_frame/WF = obstacle
 		WF.visible_message("<span class='danger'>[src.name] runs over the [WF]!</span>")
 		take_damage(20, "abstract")
-		WF.Dispose()
+		cdel(WF)
 	else
 		..()
 
@@ -518,7 +530,9 @@
 
 	to_chat(user, "You start repairing broken part of [src.name]'s armor...")
 	if(do_after(user, repair_time, TRUE, 5, BUSY_ICON_BUILD))
-		if(user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer <= SKILL_ENGINEER_ENGI)
+		if(!weld.isOn())
+			to_chat(user, "Your wielding tool is not on...")
+		else if(user.mind && user.mind.cm_skills && user.mind.cm_skills.engineer <= SKILL_ENGINEER_ENGI)
 			to_chat(user, "You haphazardly weld together chunks of broken armor.")
 			health += 25
 			healthcheck()
@@ -529,6 +543,7 @@
 		playsound(src.loc, 'sound/items/weldingtool_weld.ogg', 25)
 		if(pilot)
 			to_chat(pilot, "Notification.Armor partly restored.")
+		repair = FALSE
 		return
 	else
 		to_chat(user, "Repair has been interrupted.")
@@ -559,6 +574,13 @@
 		playsound(loc, 'sound/effects/metal_crash.ogg', 75)
 		cdel(src)
 
+/obj/vehicle/walker/attack_animal(mob/living/M)
+	M.animation_attack_on(src)
+	playsound(loc, "alien_claw_metal", 25, 1)
+	M.flick_attack_overlay(src, "slash")
+	visible_message("<span class='danger'>[M] slashes [src].</span>")
+	take_damage(rand(M.melee_damage_lower, M.melee_damage_upper), "slash")
+
 /obj/vehicle/walker/bullet_act(var/obj/item/projectile/Proj)
 	if(!Proj)
 		return
@@ -576,6 +598,18 @@
 				take_damage(Proj.damage, "energy")
 		if(TOX, OXY, CLONE)
 			return
+
+/obj/vehicle/walker/Bumped(var/atom/A)
+	..()
+
+	if(istype(A, /mob/living/carbon/Xenomorph/Crusher))
+
+		var/mob/living/carbon/Xenomorph/Crusher/C = A
+
+		if(C.charge_speed < C.charge_speed_max/(1.1)) //Arbitrary ratio here, might want to apply a linear transformation instead
+			return
+
+		take_damage(100, "blunt")
 
 /obj/vehicle/walker/proc/take_damage(dam, damtype = "blunt")
 	if(!dam || dam <= 0)

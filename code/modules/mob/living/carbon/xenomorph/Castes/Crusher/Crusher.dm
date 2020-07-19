@@ -104,17 +104,25 @@
 			stop_momentum(charge_dir)
 			return FALSE
 
-	if(istype(target, /obj/vehicle/multitile/hitbox))
-		var/obj/vehicle/multitile/hitbox/H = target
-		if(charge_speed > charge_speed_buildup * charge_turfs_to_charge)
-			visible_message("<span class='danger'>[src] rams into [H.root] and skids to a halt!</span>",
-			"<span class='xenowarning'>You ram into [H.root] and skid to a halt!</span>")
-			flags_pass = 0
-			update_icons()
-			H.root.Bumped(src)
-			stop_momentum(charge_dir)
-			return TRUE
-		else
+	if(isVehicle(target))
+		if(istype(target, /obj/vehicle/multitile/hitbox))
+			var/obj/vehicle/multitile/hitbox/H = target
+			if(charge_speed > charge_speed_buildup * charge_turfs_to_charge)
+				visible_message("<span class='danger'>[src] rams into [H.root] and skids to a halt!</span>",
+				"<span class='xenowarning'>You ram into [H.root] and skid to a halt!</span>")
+				flags_pass = 0
+				update_icons()
+				H.root.Bumped(src)
+				stop_momentum(charge_dir)
+				return TRUE
+			else
+				stop_momentum(charge_dir)
+				return FALSE
+		if(isMech(target))
+			var/obj/vehicle/walker/W = target
+			visible_message("<span class='danger'>[src] rams into [W] and skids to a halt!</span>",
+				"<span class='xenowarning'>You ram into [W] and skid to a halt!</span>")
+			W.Bumped(src)
 			stop_momentum(charge_dir)
 			return FALSE
 

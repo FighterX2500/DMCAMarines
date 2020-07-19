@@ -1,5 +1,7 @@
 #define CONTAINMENT_LARVA 0
 
+#define CONTAINMENT_LESSER 1
+
 #define CONTAINMENT_SENTINEL 10
 #define CONTAINMENT_SPITTER 11
 
@@ -47,6 +49,11 @@
 	var/name = "name"					// Name of species
 	var/desc = "desc"					// What will show after research
 	var/id = -1							// Species needed
+
+/datum/alienspecies/lesser
+	name = "Xenomorph Troopers"
+	desc = "Weak alone, but strong in numbers - Troopers of all kind forming the core of Xenomorph attack forces. If there is one of them, then somewhere here legion of troopers lie in waiting."
+	id = CONTAINMENT_LESSER
 
 /datum/alienspecies/larva
 	name = "Xenomorph Larva"
@@ -124,7 +131,7 @@
 	desc = "Standart pressure chamber for all your biology needs"
 	icon = 'code/WorkInProgress/polion1232/rnd.dmi'
 	icon_state = "analyzer_chamber"
-	var/mob/living/carbon/Xenomorph/occupant = null
+	var/mob/living/occupant = null
 	var/obj/machinery/computer/analyze_console/linked_console = null
 
 	use_power = 1
@@ -143,18 +150,18 @@
 		if(!ismob(G.grabbed_thing))
 			return
 		var/mob/M = G.grabbed_thing
-		if(isXeno(M))
+		if(isXeno(M) || isXenoBot(M))
 			put_mob(M)
 	return
 
-/obj/machinery/container/proc/put_mob(mob/living/carbon/M as mob)
+/obj/machinery/container/proc/put_mob(mob/living/M as mob)
 	if (stat & (NOPOWER|BROKEN))
 		to_chat(usr, "\red The chamber is not functioning.")
 		return
 	if (!istype(M))
 		to_chat(usr, "\red <B>The chamber cannot handle such a lifeform!</B>")
 		return
-	if (!isXeno(M))
+	if (!isXeno(M) && !isXenoBot(M))
 		to_chat(usr, "\red <B>You feel stupid of this idea</B>")
 		return
 	if (occupant)
@@ -258,14 +265,16 @@ If chamber connected to the console, you can start research aliens. Just don't b
 	else if(href_list["scan"])
 		if(linked_chamber)
 			if(linked_chamber.occupant)
-				if(linked_chamber.occupant.xeno_forbid_retract)
+				if(linked_chamber.occupant?:xeno_forbid_retract)
 					screen = 2.3
 					updateUsrDialog()
 					spawn(50)
 						screen = 2.2
 						updateUsrDialog()
 						return
-				if(isXenoLarva(linked_chamber.occupant))
+				if(isXenoBot(linked_chamber.occupant))
+					files.AddToKnown(CONTAINMENT_LESSER)
+				else if(isXenoLarva(linked_chamber.occupant))
 					files.AddToKnown(CONTAINMENT_LARVA)
 				else if(isXenoSentinel(linked_chamber.occupant))
 					files.AddToKnown(CONTAINMENT_SENTINEL)
@@ -303,9 +312,9 @@ If chamber connected to the console, you can start research aliens. Just don't b
 		else
 			if(!linked_chamber.occupant)
 				return
-			if(linked_chamber.occupant.xeno_forbid_retract == 1)
+			if(linked_chamber.occupant?:xeno_forbid_retract == 1)
 				return
-			linked_chamber.occupant.xeno_forbid_retract = 1
+			linked_chamber.occupant?:xeno_forbid_retract = 1
 			screen = 0.3
 			spawn(300)
 				screen = 1.1
@@ -319,7 +328,8 @@ If chamber connected to the console, you can start research aliens. Just don't b
 						new /obj/item/marineResearch/xenomorp/chitin(linked_chamber.loc)
 
 				new /obj/item/marineResearch/xenomorp/muscle(linked_chamber.loc)
-				if(files.CheckXeno(CONTAINMENT_RUNNER) || files.CheckXeno(CONTAINMENT_LURKER) || files.CheckXeno(CONTAINMENT_RAVAGER))
+				new /obj/item/marineResearch/xenomorp/chitin(linked_chamber.loc)
+				if(files.CheckXeno(CONTAINMENT_LESSER) || files.CheckXeno(CONTAINMENT_RUNNER) || files.CheckXeno(CONTAINMENT_LURKER) || files.CheckXeno(CONTAINMENT_RAVAGER))
 					new /obj/item/marineResearch/xenomorp/chitin(linked_chamber.loc)
 
 				if(isXenoSentinel(linked_chamber.occupant))
@@ -366,7 +376,7 @@ If chamber connected to the console, you can start research aliens. Just don't b
 				screen = 2.0
 			else if(linked_chamber.occupant == null)
 				screen = 2.1
-			else if(linked_chamber.occupant.xeno_forbid_retract == 1)
+			else if(linked_chamber.occupant?:xeno_forbid_retract == 1)
 				screen = 2.3
 			else
 				screen = 2.2

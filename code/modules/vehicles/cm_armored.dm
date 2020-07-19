@@ -585,6 +585,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 		else remove_person = 0 //if something exists but isnt broken
 
 	if(remove_person)
+		health = 0					//broken anyway
 		handle_all_modules_broken()
 
 	update_icon()
@@ -648,6 +649,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	var/obj/vehicle/multitile/root/cm_armored/CA = root
 	if(isliving(A))
 		var/mob/living/M = A
+		if(isXenoBot(M))
+			var/mob/living/simple_animal/alien/XB = M
+			XB.adjustBruteLoss(25)
 		if(isXeno(M))
 			var/mob/living/carbon/Xenomorph/XEN = M
 			switch(CA.vehicle_class)
@@ -715,7 +719,7 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 							step_away(M,root,0)
 							//M.visible_message("<span class='danger'>[M] pushes against the [src], trying to hold it in place, but fails!</span>", "<span class='danger'>[src] is much heavier, you can't hold it in place!</span>")
 							return
-		if (!isXeno(M))
+		if (!isXeno(M) && !isXenoBot(M))
 			if(M.buckled)
 				M.buckled.unbuckle()
 			step_away(M,root,0,0)
@@ -1148,6 +1152,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 /obj/vehicle/multitile/hitbox/cm_armored/attack_alien(var/mob/living/carbon/Xenomorph/M, var/dam_bonus)
 	return root.attack_alien(M, dam_bonus)
 
+/obj/vehicle/multitile/hitbox/cm_armored/attack_animal(var/mob/living/simple_animal/M as mob)
+	return root.attack_animal(M)
+
 /obj/vehicle/multitile/hitbox/cm_armored/hear_talk(mob/M, text, verb, var/datum/language/speaking = null, italics=0)
 	return root.hear_talk(M, text, verb, null, italics)
 
@@ -1246,6 +1253,9 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 
 //Honestly copies some code from the Xeno files, just handling some special cases
 /obj/vehicle/multitile/root/cm_armored/attack_alien(var/mob/living/carbon/Xenomorph/M, var/dam_bonus)
+	if(health == 0)
+		to_chat(M, "You staring at [src.name] wreckage.")
+		return
 
 	var/damage = rand(M.melee_damage_lower, M.melee_damage_upper) + dam_bonus
 
@@ -1267,6 +1277,24 @@ var/list/TANK_HARDPOINT_OFFSETS = list(
 	"<span class='danger'>You slash [src]!</span>")
 
 	take_damage_type(damage * ( (M.caste == "Ravager") ? 2 : 1 ), "slash", M) //Ravs do a bitchin double damage
+
+	healthcheck()
+
+/obj/vehicle/multitile/root/cm_armored/attack_animal(var/mob/living/simple_animal/M as mob)
+	var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
+	if(!damage)
+		playsound(M.loc, 'sound/weapons/alien_claw_swipe.ogg', 25, 1)
+		M.animation_attack_on(src)
+		M.visible_message("<span class='danger'>\The [M] lunges at [src]!</span>", \
+		"<span class='danger'>You lunge at [src]!</span>")
+		return 0
+
+	M.animation_attack_on(src)
+	playsound(M.loc, pick('sound/weapons/alien_claw_metal1.ogg', 'sound/weapons/alien_claw_metal2.ogg', 'sound/weapons/alien_claw_metal3.ogg'), 25, 1)
+	M.visible_message("<span class='danger'>\The [M] slashes [src]!</span>", \
+	"<span class='danger'>You slash [src]!</span>")
+
+	take_damage_type(damage, "slash", M)
 
 	healthcheck()
 
