@@ -439,6 +439,10 @@
 		to_chat(M, "<span class='notice'>You have no idea how to operate this thing.</span>")
 		return
 
+	if(M.buckled)
+		to_chat(M, "<span class='notice'>Quite hard to enter a tank while buckled.</span>")
+		return
+
 	to_chat(M, "<span class='notice'>You start climbing into [src].</span>")
 
 	switch(slot)
