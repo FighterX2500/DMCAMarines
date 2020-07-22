@@ -134,7 +134,7 @@
 	w_class = 1
 	throwforce = 2
 	flags_equip_slot = SLOT_WAIST
-	storage_slots = 6
+	storage_slots = 20
 	can_hold = list("/obj/item/clothing/mask/cigarette", "/obj/item/tool/lighter")
 	icon_type = "cigarette"
 
