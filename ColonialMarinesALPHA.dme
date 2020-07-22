@@ -925,6 +925,7 @@
 #include "code\modules\clothing\under\jobs\security.dm"
 #include "code\modules\cm_aliens\Ovipositor.dm"
 #include "code\modules\cm_aliens\weeds.dm"
+#include "code\modules\cm_aliens\XenoBuildings.dm"
 #include "code\modules\cm_aliens\XenoStructures.dm"
 #include "code\modules\cm_marines\codebook.dm"
 #include "code\modules\cm_marines\dropship_ammo.dm"
