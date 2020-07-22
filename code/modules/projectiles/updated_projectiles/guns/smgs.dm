@@ -49,6 +49,7 @@
 						/obj/item/attachable/heavy_barrel,
 						/obj/item/attachable/scope/mini,
 						/obj/item/attachable/burstfire_assembly,
+						/obj/item/attachable/attached_gun/laser_targeting,
 						/obj/item/attachable/magnetic_harness)
 
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_TRIGGER_SAFETY
@@ -113,6 +114,7 @@
 						/obj/item/attachable/reddot,
 						/obj/item/attachable/flashlight,
 						/obj/item/attachable/magnetic_harness,
+						/obj/item/attachable/attached_gun/laser_targeting,
 						/obj/item/attachable/scope)
 
 	flags_gun_features = GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
@@ -151,6 +153,7 @@
 						/obj/item/attachable/reddot,
 						/obj/item/attachable/flashlight,
 						/obj/item/attachable/magnetic_harness,
+						/obj/item/attachable/attached_gun/laser_targeting,
 						/obj/item/attachable/scope)
 
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
@@ -287,6 +290,7 @@
 	attachable_allowed = list(
 						/obj/item/attachable/suppressor,
 						/obj/item/attachable/lasersight,
+						/obj/item/attachable/attached_gun/laser_targeting,
 						/obj/item/attachable/scope)
 
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY

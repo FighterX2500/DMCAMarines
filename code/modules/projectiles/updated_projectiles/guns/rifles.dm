@@ -61,6 +61,7 @@
 						/obj/item/attachable/attached_gun/grenade,
 						/obj/item/attachable/attached_gun/flamer,
 						/obj/item/attachable/attached_gun/shotgun,
+						/obj/item/attachable/attached_gun/laser_targeting,
 						/obj/item/attachable/scope,
 						/obj/item/attachable/scope/mini)
 
@@ -128,6 +129,7 @@
 						/obj/item/attachable/reddot,
 						/obj/item/attachable/attached_gun/grenade,
 						/obj/item/attachable/attached_gun/flamer,
+						/obj/item/attachable/attached_gun/laser_targeting,
 						/obj/item/attachable/attached_gun/shotgun)
 
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_TRIGGER_SAFETY
@@ -177,6 +179,7 @@
 						/obj/item/attachable/attached_gun/grenade,
 						/obj/item/attachable/attached_gun/flamer,
 						/obj/item/attachable/attached_gun/shotgun,
+						/obj/item/attachable/attached_gun/laser_targeting,
 						/obj/item/attachable/scope/slavic)
 
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_TRIGGER_SAFETY
@@ -242,6 +245,7 @@
 						/obj/item/attachable/burstfire_assembly,
 						/obj/item/attachable/attached_gun/grenade,
 						/obj/item/attachable/attached_gun/flamer,
+						/obj/item/attachable/attached_gun/laser_targeting,
 						/obj/item/attachable/attached_gun/shotgun
 						)
 
@@ -288,6 +292,7 @@
 						/obj/item/attachable/compensator,
 						/obj/item/attachable/burstfire_assembly,
 						/obj/item/attachable/magnetic_harness,
+						/obj/item/attachable/attached_gun/laser_targeting,
 						/obj/item/attachable/scope)
 
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_WIELDED_FIRING_ONLY|GUN_TRIGGER_SAFETY

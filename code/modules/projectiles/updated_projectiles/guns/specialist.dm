@@ -28,7 +28,8 @@
 	force = 12
 	wield_delay = 12 //Ends up being 1.6 seconds due to scope
 	zoomdevicename = "scope"
-	attachable_allowed = list(/obj/item/attachable/bipod)
+	attachable_allowed = list(/obj/item/attachable/bipod,
+							  /obj/item/attachable/attached_gun/laser_targeting)
 
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_TRIGGER_SAFETY
 
@@ -121,6 +122,7 @@
 						/obj/item/attachable/flashlight,
 						/obj/item/attachable/bipod,
 						/obj/item/attachable/magnetic_harness,
+						/obj/item/attachable/attached_gun/laser_targeting,
 						/obj/item/attachable/scope/slavic)
 
 	flags_gun_features = GUN_AUTO_EJECTOR|GUN_SPECIALIST|GUN_WIELDED_FIRING_ONLY|GUN_TRIGGER_SAFETY

@@ -1004,6 +1004,8 @@ ATTACHMENTS
 					/obj/item/attachable/attached_gun/shotgun,
 					/obj/item/attachable/attached_gun/flamer,
 					/obj/item/attachable/attached_gun/flamer,
+					/obj/item/attachable/attached_gun/laser_targeting,
+					/obj/item/attachable/attached_gun/laser_targeting,
 					/obj/item/attachable/burstfire_assembly,
 					/obj/item/attachable/burstfire_assembly
 					)
@@ -1079,6 +1081,17 @@ ATTACHMENTS
 	cost = RO_PRICE_CHEAP
 	containertype = /obj/structure/closet/crate
 	containername = "flamer attachment crate"
+	group = "Attachments"
+
+/datum/supply_packs/underbarrel_laser
+	name = "underbarrel laser targeting system attachment crate (x2)"
+	contains = list(
+					/obj/item/attachable/attached_gun/laser_targeting,
+					/obj/item/attachable/attached_gun/laser_targeting,
+					)
+	cost = RO_PRICE_NORMAL
+	containertype = /obj/structure/closet/crate
+	containername = "laser targeting system attachment crate"
 	group = "Attachments"
 
 /datum/supply_packs/underbarrel_burstfire_assembly

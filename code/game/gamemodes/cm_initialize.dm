@@ -977,6 +977,7 @@ datum/game_mode/proc/initialize_special_clamps()
 
 					/obj/item/attachable/attached_gun/grenade = round(scale * 10),
 					/obj/item/attachable/attached_gun/shotgun = round(scale * 4),
+					/obj/item/attachable/attached_gun/laser_targeting = round(scale * 3),
 					/obj/item/attachable/attached_gun/flamer = round(scale * 4)
 					)
 
