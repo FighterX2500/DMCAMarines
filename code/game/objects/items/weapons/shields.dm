@@ -85,7 +85,7 @@
 	icon = 'icons/obj/items/weapons.dmi'
 	icon_state = "marine_shield"
 	flags_equip_slot = SLOT_BACK
-	block_chance = 70
+	block_chance = 85
 	force = 15
 	throwforce = 6
 	throw_speed = 1
