@@ -390,6 +390,7 @@ can cause issues with ammo types getting mixed up during the burst.
 						/obj/item/attachable/magnetic_harness,
 						/obj/item/attachable/attached_gun/flamer,
 						/obj/item/attachable/attached_gun/shotgun, //if it can mount a flamer, why can't it mount a shotgun
+						/obj/item/attachable/attached_gun/laser_targeting, //тоже самое с лазером :P
 						/obj/item/attachable/scope/mini,
 						/obj/item/attachable/stock/shotgun)
 
@@ -492,6 +493,7 @@ can cause issues with ammo types getting mixed up during the burst.
 						/obj/item/attachable/scope/mini,
 						/obj/item/attachable/magnetic_harness,
 						/obj/item/attachable/attached_gun/flamer,
+						/obj/item/attachable/attached_gun/laser_targeting,
 						/obj/item/attachable/attached_gun/shotgun)
 
 
