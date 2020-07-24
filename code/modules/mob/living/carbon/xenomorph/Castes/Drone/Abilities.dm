@@ -46,7 +46,11 @@
 		if("resin nest")
 			X.selected_resin = "sticky resin"
 		if("sticky resin")
-			X.selected_resin = "resin door"
+			X.selected_resin = "sunken colony"
+		if("sunken colony")
+			X.selected_resin = "wither flower"
+		if("wither flower")
+			X.selected_resin = "resin wall"
 		else
 			return //something went wrong
 

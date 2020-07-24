@@ -1076,6 +1076,8 @@
 	var/wait_time = 5
 	if(caste == "Drone")
 		wait_time = 10
+	if(selected_resin == "sunken colony" || selected_resin == "wither flower")
+		wait_time *= 6
 
 	if(!do_after(src, wait_time, TRUE, 5, BUSY_ICON_BUILD))
 		return
@@ -1118,6 +1120,21 @@
 			to_chat(src, "<span class='warning'>Resin doors need a wall or resin door next to them to stand up.</span>")
 			return
 
+	if(selected_resin == "sunken colony" || selected_resin == "wither flower")
+		var/datum/hive_status/hive = hive_datum[hivenumber]
+		switch(selected_resin)
+			if("sunken colony")
+				if(hive.xeno_buildings[SUNKEN_COLONY] >= 10)
+					to_chat(src, "<span class='xenowarning'>Hive cannot sustain more sunken colonies!</span>")
+					return
+				if(locate(/obj/structure/alien/sunken) in range(6))
+					to_chat(src, "<span class='xenodanger'>Nearby colony angrily lashing out on your attempts to grow another one!</span>")
+					return
+			if("wither flower")
+				if(locate(/obj/structure/alien/healer) in range(10))
+					to_chat(src, "<span class='xenowarning'>You can't grow another flower too close to another.</span>")
+					return
+
 	use_plasma(resin_plasma_cost)
 	visible_message("<span class='xenonotice'>\The [src] regurgitates a thick substance and shapes it into \a [selected_resin]!</span>", \
 	"<span class='xenonotice'>You regurgitate some resin and shape it into \a [selected_resin].</span>", null, 5)
@@ -1141,6 +1158,10 @@
 			new_resin = new /obj/structure/bed/nest(current_turf)
 		if("sticky resin")
 			new_resin = new /obj/effect/alien/resin/sticky(current_turf)
+		if("sunken colony")
+			new_resin = new /obj/structure/alien/sunken(current_turf)
+		if("wither flower")
+			new_resin = new /obj/structure/alien/healer(current_turf)
 
 	new_resin.add_hiddenprint(src) //so admins know who placed it
 
@@ -1318,7 +1339,10 @@
 	var/leader_list = ""
 	var/lessers_count = 0
 
-	if(user.hivenumber != 0 && user.hivenumber <= hive_datum.len)
+	if(!istype(user))
+		var/datum/hive_status/hive = hive_datum[XENO_HIVE_NORMAL]
+		lessers_count = hive.xeno_lessers_list.len
+	else if(user.hivenumber != 0 && user.hivenumber <= hive_datum.len)
 		var/datum/hive_status/hive = hive_datum[user.hivenumber]
 		lessers_count = hive.xeno_lessers_list.len
 
