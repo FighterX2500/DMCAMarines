@@ -69,6 +69,31 @@
 	if(health>=maxHealth)
 		health = maxHealth
 
+/obj/structure/alien/attackby(obj/item/W, mob/user)
+	if(!(W.flags_item & NOBLUDGEON))
+		var/damage = W.force
+		if(W.w_class < 4 || !W.sharp || W.force < 20) //only big strong sharp weapon are adequate
+			damage *= 0.8
+		health -= damage
+		if(istype(src, /obj/effect/alien/resin/sticky))
+			playsound(loc, "alien_resin_move", 25)
+		else
+			playsound(loc, "alien_resin_break", 25)
+		healthcheck()
+	return ..()
+
+/obj/structure/alien/attack_alien(mob/living/carbon/Xenomorph/M)
+	if(isXenoLarva(M)) //Larvae can't do shit
+		return 0
+	M.visible_message("<span class='xenonotice'>\The [M] claws \the [src]!</span>", \
+	"<span class='xenonotice'>You claw \the [src].</span>")
+	if(istype(src, /obj/effect/alien/resin/sticky))
+		playsound(loc, "alien_resin_move", 25)
+	else
+		playsound(loc, "alien_resin_break", 25)
+	health -= (M.melee_damage_upper + 100) //Beef up the damage a bit
+	healthcheck()
+
 /obj/structure/alien/proc/die()
 	visible_message("<span class='xenodanger'>[src] explodes into bloody gore!</span>")
 	xgibs(src.loc)
