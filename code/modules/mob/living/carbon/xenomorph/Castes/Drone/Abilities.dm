@@ -50,7 +50,7 @@
 		if("sunken colony")
 			X.selected_resin = "wither flower"
 		if("wither flower")
-			X.selected_resin = "resin wall"
+			X.selected_resin = "resin door"
 		else
 			return //something went wrong
 
