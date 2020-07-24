@@ -69,6 +69,31 @@
 	if(health>=maxHealth)
 		health = maxHealth
 
+/obj/structure/alien/attackby(obj/item/W, mob/user)
+	if(!(W.flags_item & NOBLUDGEON))
+		var/damage = W.force
+		if(W.w_class < 4 || !W.sharp || W.force < 20) //only big strong sharp weapon are adequate
+			damage *= 0.8
+		health -= damage
+		if(istype(src, /obj/effect/alien/resin/sticky))
+			playsound(loc, "alien_resin_move", 25)
+		else
+			playsound(loc, "alien_resin_break", 25)
+		healthcheck()
+	return ..()
+
+/obj/structure/alien/attack_alien(mob/living/carbon/Xenomorph/M)
+	if(isXenoLarva(M)) //Larvae can't do shit
+		return 0
+	M.visible_message("<span class='xenonotice'>\The [M] claws \the [src]!</span>", \
+	"<span class='xenonotice'>You claw \the [src].</span>")
+	if(istype(src, /obj/effect/alien/resin/sticky))
+		playsound(loc, "alien_resin_move", 25)
+	else
+		playsound(loc, "alien_resin_break", 25)
+	health -= (M.melee_damage_upper + 100) //Beef up the damage a bit
+	healthcheck()
+
 /obj/structure/alien/proc/die()
 	visible_message("<span class='xenodanger'>[src] explodes into bloody gore!</span>")
 	xgibs(src.loc)
@@ -77,7 +102,7 @@
 //Sunken Colony
 /obj/structure/alien/sunken
 	name = "Sunken Colony"
-	desc = "A living stationary organism that strikes from below with its powerful claw."
+	desc = "A living stationary organism that strikes from below with its powerful tentacle."
 	pixel_y = -8
 
 	var/last_strike = 0
@@ -95,9 +120,10 @@
 	if(!.)
 		return
 
-	if(last_strike + 20 > world.time)
+	if(last_strike + 30 > world.time)
 		return
 
+	last_strike = world.time
 	var/turf/target = get_target()
 	strike(target)
 
@@ -106,6 +132,8 @@
 
 	for(var/atom/targ in orange(7, src))
 		if(istype(get_turf(targ), /turf/open/shuttle))
+			continue
+		if(get_dist(targ, src) < 2)
 			continue
 		if(ishuman(targ))
 			var/mob/living/carbon/human/H = targ

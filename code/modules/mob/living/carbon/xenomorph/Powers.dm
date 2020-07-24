@@ -1122,6 +1122,9 @@
 
 	if(selected_resin == "sunken colony" || selected_resin == "wither flower")
 		var/datum/hive_status/hive = hive_datum[hivenumber]
+		if(locate(/mob/living/carbon/human) in range(world.view + 1, src))
+			to_chat(src, "<span class='xenowarning'>It doesn't feel safe to grow it here...</span>")
+			return
 		switch(selected_resin)
 			if("sunken colony")
 				if(hive.xeno_buildings[SUNKEN_COLONY] >= 10)
