@@ -146,7 +146,10 @@
 	create_reagents(15 * storage_slots)//so people can inject cigarettes without opening a packet, now with being able to inject the whole one
 
 /obj/item/storage/fancy/cigarettes/update_icon()
-	icon_state = "[initial(icon_state)][contents.len]"
+	if(contents.len <= 6)
+		icon_state = "[initial(icon_state)][contents.len]"
+	if(contents.len > 6)
+		icon_state= "[initial(icon_state)]"
 	return
 
 /obj/item/storage/fancy/cigarettes/remove_from_storage(obj/item/W as obj, atom/new_location)
