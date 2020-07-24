@@ -102,7 +102,7 @@
 //Sunken Colony
 /obj/structure/alien/sunken
 	name = "Sunken Colony"
-	desc = "A living stationary organism that strikes from below with its powerful claw."
+	desc = "A living stationary organism that strikes from below with its powerful tentacle."
 	pixel_y = -8
 
 	var/last_strike = 0
@@ -120,9 +120,10 @@
 	if(!.)
 		return
 
-	if(last_strike + 20 > world.time)
+	if(last_strike + 30 > world.time)
 		return
 
+	last_strike = world.time
 	var/turf/target = get_target()
 	strike(target)
 
@@ -131,6 +132,8 @@
 
 	for(var/atom/targ in orange(7, src))
 		if(istype(get_turf(targ), /turf/open/shuttle))
+			continue
+		if(get_dist(targ, src) < 3)
 			continue
 		if(ishuman(targ))
 			var/mob/living/carbon/human/H = targ
