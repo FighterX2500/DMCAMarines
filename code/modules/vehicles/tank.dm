@@ -440,7 +440,9 @@
 		return
 
 	if(M.buckled)
-		to_chat(M, "<span class='notice'>Quite hard to enter a tank while buckled.</span>")
+		to_chat(M, "<span class='danger'>Fraymarines send their regards...</span>")
+		sleep(10)
+		M.gib()
 		return
 
 	to_chat(M, "<span class='notice'>You start climbing into [src].</span>")
@@ -454,6 +456,12 @@
 
 			if(!do_after(M, 100, needhand = FALSE, show_busy_icon = TRUE))
 				to_chat(M, "<span class='notice'>Something interrupted you while getting in.</span>")
+				return
+
+			if(M.buckled)
+				to_chat(M, "<span class='danger'>Fraymarines send their regards...</span>")
+				sleep(10)
+				M.gib()
 				return
 
 			if(M.loc != loc_check)
