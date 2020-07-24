@@ -12,7 +12,7 @@
 #define RO_PRICE_T_PRICY	70
 #define RO_PRICE_VERY_PRICY	100
 
-var/list/all_supply_groups = list("Operations", "Weapons", "Tank Hardpoint Modules", "APC Hardpoint Modules", "Attachments", "Ammo", "Armor", "Clothing", "Medical", "Engineering", "Science", "Supplies")
+var/list/all_supply_groups = list("Operations", "Weapons", "Tank Hardpoint Modules", "Mech Equipment", "APC Hardpoint Modules", "Attachments", "Ammo", "Armor", "Clothing", "Medical", "Engineering", "Science", "Supplies")
 
 /datum/supply_packs
 	var/name = null
@@ -725,6 +725,43 @@ Tank Hardpoint Modules (and their ammo)
 	containertype = /obj/structure/closet/crate/ammo
 	containername = "tank ammo crate"
 	group = "Tank Hardpoint Modules"
+
+/*******************************************************************************
+Mech Equipment
+*******************************************************************************/
+
+/datum/supply_packs/mech_smart_ammo
+	name = "M56 Double-Barrel Mounted Smartgun Magazines"
+	contains = list(
+					/obj/item/ammo_magazine/walker/smartgun,
+					/obj/item/ammo_magazine/walker/smartgun
+					)
+	cost = RO_PRICE_CHEAP
+	containertype = /obj/structure/closet/crate/ammo
+	containername = "tank ammo crate"
+	group = "Mech Equipment"
+
+/datum/supply_packs/mech_gatling_ammo
+	name = "M30 Machine Gun Magazines"
+	contains = list(
+					/obj/item/ammo_magazine/walker/hmg,
+					/obj/item/ammo_magazine/walker/hmg
+					)
+	cost = RO_PRICE_CHEAP
+	containertype = /obj/structure/closet/crate/ammo
+	containername = "tank ammo crate"
+	group = "Mech Equipment"
+
+/datum/supply_packs/mech_flamer_ammo
+	name = "F40 \"Hellfire\" Flamethower Magazines"
+	contains = list(
+					/obj/item/ammo_magazine/walker/flamer,
+					/obj/item/ammo_magazine/walker/flamer
+					)
+	cost = RO_PRICE_CHEAP
+	containertype = /obj/structure/closet/crate/ammo
+	containername = "tank ammo crate"
+	group = "Mech Equipment"
 
 /*******************************************************************************
 APC Hardpoint Modules (and their ammo)
