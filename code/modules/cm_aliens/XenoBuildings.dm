@@ -133,7 +133,7 @@
 	for(var/atom/targ in orange(7, src))
 		if(istype(get_turf(targ), /turf/open/shuttle))
 			continue
-		if(get_dist(targ, src) < 3)
+		if(get_dist(targ, src) < 2)
 			continue
 		if(ishuman(targ))
 			var/mob/living/carbon/human/H = targ
