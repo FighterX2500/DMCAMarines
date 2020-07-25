@@ -195,7 +195,7 @@
 
 	var/obj/effect/impaler/I = rnew(/obj/effect/impaler, target)
 	sleep(10)
-	I.strike()
+	I.strike(upgrade_level)
 	sleep(5)
 	cdel(I)
 
@@ -205,15 +205,15 @@
 	name = "impaling chitin"
 	icon = 'icons/Xeno/Buildings.dmi'
 	icon_state = "s_incoming"
-	var/damage = 120
+	var/damage = 30
 
-/obj/effect/impaler/proc/strike()
+/obj/effect/impaler/proc/strike(var/dmg_mult)
 	icon_state = "strike"
 	for(var/mob/living/carbon/L in src.loc)
 		to_chat(L, "<span class='danger'>You've been hit by [src] from below!</span>")
 		var/datum/limb/affecting = L.get_limb(pick("r_leg", "l_leg"))
 		var/armor_block = L.run_armor_check(affecting, "melee")
-		L.apply_damage(damage, BRUTE, affecting, armor_block) //This should slicey dicey
+		L.apply_damage(damage*dmg_mult, BRUTE, affecting, armor_block) //This should slicey dicey
 		L.updatehealth()
 
 	playsound(loc, "alien_bite", 25, 1)
