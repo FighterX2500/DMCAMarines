@@ -8,12 +8,15 @@
 
 	var/xeno_tag = null				//see misc.dm
 
-	var/health = 500
-	var/maxHealth = 500
+	var/health = 400
+	var/maxHealth = 400
 
 	var/dying = 0
 	var/last_heal = 0
 	var/heal = 40
+	var/upgrade_level = 1
+	var/upgrade_max = 150
+	var/upgrade_stored = 0
 
 /obj/structure/alien/New()
 	. = ..()
@@ -21,6 +24,18 @@
 	if(xeno_tag)
 		var/datum/hive_status/hive = hive_datum[XENO_HIVE_NORMAL]
 		hive.xeno_buildings[xeno_tag]++
+	generate_name()
+
+/obj/structure/alien/proc/generate_name()
+	switch(upgrade_level)
+		if(1)
+			name = "Young " + initial(name)
+		if(2)
+			name = "Mature " + initial(name)
+		if(3)
+			name = "Elder " + initial(name)
+		if(4 to INFINITY)
+			name = "Ancient " + initial(name)
 
 /obj/structure/alien/Dispose()
 	. = ..()
@@ -44,9 +59,26 @@
 
 	update_icon()
 
-	if(world.time >= last_heal + heal && health < maxHealth && !dying)
-		health += 5						//slowly regenerate on weed
+	if(world.time >= last_heal + heal && !dying)
+		if(health < maxHealth)
+			health += 5						//slowly regenerate on weed
+		handle_upgrades()
 		last_heal = world.time
+	return 1
+
+/obj/structure/alien/proc/handle_upgrades()
+	if(upgrade_level >= 4)
+		return 0
+	upgrade_stored = min(upgrade_stored+1, upgrade_max)
+	if(upgrade_stored < upgrade_max)
+		return 0
+	visible_message("<span class='danger'>[src] rumbling!", "")
+	upgrade_level++
+	upgrade_stored = 0
+	upgrade_max *= 2
+	maxHealth += 50
+	health += 50
+	generate_name()
 	return 1
 
 /obj/structure/alien/ex_act(severity)
@@ -163,7 +195,7 @@
 
 	var/obj/effect/impaler/I = rnew(/obj/effect/impaler, target)
 	sleep(10)
-	I.strike()
+	I.strike(upgrade_level)
 	sleep(5)
 	cdel(I)
 
@@ -173,15 +205,15 @@
 	name = "impaling chitin"
 	icon = 'icons/Xeno/Buildings.dmi'
 	icon_state = "s_incoming"
-	var/damage = 120
+	var/damage = 30
 
-/obj/effect/impaler/proc/strike()
+/obj/effect/impaler/proc/strike(var/dmg_mult)
 	icon_state = "strike"
 	for(var/mob/living/carbon/L in src.loc)
 		to_chat(L, "<span class='danger'>You've been hit by [src] from below!</span>")
 		var/datum/limb/affecting = L.get_limb(pick("r_leg", "l_leg"))
 		var/armor_block = L.run_armor_check(affecting, "melee")
-		L.apply_damage(damage, BRUTE, affecting, armor_block) //This should slicey dicey
+		L.apply_damage(damage*dmg_mult, BRUTE, affecting, armor_block) //This should slicey dicey
 		L.updatehealth()
 
 	playsound(loc, "alien_bite", 25, 1)
@@ -202,8 +234,8 @@
 	name = "Wither Flower"
 	desc = "A disgusting biological horror, humming with eerie sound."
 	icon_state = "healer"
-	health = 250
-	maxHealth = 250
+	health = 150
+	maxHealth = 150
 	xeno_tag = WITHER_FLOWER
 	pixel_x = 0
 
@@ -231,12 +263,12 @@
 			var/mob/living/carbon/Xenomorph/X = L
 			to_chat(X, "<span class='xenonotice'>You feel soothing light mending your wounds...</span>")
 			//I'm deeply sorry
-			X.adjustBruteLoss(-25)
-			X.adjustFireLoss(-25)
-			X.adjustOxyLoss(-25)
-			X.adjustToxLoss(-25)
+			X.adjustBruteLoss(-10*upgrade_level)
+			X.adjustFireLoss(-10*upgrade_level)
+			X.adjustOxyLoss(-10*upgrade_level)
+			X.adjustToxLoss(-10*upgrade_level)
 			X.updatehealth()
 		else if(ishuman(L))					//hazardous
 			var/mob/living/carbon/human/H = L
 			to_chat(H, "<span class='danger'>[src]'s light hurts!</span>")
-			H.adjustFireLoss(25)
+			H.adjustFireLoss(10*upgrade_level)
