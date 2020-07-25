@@ -32,6 +32,7 @@
 	return image(owner.icon, equip_state + hardpoint)
 
 /obj/item/walker_gun/proc/active_effect(var/atom/target)
+	set waitfor = 0
 	if(ammo.current_rounds <= 0 || !ammo)
 		to_chat(owner.pilot, "<span class='warning'>WARNING! System report: ammunition is depleted!</span>")
 		if(ammo)

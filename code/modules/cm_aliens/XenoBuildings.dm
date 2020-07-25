@@ -185,6 +185,7 @@
 	return pick(targets)
 
 /obj/structure/alien/sunken/proc/strike(turf/target)
+	set waitfor = 0
 	if(!istype(target))
 		return 0
 	if(!target)
