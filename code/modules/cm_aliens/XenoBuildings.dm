@@ -234,8 +234,8 @@
 	name = "Wither Flower"
 	desc = "A disgusting biological horror, humming with eerie sound."
 	icon_state = "healer"
-	health = 250
-	maxHealth = 250
+	health = 150
+	maxHealth = 150
 	xeno_tag = WITHER_FLOWER
 	pixel_x = 0
 
@@ -263,12 +263,12 @@
 			var/mob/living/carbon/Xenomorph/X = L
 			to_chat(X, "<span class='xenonotice'>You feel soothing light mending your wounds...</span>")
 			//I'm deeply sorry
-			X.adjustBruteLoss(-25)
-			X.adjustFireLoss(-25)
-			X.adjustOxyLoss(-25)
-			X.adjustToxLoss(-25)
+			X.adjustBruteLoss(-10*upgrade_level)
+			X.adjustFireLoss(-10*upgrade_level)
+			X.adjustOxyLoss(-10*upgrade_level)
+			X.adjustToxLoss(-10*upgrade_level)
 			X.updatehealth()
 		else if(ishuman(L))					//hazardous
 			var/mob/living/carbon/human/H = L
 			to_chat(H, "<span class='danger'>[src]'s light hurts!</span>")
-			H.adjustFireLoss(25)
+			H.adjustFireLoss(10*upgrade_level)
