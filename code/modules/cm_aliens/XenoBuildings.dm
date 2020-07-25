@@ -8,12 +8,15 @@
 
 	var/xeno_tag = null				//see misc.dm
 
-	var/health = 500
-	var/maxHealth = 500
+	var/health = 400
+	var/maxHealth = 400
 
 	var/dying = 0
 	var/last_heal = 0
 	var/heal = 40
+	var/upgrade_level = 1
+	var/upgrade_max = 150
+	var/upgrade_stored = 0
 
 /obj/structure/alien/New()
 	. = ..()
@@ -21,6 +24,18 @@
 	if(xeno_tag)
 		var/datum/hive_status/hive = hive_datum[XENO_HIVE_NORMAL]
 		hive.xeno_buildings[xeno_tag]++
+	generate_name()
+
+/obj/structure/alien/proc/generate_name()
+	switch(upgrade_level)
+		if(1)
+			name = "Young " + initial(name)
+		if(2)
+			name = "Mature " + initial(name)
+		if(3)
+			name = "Elder " + initial(name)
+		if(4 to INFINITY)
+			name = "Ancient " + initial(name)
 
 /obj/structure/alien/Dispose()
 	. = ..()
@@ -44,9 +59,26 @@
 
 	update_icon()
 
-	if(world.time >= last_heal + heal && health < maxHealth && !dying)
-		health += 5						//slowly regenerate on weed
+	if(world.time >= last_heal + heal && !dying)
+		if(health < maxHealth)
+			health += 5						//slowly regenerate on weed
+		handle_upgrades()
 		last_heal = world.time
+	return 1
+
+/obj/structure/alien/proc/handle_upgrades()
+	if(upgrade_level >= 4)
+		return 0
+	upgrade_stored = min(upgrade_stored+1, upgrade_max)
+	if(upgrade_stored < upgrade_max)
+		return 0
+	visible_message("<span class='danger'>[src] rumbling!", "")
+	upgrade_level++
+	upgrade_stored = 0
+	upgrade_max *= 2
+	maxHealth += 50
+	health += 50
+	generate_name()
 	return 1
 
 /obj/structure/alien/ex_act(severity)
