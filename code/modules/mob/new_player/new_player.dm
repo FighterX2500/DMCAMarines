@@ -86,7 +86,14 @@
 			totalPlayers = 0
 			totalPlayersReady = 0
 			for(var/mob/new_player/player in player_list)
-				stat("[player.key]", (player.ready)?("(Playing)"):(null))
+				client.prefs.update_future_job() //определяется High-профа игрока
+				var/futurejob
+				if(player.client && player.client.prefs && player.client.prefs.choosen_job)
+					if(player.client.prefs.choosen_job == 0) //Если нет профы на High - будет как и раньше "Playing".
+						futurejob = null
+					else
+						futurejob = " as [player.client.prefs.choosen_job]"
+				stat("[player.key]", (player.ready)?("(Playing[futurejob])"):(null))
 				totalPlayers++
 				if(player.ready)totalPlayersReady++
 
