@@ -15,3 +15,6 @@
 	var/pulse = PULSE_NORM	//current pulse level
 	var/butchery_progress = 0
 	var/list/internal_organs = list()
+
+	var/heartbeatingcooldown = 0
+	var/heartpouncecooldown = 0
