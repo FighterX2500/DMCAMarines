@@ -25,6 +25,7 @@
 					var/datum/internal_organ/I = pick(E.internal_organs)
 					custom_pain("You feel broken bones moving in your [E.display_name]!", 1)
 					I.take_damage(rand(3,5))
+					heartbeating()
 
 				//Moving makes open wounds get infected much faster
 				if (E.wounds.len)
@@ -40,5 +41,6 @@
 	if(leg_tally <= 0 && !knocked_out && !lying && prob(5))
 		if(!(species && (species.flags & NO_PAIN)))
 			emote("pain")
+			heartpounce()
 		emote("collapse")
 		knocked_out = 10
