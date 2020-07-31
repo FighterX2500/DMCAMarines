@@ -38,6 +38,7 @@ datum/preferences
 	var/last_ip
 	var/last_id
 	var/updating_icon = 0
+	var/updating_future_job = 0
 
 	//game-preferences
 	var/lastchangelog = ""				//Saved changlog filesize to detect if there was a change
@@ -124,6 +125,8 @@ datum/preferences
 	var/job_marines_high = 0
 	var/job_marines_med = 0
 	var/job_marines_low = 0
+
+	var/choosen_job = null
 
 	//Keeps track of preferrence for not getting any wanted jobs
 	var/alternate_option = 2 //Be a marine.
@@ -257,6 +260,7 @@ datum/preferences
 /datum/preferences/proc/ShowChoices(mob/user)
 	if(!user || !user.client)	return
 	update_preview_icon()
+	update_future_job() //Одновременно с иконками перса в "Setup Character", обновится и отображаемая профа в лобби
 	user << browse_rsc(preview_icon_front, "previewicon.png")
 	user << browse_rsc(preview_icon_side, "previewicon2.png")
 

@@ -54,6 +54,10 @@
 	if(stat == DEAD) return
 	if(pulledby)
 		pulledby.stop_pulling()
+	if(heartpouncecooldown > 1)
+		src << sound(null)
+	if(heartbeatingcooldown > 1)
+		src << sound(null)
 	//Handle species-specific deaths.
 	if(species) species.handle_death(src, gibbed)
 

@@ -137,6 +137,7 @@
 	storage_slots = 20
 	can_hold = list("/obj/item/clothing/mask/cigarette", "/obj/item/tool/lighter")
 	icon_type = "cigarette"
+	max_storage_space = 20
 
 /obj/item/storage/fancy/cigarettes/New()
 	..()

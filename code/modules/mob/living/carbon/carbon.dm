@@ -389,3 +389,23 @@
 			if(AM == X)
 				stomach_contents -= AM
 				break
+
+
+//heart sounds. carrotman2013
+/mob/living/carbon/proc/heartbeating()
+	if(heartpouncecooldown > world.time)
+		return
+	if(heartbeatingcooldown > world.time)
+		return
+	else if(heartbeatingcooldown < world.time)
+		src << sound('sound/effects/Heart Beat.ogg',volume=40)
+		heartbeatingcooldown = world.time + 515
+
+/mob/living/carbon/proc/heartpounce()
+	if(heartbeatingcooldown > world.time)
+		return
+	if(heartpouncecooldown > world.time)
+		return
+	else if(heartpouncecooldown < world.time)
+		src << sound('sound/effects/Heartbeat.ogg',volume=40)
+		heartpouncecooldown = world.time + 15
