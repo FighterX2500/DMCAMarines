@@ -23,7 +23,7 @@
 		//UNCONSCIOUS. NO-ONE IS HOME
 		if((getOxyLoss() > 50) || (config.health_threshold_crit > health))
 			KnockOut(3)
-			heartbeating()
+			heartbeating(src)
 
 		if(hallucination)
 			if(hallucination >= 20)
@@ -56,7 +56,7 @@
 			if(halloss > 0)
 				adjustHalLoss(-3)
 			if(knocked_out == 1)
-				playsound(src, 'sound/misc/molly_revived.ogg', 40)
+				src << sound('sound/misc/molly_revived.ogg',volume=40)
 		else if(sleeping)
 			speech_problem_flag = 1
 			handle_dreams()

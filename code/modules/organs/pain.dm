@@ -76,7 +76,7 @@ mob/living/carbon/human/proc/custom_pain(message, flash_strength)
 	if(msg && ((msg != last_pain_message) || (world.time >= next_pain_time)))
 		last_pain_message = msg
 		to_chat(src, msg)
-		heartbeating()
+		heartbeating(src)
 	next_pain_time = world.time + 100
 
 mob/living/carbon/human/proc/handle_pain()
@@ -113,7 +113,7 @@ mob/living/carbon/human/proc/handle_pain()
 		if(I.damage > 2) if(prob(2))
 			parent = get_limb(I.parent_limb)
 			custom_pain("You feel a sharp pain in your [parent.display_name]!", 1)
-			heartbeating()
+			heartbeating(src)
 
 	var/toxDamageMessage = null
 	var/toxMessageProb = 1

@@ -1184,7 +1184,7 @@
 					if(3)
 						msg ="<span class='warning'>[O] in your [organ.display_name] twists painfully as you move.</span>"
 				to_chat(src, msg)
-				heartbeating()
+				heartbeating(src)
 
 				organ.take_damage(rand(1,2), 0, 0)
 				if(!(organ.status & LIMB_ROBOT) && !(species.flags & NO_BLOOD)) //There is no blood in protheses.
