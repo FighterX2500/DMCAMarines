@@ -392,20 +392,20 @@
 
 
 //heart sounds. carrotman2013
-/mob/living/carbon/proc/heartbeating(mob/user)
+/mob/living/carbon/proc/heartbeating()
 	if(heartpouncecooldown > world.time)
 		return
 	if(heartbeatingcooldown > world.time)
 		return
 	else if(heartbeatingcooldown < world.time)
-		user << sound('sound/effects/Heart Beat.ogg',volume=40)
+		src << sound('sound/effects/Heart Beat.ogg',volume=40)
 		heartbeatingcooldown = world.time + 515
 
-/mob/living/carbon/proc/heartpounce(mob/user)
+/mob/living/carbon/proc/heartpounce()
 	if(heartbeatingcooldown > world.time)
 		return
 	if(heartpouncecooldown > world.time)
 		return
 	else if(heartpouncecooldown < world.time)
-		user << sound('sound/effects/Heartbeat.ogg',volume=40)
+		src << sound('sound/effects/Heartbeat.ogg',volume=40)
 		heartpouncecooldown = world.time + 15
