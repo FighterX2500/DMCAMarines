@@ -279,7 +279,7 @@
 	if(named)
 		to_chat(usr, "<span class='warning'>Tank was already named!</span>")
 		return
-	var/nickname = copytext(sanitize(input(usr, "Name your tank (20 symbols, without \"\", they will be added), russian symbols won't be seen", "Naming", null) as text),1,20)
+	var/nickname = copytext_char(sanitize(input(usr, "Name your tank (20 symbols, without \"\", they will be added)", "Naming", null) as text),1,20)
 	if(!nickname)
 		to_chat(usr, "<span class='warning'>No text entered!</span>")
 		return
@@ -430,6 +430,8 @@
 //Two seats, gunner and driver
 //Must have the skills to do so
 /obj/vehicle/multitile/root/cm_armored/tank/handle_player_entrance(var/mob/M)
+	set waitfor = 0
+
 	var/loc_check = M.loc
 	var/slot = input("Select a seat") in list("Driver", "Gunner")
 
@@ -439,7 +441,7 @@
 		to_chat(M, "<span class='notice'>You have no idea how to operate this thing.</span>")
 		return
 
-	if(M.buckled)
+	if(M == gunner || M == driver)
 		to_chat(M, "<span class='danger'>Fraymarines send their regards...</span>")
 		sleep(10)
 		M.gib()
@@ -456,12 +458,6 @@
 
 			if(!do_after(M, 100, needhand = FALSE, show_busy_icon = TRUE))
 				to_chat(M, "<span class='notice'>Something interrupted you while getting in.</span>")
-				return
-
-			if(M.buckled)
-				to_chat(M, "<span class='danger'>Fraymarines send their regards...</span>")
-				sleep(10)
-				M.gib()
 				return
 
 			if(M.loc != loc_check)
