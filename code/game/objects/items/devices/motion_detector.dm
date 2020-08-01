@@ -104,7 +104,7 @@
 			show_blip(human_user, M)
 
 		if(detected)
-			playsound(loc, 'sound/items/newtick.ogg', 50, 0, 7, 2)
+			playsound(loc, 'sound/items/newtick.ogg', 35, 0, 7, 2)
 
 /obj/item/device/motiondetector/proc/show_blip(mob/user, mob/target)
 	set waitfor = 0
