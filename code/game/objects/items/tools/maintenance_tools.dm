@@ -206,8 +206,8 @@
 				synthrepair = TRUE
 				user.visible_message("<span class='warning'>\The [user] starts patching some dents on his [S.display_name] with \the [src].</span>", \
 									"<span class='warning'>You start patching some dents on your [S.display_name] with \the [src].</span>")
-				if(do_after(user, 30, TRUE, 5, BUSY_ICON_BUILD)) //4 секунды для починки
-					S.heal_damage(15,0,0,1)
+				if(do_after(user, 50, TRUE, 5, BUSY_ICON_BUILD)) //5 секунд для починки
+					S.heal_damage(10,0,0,1)
 					H.UpdateDamageIcon()
 					user.visible_message("<span class='warning'>\The [user] patches some dents on his [S.display_name] with \the [src].</span>", \
 										"<span class='warning'>You patch some dents on your [S.display_name] with \the [src].</span>")
