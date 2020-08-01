@@ -134,9 +134,10 @@
 	w_class = 1
 	throwforce = 2
 	flags_equip_slot = SLOT_WAIST
-	storage_slots = 6
+	storage_slots = 20
 	can_hold = list("/obj/item/clothing/mask/cigarette", "/obj/item/tool/lighter")
 	icon_type = "cigarette"
+	max_storage_space = 20
 
 /obj/item/storage/fancy/cigarettes/New()
 	..()
@@ -146,7 +147,10 @@
 	create_reagents(15 * storage_slots)//so people can inject cigarettes without opening a packet, now with being able to inject the whole one
 
 /obj/item/storage/fancy/cigarettes/update_icon()
-	icon_state = "[initial(icon_state)][contents.len]"
+	if(contents.len <= 6)
+		icon_state = "[initial(icon_state)][contents.len]"
+	if(contents.len > 6)
+		icon_state= "[initial(icon_state)]"
 	return
 
 /obj/item/storage/fancy/cigarettes/remove_from_storage(obj/item/W as obj, atom/new_location)

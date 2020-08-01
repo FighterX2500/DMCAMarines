@@ -81,6 +81,7 @@ so there's honestly not too much to do here.
 	if(product in recycling[product.type]) return //If the item is already on the shelf. Somehow.
 	if( isnull(recycling[product.type]) ) recycling[product.type] = list() //Slap on a new list to reference the whatever.
 	if(purging || length(recycling[product.type]) >= shelf_space)
+		log_debug("RA: trashed object - [product]")
 		TrashAuthority.DeliverTrash(product) //We're just gonna get rid of it.
 		log_debug("RA: trashed the product instead of recycling. Current shelf length is: <b>[length(recycling[product.type])]</b>")
 		if(length(recycling[product.type]) > shelf_space)

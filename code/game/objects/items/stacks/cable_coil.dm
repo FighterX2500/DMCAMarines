@@ -19,6 +19,7 @@
 	item_state = "coil"
 	attack_verb = list("whipped", "lashed", "disciplined", "flogged")
 	stack_id = "cable coil"
+	var/synthrepair = FALSE
 
 	suicide_act(mob/user)
 		viewers(user) << "<span class='warning'><b>[user] is strangling \himself with the [src.name]! It looks like \he's trying to commit suicide.</b></span>"
@@ -332,14 +333,28 @@
 		if(!(S.status & LIMB_ROBOT) || user.a_intent != "help")
 			return ..()
 
-		if(istype(M,/mob/living/carbon/human))
-			var/mob/living/carbon/human/H = M
-			if(H.species.flags & IS_SYNTHETIC)
-				if(M == user)
-					to_chat(user, "\red You can't repair damage to your own body - it's against OH&S.")
-					return
 
-		if(S.burn_dam > 0 && use(1))
+		if(M == user && IS_SYNTHETIC) //Актуально только для синтов. Протезы чинятся проще.
+			if(synthrepair) //Без этой фигни можно было просто закликать себя и починить до 100%
+				to_chat(user, "<span class='warning'>You are already repairing yourself!</span>")
+				return
+
+			else if(S.burn_dam > 0 && use(1))
+				synthrepair = TRUE
+				user.visible_message("\red \The [user] cuts a piece of the [src] and starts repairing some burn damage on his [S.display_name].")
+				if(do_after(user, 40, TRUE, 5, BUSY_ICON_BUILD)) //5 секунд для починки
+					S.heal_damage(0,15,0,1)
+					user.visible_message("\red \The [user] repairs some burn damage on his [S.display_name] with \the [src].")
+					synthrepair = FALSE
+					return
+				else //Прервал действие - лох
+					synthrepair = FALSE
+					to_chat(user, "The process has been interrupted and the cable piece was damaged.")
+			else
+				to_chat(user, "Nothing to fix!")
+
+
+		else if(S.burn_dam > 0 && use(1))
 			S.heal_damage(0,15,0,1)
 			user.visible_message("\red \The [user] repairs some burn damage on \the [M]'s [S.display_name] with \the [src].")
 			return

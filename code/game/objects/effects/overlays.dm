@@ -77,12 +77,17 @@
 	icon_state = "laser_target_coordinate"
 	effect_duration = 600
 	var/obj/item/device/binoculars/tactical/source_binoc
+	var/obj/item/attachable/attached_gun/laser_targeting/source_attach
 
 /obj/effect/overlay/temp/laser_coordinate/Dispose()
 	if(source_binoc)
 		source_binoc.laser_cooldown = world.time + source_binoc.cooldown_duration
 		source_binoc.coord = null
 		source_binoc = null
+	if(source_attach)
+		source_attach.laser_cooldown = world.time + source_attach.cooldown_duration
+		source_attach.coord = null
+		source_attach = null
 	SetLuminosity(0)
 	. = ..()
 
@@ -97,6 +102,7 @@
 	var/target_id
 	var/obj/item/device/binoculars/tactical/source_binoc
 	var/obj/machinery/camera/laser_cam/linked_cam
+	var/obj/item/attachable/attached_gun/laser_targeting/source_attach
 
 	New(loc, squad_name)
 		..()
@@ -112,6 +118,10 @@
 		source_binoc.laser_cooldown = world.time + source_binoc.cooldown_duration
 		source_binoc.laser = null
 		source_binoc = null
+	if(source_attach)
+		source_attach.laser_cooldown = world.time + source_attach.cooldown_duration
+		source_attach.laser = null
+		source_attach = null
 	if(linked_cam)
 		cdel(linked_cam)
 		linked_cam = null
