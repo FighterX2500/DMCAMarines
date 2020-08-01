@@ -532,7 +532,7 @@
 /datum/ammo/bullet/rifle/ak/ap
 	name = "armor-piercing rifle bullet"
 
-/datum/ammo/bullet/rifle/ap/New()
+/datum/ammo/bullet/rifle/ak/ap/New()
 	..()
 	damage = config.lmed_hit_damage
 	penetration = config.high_armor_penetration
