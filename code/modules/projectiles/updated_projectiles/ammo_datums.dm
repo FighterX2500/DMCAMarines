@@ -520,6 +520,32 @@
 	damage = config.med_hit_damage
 	penetration= -config.mlow_armor_penetration
 
+/datum/ammo/bullet/rifle/ak
+	name = "rifle bullet"
+
+/datum/ammo/bullet/rifle/ak/New()
+	..()
+	accurate_range = config.min_shell_range
+	damage = config.med_hit_damage
+	penetration = config.mlow_armor_penetration
+
+/datum/ammo/bullet/rifle/ak/ap
+	name = "armor-piercing rifle bullet"
+
+/datum/ammo/bullet/rifle/ap/New()
+	..()
+	damage = config.lmed_hit_damage
+	penetration = config.high_armor_penetration
+
+/datum/ammo/bullet/rifle/ak/incendiary
+	name = "incendiary rifle bullet"
+	damage_type = BURN
+	shrapnel_chance = 0
+	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_INCENDIARY
+
+/datum/ammo/bullet/rifle/ak/incendiary/New()
+	..()
+	accurate_range = config.short_shell_range
 /*
 //================================================
 					Shotgun Ammo
