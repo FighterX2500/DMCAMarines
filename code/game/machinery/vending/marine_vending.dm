@@ -585,6 +585,7 @@
 
 						/obj/item/attachable/attached_gun/grenade = 5,
 						/obj/item/attachable/attached_gun/shotgun = 3,
+						/obj/item/attachable/attached_gun/laser_targeting = 2,
 						/obj/item/attachable/attached_gun/flamer = 3
 					)
 

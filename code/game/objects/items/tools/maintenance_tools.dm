@@ -151,6 +151,7 @@
 	var/welding = 0 	//Whether or not the blowtorch is off(0), on(1) or currently welding(2)
 	var/max_fuel = 20 	//The max amount of fuel the welder can hold
 	var/weld_tick = 0	//Used to slowly deplete the fuel when the tool is left on.
+	var/synthrepair = FALSE
 
 /obj/item/tool/weldingtool/New()
 //	var/random_fuel = min(rand(10,20),max_fuel)
@@ -196,20 +197,38 @@
 		if(!(S.status & LIMB_ROBOT) || user.a_intent != "help")
 			return ..()
 
-		if(H.species.flags & IS_SYNTHETIC)
-			if(M == user)
-				to_chat(user, "\red You can't repair damage to your own body - it's against OH&S.")
+		if(M == user && IS_SYNTHETIC) //Актуально только для синтов. Протезы чинятся проще.
+			if(synthrepair) //Без этой фигни можно было просто закликать себя и починить до 100%
+				to_chat(user, "<span class='warning'>You are already patching yourself!</span>")
 				return
 
-		if(S.brute_dam && welding)
-			S.heal_damage(15,0,0,1)
-			H.UpdateDamageIcon()
-			user.visible_message("<span class='warning'>\The [user] patches some dents on \the [H]'s [S.display_name] with \the [src].</span>", \
-								"<span class='warning'>You patch some dents on \the [H]'s [S.display_name] with \the [src].</span>")
-			remove_fuel(1,user)
-			return
+			else if(S.brute_dam && welding)
+				synthrepair = TRUE
+				user.visible_message("<span class='warning'>\The [user] starts patching some dents on his [S.display_name] with \the [src].</span>", \
+									"<span class='warning'>You start patching some dents on your [S.display_name] with \the [src].</span>")
+				if(do_after(user, 30, TRUE, 5, BUSY_ICON_BUILD)) //4 секунды для починки
+					S.heal_damage(15,0,0,1)
+					H.UpdateDamageIcon()
+					user.visible_message("<span class='warning'>\The [user] patches some dents on his [S.display_name] with \the [src].</span>", \
+										"<span class='warning'>You patch some dents on your [S.display_name] with \the [src].</span>")
+					remove_fuel(1,user)
+					synthrepair = FALSE
+					return
+				else //Прервал действие - лох
+					synthrepair = FALSE
+					to_chat(user, "The process has been interrupted.")
+			else
+				to_chat(user, "<span class='warning'>Nothing to fix!</span>")
 		else
-			to_chat(user, "<span class='warning'>Nothing to fix!</span>")
+			if(S.brute_dam && welding)
+				S.heal_damage(15,0,0,1)
+				H.UpdateDamageIcon()
+				user.visible_message("<span class='warning'>\The [user] patches some dents on \the [H]'s [S.display_name] with \the [src].</span>", \
+									"<span class='warning'>You patch some dents on \the [H]'s [S.display_name] with \the [src].</span>")
+				remove_fuel(1,user)
+				return
+			else
+				to_chat(user, "<span class='warning'>Nothing to fix!</span>")
 
 	else
 		return ..()

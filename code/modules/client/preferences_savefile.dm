@@ -198,6 +198,7 @@
 	S["job_marines_high"]	>> job_marines_high
 	S["job_marines_med"]	>> job_marines_med
 	S["job_marines_low"]	>> job_marines_low
+	S["choosen_job"]		>> choosen_job // На всех серваках с такой фичей - var еще и сохраняли тут
 
 	//Flavour Text
 	S["flavor_texts_general"]	>> flavor_texts["general"]
@@ -351,6 +352,7 @@
 	S["job_marines_high"]	<< job_marines_high
 	S["job_marines_med"]	<< job_marines_med
 	S["job_marines_low"]	<< job_marines_low
+	S["choosen_job"]		<< choosen_job
 
 	//Flavour Text
 	S["flavor_texts_general"]	<< flavor_texts["general"]

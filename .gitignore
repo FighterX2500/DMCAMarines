@@ -18,3 +18,4 @@ tools/MapDaemon/logs/*.txt
 code/world.dm
 code/world.dm
 process.pid
+__pycache__

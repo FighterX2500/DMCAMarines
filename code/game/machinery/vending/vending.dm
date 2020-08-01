@@ -586,18 +586,23 @@
 			src.last_reply = world.time
 
 
-	release_item(R, vend_delay)
+	release_item(R, vend_delay, 0, user)
 	vend_ready = 1
 	updateUsrDialog()
 
-/obj/machinery/vending/proc/release_item(datum/data/vending_product/R, delay_vending = 0, dump_product = 0)
+/obj/machinery/vending/proc/release_item(datum/data/vending_product/R, delay_vending = 0, dump_product = 0, mob/user=null)
 	set waitfor = 0
 	if(delay_vending)
 		use_power(vend_power_usage)	//actuators and stuff
 		if (icon_vend) flick(icon_vend,src) //Show the vending animation if needed
 		sleep(delay_vending)
-	if(ispath(R.product_path,/obj/item/weapon/gun)) . = new R.product_path(get_turf(src),1)
-	else . = new R.product_path(get_turf(src))
+
+	var/turf/placing = get_turf(src)
+	if(istype(src, /obj/machinery/vending/attachments) && user)					//I hate myself
+		if(get_dir(src, user) in list(NORTH,SOUTH))
+			placing = get_turf(get_step(user, WEST))
+	if(ispath(R.product_path,/obj/item/weapon/gun)) . = new R.product_path(placing,1)
+	else . = new R.product_path(placing)
 
 /obj/machinery/vending/MouseDrop_T(var/atom/movable/A, mob/user)
 

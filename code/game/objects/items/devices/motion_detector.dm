@@ -104,7 +104,7 @@
 			show_blip(human_user, M)
 
 		if(detected)
-			playsound(loc, 'sound/items/tick.ogg', 50, 0, 7, 2)
+			playsound(loc, 'sound/items/newtick.ogg', 50, 0, 7, 2)
 
 /obj/item/device/motiondetector/proc/show_blip(mob/user, mob/target)
 	set waitfor = 0
@@ -141,3 +141,13 @@
 		sleep(12)
 		if(user.client)
 			user.client.screen -= DB
+
+
+//carrotman was here
+/obj/item/device/motiondetector/attack_alien(var/mob/living/carbon/Xenomorph/M)
+	if(active)
+		playsound(src, 'sound/effects/hit_on_shattered_glass.ogg', vol = 10, sound_range = 10)
+		to_chat(M, "<span class='xenonotice'>You smash annoying sound source.</span>")
+		Dispose()
+	return
+
