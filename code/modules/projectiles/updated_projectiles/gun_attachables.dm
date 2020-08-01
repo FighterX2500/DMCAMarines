@@ -445,7 +445,40 @@ obj/item/attachable/attack_hand(var/mob/user as mob)
 	else
 		return ..()
 
+/obj/item/attachable/flashlight/ak
+	name = "AK flashlight"
+	desc = "A simple flashlight used for mounting on a firearm. \nHas no drawbacks, but isn't particuraly useful outside of providing a light source."
+	icon_state = "akflashlight"
+	attach_icon = "akflashlight_a"
+	light_mod = 7
+	pixel_shift_x = 24
+	pixel_shift_y = 12
+	slot = "muzzle"
+	matter = list("metal" = 50,"glass" = 20)
+	flags_attach_features = ATTACH_REMOVABLE|ATTACH_ACTIVATION
+	attachment_action_type = /datum/action/item_action/toggle
 
+/obj/item/attachable/flashlight/ak/activate_attachment(obj/item/weapon/gun/G, mob/living/user, turn_off)
+	if(turn_off && !(G.flags_gun_features & GUN_FLASHLIGHT_ON))
+		return
+	var/flashlight_on = (G.flags_gun_features & GUN_FLASHLIGHT_ON) ? -1 : 1
+	var/atom/movable/light_source =  ismob(G.loc) ? G.loc : G
+	light_source.SetLuminosity(light_mod * flashlight_on)
+	G.flags_gun_features ^= GUN_FLASHLIGHT_ON
+
+	if(G.flags_gun_features & GUN_FLASHLIGHT_ON)
+		icon_state = "akflashlight-on"
+		attach_icon = "akflashlight_a-on"
+	else
+		icon_state = "akflashlight"
+		attach_icon = "akflashlight_a"
+
+	G.update_attachable(slot)
+
+	for(var/X in G.actions)
+		var/datum/action/A = X
+		A.update_button_icon()
+	return TRUE
 
 /obj/item/attachable/quickfire
 	name = "quickfire adapter"
@@ -607,6 +640,14 @@ obj/item/attachable/attack_hand(var/mob/user as mob)
 	recoil_mod = -config.med_recoil_value
 	scatter_mod = -config.med_scatter_value
 	movement_acc_penalty_mod = config.min_movement_acc_penalty
+
+/obj/item/attachable/stock/rifle/ak4047
+	name = "AK-4047 stock"
+	desc = "A rare stock distributed in small numbers to UPP forces. Compatible with the AK-4047, this stock reduces recoil and improves accuracy, but at a reduction to handling and agility. Seemingly a bit more effective in a brawl"
+	icon_state = "akstock"
+	attach_icon = "akstock_a"
+	pixel_shift_x = 45
+	pixel_shift_y = 13
 
 /obj/item/attachable/stock/rifle/marksman
 	name = "M41A marksman stock"
