@@ -88,11 +88,16 @@
 			to_chat(M, "<span class='notice'>Material vision module: activated.</span>")
 			if(prob(50)) playsound(src,'sound/effects/pred_vision.ogg', 15, 1)
 		if(3)
+			usr.client.change_view(14)
+			to_chat(M, "<span class='notice'>Extended vision module: activated.</span>")
+			if(prob(50)) playsound(src,'sound/effects/pred_vision.ogg', 15, 1)
+		if(4)
+			usr.client.change_view(world.view)
 			to_chat(M, "<span class='notice'>You deactivate your visor.</span>")
 			if(prob(50)) playsound(src,'sound/effects/pred_vision.ogg', 15, 1)
 	M.update_inv_glasses()
 	current_goggles++
-	if(current_goggles > 3) current_goggles = 0
+	if(current_goggles > 4) current_goggles = 0
 
 
 /obj/item/clothing/mask/gas/yautja/equipped(mob/living/carbon/human/user, slot)
@@ -319,7 +324,7 @@
 	if(cloak_timer)
 		cloak_timer--
 	if(cloaked)
-		H.alpha = 10
+		H.alpha = 1
 		charge = max(charge - 10, 0)
 		if(charge <= 0)
 			decloak(loc)
@@ -661,15 +666,15 @@
 	msg = oldreplacetext(msg, "t", "7")
 	msg = oldreplacetext(msg, "l", "1")
 	msg = oldreplacetext(msg, "n", "*")
-	msg = oldreplacetext(msg, "à", "@")
-	msg = oldreplacetext(msg, "å", "3")
-	msg = oldreplacetext(msg, "û", "1")
-	msg = oldreplacetext(msg, "î", "0")
-	msg = oldreplacetext(msg, "ó", "7")
-	msg = oldreplacetext(msg, "ð", "9")
-	msg = oldreplacetext(msg, "ñ", "5")
-	msg = oldreplacetext(msg, "ò", "3")
-	msg = oldreplacetext(msg, "í", "*")
+	msg = oldreplacetext(msg, "ï¿½", "@")
+	msg = oldreplacetext(msg, "ï¿½", "3")
+	msg = oldreplacetext(msg, "ï¿½", "1")
+	msg = oldreplacetext(msg, "ï¿½", "0")
+	msg = oldreplacetext(msg, "ï¿½", "7")
+	msg = oldreplacetext(msg, "ï¿½", "9")
+	msg = oldreplacetext(msg, "ï¿½", "5")
+	msg = oldreplacetext(msg, "ï¿½", "3")
+	msg = oldreplacetext(msg, "ï¿½", "*")
 	   //Preds now speak in bastardized 1337speak BECAUSE.
 
 	spawn(10)
