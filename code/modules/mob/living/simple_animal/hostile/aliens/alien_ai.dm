@@ -64,6 +64,8 @@
 
 		if(isliving(A))
 			var/mob/living/L = A
+			if(A.alpha <  125)
+				continue
 			if(L in friends)
 				continue
 			else if (isrobot(L))
