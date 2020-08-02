@@ -376,7 +376,7 @@
 		O.show_message("[M] vanishes into thin air!", 1)
 	playsound(M.loc,'sound/effects/cloak_scout_on.ogg', 15, 1)
 
-	M.alpha = 10
+	M.alpha = 5
 
 	if (M.smokecloaked)
 		M.smokecloaked = FALSE

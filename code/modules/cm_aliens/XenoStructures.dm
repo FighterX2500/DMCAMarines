@@ -317,6 +317,9 @@
 	return 1
 
 /obj/structure/mineral_door/resin/TryToSwitchState(atom/user)
+	if(isYautja(user))
+		if(prob(25))
+			return ..()
 	if(isXeno(user))
 		return ..()
 
