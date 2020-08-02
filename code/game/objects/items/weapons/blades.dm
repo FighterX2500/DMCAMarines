@@ -55,6 +55,42 @@
     if(flags_item & WIELDED && prob(40))
         M.KnockDown(6)
 
+/obj/item/weapon/twohanded/hammer/true
+	name = "N45 battle hammer"
+	desc = "RIP AND TEAR."
+	icon_state = "sledgehammer"
+	item_state = "sledgehammer"
+	force = 30
+	flags_item = TWOHANDED
+	force_wielded = 45
+	w_class = 4
+	sharp = IS_SHARP_ITEM_BIG
+	flags_equip_slot = SLOT_WAIST|SLOT_BACK
+
+/obj/item/weapon/twohanded/hammer/true/attack(mob/M, mob/user)
+    ..()
+    if(flags_item & WIELDED && prob(40))
+        M.KnockDown(6)
+
+/obj/item/weapon/twohanded/hammer/true/afterattack(atom/A as mob|obj|turf|area, mob/user, proximity)
+	if(get_dist(A,user) > 1)
+		return
+
+	var/atom/throw_target = get_edge_target_turf(A, get_dir(user, A))
+	if(istype(A, /atom/movable))
+		var/atom/movable/AM = A
+		AM.throw_at(throw_target, 4, 2, user)
+
+	for(var/atom/movable/M in range(A,1))
+		if(M == user)
+			continue
+
+		if(M == A)
+			continue
+
+		if(!M.anchored)
+			M.throw_at(throw_target, 2, 3, user)
+
 /obj/item/weapon/claymore/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	playsound(loc, 'sound/weapons/bladeslice.ogg', 25, 1)
 	return ..()
