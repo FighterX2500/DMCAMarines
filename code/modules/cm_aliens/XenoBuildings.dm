@@ -106,6 +106,8 @@
 		var/damage = W.force
 		if(W.w_class < 4 || !W.sharp || W.force < 20) //only big strong sharp weapon are adequate
 			damage *= 0.8
+		if(W.flags_item & ANTISTRUCTURE)
+			damage *= 2
 		health -= damage
 		if(istype(src, /obj/effect/alien/resin/sticky))
 			playsound(loc, "alien_resin_move", 25)
