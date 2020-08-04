@@ -123,7 +123,7 @@
 				if(H.get_limb("head"))
 					H.apply_damage(150,BRUTE,"head",0,1,1)
 					var/obj/item/spinal_cord/S = new(T.loc)
-						S.name = "[T.real_name]'s spinal cord"
+					S.name = "[T.real_name]'s spinal cord"
 				else
 					new /obj/item/reagent_container/food/snacks/meat(T.loc)
 				new /obj/item/stack/sheet/animalhide/human(T.loc)
