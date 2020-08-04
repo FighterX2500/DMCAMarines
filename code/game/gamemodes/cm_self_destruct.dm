@@ -9,7 +9,7 @@ Finish the game mode announcement thing.
 Fix escape doors to work properly.
 */
 
-#define SELF_DESTRUCT_ROD_STARTUP_TIME 6000
+#define SELF_DESTRUCT_ROD_STARTUP_TIME 3000
 
 /*
 How this works:
@@ -57,6 +57,8 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 	var/dest_cooldown //How long it takes between rods, determined by the amount of total rods present.
 	var/dest_index = 1	//What rod the thing is currently on.
 	var/dest_status = NUKE_EXPLOSION_INACTIVE
+	var/dest_start_time
+	var/dest_already_armed = 0
 
 	var/flags_scuttle = NOFLAGS
 
@@ -156,6 +158,19 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 //=========================================================================================
 //=========================================================================================
 
+//КАК РАБОТАЕТ НОВЫЙ СЕЛФ-ДЕСТРАКТ ПОСЛЕ БАНА САМОСБОРА. ТЕПЕРЬ - С АВТОМАТИЧЕСКОЙ ДЕТОНАЦИЕЙ.
+//
+//1)ДВЕРИ В СД ОТКРЫВАЮТСЯ КАК ОБЫЧНО, ПОСЛЕ ПАДЕНИЯ АЛАМО + ЭВАКУАЦИИ (ИЛИ ПЕДАЛЬНО).
+//2)В КОНСОЛИ СД ВЫБИРАЕТСЯ START, СИСТЕМА НАЧИНАЕТ ЗАПУСКАТЬСЯ.
+//3)В ТЕЧЕНИИ 5 МИНУТ (ВМЕСТО 10) ВЫПОЛОЗАЮТ 6 СТЕРЖНЕЙ, ВСЕ ИЗ КОТОРЫХ НЕОБХОДИМО ЗАПУСТИТЬ.
+//4)В КОНСОЛИ ВЫБИРАЕТСЯ "ACTIVATE SYSTEM". УРА, СД ЗАПУЩЕНО.
+//5)У ЭКИПАЖА (А ТАКЖЕ КСЕНОСОВ) ЕСТЬ ЕЩЕ 5 МИНУТ НА ОТКЛЮЧЕНИЕ СИСТЕМЫ. АРЕС ОПОВЕЩАЕТ ОБ ОСТАВШЕМСЯ ВРЕМЕНИ.
+//6)ПО ИСТЕЧЕНИЮ 5 МИНУТ - МОЖНО ВЫДОХНУТЬ. КТО ОСТАЛСЯ НА КОРАБЛЕ - УЖЕ В ЛЮБОМ СЛУЧАЕ ПОМРЕТ.
+//
+//P.S. - БАЛАНС СОХРАНЕН. ЛЮДЯМ НУЖНО ВСЕ ТЕ ЖЕ 10 МИНУТ ПРОСИДЕТЬ В СД, ТОЛЬКО ТЕПЕРЬ
+//ОНИ МОГУТ УСПЕТЬ СБЕЖАТЬ НА ПОДЕ И ВСЕ ТАКОЕ.
+//БРЕД С РУЧНЫМ ЗАПУСКОМ (ГДЕ ВЫ ТАКУЮ АХИНЕЮ ВИДЕЛИ??? ДАЖЕ В КИНО НЕТ) УБРАН. УРА!!!
+
 #define SELF_DESTRUCT_MACHINE_INACTIVE 0
 #define SELF_DESTRUCT_MACHINE_ACTIVE 1
 #define SELF_DESTRUCT_MACHINE_ARMED 2
@@ -164,6 +179,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 	if(dest_status == NUKE_EXPLOSION_INACTIVE && !(flags_scuttle & FLAGS_SELF_DESTRUCT_DENY))
 		dest_status = NUKE_EXPLOSION_ACTIVE
 		dest_master.lock_or_unlock()
+		dest_start_time = world.time
 		set_security_level(SEC_LEVEL_DELTA) //also activate Delta alert, to open the SD shutters.
 		return TRUE
 
@@ -172,6 +188,9 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 	if(dest_status == NUKE_EXPLOSION_ACTIVE)
 		var/obj/machinery/self_destruct/rod/I
 		var/i
+		if(world.time >= dest_start_time + 3000 && dest_already_armed == 1) //Если пройден рубеж в 5 минут (но только после полноценного запуска) - пиздос
+			dest_master.state("<span class='warning'>WARNING: Unable to cancel detonation. The option to override automatic detonation expired.</span>")
+			return FALSE
 		for(i in EvacuationAuthority.dest_rods)
 			I = i
 			if(I.active_state == SELF_DESTRUCT_MACHINE_ARMED && !override)
@@ -185,7 +204,11 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 			if(I.active_state == SELF_DESTRUCT_MACHINE_ACTIVE || (I.active_state == SELF_DESTRUCT_MACHINE_ARMED && override)) I.lock_or_unlock(1)
 		dest_master.lock_or_unlock(1)
 		dest_index = 1
+		for(var/mob/living/carbon/C) //На всякий - сбросим звуки. Тут можно доработать, шоб ксены тревогу слышали
+			C << sound(null)
 		ai_system.Announce("The emergency destruct system has been deactivated.", 'sound/AI/selfdestruct_deactivated.ogg')
+		dest_start_time = 0
+		dest_already_armed = 0
 		if(evac_status == EVACUATION_STATUS_STANDING_BY) //the evac has also been cancelled or was never started.
 			set_security_level(SEC_LEVEL_RED, TRUE) //both SD and evac are inactive, lowering the security level.
 		return TRUE
@@ -280,6 +303,15 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 				I.activate_time = world.time
 		sleep(10) //Checks every second. Could integrate into another controller for better tracking.
 
+/datum/authority/branch/evacuation/proc/process_sd_ticking() //Новый процесс для постоянной активации. Через 10 минут после запуска - автоматом взорвет помойку по имени алмаер!!
+	set background = 1
+
+	spawn while(dest_master && dest_master.loc && dest_master.active_state == SELF_DESTRUCT_MACHINE_ARMED && dest_status == NUKE_EXPLOSION_ACTIVE)
+		if(world.time >= dest_start_time + 6000)
+			initiate_self_destruct()
+			return TRUE
+		sleep(10)
+
 //Generic parent base for the self_destruct items.
 /obj/machinery/self_destruct
 	icon = 'icons/obj/machines/self_destruct.dmi'
@@ -330,6 +362,10 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 		playsound(src, 'sound/machines/hydraulics_1.ogg', 25, 1)
 		..()
 
+	attack_alien(mob/living/carbon/Xenomorph/M) //Аламо переписали? Переписали. Тогда и СД отключить смогут.
+		to_chat(M, "<span class='warning'>You interact with the machine and try to disable the self destruction.</span>")
+		EvacuationAuthority.cancel_self_destruct()
+
 	//TODO: Add sounds.
 	attack_hand(mob/user)
 		. = ..()
@@ -340,24 +376,51 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 		switch(href_list["command"])
 			if("dest_start")
 				to_chat(usr, "<span class='notice'>You press a few keys on the panel.</span>")
-				to_chat(usr, "<span class='notice'>The system must be booting up the self-destruct sequence now.</span>")
-				ai_system.Announce("Danger. The emergency destruct system is now activated. The ship will detonate in T-minus 20 minutes. Automatic detonation is unavailable. Manual detonation is required.", 'sound/AI/selfdestruct.ogg')
+				to_chat(usr, "<span class='notice'>The system is preparing the self-destruct sequence now.</span>")
+				ai_system.Announce("Attention. The emergency destruct sequence is being initiated.", 'sound/effects/alert.ogg')
 				active_state = SELF_DESTRUCT_MACHINE_ARMED //Arm it here so the process can execute it later.
 				var/obj/machinery/self_destruct/rod/I = EvacuationAuthority.dest_rods[EvacuationAuthority.dest_index]
 				I.activate_time = world.time
+				EvacuationAuthority.dest_start_time = world.time
 				EvacuationAuthority.process_self_destruct()
 				var/data[] = list(
 					"dest_status" = active_state
 				)
 				nanomanager.try_update_ui(usr, src, "main",, data)
-			if("dest_trigger")
-				if(EvacuationAuthority.initiate_self_destruct()) nanomanager.close_user_uis(usr, src, "main")
+
+//Новый пункт менюшки, предыдущий теперь лишь запускает стержни. Стержни активны = эта кнопка запустит автоматический СД.
+			if("dest_arm")
+				var/obj/machinery/self_destruct/rod/I
+				var/i
+				for(i in EvacuationAuthority.dest_rods)
+					I = i
+
+				to_chat(usr, "<span class='notice'>You press a few keys on the panel.</span>")
+				if(EvacuationAuthority.dest_already_armed != 0)
+					to_chat(usr, "<span class='warning'>The system is already activated.</span>")//"Неееет, ты не можешь запустить СД больше 2 раза!!!!!"
+					return
+				if(I.active_state != SELF_DESTRUCT_MACHINE_ARMED) //Все как в фильме. СД запустится только после активации всех стержней
+					to_chat(usr, "<span class='warning'>WARNING: Unable to activate the system. Please arm all control rods.</span>")
+					EvacuationAuthority.dest_already_armed = 0
+					return
+				else //Сразу говорю - без ЭЛЬЗЕ не работает. А так - вот и сам запуск.
+					to_chat(usr, "<span class='notice'>The system must be booting up the self-destruct sequence now.</span>")
+					ai_system.Announce("Danger. The emergency destruct system is now activated. The ship will detonate in T-minus 10 minutes. The option to ovveride automatic detonation expires in T-minus 5 minutes.", 'sound/AI/ARES_Self_Destruct_10m_FULL.ogg')
+					EvacuationAuthority.dest_start_time = world.time
+					EvacuationAuthority.process_sd_ticking()
+					EvacuationAuthority.dest_already_armed = 1
+					var/data[] = list(
+						"dest_status" = active_state
+					)
+					nanomanager.try_update_ui(usr, src, "main",, data)
+
 			if("dest_cancel")
 				var/list/allowed_officers = list("Commander", "Executive Officer", "Staff Officer", "Chief MP","Chief Medical Officer","Chief Engineer")
 				if(!usr.mind || !allowed_officers.Find(usr.mind.assigned_role))
 					to_chat(usr, "<span class='notice'>You don't have the necessary clearance to cancel the emergency destruct system.</span>")
 					return
 				if(EvacuationAuthority.cancel_self_destruct()) nanomanager.close_user_uis(usr, src, "main")
+
 
 	ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 		var/data[] = list(
@@ -393,9 +456,26 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 			density = TRUE
 			layer = ABOVE_OBJ_LAYER
 
+	attack_alien(mob/living/carbon/Xenomorph/M) //Так как отключить СД можно только вырубив все стержни - логично дать ксенам возможность их вырубать. Nuff said.
+		switch(active_state)
+			if(SELF_DESTRUCT_MACHINE_ARMED)
+				to_chat(M, "<span class='warning'>You switch the metal rod. But did it help?</span>")
+				playsound(src, 'sound/machines/switch.ogg', 25, 1)
+				icon_state = "rod_3"
+				active_state = SELF_DESTRUCT_MACHINE_ACTIVE
+			if(SELF_DESTRUCT_MACHINE_ACTIVE)
+				return
+
+
+
 	attack_hand(mob/user)
 		if(..())
-			switch(active_state)
+//Немного бесполезно (После 5 минут - даже отключение стержней не поможет, но для крутости - пускай они будут намертво впечатаны в пол)
+			if(world.time >= EvacuationAuthority.dest_start_time + 3000 && EvacuationAuthority.dest_already_armed == 1)
+				to_chat(user, "<span class='notice'>You try to twist the control rod, but it feels deadly fixed in the floor! RUN!</span>")
+				return
+//Конец
+			else switch(active_state)
 				if(SELF_DESTRUCT_MACHINE_ACTIVE)
 					to_chat(user, "<span class='notice'>You twist and release the control rod, arming it.</span>")
 					playsound(src, 'sound/machines/switch.ogg', 25, 1)
