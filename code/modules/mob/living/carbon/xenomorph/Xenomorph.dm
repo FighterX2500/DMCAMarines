@@ -71,6 +71,8 @@
 	add_language("Hivemind") //hivemind
 	add_inherent_verbs()
 	add_abilities()
+	caste_datum = new caste_path()
+	caste_datum.apply_caste(src)
 
 	sight |= SEE_MOBS
 	see_invisible = SEE_INVISIBLE_MINIMUM

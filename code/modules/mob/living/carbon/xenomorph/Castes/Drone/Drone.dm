@@ -6,6 +6,7 @@
 	desc = "An Alien Drone"
 	icon = 'icons/Xeno/xenomorph_48x48.dmi'
 	icon_state = "Drone Walking"
+	caste_path = /datum/xeno_caste/Drone
 	melee_damage_lower = 12
 	melee_damage_upper = 16
 	health = 120

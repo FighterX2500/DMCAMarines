@@ -6,6 +6,7 @@
 	desc = "A beefy, fast alien with sharp claws."
 	icon = 'icons/Xeno/xenomorph_48x48.dmi'
 	icon_state = "Lurker Walking"
+	caste_path = /datum/xeno_caste/Lurker
 	melee_damage_lower = 20
 	melee_damage_upper = 30
 	health = 150

@@ -20,6 +20,8 @@
 	var/upgrade_stored = 0 //How much upgrade points they have stored.
 	var/upgrade = -1  //This will track their upgrade level. -1 means cannot upgrade
 	var/upgrade_threshold = 0
+	var/caste_path = null
+	var/datum/xeno_caste/caste_datum = null
 
 	var/list/evolves_to = list() //This is where you add castes to evolve into. "Seperated", "by", "commas"
 	var/tacklemin = 2
