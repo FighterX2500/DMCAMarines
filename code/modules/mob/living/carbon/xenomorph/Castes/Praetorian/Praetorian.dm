@@ -6,7 +6,6 @@
 	desc = "A huge, looming beast of an alien."
 	icon = 'icons/Xeno/xenomorph_64x64.dmi'
 	icon_state = "Praetorian Walking"
-	caste_path = /datum/xeno_caste/Praetorian
 	melee_damage_lower = 15
 	melee_damage_upper = 25
 	tacklemin = 3

@@ -6,7 +6,6 @@
 	desc = "A huge, grotesque xenomorph covered in glowing, oozing acid slime."
 	icon = 'icons/Xeno/xenomorph_64x64.dmi'
 	icon_state = "Boiler Walking"
-	caste_path = /datum/xeno_caste/Boiler
 	melee_damage_lower = 12
 	melee_damage_upper = 15
 	tacklemin = 2

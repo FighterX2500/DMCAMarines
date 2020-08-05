@@ -6,7 +6,6 @@
 	desc = "A huge, nasty red alien with enormous scythed claws."
 	icon = 'icons/Xeno/xenomorph_64x64.dmi'
 	icon_state = "Ravager Walking"
-	caste_path = /datum/xeno_caste/Ravager
 	melee_damage_lower = 25
 	melee_damage_upper = 35
 	tacklemin = 3

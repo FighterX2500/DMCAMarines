@@ -44,7 +44,7 @@
 	icon_state = "sledgehammer"
 	item_state = "sledgehammer"
 	force = 30
-	flags_item = TWOHANDED|ANTISTRUCTURE
+	flags_item = TWOHANDED
 	force_wielded = 45
 	w_class = 4
 	sharp = IS_SHARP_ITEM_BIG
@@ -52,7 +52,7 @@
 
 /obj/item/weapon/twohanded/hammer/attack(mob/M, mob/user)
     ..()
-    if(flags_item & WIELDED && prob(40) && !M.knocked_down)
+    if(flags_item & WIELDED && prob(40))
         M.KnockDown(6)
 
 /obj/item/weapon/twohanded/hammer/true

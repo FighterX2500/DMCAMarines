@@ -39,7 +39,6 @@
 #define TWOHANDED				16	// The item is twohanded.
 #define WIELDED					32	// The item is wielded with both hands.
 #define	ITEM_ABSTRACT			64	//The item is abstract (grab, powerloader_clamp, etc)
-#define ANTISTRUCTURE			128	//Beating the shit out of xenostructures
 
 //==========================================================================================
 
