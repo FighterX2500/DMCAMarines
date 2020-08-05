@@ -4,7 +4,6 @@
 	desc = "A beefy, alien with an armored carapace."
 	icon = 'icons/Xeno/xenomorph_64x64.dmi'
 	icon_state = "Warrior Walking"
-	caste_path = /datum/xeno_caste/Warrior
 	melee_damage_lower = 30
 	melee_damage_upper = 35
 	health = 200

@@ -4,7 +4,6 @@
 	desc = "A huge alien with an enormous armored head crest."
 	icon = 'icons/Xeno/2x2_Xenos.dmi'
 	icon_state = "Crusher Walking"
-	caste_path = /datum/xeno_caste/Crusher
 	melee_damage_lower = 15
 	melee_damage_upper = 30
 	tacklemin = 3

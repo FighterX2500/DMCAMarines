@@ -4,7 +4,6 @@
 	desc = "A alien with an armored head crest."
 	icon = 'icons/Xeno/xenomorph_64x64.dmi'
 	icon_state = "Defender Walking"
-	caste_path = /datum/xeno_caste/Defender
 	melee_damage_lower = 15
 	melee_damage_upper = 25
 	health = 250

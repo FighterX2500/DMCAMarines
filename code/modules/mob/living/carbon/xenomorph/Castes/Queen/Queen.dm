@@ -21,7 +21,6 @@
 	desc = "A huge, looming alien creature. The biggest and the baddest."
 	icon = 'icons/Xeno/xenomorph_64x64.dmi'
 	icon_state = "Queen Walking"
-	caste_path = /datum/xeno_caste/Queen
 	melee_damage_lower = 30
 	melee_damage_upper = 46
 	tacklemin = 4

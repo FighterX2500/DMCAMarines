@@ -6,7 +6,6 @@
 	desc = "A huge ass xeno covered in weeds! Oh shit!"
 	icon = 'icons/Xeno/xenomorph_64x64.dmi'
 	icon_state = "Hivelord Walking"
-	caste_path = /datum/xeno_caste/Hivelord
 	melee_damage_lower = 15
 	melee_damage_upper = 20
 	health = 220

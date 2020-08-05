@@ -58,11 +58,6 @@
 		tforce = 10
 	else
 		tforce = AM:throwforce
-		if(isobj(AM))
-			var/obj/item/I = AM
-			if(I.flags_item & ANTISTRUCTURE)
-				world << "[tforce] was. Now [tforce*2]"
-				tforce *= 2
 	if(istype(src, /obj/effect/alien/resin/sticky))
 		playsound(loc, "alien_resin_move", 25)
 	else
@@ -103,8 +98,6 @@
 		var/damage = W.force
 		if(W.w_class < 4 || !W.sharp || W.force < 20) //only big strong sharp weapon are adequate
 			damage /= 4
-		if(W.flags_item & ANTISTRUCTURE)
-			damage *= 2
 		health -= damage
 		if(istype(src, /obj/effect/alien/resin/sticky))
 			playsound(loc, "alien_resin_move", 25)
