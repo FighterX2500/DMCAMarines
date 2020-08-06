@@ -179,7 +179,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 	if(dest_status == NUKE_EXPLOSION_INACTIVE && !(flags_scuttle & FLAGS_SELF_DESTRUCT_DENY))
 		dest_status = NUKE_EXPLOSION_ACTIVE
 		dest_master.lock_or_unlock()
-		command_announcement.Announce("The emergency destruct system is now ready for activation.", "ALMAYER SELF DESTRUCT SYSTEM", new_sound='sound/effects/alert.ogg')
+		command_announcement.Announce("The emergency destruct system is now ready for activation.", "ALMAYER SELF DESTRUCT SYSTEM", new_sound='sound/misc/queen_alarm.ogg')
 		dest_start_time = world.time
 		set_security_level(SEC_LEVEL_DELTA) //also activate Delta alert, to open the SD shutters.
 		return TRUE
@@ -378,7 +378,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 			if("dest_start")
 				to_chat(usr, "<span class='notice'>You press a few keys on the panel.</span>")
 				to_chat(usr, "<span class='notice'>The system is preparing the self-destruct sequence now.</span>")
-				command_announcement.Announce("Attention. The emergency destruct sequence is being initiated.", "ALMAYER SELF DESTRUCT SYSTEM", new_sound='sound/effects/alert.ogg')
+				command_announcement.Announce("Attention. The emergency destruct sequence is being initiated.", "ALMAYER SELF DESTRUCT SYSTEM", new_sound='sound/effects/siren.ogg')
 				xeno_message("Something feels extremely wrong. The tall hosts are trying to activate the purification device!")
 				active_state = SELF_DESTRUCT_MACHINE_ARMED //Arm it here so the process can execute it later.
 				var/obj/machinery/self_destruct/rod/I = EvacuationAuthority.dest_rods[EvacuationAuthority.dest_index]
