@@ -179,6 +179,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 	if(dest_status == NUKE_EXPLOSION_INACTIVE && !(flags_scuttle & FLAGS_SELF_DESTRUCT_DENY))
 		dest_status = NUKE_EXPLOSION_ACTIVE
 		dest_master.lock_or_unlock()
+		command_announcement.Announce("The emergency destruct system is now ready for activation.", "ALMAYER SELF DESTRUCT SYSTEM", new_sound='sound/effects/alert.ogg')
 		dest_start_time = world.time
 		set_security_level(SEC_LEVEL_DELTA) //also activate Delta alert, to open the SD shutters.
 		return TRUE
@@ -204,9 +205,10 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 			if(I.active_state == SELF_DESTRUCT_MACHINE_ACTIVE || (I.active_state == SELF_DESTRUCT_MACHINE_ARMED && override)) I.lock_or_unlock(1)
 		dest_master.lock_or_unlock(1)
 		dest_index = 1
-		for(var/mob/living/carbon/C) //На всякий - сбросим звуки. Тут можно доработать, шоб ксены тревогу слышали
-			C << sound(null)
-		ai_system.Announce("The emergency destruct system has been deactivated.", 'sound/AI/selfdestruct_deactivated.ogg')
+		command_announcement.Announce("The emergency destruct system has been deactivated.", "ALMAYER SELF DESTRUCT SYSTEM")
+		xeno_message("You suddenly feel more relaxed. The purification device has been stopped!")
+		world << sound('sound/AI/selfdestruct_deactivated.ogg')
+		world << sound(null, repeat = 0, wait = 0, channel = 666)
 		dest_start_time = 0
 		dest_already_armed = 0
 		if(evac_status == EVACUATION_STATUS_STANDING_BY) //the evac has also been cancelled or was never started.
@@ -219,14 +221,12 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 		var/i
 		for(i in dest_rods)
 			I = i
-			if(I.active_state != SELF_DESTRUCT_MACHINE_ARMED && !override)
-				dest_master.state("<span class='warning'>WARNING: Unable to trigger detonation. Please arm all control rods.</span>")
-				return FALSE
 		dest_master.in_progress = !dest_master.in_progress
 		for(i in EvacuationAuthority.dest_rods)
 			I = i
 			I.in_progress = 1
-		ai_system.Announce("DANGER. DANGER. Self destruct system activated. DANGER. DANGER. Self destruct in progress. DANGER. DANGER.")
+		command_announcement.Announce("DANGER. DANGER. Self destruct system activated. DANGER. DANGER. Self destruct in progress. DANGER. DANGER.", "ALMAYER SELF DESTRUCT SYSTEM")
+		xeno_message("Something extremely bad is happening...")
 		trigger_self_destruct(,,override)
 		return TRUE
 
@@ -236,7 +236,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 		enter_allowed = 0 //Do not want baldies spawning in as everything is exploding.
 		dest_status = NUKE_EXPLOSION_IN_PROGRESS
 		playsound(origin, 'sound/machines/Alarm.ogg', 75, 0, 30)
-		to_chat(world, pick('sound/theme/nuclear_detonation1.ogg','sound/theme/nuclear_detonation2.ogg'))
+		to_chat(world, pick('sound/theme/nuclear_detonation1.ogg','sound/theme/nuclear_detonation2.ogg','sound/machines/Alarm.ogg'))
 
 		var/ship_status = 1
 		for(var/i in z_levels)
@@ -362,9 +362,10 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 		playsound(src, 'sound/machines/hydraulics_1.ogg', 25, 1)
 		..()
 
-	attack_alien(mob/living/carbon/Xenomorph/M) //Аламо переписали? Переписали. Тогда и СД отключить смогут.
-		to_chat(M, "<span class='warning'>You interact with the machine and try to disable the self destruction.</span>")
-		EvacuationAuthority.cancel_self_destruct()
+	attack_alien(mob/living/carbon/Xenomorph/X) //Аламо переписала? Переписала. Тогда и СД отключить сможет.
+		if(isXenoQueen(X))
+			to_chat(X, "<span class='warning'>You interact with the machine and try to disable the purification device.</span>")
+			EvacuationAuthority.cancel_self_destruct()
 
 	//TODO: Add sounds.
 	attack_hand(mob/user)
@@ -377,7 +378,8 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 			if("dest_start")
 				to_chat(usr, "<span class='notice'>You press a few keys on the panel.</span>")
 				to_chat(usr, "<span class='notice'>The system is preparing the self-destruct sequence now.</span>")
-				ai_system.Announce("Attention. The emergency destruct sequence is being initiated.", 'sound/effects/alert.ogg')
+				command_announcement.Announce("Attention. The emergency destruct sequence is being initiated.", "ALMAYER SELF DESTRUCT SYSTEM", new_sound='sound/effects/alert.ogg')
+				xeno_message("Something feels extremely wrong. The tall hosts are trying to activate the purification device!")
 				active_state = SELF_DESTRUCT_MACHINE_ARMED //Arm it here so the process can execute it later.
 				var/obj/machinery/self_destruct/rod/I = EvacuationAuthority.dest_rods[EvacuationAuthority.dest_index]
 				I.activate_time = world.time
@@ -405,7 +407,9 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 					return
 				else //Сразу говорю - без ЭЛЬЗЕ не работает. А так - вот и сам запуск.
 					to_chat(usr, "<span class='notice'>The system must be booting up the self-destruct sequence now.</span>")
-					ai_system.Announce("Danger. The emergency destruct system is now activated. The ship will detonate in T-minus 10 minutes. The option to ovveride automatic detonation expires in T-minus 5 minutes.", 'sound/AI/ARES_Self_Destruct_10m_FULL.ogg')
+					command_announcement.Announce("Danger. The emergency destruct system is now activated. The ship will detonate in T-minus 10 minutes. The option to override automatic detonation expires in T-minus 5 minutes.", "ALMAYER SELF DESTRUCT SYSTEM")
+					xeno_message("The hive is abnormally worried. The purification device is now active!")
+					world << sound('sound/AI/ARES_Self_Destruct_10m_FULL.ogg', repeat = 0, wait = 0, volume = 75, channel = 666)
 					EvacuationAuthority.dest_start_time = world.time
 					EvacuationAuthority.process_sd_ticking()
 					EvacuationAuthority.dest_already_armed = 1
@@ -456,15 +460,19 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 			density = TRUE
 			layer = ABOVE_OBJ_LAYER
 
-	attack_alien(mob/living/carbon/Xenomorph/M) //Так как отключить СД можно только вырубив все стержни - логично дать ксенам возможность их вырубать. Nuff said.
-		switch(active_state)
-			if(SELF_DESTRUCT_MACHINE_ARMED)
-				to_chat(M, "<span class='warning'>You switch the metal rod. But did it help?</span>")
-				playsound(src, 'sound/machines/switch.ogg', 25, 1)
-				icon_state = "rod_3"
-				active_state = SELF_DESTRUCT_MACHINE_ACTIVE
-			if(SELF_DESTRUCT_MACHINE_ACTIVE)
+	attack_alien(mob/living/carbon/Xenomorph/X) //Так как отключить СД можно только вырубив все стержни - логично дать квине возможность их вырубать. Nuff said.
+		if(isXenoQueen(X))
+			if(world.time >= EvacuationAuthority.dest_start_time + 3000 && EvacuationAuthority.dest_already_armed == 1)
+				to_chat(X, "<span class='notice'>You try to twist the control rod, but it feels deadly fixed in the floor! RUN!</span>")
 				return
+			else switch(active_state)
+				if(SELF_DESTRUCT_MACHINE_ARMED)
+					to_chat(X, "<span class='warning'>You twist and release the control rod, disarming it.</span>")
+					playsound(src, 'sound/machines/switch.ogg', 25, 1)
+					icon_state = "rod_3"
+					active_state = SELF_DESTRUCT_MACHINE_ACTIVE
+				if(SELF_DESTRUCT_MACHINE_ACTIVE)
+					return
 
 
 
