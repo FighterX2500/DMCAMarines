@@ -189,7 +189,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 	if(dest_status == NUKE_EXPLOSION_ACTIVE)
 		var/obj/machinery/self_destruct/rod/I
 		var/i
-		if(world.time >= dest_start_time + 3000 && dest_already_armed == 1) //Если пройден рубеж в 5 минут (но только после полноценного запуска) - пиздос
+		if(world.time >= dest_start_time + 3000 && dest_already_armed == 1 && !override) //Если пройден рубеж в 5 минут (но только после полноценного запуска) - пиздос
 			dest_master.state("<span class='warning'>WARNING: Unable to cancel detonation. The option to override automatic detonation expired.</span>")
 			return FALSE
 		for(i in EvacuationAuthority.dest_rods)
@@ -407,7 +407,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 					return
 				else //Сразу говорю - без ЭЛЬЗЕ не работает. А так - вот и сам запуск.
 					to_chat(usr, "<span class='notice'>The system must be booting up the self-destruct sequence now.</span>")
-					command_announcement.Announce("Danger. The emergency destruct system is now activated. The ship will detonate in T-minus 10 minutes. The option to override automatic detonation expires in T-minus 5 minutes.", "ALMAYER SELF DESTRUCT SYSTEM")
+					command_announcement.Announce("Danger. The emergency destruct system is now activated. The ship will detonate in T-minus 10 minutes. The option to override automatic detonation expires in T-minus 5 minutes.", "ALMAYER SELF DESTRUCT SYSTEM", new_sound='sound/misc/notice1.ogg')
 					xeno_message("The hive is abnormally worried. The purification device is now active!")
 					world << sound('sound/AI/ARES_Self_Destruct_10m_FULL.ogg', repeat = 0, wait = 0, volume = 75, channel = 666)
 					EvacuationAuthority.dest_start_time = world.time
