@@ -278,7 +278,8 @@ var/global/datum/controller/gameticker/ticker
 					to_chat(world, "\red <B>Restarting world...</B>")
 					world << sound(pick('sound/roundend/good_is_dumb.ogg','sound/roundend/hell_march.ogg','sound/roundend/MonstersWithin.ogg',
 										'sound/roundend/MonstersWithin1.ogg','sound/roundend/MonstersWithout.ogg','sound/roundend/MonstersWithout1.ogg',
-										'sound/roundend/outstanding_marines.ogg','sound/roundend/surrounded_by_assholes.ogg'))
+										'sound/roundend/outstanding_marines.ogg','sound/roundend/surrounded_by_assholes.ogg','sound/roundend/DeathWish.ogg',
+										'sound/roundend/Seinfeld.ogg','sound/roundend/TeamFortress.ogg','sound/roundend/The_Flames_of_Love.ogg'))
 					sleep(70)
 					if(!delay_end)
 						world.Reboot()
