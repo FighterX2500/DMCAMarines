@@ -546,7 +546,8 @@
 	desc = "A packet of five M94 Marking Flares. Carried by USCM soldiers to light dark areas that cannot be reached with the usual TNR Shoulder Lamp."
 	icon_state = "m94"
 	w_class = 3
-	max_storage_space = 10
+	max_storage_space = 20
+	storage_slots = 10
 	can_hold = list(
 		"/obj/item/device/flashlight/flare"
 		)
@@ -554,6 +555,11 @@
 /obj/item/storage/box/m94/New()
 	..()
 	contents = list()
+	new /obj/item/device/flashlight/flare(src)
+	new /obj/item/device/flashlight/flare(src)
+	new /obj/item/device/flashlight/flare(src)
+	new /obj/item/device/flashlight/flare(src)
+	new /obj/item/device/flashlight/flare(src)
 	new /obj/item/device/flashlight/flare(src)
 	new /obj/item/device/flashlight/flare(src)
 	new /obj/item/device/flashlight/flare(src)

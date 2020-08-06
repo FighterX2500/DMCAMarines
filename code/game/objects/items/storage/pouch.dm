@@ -366,6 +366,7 @@
 	desc = "A pouch designed to hold flares. Refillable with a M94 flare pack."
 	max_w_class = 2
 	storage_slots = 10
+	max_storage_space = 20
 	draw_mode = 1
 	icon_state = "flare"
 	can_hold = list("/obj/item/device/flashlight/flare")
@@ -393,6 +394,11 @@
 		return ..()
 /obj/item/storage/pouch/flare/full/New()
 	..()
+	new /obj/item/device/flashlight/flare(src)
+	new /obj/item/device/flashlight/flare(src)
+	new /obj/item/device/flashlight/flare(src)
+	new /obj/item/device/flashlight/flare(src)
+	new /obj/item/device/flashlight/flare(src)
 	new /obj/item/device/flashlight/flare(src)
 	new /obj/item/device/flashlight/flare(src)
 	new /obj/item/device/flashlight/flare(src)
