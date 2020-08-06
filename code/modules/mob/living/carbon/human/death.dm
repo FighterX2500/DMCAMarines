@@ -55,9 +55,9 @@
 	if(pulledby)
 		pulledby.stop_pulling()
 	if(heartpouncecooldown > 1)
-		src << sound(null)
+		src << sound(null, repeat = 0, wait = 0, channel = 4343)
 	if(heartbeatingcooldown > 1)
-		src << sound(null)
+		src << sound(null, repeat = 0, wait = 0, channel = 4343)
 	//Handle species-specific deaths.
 	if(species) species.handle_death(src, gibbed)
 
