@@ -6,6 +6,7 @@ var/list/department_radio_keys = list(
 	  ":t" = "Syndicate",	"#t" = "Syndicate",		".t" = "Syndicate",
 
 	  ":m" = "MedSci",		"#m" = "MedSci",		".m" = "MedSci",
+	  ":j" = "JTAC",		"#j" = "JTAC",			".j" = "JTAC",
 	  ":e" = "Engi", 		"#e" = "Engi",			".e" = "Engi",
 	  ":z" = "Almayer",		"#z" = "Almayer",		".z" = "Almayer",
 	  ":v" = "Command",		"#v" = "Command",		".v" = "Command",
@@ -24,6 +25,7 @@ var/list/department_radio_keys = list(
 	  ":T" = "Syndicate",	"#T" = "Syndicate",		".T" = "Syndicate",
 
 	  ":M" = "MedSci",		"#M" = "MedSci",		".M" = "MedSci",
+	  ":J" = "JTAC",		"#J" = "JTAC",			".J" = "JTAC",
 	  ":E" = "Engi", 		"#E" = "Engi",			".E" = "Engi",
 	  ":Z" = "Almayer",		"#Z" = "Almayer",		".Z" = "Almayer",
 	  ":V" = "Command",		"#V" = "Command",		".V" = "Command",
@@ -41,6 +43,7 @@ var/list/department_radio_keys = list(
 	  ":å" = "Syndicate",	"#å" = "Syndicate",		".å" = "Syndicate",
 
 	  ":ü" = "MedSci",		"#ü" = "MedSci",		".ü" = "MedSci",
+	  ":î" = "JTAC",		"#î" = "JTAC",			".î" = "JTAC",
 	  ":ó" = "Engi", 		"#ó" = "Engi",			".ó" = "Engi",
 	  ":ÿ" = "Almayer",		"#ÿ" = "Almayer",		".ÿ" = "Almayer",
 	  ":ì" = "Command",		"#ì" = "Command",		".ì" = "Command",
@@ -59,6 +62,7 @@ var/list/department_radio_keys = list(
 	  ":Å" = "Syndicate",	"#Å" = "Syndicate",		".Å" = "Syndicate",
 
 	  ":Ü" = "MedSci",		"#Ü" = "MedSci",		".Ü" = "MedSci",
+	  ":Î" = "JTAC",		"#Î" = "JTAC",			".Î" = "JTAC",
 	  ":Ó" = "Engi", 		"#Ó" = "Engi",			".Ó" = "Engi",
 	  ":ß" = "Almayer",		"#ß" = "Almayer",		".ß" = "Almayer",
 	  ":Ì" = "Command",		"#Ì" = "Command",		".Ì" = "Command",

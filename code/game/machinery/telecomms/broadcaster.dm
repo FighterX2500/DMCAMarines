@@ -319,6 +319,10 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 		else if (display_freq == COMM_FREQ)
 			part_a = "<span class='comradio'><span class='name'>"
 
+		// JTAC channel
+		else if (display_freq == JTAC_FREQ)
+			part_a = "<span class='jtacradio'><span class='name'>"
+
 		// AI private channel
 		else if (display_freq == AI_FREQ)
 			part_a = "<span class='airadio'><span class='name'>"

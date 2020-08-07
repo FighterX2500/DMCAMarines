@@ -29,7 +29,7 @@
 	name = "AI Integrated Encryption Key"
 	desc = "Integrated encryption key"
 	icon_state = "cap_cypherkey"
-	channels = list("Command" = 1, "MP" = 1, "Engi" = 1, "MedSci" = 1)
+	channels = list("Command" = 1, "MP" = 1, "Engi" = 1, "MedSci" = 1, "JTAC" = 1)
 
 /obj/item/device/encryptionkey/engi
 	name = "Engineering Radio Encryption Key"
@@ -82,21 +82,21 @@
 /obj/item/device/encryptionkey/cmpcom
 	name = "Marine Chief MP radio encryption key"
 	icon_state = "cap_cypherkey"
-	channels = list("Command" = 1, "MP" = 1, "Alpha" = 0, "Bravo" = 0, "Charlie" = 0, "Delta" = 0, "Engi" = 1, "MedSci" = 1, "Req" = 1 )
+	channels = list("Command" = 1, "MP" = 1, "Alpha" = 0, "Bravo" = 0, "Charlie" = 0, "Delta" = 0, "Engi" = 1, "MedSci" = 1, "Req" = 1, "JTAC" = 1 )
 
 /obj/item/device/encryptionkey/mcom
 	name = "Marine Command radio encryption key"
 	icon_state = "cap_cypherkey"
-	channels = list("Command" = 1, "Alpha" = 0, "Bravo" = 0, "Charlie" = 0, "Delta" = 0, "Engi" = 1, "MedSci" = 1, "Req" = 1 )
+	channels = list("Command" = 1, "Alpha" = 0, "Bravo" = 0, "Charlie" = 0, "Delta" = 0, "Engi" = 1, "MedSci" = 1, "Req" = 1, "JTAC" = 1 )
 
 /obj/item/device/encryptionkey/mcom/ai //AI only.
-	channels = list("Command" = 1, "MP" = 1, "Alpha" = 1, "Bravo" = 1, "Charlie" = 1, "Delta" = 1, "Engi" = 1, "MedSci" = 1, "Req" = 1 )
+	channels = list("Command" = 1, "MP" = 1, "Alpha" = 1, "Bravo" = 1, "Charlie" = 1, "Delta" = 1, "Engi" = 1, "MedSci" = 1, "Req" = 1, "JTAC" = 1 )
 
 
 /obj/item/device/encryptionkey/squadlead
 	name = "Squad Leader encryption key"
 	icon_state = "hop_cypherkey"
-	channels = list("Command" = 1)
+	channels = list("Command" = 1, "JTAC" = 1)
 
 /obj/item/device/encryptionkey/alpha
 	name = "Alpha Squad radio encryption key"
