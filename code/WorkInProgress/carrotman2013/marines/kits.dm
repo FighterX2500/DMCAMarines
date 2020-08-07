@@ -1,7 +1,6 @@
 /obj/item/storage/kit
 	icon = 'icons/Marine/Marinekits.dmi'
-	w_class = 3
-	can_hold = list() //Nada. Once you take the stuff out it doesn't fit back in.
+	w_class = 5
 	foldable = null
 
 //Kits
@@ -10,6 +9,7 @@
 	desc = "A marine kit that gives you a belt of grenades for all your explosive needs."
 	icon_state = "Grenadier_kit"
 	storage_slots = 2
+	can_hold = list()
 
 	New()
 		..()
@@ -23,6 +23,7 @@
 	desc = "This marine kit gives you access to the limited AK-4047 with extra magazines and attachments to go with it."
 	icon_state = "Exp_trooper_kit"
 	storage_slots = 6
+	can_hold = list()
 
 	New()
 		..()
@@ -39,6 +40,7 @@
 	desc = "This marine kit offers the powerful Heavy Pulse Rifle."//as well as a folding barricade for quick defensive placement and firepower.
 	icon_state = "Heavy_Support_kit"
 	storage_slots = 6
+	can_hold = list()
 
 	New()
 		..()
@@ -47,7 +49,7 @@
 			new /obj/item/ammo_magazine/rifle/lmg(src)
 			new /obj/item/ammo_magazine/rifle/lmg(src)
 			new /obj/item/attachable/bipod(src)
-//			Folding Barricade(src) - Накодить
+//			new /obj/item/weapon/shield/riot(src)
 			new /obj/item/clothing/glasses/welding(src)
 			new /obj/item/tool/weldingtool(src)
 
@@ -62,16 +64,18 @@
 //		..()
 //		spawn(1)
 
+
 /obj/item/storage/kit/Sniper
-	name = "M42A Sniper Kit"
-	desc = "This marine kit comes with a M42 Battle Rifle along with a free attachment and 3 types of magazines."
+	name = "L42A Sniper Kit"
+	desc = "This marine kit comes with a L42 Battle Rifle along with a free attachment and 3 types of magazines."
 	icon_state = "Mini_Sniper_kit"
 	storage_slots = 5
+	can_hold = list()
 
 	New()
 		..()
 		spawn(1)
-			new /obj/item/weapon/gun/rifle/sniper/M42A(src)
+			new /obj/item/weapon/gun/rifle/sniper/L42A(src)
 			new /obj/item/ammo_magazine/sniper(src)
 			new	/obj/item/ammo_magazine/sniper/incendiary(src)
 			new	/obj/item/ammo_magazine/sniper/flak(src)
@@ -83,6 +87,7 @@
 	desc = "A marine kit that gives you access to the powerful M240 Flamethrower along with equipment to refuel it and to extinguish any friendly fiery incidents."
 	icon_state = "Mini_Pyro_kit"
 	storage_slots = 7
+	can_hold = list()
 
 	New()
 		..()
@@ -100,11 +105,12 @@
 	desc = "The marine kit gives you the ability to heal other people with more effectiveness as well as common medical supplies as what a regular combat medic uses."
 	icon_state = "Mini_Medic_kit"
 	storage_slots = 6
+	can_hold = list()
 
 	New()
 		..()
 		spawn(1)
-//			new Medical Pamphlet(src) - А надо ли?
+			new /obj/item/pamphlet/medical(src)
 			new /obj/item/storage/belt/combatLifesaver(src)
 			new /obj/item/storage/pouch/firstaid/full(src)
 			new /obj/item/clothing/glasses/hud/health(src)
@@ -116,6 +122,7 @@
 	desc = "his marine kit gives you access to the special JTAC channel for coordinating airstrikes as well as calling them in with tactical binoculars."//and signal flare packs as well as a flare gun
 	icon_state = "Mini_JTAC_kit"
 	storage_slots = 3
+	can_hold = list()
 
 	New()
 		..()
@@ -131,12 +138,13 @@
 	name = "Combat Technician Support Kit"
 	desc = "This marine kit gives you the ability to construct defences such as metal barricades, as well as a starter construction kit for immediate defence."
 	icon_state = "Mini_Engie_kit"
-	storage_slots = 8
+	storage_slots = 9
+	can_hold = list()
 
 	New()
 		..()
 		spawn(1)
-//			Engineering Pamphlet(src)
+			new /obj/item/pamphlet/engie(src)
 			new /obj/item/storage/backpack/marine/engineerpack(src)
 			new /obj/item/storage/belt/utility/full(src)
 			new /obj/item/clothing/gloves/yellow(src)
@@ -144,13 +152,13 @@
 			new /obj/item/clothing/glasses/welding(src)
 			new /obj/item/storage/box/sentry(src)
 			new /obj/item/device/encryptionkey/engi(src)
-//			Folding Barricade(src)
 
 /obj/item/storage/kit/Personal_Def
 	name = "Personal Defense Kit"
 	desc = "This marine kit comes with an VP70 pistol which is a formidable hand gun with attachments and a holster to make it yours."
 	icon_state = "Personal_Def_kit"
 	storage_slots = 2
+	can_hold = list()
 
 	New()
 		..()
@@ -162,12 +170,14 @@
 	name = "Saiga Field Test Kit"
 	desc = "This marine kit gives you access to the limited Saiga shotgun as well as different types of ammo for it."
 	icon_state = "Sapper_kit"
-	storage_slots = 4
+	storage_slots = 5
+	can_hold = list()
 
 	New()
 		..()
 		spawn(1)
 			new /obj/item/weapon/gun/rifle/saiga(src)
+			new /obj/item/ammo_magazine/rifle/saiga(src)
 			new /obj/item/ammo_magazine/rifle/saiga(src)
 			new /obj/item/ammo_magazine/rifle/saiga/incendiary(src)
 			new /obj/item/ammo_magazine/rifle/saiga/buckshot(src)
@@ -177,6 +187,7 @@
 	desc = "This marine kit gives the M39 SMG, allowing it to chase after targets with more ease."//with the SMG Arm Brace
 	icon_state = "Pursuit_kit"
 	storage_slots = 5
+	can_hold = list()
 
 	New()
 		..()
@@ -192,6 +203,7 @@
 	desc = "This marine kit give you access to the old MK1 Pulse Rifle as well as spare magazines for it and under barrel attachments."
 	icon_state = "Veteran_kit"
 	storage_slots = 8
+	can_hold = list()
 
 	New()
 		..()
