@@ -1069,6 +1069,7 @@
 	name = "white phosphorous rocket"
 	flags_ammo_behavior = AMMO_ROCKET|AMMO_INCENDIARY|AMMO_EXPLOSIVE
 	damage_type = BURN
+
 /datum/ammo/rocket/wp/New()
 	..()
 	accuracy_var_low = config.med_proj_variance
@@ -1083,7 +1084,7 @@
 	smoke.start()
 	if(locate(/obj/flamer_fire) in T)
 		return
-	new /obj/flamer_fire(T, pick(15, 20, 25, 30))
+	new /obj/flamer_fire(T, pick(15, 20, 25, 30), 50, "blue", 2)
 	for(var/mob/living/carbon/M in range(3, T))
 		if(isXeno(M))
 			var/mob/living/carbon/Xenomorph/X = M
