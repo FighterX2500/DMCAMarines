@@ -383,6 +383,23 @@
 		burnlevel = burn_lvl
 	processing_objects.Add(src)
 
+	for(var/mob/living/M in get_turf(loc)) //Deal bonus damage if someone's caught directly in initial stream
+		if(M.stat == DEAD || M.on_fire)
+			continue
+
+		if(isXeno(M))
+			var/mob/living/carbon/Xenomorph/X = M
+			if(X.fire_immune)
+				continue
+		else if(ishuman(M))
+			var/mob/living/carbon/human/H = M //fixed :s
+			if(istype(H.wear_suit, /obj/item/clothing/suit/fire) || (istype(H.wear_suit, /obj/item/clothing/suit/storage/marine/M35) && istype(H.head, /obj/item/clothing/head/helmet/marine/pyro)))
+				continue
+		M.adjust_fire_stacks(rand(5,burn_lvl*2))
+		M.IgniteMob()
+		M.adjustFireLoss(rand(burn_lvl,(burn_lvl*2))) // Make it so its the amount of heat or twice it for the initial blast.
+		to_chat(M, "[isXeno(M)?"<span class='xenodanger'>":"<span class='highdanger'>"]Augh! You are roasted by the flames!")
+
 	if(fire_spread_amount > 0)
 		var/turf/T
 		for(var/dirn in cardinal)
