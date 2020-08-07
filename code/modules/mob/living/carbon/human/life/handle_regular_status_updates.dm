@@ -56,7 +56,7 @@
 			if(halloss > 0)
 				adjustHalLoss(-3)
 			if(knocked_out == 1)
-				src << sound('sound/misc/molly_revived.ogg',volume=40)
+				src << sound('sound/misc/molly_revived.ogg',volume=35)
 		else if(sleeping)
 			speech_problem_flag = 1
 			handle_dreams()

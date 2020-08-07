@@ -396,7 +396,7 @@
 	icon = 'icons/Marine/marine-weapons.dmi'
 	icon_state = "sniper_case"
 	w_class = 5
-	storage_slots = 15
+	storage_slots = 16
 	slowdown = 1
 	can_hold = list() //Nada. Once you take the stuff out it doesn't fit back in.
 	foldable = null
@@ -424,6 +424,7 @@
 			new /obj/item/storage/backpack/marine/satchel/scout_cloak(src)
 			new /obj/item/explosive/plastique(src)
 			new /obj/item/explosive/plastique(src)
+			new /obj/item/clothing/glasses/night(src)
 
 
 

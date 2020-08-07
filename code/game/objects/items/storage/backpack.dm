@@ -327,8 +327,8 @@
 	icon_state = "smock"
 	worn_accessible = TRUE
 
-#define SCOUT_CLOAK_COOLDOWN 100
-#define SCOUT_CLOAK_TIMER 50
+#define SCOUT_CLOAK_COOLDOWN 600
+#define SCOUT_CLOAK_TIMER 300
 // Scout Cloak
 /obj/item/storage/backpack/marine/satchel/scout_cloak
 	name = "M68 Thermal Cloak"
@@ -376,7 +376,7 @@
 		O.show_message("[M] vanishes into thin air!", 1)
 	playsound(M.loc,'sound/effects/cloak_scout_on.ogg', 15, 1)
 
-	M.alpha = 5
+	M.alpha = 8
 
 	if (M.smokecloaked)
 		M.smokecloaked = FALSE
