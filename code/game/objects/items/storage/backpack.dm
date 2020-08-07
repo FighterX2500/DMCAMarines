@@ -327,8 +327,8 @@
 	icon_state = "smock"
 	worn_accessible = TRUE
 
-#define SCOUT_CLOAK_COOLDOWN 600
-#define SCOUT_CLOAK_TIMER 300
+#define SCOUT_CLOAK_COOLDOWN 200
+#define SCOUT_CLOAK_TIMER 100
 // Scout Cloak
 /obj/item/storage/backpack/marine/satchel/scout_cloak
 	name = "M68 Thermal Cloak"
