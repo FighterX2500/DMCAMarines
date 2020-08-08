@@ -15,7 +15,7 @@ tools/Runtime Condenser/Output.txt
 tools/MapDaemon/logs/*.txt
 *.json
 *.txt
-code/world.dm
-code/world.dm
+world.dm
 process.pid
 __pycache__
+
