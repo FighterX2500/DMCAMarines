@@ -9,6 +9,11 @@
 		return 1
 
 	if (mods["middle"])
+		var/obj/item/jumpack/J = locate(/obj/item/jumpack) in src
+		if(J.on && src.back == J)
+			J.dash(A, src)
+			return 1
+
 		swap_hand()
 		return 1
 
@@ -69,6 +74,26 @@
 	return 1
 
 
+/*
+	Xenobots
+*/
+/mob/living/simple_animal/alien/click(var/atom/A, var/list/mods)
+	if(stat > 0)
+		return 1
+
+	if(get_dist(src,A) > 1)
+		return 1
+
+	if(isXeno(A))
+		return 1
+	if(isSynth(A))
+		return 1
+
+	if(world.time >= last_attack + attack_speed)
+		last_attack = world.time
+		A.attack_animal(src)
+		animation_attack_on(A)
+	return 1
 
 /*
 	Hell Hound
