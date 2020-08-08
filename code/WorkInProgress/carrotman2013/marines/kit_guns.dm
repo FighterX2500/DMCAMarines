@@ -97,6 +97,23 @@
 		to_chat(H, "This information is either useless or not that important for you.")
 
 
+//Sniper Pamphlet
+/obj/item/pamphlet/sniper
+	icon = 'icons/obj/items/books.dmi'
+	name = "Sniper Pamphlet"
+	desc = "A sniper-related pamphlet which holds a useful information to increase your skills"
+	icon_state = "book"
+
+/obj/item/pamphlet/sniper/attack_self(mob/living/carbon/human/H as mob)
+	if(H.mind.assigned_role == "Squad Marine")
+		H.mind.cm_skills.spec_weapons = SKILL_SPEC_SNIPER
+		to_chat(H, "Your sniper skills have been updated.")
+		Dispose()
+	else
+		to_chat(H, "This information is either useless or not that important for you.")
+
+
+
 //L42A - Copy of M42A but with worse stats
 /obj/item/weapon/gun/rifle/sniper/L42A
 	gun_skill_category = GUN_SKILL_RIFLES
