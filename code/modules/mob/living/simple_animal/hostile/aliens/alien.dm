@@ -65,6 +65,8 @@
 		return
 	if(!isobserver(usr))
 		return
+	if(stat == DEAD)
+		return
 	enter_bot(usr)
 
 /mob/living/simple_animal/alien/proc/enter_bot(mob/oldmob)
