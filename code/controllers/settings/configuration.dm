@@ -188,6 +188,9 @@
 		if ("use_recursive_explosions")
 			use_recursive_explosions = 1
 
+		if ("hub_password")
+			hub_password = value
+
 		if ("log_ooc")
 			config.log_ooc = 1
 
