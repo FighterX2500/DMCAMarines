@@ -73,7 +73,7 @@
 
 /mob/living/carbon/Xenomorph/say_understands(var/mob/other,var/datum/language/speaking = null)
 
-	if(isXeno(other))
+	if(isXeno(other) || isXenoBot(other))
 		return 1
 	return ..()
 

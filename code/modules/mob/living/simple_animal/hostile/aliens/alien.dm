@@ -81,6 +81,9 @@
 	if(leader)
 		leader:bot_followers--
 		leader = null
+	see_invisible = SEE_INVISIBLE_MINIMUM
+	see_in_dark = 8
+	sight |= SEE_MOBS
 	visible_message("<span class='xenonotice'>This lesser starts look weird...</span>", "<span class='xenonotice'>Supposed intelligence filling your little spinal cord!</span>")
 	cdel(oldmob)
 

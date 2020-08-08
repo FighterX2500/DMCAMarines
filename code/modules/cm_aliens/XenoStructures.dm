@@ -327,7 +327,7 @@
 	if(isYautja(user))
 		if(prob(25))
 			return ..()
-	if(isXeno(user))
+	if(isXeno(user) || isXenoBot(user))
 		return ..()
 
 /obj/structure/mineral_door/resin/Open()
