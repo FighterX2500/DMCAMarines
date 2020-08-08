@@ -18,8 +18,9 @@
 #define MARINE_CAN_BUY_ESSENTIALS	4096
 #define MARINE_CAN_BUY_ATTACHMENT	8192
 #define MARINE_CAN_BUY_WEBBING		16384
+#define MARINE_CAN_BUY_KIT			32768
 
-#define MARINE_CAN_BUY_ALL			32767
+#define MARINE_CAN_BUY_ALL			65535
 
 #define MARINE_TOTAL_BUY_POINTS		45
 
@@ -298,7 +299,16 @@
 							list("Pistol magazine pouch", 0, /obj/item/storage/pouch/magazine/pistol, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), "black"),
 							list("Pistol pouch", 0, /obj/item/storage/pouch/pistol, (MARINE_CAN_BUY_R_POUCH|MARINE_CAN_BUY_L_POUCH), "black"),
 							list("MASKS", 0, null, null, null),
-							list("Gas mask", 0, /obj/item/clothing/mask/gas, MARINE_CAN_BUY_MASK, "black")
+							list("Gas mask", 0, /obj/item/clothing/mask/gas, MARINE_CAN_BUY_MASK, "black"),
+							list("MARINE KITS (choose 1)", 0, null, null, null),
+							list("M240 Pyrotechnician Support Kit", 0, /obj/item/storage/kit/Pyro, MARINE_CAN_BUY_KIT, "black"),
+							list("JTAC Radio Kit", 0, /obj/item/storage/kit/JTAC, MARINE_CAN_BUY_KIT, "black"),
+							list("Frontline M40 Grenadier kit", 0, /obj/item/storage/kit/grenadier, MARINE_CAN_BUY_KIT, "black"),
+							list("Personal Defense Kit", 0, /obj/item/storage/kit/Personal_Def, MARINE_CAN_BUY_KIT, "black"),
+							list("L42A Sniper Kit", 0, /obj/item/storage/kit/Sniper, MARINE_CAN_BUY_KIT, "black"),
+							list("Combat Technician Support Kit", 0, /obj/item/storage/kit/Engie, MARINE_CAN_BUY_KIT, "black"),
+							list("First Response Medical Support Kit", 0, /obj/item/storage/kit/Medic, MARINE_CAN_BUY_KIT, "black"),
+							list("Veteran Kit", 0, /obj/item/storage/kit/Veteran, MARINE_CAN_BUY_KIT, "black")
 							)
 
 
