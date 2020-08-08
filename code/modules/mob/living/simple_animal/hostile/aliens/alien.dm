@@ -34,6 +34,8 @@
 	stop_automated_movement_when_pulled = 1
 	var/break_stuff_probability = 90
 
+	var/last_attack = 0
+	var/attack_speed = 5
 	melee_damage_lower = 15
 	melee_damage_upper = 25
 	var/attack_same = 0
@@ -53,6 +55,34 @@
 		hive_datum[number].xeno_lessers_list += src
 		color = hive_datum[number].color
 		name = "[hive_datum[number].prefix][name]"
+
+/mob/living/simple_animal/alien/verb/Enter_Bot()
+	set name = "Possess Lesser Alien"
+	set category = "Ghost"
+	set src in oview(usr.client)
+
+	if(!usr)
+		return
+	if(!isobserver(usr))
+		return
+	enter_bot(usr)
+
+/mob/living/simple_animal/alien/proc/enter_bot(mob/oldmob)
+	if(disposed || !oldmob.ckey)
+		return
+	if(ckey)
+		to_chat(oldmob, "<span class='notice'>This alien looks smart enough</span>")
+		return
+
+	message_admins("[key_name(oldmob)] entering [src]...")
+	src.ckey = oldmob.ckey
+	oldmob.ckey = null
+	src.client.change_view(world.view)
+	if(leader)
+		leader:bot_followers--
+		leader = null
+	visible_message("<span class='xenonotice'>This lesser starts look weird...</span>", "<span class='xenonotice'>Supposed intelligence filling your little spinal cord!</span>")
+	cdel(oldmob)
 
 /mob/living/simple_animal/alien/IgniteMob()			//Crowd control!
 	health = -maxHealth
@@ -94,6 +124,7 @@
 	icon_dead = "Drone Dead"
 	maxHealth = 70
 	health = 70
+	attack_speed = 10
 	melee_damage_lower = 5
 	melee_damage_upper = 15
 	move_to_delay = 2
@@ -119,6 +150,7 @@
 	icon_state = "Ravager Running"
 	icon_living = "Ravager Running"
 	icon_dead = "Ravager Dead"
+	attack_speed = 7
 	melee_damage_lower = 35
 	melee_damage_upper = 45
 	maxHealth = 400

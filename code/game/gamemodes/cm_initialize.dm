@@ -1097,7 +1097,11 @@ datum/game_mode/proc/initialize_special_clamps()
 						/obj/item/explosive/grenade/cloakbomb = round(scale * 3),
 						/obj/item/storage/box/m94 = round(scale * 30),
 						/obj/item/device/flashlight/combat = round(scale * 5),
-						/obj/item/clothing/mask/gas = round(scale * 10)
+						/obj/item/clothing/mask/gas = round(scale * 10),
+						/obj/item/storage/kit/Heavy_Support = round(scale * 1),
+						/obj/item/storage/kit/Pursuit = round(scale * 1),
+						/obj/item/storage/kit/Saiga = round(scale * 1)
+
 						)
 
 		CG.contraband = list(
@@ -1122,6 +1126,7 @@ datum/game_mode/proc/initialize_special_clamps()
 						/obj/item/weapon/gun/smg/skorpion = 0,
 						/obj/item/weapon/gun/smg/uzi = 0,
 						/obj/item/weapon/gun/smg/p90 = 0
+						// /obj/item/storage/kit/ak = 1
 						)
 
 		CG.build_inventory(CG.products)
