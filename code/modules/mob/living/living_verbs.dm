@@ -137,7 +137,7 @@
 		if (isXeno(L))
 			var/mob/living/carbon/Xenomorph/X = L
 			if (X.on_fire && X.canmove && !knocked_down)
-				X.fire_stacks = max(X.fire_stacks - rand(3, 6), 0)
+				X.fire_stacks = max(X.fire_stacks - rand(0,4), 0)
 				X.KnockDown(4, TRUE)
 				X.visible_message("<span class='danger'>[X] rolls on the floor, trying to put themselves out!</span>", \
 					"<span class='notice'>You stop, drop, and roll!</span>", null, 5)
