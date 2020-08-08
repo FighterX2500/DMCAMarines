@@ -342,8 +342,8 @@
 			else if(S.burn_dam > 0 && use(1))
 				synthrepair = TRUE
 				user.visible_message("\red \The [user] cuts a piece of the [src] and starts repairing some burn damage on his [S.display_name].")
-				if(do_after(user, 40, TRUE, 5, BUSY_ICON_BUILD)) //5 секунд для починки
-					S.heal_damage(0,15,0,1)
+				if(do_after(user, 60, TRUE, 5, BUSY_ICON_BUILD)) //6 секунд для починки
+					S.heal_damage(0,10,0,1)
 					user.visible_message("\red \The [user] repairs some burn damage on his [S.display_name] with \the [src].")
 					synthrepair = FALSE
 					return

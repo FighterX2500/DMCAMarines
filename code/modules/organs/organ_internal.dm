@@ -67,10 +67,14 @@
 			E.internal_organs |= src
 
 /datum/internal_organ/process()
+	var/mob/living/carbon/human/H = owner
 
 	//Process infections
 	if (robotic >= 2 || (owner.species && owner.species.flags & IS_PLANT))	//TODO make robotic internal and external organs separate types of organ instead of a flag
 		germ_level = 0
+		return
+
+	if(H.species & IS_YAUTJA)
 		return
 
 	if(owner.bodytemperature >= 170)	//cryo stops germs from moving and doing their bad stuffs

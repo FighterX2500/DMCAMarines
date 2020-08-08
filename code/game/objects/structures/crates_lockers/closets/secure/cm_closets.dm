@@ -280,6 +280,7 @@
 		new /obj/item/clothing/head/beret/marine/commander(src)
 		new /obj/item/clothing/glasses/sunglasses(src)
 		new /obj/item/device/radio/headset/almayer/mcom(src)
+		new /obj/item/clothing/mask/rebreather/scarf(src)
 
 /obj/structure/closet/secure_closet/securecom
 	name = "commander's secure box"
@@ -323,6 +324,7 @@
 		new /obj/item/clothing/head/helmet/marine(src)
 		new /obj/item/clothing/head/helmet/marine(src)
 		new /obj/item/storage/backpack/marine(src)
+		new /obj/item/clothing/mask/rebreather/scarf(src)
 
 /obj/structure/closet/secure_closet/pilot_officer
 	name = "pilot officer's locker"
@@ -345,6 +347,7 @@
 		new /obj/item/storage/backpack/marine/satchel(src)
 		new /obj/item/clothing/gloves/yellow(src)
 		new /obj/item/clothing/glasses/sunglasses(src)
+		new /obj/item/clothing/mask/rebreather/scarf(src)
 
 	select_gamemode_equipment(gamemode)
 		switch(map_tag)
@@ -379,6 +382,7 @@
 		new /obj/item/weapon/gun/energy/taser(src)
 		new /obj/item/weapon/baton(src)
 		new /obj/item/storage/backpack/security (src)
+		new /obj/item/clothing/mask/rebreather/scarf(src)
 
 /obj/structure/closet/secure_closet/warrant_officer
 	name = "chief MP's locker"
@@ -404,6 +408,7 @@
 		new /obj/item/weapon/gun/energy/taser(src)
 		new /obj/item/weapon/baton(src)
 		new /obj/item/storage/backpack/security (src)
+		new /obj/item/clothing/mask/rebreather/scarf(src)
 
 /obj/structure/closet/secure_closet/military_officer_spare
 	name = "extra equipment locker"
@@ -429,6 +434,7 @@
 		new /obj/item/clothing/gloves/black(src)
 		new /obj/item/device/radio/headset/almayer/mmpo(src)
 		new /obj/item/clothing/tie/holster/waist(src)
+		new /obj/item/clothing/mask/rebreather/scarf(src)
 
 //ALMAYER MEDICAL CLOSET
 /obj/structure/closet/secure_closet/medical_doctor

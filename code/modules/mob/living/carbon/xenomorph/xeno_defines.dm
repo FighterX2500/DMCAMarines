@@ -180,6 +180,7 @@
 	var/list/xeno_leader_list = list()
 	var/list/xeno_lessers_list = list()
 	var/list/xeno_buildings = list(SUNKEN_COLONY = 0, COLONY_TUNNELS = 0)
+	var/xen_is_evolving = FALSE
 
 /datum/hive_status/corrupted
 	hivenumber = XENO_HIVE_CORRUPTED

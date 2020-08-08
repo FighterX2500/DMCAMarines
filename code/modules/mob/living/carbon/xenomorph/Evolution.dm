@@ -13,6 +13,8 @@
 	var/tierB = 0 //Tier 2
 	var/tierC = 0 //Tier 3
 	var/potential_queens = 0
+	var/datum/hive_status/hive
+
 
 	if(is_ventcrawling)
 		to_chat(src, "<span class='warning'>This place is too constraining to evolve.</span>")
@@ -76,7 +78,6 @@
 		to_chat(src, "<span class='warning'>You can't evolve in your current state.</span>")
 		return
 
-	var/datum/hive_status/hive
 	if(hivenumber && hivenumber <= hive_datum.len)
 		hive = hive_datum[hivenumber]
 	else
@@ -202,18 +203,26 @@
 			to_chat(src, "<span class='warning'>You must wait before evolving. Currently at: [evolution_stored] / [evolution_threshold].</span>")
 			return
 
+	if(hive.xen_is_evolving)
+		to_chat(src, "<span class='warning'>Someone in your hive is already evolving! Please wait a second.</span>")
+		return
+
+	hive.xen_is_evolving = TRUE
 	visible_message("<span class='xenonotice'>\The [src] begins to twist and contort.</span>", \
 	"<span class='xenonotice'>You begin to twist and contort.</span>")
 	xeno_jitter(25)
 	if(do_after(src, 25, FALSE, 5, BUSY_ICON_HOSTILE))
 		if(!isturf(loc)) //cdel'd or moved into something
+			hive.xen_is_evolving = FALSE
 			return
 		if(castepick == "Queen") //Do another check after the tick.
 			if(jobban_isbanned(src, "Queen"))
 				to_chat(src, "<span class='warning'>You are jobbanned from the Queen role.</span>")
+				hive.xen_is_evolving = FALSE
 				return
 			if(hive.living_xeno_queen)
 				to_chat(src, "<span class='warning'>There already is a Queen.</span>")
+				hive.xen_is_evolving = FALSE
 				return
 
 		//From there, the new xeno exists, hopefully
@@ -224,6 +233,7 @@
 			to_chat(usr, "<span class='warning'>Something went terribly wrong here. Your new xeno is null! Tell a coder immediately!</span>")
 			if(new_xeno)
 				cdel(new_xeno)
+				hive.xen_is_evolving = FALSE
 			return
 
 		if(mind)
@@ -269,5 +279,7 @@
 			hive.living_xeno_queen.set_queen_overwatch(new_xeno)
 		cdel(src)
 		new_xeno.xeno_jitter(25)
+		hive.xen_is_evolving = FALSE
 	else
 		to_chat(src, "<span class='warning'>You quiver, but nothing happens. Hold still while evolving.</span>")
+		hive.xen_is_evolving = FALSE

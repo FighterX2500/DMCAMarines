@@ -627,6 +627,13 @@
 	screen_loc = ui_health
 	icon = 'icons/mob/screen1_Midnight.dmi'
 
+/obj/screen/healths/clicked(var/mob/user)
+	if (..())
+		return TRUE
+	var/mob/living/carbon/M = user
+	M.help_shake_act(M)
+	return TRUE
+
 /obj/screen/healths/alien
 	icon = 'icons/mob/screen1_alien.dmi'
 	screen_loc = ui_alien_health
@@ -676,8 +683,7 @@
 	if (..())
 		return TRUE
 	if (isXeno(user))
-		var/mob/living/carbon/Xenomorph/X = user
-		X.hive_status()
+		check_hive_status()
 	return TRUE
 
 

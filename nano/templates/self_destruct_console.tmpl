@@ -20,10 +20,10 @@
 	<div class="item">
 		<div class="itemContent" style="padding-top: 2px; width: 100%">
 			{{if data.dest_status == 1}}
-				{{:helper.link('ACTIVATE SYSTEM', 'alert', {'command' : 'dest_start'}, null, 'yellowButton')}}
+				{{:helper.link('START', 'alert', {'command' : 'dest_start'}, null, 'redButton')}}
 			{{else data.dest_status == 2}}
-				{{:helper.link('INITIATE', 'alert', {'command' : 'dest_trigger'}, null, 'redButton')}} 
 				{{:helper.link('CANCEL', 'alert', {'command' : 'dest_cancel'}, null, 'yellowButton')}}
+				{{:helper.link('ACTIVATE SYSTEM', 'alert', {'command' : 'dest_arm'}, null, 'redButton')}}
 			{{else}}
 				<span class="bad">ERROR</span>
 			{{/if}}

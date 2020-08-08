@@ -1466,6 +1466,7 @@
 #include "code\WorkInProgress\Cael_Aislinn\Supermatter\LaserComputer.dm"
 #include "code\WorkInProgress\Cael_Aislinn\Supermatter\ZeroPointLaser.dm"
 #include "code\WorkInProgress\Cib\MedicalSideEffects.dm"
+#include "code\WorkInProgress\carrotman2013\yautja\spinal_cords.dm"
 #include "code\WorkInProgress\computer3\bios.dm"
 #include "code\WorkInProgress\computer3\buildandrepair.dm"
 #include "code\WorkInProgress\computer3\component.dm"

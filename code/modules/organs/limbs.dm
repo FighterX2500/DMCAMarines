@@ -379,7 +379,13 @@ This function completely restores a damaged organ to perfect condition.
 
 	//Bone fracurtes
 	if(config.bones_can_break && brute_dam > min_broken_damage * config.organ_health_multiplier && !(status & LIMB_ROBOT))
-		fracture()
+		if(owner.species && owner.species.flags & IS_YAUTJA)
+			if (prob(50))
+				fracture()
+			else
+				return
+		else
+			fracture()
 	if(!(status & LIMB_BROKEN))
 		perma_injury = 0
 
@@ -407,7 +413,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 */
 /datum/limb/proc/update_germs()
 
-	if(status & (LIMB_ROBOT|LIMB_DESTROYED) || (owner.species && owner.species.flags & IS_PLANT)) //Robotic limbs shouldn't be infected, nor should nonexistant limbs.
+	if(status & (LIMB_ROBOT|LIMB_DESTROYED) || (owner.species && owner.species.flags & IS_PLANT) || (owner.species && owner.species.flags & IS_YAUTJA)) //Robotic limbs shouldn't be infected, nor should nonexistant limbs.
 		germ_level = 0
 		return
 
@@ -665,6 +671,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 		return
 	else
 		if(body_part == UPPER_TORSO)
+			return
+		if(owner.species && owner.species.flags & IS_YAUTJA && prob(50)) //Так как Предовские кости в 2 раза крепче - 50 процентов, что конечность не отлетит
 			return
 
 		if(status & LIMB_ROBOT)
