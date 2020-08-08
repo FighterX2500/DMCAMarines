@@ -26,6 +26,8 @@
 	if(W != null && stat != DEAD)
 		health = min(maxHealth, health+5)
 
+	handle_special_behavior()
+
 	if(client)
 		return 0
 
@@ -236,6 +238,9 @@
 
 	return
 
+/mob/living/simple_animal/alien/proc/handle_special_behavior()
+	return
+
 /mob/living/simple_animal/alien/proc/handle_follow()
 	target = FindTarget()
 	if(target)
@@ -283,6 +288,7 @@
 	. = ..()
 	if(!.) return //If they were already dead, it will return.
 	walk(src, 0)
+	stat = DEAD
 	if(xeno_number > 0 && xeno_number <= hive_datum[xeno_number].len)
 		hive_datum[xeno_number].xeno_lessers_list -= src
 	if(leader)
@@ -298,7 +304,7 @@
 
 // Drone things
 
-/mob/living/simple_animal/alien/drone/handle_bot_alien_behavior()
+/mob/living/simple_animal/alien/drone/handle_special_behavior()
 	var/obj/effect/alien/weeds/W = locate() in range(4, loc)
 	var/obj/effect/alien/weeds/node/N = locate() in range(6, loc)
 	if(!W || !N)
@@ -308,8 +314,6 @@
 
 		new /obj/effect/alien/weeds/node(src.loc, src, null)
 		playsound(src.loc, "alien_resin_build", 25)
-
-	return ..()
 
 /mob/living/simple_animal/alien/drone/FindTarget()
 	var/list/enemies = new/list()
@@ -382,8 +386,9 @@
 
 // Tearer things
 
-/mob/living/simple_animal/alien/ravager/handle_bot_alien_behavior()
-	. = ..()
+/mob/living/simple_animal/alien/ravager/handle_special_behavior()
+	if(prob(50))
+		return
 
 	if(rage > 0)
 		melee_damage_upper -= 5*rage
