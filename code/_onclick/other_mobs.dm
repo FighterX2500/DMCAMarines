@@ -7,13 +7,13 @@
 	if (mods["shift"] && mods["middle"])
 		point_to(A)
 		return 1
-
+/*
 	if (mods["middle"])
 		var/obj/item/jumpack/J = locate(/obj/item/jumpack) in src
 		if(J.on && src.back == J)
 			J.dash(A, src)
 			return 1
-
+*/
 		swap_hand()
 		return 1
 
