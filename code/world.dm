@@ -25,7 +25,7 @@ var/global/datum/global_init/init = new ()
 
 /world/New()
 
-	hub_password = "kMZy3U5jJHSiBQjr"
+	hub_password = "kMZу3U5jJНSiBQjr"
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
 
 	if(byond_version < RECOMMENDED_VERSION)
