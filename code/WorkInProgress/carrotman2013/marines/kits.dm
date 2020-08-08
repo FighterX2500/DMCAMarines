@@ -18,11 +18,11 @@
 			new /obj/item/storage/pouch/explosive_mini/full(src)
 
 
-/obj/item/storage/kit/ak
+/obj/item/storage/kit/ak //Admin only
 	name = "Experimental AK Kit"
 	desc = "This marine kit gives you access to the limited AK-4047 with extra magazines and attachments to go with it."
 	icon_state = "Exp_trooper_kit"
-	storage_slots = 6
+	storage_slots = 8
 	can_hold = list()
 
 	New()
@@ -34,12 +34,14 @@
 			new /obj/item/ammo_magazine/rifle/ak/incendiary(src)
 			new /obj/item/attachable/stock/rifle/ak4047(src)
 			new /obj/item/attachable/extended_barrel(src)
+			new /obj/item/attachable/stock/rifle/ak4047(src)
+			new /obj/item/attachable/flashlight/ak(src)
 
 /obj/item/storage/kit/Heavy_Support
 	name = "Forward HPR Shield Kit"
 	desc = "This marine kit offers the powerful Heavy Pulse Rifle."//as well as a folding barricade for quick defensive placement and firepower.
 	icon_state = "Heavy_Support_kit"
-	storage_slots = 6
+	storage_slots = 7
 	can_hold = list()
 
 	New()
@@ -49,7 +51,7 @@
 			new /obj/item/ammo_magazine/rifle/lmg(src)
 			new /obj/item/ammo_magazine/rifle/lmg(src)
 			new /obj/item/attachable/bipod(src)
-//			new /obj/item/weapon/shield/riot(src)
+			new /obj/item/weapon/shield/riot(src)
 			new /obj/item/clothing/glasses/welding(src)
 			new /obj/item/tool/weldingtool(src)
 
@@ -170,7 +172,7 @@
 	name = "Saiga Field Test Kit"
 	desc = "This marine kit gives you access to the limited Saiga shotgun as well as different types of ammo for it."
 	icon_state = "Sapper_kit"
-	storage_slots = 5
+	storage_slots = 4
 	can_hold = list()
 
 	New()
@@ -179,7 +181,6 @@
 			new /obj/item/weapon/gun/rifle/saiga(src)
 			new /obj/item/ammo_magazine/rifle/saiga(src)
 			new /obj/item/ammo_magazine/rifle/saiga(src)
-			new /obj/item/ammo_magazine/rifle/saiga/incendiary(src)
 			new /obj/item/ammo_magazine/rifle/saiga/buckshot(src)
 
 /obj/item/storage/kit/Pursuit

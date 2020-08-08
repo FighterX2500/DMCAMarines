@@ -127,9 +127,9 @@
 					/obj/item/storage/box/m94 = 30,
 					/obj/item/device/flashlight/combat = 5,
 					/obj/item/clothing/mask/gas = 10,
-					/obj/item/storage/kit/Heavy_Support = 3,
+					/obj/item/storage/kit/Heavy_Support = 1,
 					/obj/item/storage/kit/Pursuit = 3,
-					/obj/item/storage/kit/Saiga = 3
+					/obj/item/storage/kit/Saiga = 2,
 					)
 
 	contraband = list(
@@ -154,7 +154,7 @@
 					/obj/item/weapon/gun/smg/skorpion = 0,
 					/obj/item/weapon/gun/smg/uzi = 0,
 					/obj/item/weapon/gun/smg/p90 = 0,
-					/obj/item/storage/kit/ak = 1
+					// /obj/item/storage/kit/ak = 1
 					)
 	premium = list()
 

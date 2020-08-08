@@ -1125,8 +1125,8 @@ datum/game_mode/proc/initialize_special_clamps()
 						/obj/item/weapon/gun/smg/mp7 = 0,
 						/obj/item/weapon/gun/smg/skorpion = 0,
 						/obj/item/weapon/gun/smg/uzi = 0,
-						/obj/item/weapon/gun/smg/p90 = 0,
-						/obj/item/storage/kit/ak = 1
+						/obj/item/weapon/gun/smg/p90 = 0
+						// /obj/item/storage/kit/ak = 1
 						)
 
 		CG.build_inventory(CG.products)

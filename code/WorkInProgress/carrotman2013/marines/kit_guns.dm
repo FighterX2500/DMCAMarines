@@ -127,7 +127,6 @@
 		var/obj/item/attachable/sniperbarrel/Q = new(src)
 		Q.Attach(src)
 		update_attachables()
-		S.icon_state = initial(S.icon_state)
 
 
 /obj/item/weapon/gun/rifle/sniper/L42A/set_gun_config_values()
