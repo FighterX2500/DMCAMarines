@@ -99,7 +99,7 @@
 			new /obj/item/storage/backpack/marine/engineerpack/flamethrower(src)
 			new /obj/item/ammo_magazine/flamer_tank(src)
 			new /obj/item/ammo_magazine/flamer_tank(src)
-			new /obj/item/ammo_magazine/flamer_tank/large/X(src)
+			new /obj/item/ammo_magazine/flamer_tank(src)
 			new /obj/item/tool/extinguisher/mini(src)
 			new /obj/item/tool/extinguisher/mini(src)
 
