@@ -136,7 +136,7 @@
 		select_gamemode_skin(type, list(MAP_ICE_COLONY = "s_m42a") )
 		..()
 		attachable_offset = list("muzzle_x" = 33, "muzzle_y" = 18,"rail_x" = 12, "rail_y" = 20, "under_x" = 19, "under_y" = 14, "stock_x" = 19, "stock_y" = 14)
-		var/obj/item/attachable/scope/S = new(src)
+		var/obj/item/attachable/scope/mini/S = new(src)
 		S.attach_icon = "" //Let's make it invisible. The sprite already has one.
 		S.icon_state = ""
 		S.flags_attach_features &= ~ATTACH_REMOVABLE
