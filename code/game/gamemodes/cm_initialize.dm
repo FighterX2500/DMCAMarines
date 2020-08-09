@@ -1098,9 +1098,9 @@ datum/game_mode/proc/initialize_special_clamps()
 						/obj/item/storage/box/m94 = round(scale * 30),
 						/obj/item/device/flashlight/combat = round(scale * 5),
 						/obj/item/clothing/mask/gas = round(scale * 10),
-						/obj/item/storage/kit/Heavy_Support = round(scale * 1),
-						/obj/item/storage/kit/Pursuit = round(scale * 1),
-						/obj/item/storage/kit/Saiga = round(scale * 1)
+						/obj/item/storage/kit/Heavy_Support = 1,
+						/obj/item/storage/kit/Pursuit = 3,
+						/obj/item/storage/kit/Saiga = 2
 
 						)
 

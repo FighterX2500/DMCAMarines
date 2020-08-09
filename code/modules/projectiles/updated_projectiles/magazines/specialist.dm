@@ -10,8 +10,7 @@
 	w_class = 3
 	max_rounds = 15
 	default_ammo = /datum/ammo/bullet/sniper
-	gun_type = /obj/item/weapon/gun/rifle/sniper/M42A
-	gun_type = /obj/item/weapon/gun/rifle/sniper/L42A
+	gun_type = /obj/item/weapon/gun/rifle/sniper
 
 	New()
 		..()
