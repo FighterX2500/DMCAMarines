@@ -18,6 +18,12 @@
 /mob/living/simple_animal/alien/say(var/message)
 	return
 
+/mob/living/simple_animal/alien/whisper()
+	return
+
+/mob/living/simple_animal/alien/emote()
+	return
+
 /mob/living/simple_animal/alien/start_pulling(atom/movable/AM, lunge, no_msg)
 	return
 
