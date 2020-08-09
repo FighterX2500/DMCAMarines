@@ -51,7 +51,7 @@
 			new /obj/item/ammo_magazine/rifle/lmg(src)
 			new /obj/item/ammo_magazine/rifle/lmg(src)
 			new /obj/item/attachable/bipod(src)
-			new /obj/item/weapon/shield/riot(src)
+			new /obj/item/weapon/shield/montage/marine(src)
 			new /obj/item/clothing/glasses/welding(src)
 			new /obj/item/tool/weldingtool(src)
 
@@ -99,7 +99,7 @@
 			new /obj/item/storage/backpack/marine/engineerpack/flamethrower(src)
 			new /obj/item/ammo_magazine/flamer_tank(src)
 			new /obj/item/ammo_magazine/flamer_tank(src)
-			new /obj/item/ammo_magazine/flamer_tank/large/X(src)
+			new /obj/item/ammo_magazine/flamer_tank(src)
 			new /obj/item/tool/extinguisher/mini(src)
 			new /obj/item/tool/extinguisher/mini(src)
 

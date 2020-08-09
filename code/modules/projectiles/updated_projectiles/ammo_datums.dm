@@ -710,7 +710,7 @@
 	name = "sniper bullet"
 	damage_falloff = 0
 	iff_signal = ACCESS_IFF_MARINE
-	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SNIPER|AMMO_SKIPS_HUMANS
+	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_SKIPS_HUMANS|AMMO_SNIPER
 	accurate_range_min = 10
 
 /datum/ammo/bullet/sniper/New()
@@ -727,7 +727,7 @@
 	accuracy = 0
 	damage_type = BURN
 	iff_signal = ACCESS_IFF_MARINE
-	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_INCENDIARY|AMMO_SNIPER|AMMO_SKIPS_HUMANS
+	flags_ammo_behavior = AMMO_BALLISTIC|AMMO_INCENDIARY|AMMO_SKIPS_HUMANS|AMMO_SNIPER
 
 /datum/ammo/bullet/sniper/incendiary/New()
 	..()

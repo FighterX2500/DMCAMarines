@@ -97,9 +97,13 @@
 
 /obj/item/weapon/shield/montage/marine/attack(mob/M, mob/user)
 	. = ..()
-	if(prob(40))
-		if(isXeno(M))
-			if(isXenoQueen(M))
-				return
-			M.KnockDown(4)
-		M.KnockDown(8)
+	if(isYautja(M))
+		return
+	var/mob/living/carbon/Xenomorph/X
+	if(isXeno(M) && X.tier == 1)
+		if(prob(40))
+			M.KnockDown(2)
+			return
+	if(ishuman(M))
+		if(prob(20))
+			M.KnockOut(15)
