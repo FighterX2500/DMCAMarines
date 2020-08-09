@@ -118,6 +118,7 @@
 		new /obj/item/clothing/glasses/sunglasses/sechud(src)
 		new /obj/item/tool/taperoll/police(src)
 		new /obj/item/weapon/shield/riot(src)
+		new /obj/item/weapon/shield/montage/marine(src)
 		new /obj/item/storage/box/flashbangs(src)
 		new /obj/item/storage/belt/security(src)
 		new /obj/item/device/flash(src)
