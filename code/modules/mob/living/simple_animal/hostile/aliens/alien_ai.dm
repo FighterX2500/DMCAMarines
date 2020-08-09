@@ -15,6 +15,12 @@
 #define HOSTILE_STANCE_FOLLOW 8
 
 //Common procs
+/mob/living/simple_animal/alien/say(var/message)
+	return
+
+/mob/living/simple_animal/alien/start_pulling(atom/movable/AM, lunge, no_msg)
+	return
+
 /mob/living/simple_animal/alien/Life()				//I deserve to burn in hell@polion1232
 	. = ..()
 

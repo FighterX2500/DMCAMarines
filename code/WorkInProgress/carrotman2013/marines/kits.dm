@@ -71,12 +71,13 @@
 	name = "L42A Sniper Kit"
 	desc = "This marine kit comes with a L42 Battle Rifle along with a free attachment and 3 types of magazines."
 	icon_state = "Mini_Sniper_kit"
-	storage_slots = 5
+	storage_slots = 6
 	can_hold = list()
 
 	New()
 		..()
 		spawn(1)
+			new /obj/item/pamphlet/sniper(src)
 			new /obj/item/weapon/gun/rifle/sniper/L42A(src)
 			new /obj/item/ammo_magazine/sniper(src)
 			new	/obj/item/ammo_magazine/sniper/incendiary(src)

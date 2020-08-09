@@ -9,7 +9,7 @@
 	response_help = "pokes"
 	response_disarm = "shoves"
 	response_harm = "hits"
-	speed = -1
+	speed = 0.5
 	meat_type = /obj/item/reagent_container/food/snacks/xenomeat
 	maxHealth = 100
 	health = 100
@@ -27,7 +27,7 @@
 	max_n2 = 0
 	unsuitable_atoms_damage = 15
 	faction = "alien"
-	wall_smash = 1
+	wall_smash = 0
 	status_flags = CANPUSH
 	minbodytemp = 0
 	heat_damage_per_tick = 20
@@ -35,7 +35,7 @@
 	var/break_stuff_probability = 90
 
 	var/last_attack = 0
-	var/attack_speed = 5
+	var/attack_speed = 10
 	melee_damage_lower = 15
 	melee_damage_upper = 25
 	var/attack_same = 0
@@ -65,7 +65,16 @@
 		return
 	if(!isobserver(usr))
 		return
+	if(stat == DEAD)
+		return
 	enter_bot(usr)
+
+/mob/living/simple_animal/alien/verb/leave()
+	set category = "Ghost"
+	set name = "Leave Lesser"
+	set desc = "Relinquish your life and enter the land of the dead."
+
+	ghostize(1)
 
 /mob/living/simple_animal/alien/proc/enter_bot(mob/oldmob)
 	if(disposed || !oldmob.ckey)
@@ -81,6 +90,9 @@
 	if(leader)
 		leader:bot_followers--
 		leader = null
+	see_invisible = SEE_INVISIBLE_MINIMUM
+	see_in_dark = 8
+	sight |= SEE_MOBS
 	visible_message("<span class='xenonotice'>This lesser starts look weird...</span>", "<span class='xenonotice'>Supposed intelligence filling your little spinal cord!</span>")
 	cdel(oldmob)
 
@@ -124,10 +136,11 @@
 	icon_dead = "Drone Dead"
 	maxHealth = 70
 	health = 70
-	attack_speed = 10
+	attack_speed = 15
 	melee_damage_lower = 5
 	melee_damage_upper = 15
 	move_to_delay = 2
+	speed = 1
 	var/max_enemies = 5								//Will run from 5 enemies
 
 // Still using old projectile code - commenting this out for now
@@ -151,6 +164,7 @@
 	icon_living = "Ravager Running"
 	icon_dead = "Ravager Dead"
 	attack_speed = 7
+	speed = 0.7
 	melee_damage_lower = 35
 	melee_damage_upper = 45
 	maxHealth = 400

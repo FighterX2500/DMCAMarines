@@ -91,6 +91,8 @@
 		return 1
 
 	if(world.time >= last_attack + attack_speed)
+		if(istype(A, /turf/closed))
+			return 1
 		last_attack = world.time
 		A.attack_animal(src)
 		animation_attack_on(A)
