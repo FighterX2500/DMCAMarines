@@ -57,8 +57,8 @@
 		name = "[hive_datum[number].prefix][name]"
 
 /mob/living/simple_animal/alien/verb/Enter_Bot()
-	set name = "Possess Lesser Alien"
 	set category = "Ghost"
+	set name = "Possess Lesser Alien"
 	set src in oview(usr.client)
 
 	if(!usr)
@@ -81,6 +81,13 @@
 		return
 	if(ckey)
 		to_chat(oldmob, "<span class='notice'>This alien looks smart enough</span>")
+		return
+	if(!isobserver(oldmob))
+		return
+
+	var/mob/dead/observer/O = oldmob
+	if(O.timeofdeath < world.time + 300 SECONDS)
+		to_chat(O, "<span class='warning'>This alien deny you entrance!</span>")
 		return
 
 	message_admins("[key_name(oldmob)] entering [src]...")
