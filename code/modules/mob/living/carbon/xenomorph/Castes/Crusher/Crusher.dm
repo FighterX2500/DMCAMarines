@@ -67,9 +67,13 @@
 	create_stomp() //Adds the visual effect. Wom wom wom
 
 	var/i = 5
-	for(var/mob/living/M in range(1,loc))
+	for(var/mob/living/carbon/human/M in range(5, loc))
 		if(!i) break
-		if(!isXeno(M))
+		var/dist = get_dist(src,M)
+		if(dist >= 2)
+			M.temporary_slowdown = 2
+		if(dist <= 1)
+			M.KnockDown(1)
 			if(M.loc == loc)
 				if(M.stat == DEAD)
 					continue
@@ -81,6 +85,7 @@
 				to_chat(M, "<span class='highdanger'>You are stomped on by [src]!</span>")
 			shake_camera(M, 2, 2)
 		i--
+
 
 //The atom collided with is passed to this proc, all types of collisions are dealt with here.
 //The atom does not tell the Crusher how to handle a collision, the Crusher is an independant
