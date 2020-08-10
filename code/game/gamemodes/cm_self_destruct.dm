@@ -409,7 +409,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 					to_chat(usr, "<span class='notice'>The system must be booting up the self-destruct sequence now.</span>")
 					command_announcement.Announce("Danger. The emergency destruct system is now activated. The ship will detonate in T-minus 10 minutes. The option to override automatic detonation expires in T-minus 5 minutes.", "ALMAYER SELF DESTRUCT SYSTEM", new_sound='sound/misc/notice1.ogg')
 					xeno_message("The hive is abnormally worried. The purification device is now active!")
-					world << sound('sound/AI/ARES_Self_Destruct_10m_FULL.ogg', repeat = 0, wait = 0, volume = 75, channel = 666)
+					world << sound('sound/AI/ARES_Self_Destruct_10m_FULL.ogg', repeat = 0, wait = 0, volume = 70, channel = 666)
 					EvacuationAuthority.dest_start_time = world.time
 					EvacuationAuthority.process_sd_ticking()
 					EvacuationAuthority.dest_already_armed = 1
