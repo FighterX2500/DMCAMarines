@@ -78,32 +78,3 @@
 
 /obj/item/weapon/shield/montage/Get_shield_chance()
 	return block_chance
-
-/obj/item/weapon/shield/montage/marine
-	name = "N30-2 standard defensive shield"
-	desc = "A heavy shield adept at blocking blunt or sharp objects from connecting with the shield wielder."
-	icon = 'icons/obj/items/weapons.dmi'
-	icon_state = "marine_shield"
-	flags_equip_slot = SLOT_BACK
-	block_chance = 85
-	force = 15
-	throwforce = 6
-	throw_speed = 1
-	throw_range = 4
-	w_class = 4.0
-	origin_tech = "materials=2"
-	attack_verb = list("shoved", "bashed", "slash")
-	cooldown = 4 //shield bash cooldown. based on world.time
-
-/obj/item/weapon/shield/montage/marine/attack(mob/M, mob/user)
-	. = ..()
-	if(isYautja(M))
-		return
-	var/mob/living/carbon/Xenomorph/X
-	if(isXeno(M) && X.tier == 1)
-		if(prob(40))
-			M.KnockDown(2)
-			return
-	if(ishuman(M))
-		if(prob(20))
-			M.KnockOut(15)

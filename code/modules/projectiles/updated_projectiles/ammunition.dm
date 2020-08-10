@@ -372,6 +372,8 @@ Turn() or Shift() as there is virtually no overhead. ~N
 	var/magazine_type = /obj/item/ammo_magazine/rifle
 	var/deployed = FALSE
 	var/base = /obj/item/ammobox
+	flags_atom = CONDUCT
+	flags_equip_slot = SLOT_BACK
 
 /obj/item/ammobox/update_icon()
 	if(magazine_amount > 0)
