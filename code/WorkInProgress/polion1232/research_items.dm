@@ -361,6 +361,7 @@
 	fire_sound = 'sound/weapons/laser3.ogg'
 	w_class = 4.0
 	unacidable = 1
+	flags_equip_slot = SLOT_BACK
 
 	var/charge_cost = 100
 	var/obj/item/cell/xba/mag = null
@@ -446,6 +447,7 @@
 	fire_sound = 'sound/weapons/emitter2.ogg'
 	w_class = 5.0
 	unacidable = 1
+	flags_equip_slot = SLOT_BACK
 
 	var/charge_cost = 20000
 	var/obj/item/cell/xba/shot = null
@@ -515,6 +517,7 @@
 	fire_sound = 'sound/weapons/laser3.ogg'
 	w_class = 2.0
 	unacidable = 1
+	flags_equip_slot = SLOT_WAIST|SLOT_BACK
 
 	var/charge_cost = 50
 	var/obj/item/cell/xba/mag = null
