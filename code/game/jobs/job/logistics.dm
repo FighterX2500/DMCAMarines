@@ -34,12 +34,10 @@
 		. = list()
 
 	generate_entry_message(mob/living/carbon/human/H)
-		. = {"Your job is to maintain the ship's engine and keep everything running.
-If you have no idea how to set up the engine, or it's your first time, adminhelp so that a mentor can assist you.
+		. = {"Your job is to dispense supplies to the marines, including weapon attachments.
+Additionally - you are responsible for the whole ship's maintenance (e.g. engine stability).
+Your SMT's can help you out, but you have final say in your department. Make sure they're not goofing off.
 You are also next in the chain of command, should the bridge crew fall in the line of duty.
-++++++Your job is to dispense supplies to the marines, including weapon attachments.
-Your cargo techs can help you out, but you have final say in your department. Make sure they're not goofing off.
-While you may request paperwork for supplies, do not go out of your way to screw with marines, unless you want to get deposed.
 A happy ship is a well-functioning ship."}
 
 //Requisitions Officer
@@ -113,11 +111,10 @@ A happy ship is a well-functioning ship."}
 				)
 
 	generate_entry_message(mob/living/carbon/human/H)
-		. = {"Your job is to make sure the ship is clean and the powergrid is operational.
-Start with the ship's engine, and don't forget radiation equipment.
-+++++++Your job is to dispense supplies to the marines, including weapon attachments.
-Stay in your department when possible to ensure the marines have full access to the supplies they may require.
-Listen to the radio in case someone requests a supply drop via the overwatch system."}
+		. = {"Your job is to dispense supplies to the marines, including weapon attachments.
+Additionally - you are responsible for the whole ship's maintenance.
+While cargo is your main department and you need to ensure that the marines have full access to the supplies they may require - you shouldn't forget about such things as the ship's engine and e.t.c.
+Listen to the radio in case someone requests a supply drop via the overwatch system or something needs to be fixed on the ship."}
 
 //Cargo Tech. Don't ask why this is in engineering
 /*/datum/job/logistics/tech/cargo
