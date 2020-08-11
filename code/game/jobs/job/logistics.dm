@@ -102,7 +102,7 @@ A happy ship is a well-functioning ship."}
 
 	generate_wearable_equipment(mob/living/carbon/human/H)
 		. = list(
-				WEAR_EAR = /obj/item/device/radio/headset/almayer/ct,
+				WEAR_EAR = /obj/item/device/radio/headset/almayer/log,
 				WEAR_BODY = /obj/item/clothing/under/rank/cargotech,
 				WEAR_FEET = /obj/item/clothing/shoes/marine,
 				WEAR_HANDS = /obj/item/clothing/gloves/yellow,
