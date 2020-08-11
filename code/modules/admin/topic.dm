@@ -442,7 +442,7 @@
 
 
 	//Engineering (Yellow)
-		counter = 0
+/*		counter = 0
 		jobs += "<table cellpadding='1' cellspacing='0' width='100%'>"
 		jobs += "<tr bgcolor='fff5cc'><th colspan='[length(ROLES_ENGINEERING)]'><a href='?src=\ref[src];jobban3=engineeringdept;jobban4=\ref[M]'>Engineering Positions</a></th></tr><tr align='center'>"
 		for(var/jobPos in ROLES_ENGINEERING)
@@ -461,12 +461,12 @@
 				jobs += "</tr><tr align='center'>"
 				counter = 0
 		jobs += "</tr></table>"
-
-	//Cargo (Yellow) //Copy paste, yada, yada. Hopefully Snail can rework this in the future.
+*/
+	//Cargo (Yellow) //Copy paste, yada, yada. Hopefully Snail can rework this in the future. //НЕ ЗНАЮ НИКАКОГО СНЕЙЛА, ТЕПЕРЬ ЭТО ЛОГИСТИКС ДАНЖЕН
 		counter = 0
 		jobs += "<table cellpadding='1' cellspacing='0' width='100%'>"
-		jobs += "<tr bgcolor='fff5cc'><th colspan='[length(ROLES_REQUISITION)]'><a href='?src=\ref[src];jobban3=cargodept;jobban4=\ref[M]'>Requisition Positions</a></th></tr><tr align='center'>"
-		for(var/jobPos in ROLES_REQUISITION)
+		jobs += "<tr bgcolor='fff5cc'><th colspan='[length(ROLES_LOGISTICS)]'><a href='?src=\ref[src];jobban3=cargodept;jobban4=\ref[M]'>Logistics Positions</a></th></tr><tr align='center'>"
+		for(var/jobPos in ROLES_LOGISTICS)
 			if(!jobPos)	continue
 			var/datum/job/job = RoleAuthority.roles_by_name[jobPos]
 			if(!job) continue
@@ -633,14 +633,14 @@
 					var/datum/job/temp = RoleAuthority.roles_by_name[jobPos]
 					if(!temp) continue
 					joblist += temp.title
-			if("engineeringdept")
-				for(var/jobPos in ROLES_ENGINEERING)
-					if(!jobPos)	continue
-					var/datum/job/temp = RoleAuthority.roles_by_name[jobPos]
-					if(!temp) continue
-					joblist += temp.title
+//			if("engineeringdept")
+//				for(var/jobPos in ROLES_ENGINEERING)
+//					if(!jobPos)	continue
+//					var/datum/job/temp = RoleAuthority.roles_by_name[jobPos]
+//					if(!temp) continue
+//					joblist += temp.title
 			if("cargodept")
-				for(var/jobPos in ROLES_REQUISITION)
+				for(var/jobPos in ROLES_LOGISTICS)
 					if(!jobPos)	continue
 					var/datum/job/temp = RoleAuthority.roles_by_name[jobPos]
 					if(!temp) continue

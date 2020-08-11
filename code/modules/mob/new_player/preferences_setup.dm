@@ -419,9 +419,9 @@ datum/preferences
 					clothes_s.Blend(new /icon('icons/mob/belt.dmi', "m4a3_holster"), ICON_OVERLAY)
 					clothes_s.Blend(new /icon('icons/mob/mob.dmi', "card-id"), ICON_OVERLAY)
 
-		else if(job_engi_high)
-			switch(job_engi_high)
-				if(ROLE_CHIEF_ENGINEER)
+		else if(job_logistics_high)
+			switch(job_logistics_high)
+/*				if(ROLE_CHIEF_ENGINEER)
 					clothes_s = new /icon('icons/mob/uniform_0.dmi', "EC_jumpsuit")
 					clothes_s.Blend(new /icon('icons/mob/feet.dmi', "jackboots"), ICON_UNDERLAY)
 					clothes_s.Blend(new /icon('icons/mob/hands.dmi', "lightbrowngloves"), ICON_UNDERLAY)
@@ -437,7 +437,8 @@ datum/preferences
 					clothes_s.Blend(new /icon('icons/mob/back.dmi', "marinesatt"), ICON_OVERLAY)
 					clothes_s.Blend(new /icon('icons/mob/belt.dmi', "utility"), ICON_OVERLAY)
 					clothes_s.Blend(new /icon('icons/mob/mob.dmi', "card-id"), ICON_OVERLAY)
-				if(ROLE_REQUISITION_OFFICER)
+*/
+				if(ROLE_LOGISTICS_OFFICER)
 					clothes_s = new /icon('icons/mob/uniform_0.dmi', "RO_jumpsuit")
 					clothes_s.Blend(new /icon('icons/mob/feet.dmi', "jackboots"), ICON_UNDERLAY)
 					clothes_s.Blend(new /icon('icons/mob/hands.dmi', "lightbrowngloves"), ICON_UNDERLAY)
@@ -446,7 +447,7 @@ datum/preferences
 					clothes_s.Blend(new /icon('icons/mob/back.dmi', "marinesat"), ICON_OVERLAY)
 					clothes_s.Blend(new /icon('icons/mob/belt.dmi', "m44_holster_g"), ICON_OVERLAY)
 					clothes_s.Blend(new /icon('icons/mob/mob.dmi', "card-id"), ICON_OVERLAY)
-				if(ROLE_REQUISITION_TECH)
+				if(ROLE_SUPPLY_AND_MAINT_TECH)
 					clothes_s = new /icon('icons/mob/uniform_0.dmi', "cargotech")
 					clothes_s.Blend(new /icon('icons/mob/feet.dmi', "jackboots"), ICON_UNDERLAY)
 					clothes_s.Blend(new /icon('icons/mob/hands.dmi', "lightbrowngloves"), ICON_UNDERLAY)
@@ -658,19 +659,19 @@ datum/preferences
 				if(ROLE_MECH_PILOT)
 					choosen_job = "Mech Operator"
 
-		else if(job_engi_high)
-			switch(job_engi_high)
-				if(ROLE_CHIEF_ENGINEER)
-					choosen_job = "Chief Engineer"
+		else if(job_logistics_high)
+			switch(job_logistics_high)
+				if(ROLE_LOGISTICS_OFFICER)
+					choosen_job = "Logistics Officer"
 
-				if(ROLE_MAINTENANCE_TECH)
-					choosen_job = "Maintenance Tech"
+				if(ROLE_SUPPLY_AND_MAINT_TECH)
+					choosen_job = "Supply And Maintenance Tech"
 
-				if(ROLE_REQUISITION_OFFICER)
-					choosen_job = "Requisitions Officer"
-
-				if(ROLE_REQUISITION_TECH)
-					choosen_job = "Cargo Technician"
+//				if(ROLE_REQUISITION_OFFICER)
+//					choosen_job = "Requisitions Officer"
+//
+//				if(ROLE_REQUISITION_TECH)
+//					choosen_job = "Cargo Technician"
 
 		else if(job_medsci_high)
 			switch(job_medsci_high)

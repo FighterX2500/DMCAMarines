@@ -72,7 +72,7 @@
 /obj/machinery/bot/mulebot/New()
 	..()
 	botcard = new(src)
-	var/datum/job/J = RoleAuthority ? RoleAuthority.roles_by_path[/datum/job/logistics/tech/cargo] : new /datum/job/logistics/tech/cargo
+	var/datum/job/J = RoleAuthority ? RoleAuthority.roles_by_path[/datum/job/logistics/tech/maint] : new /datum/job/logistics/tech/maint
 	botcard.access = J.get_access()
 //	botcard.access += access_robotics //Why --Ikki
 	cell = new(src)

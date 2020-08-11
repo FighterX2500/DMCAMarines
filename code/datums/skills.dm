@@ -228,16 +228,29 @@
 	leadership = SKILL_LEAD_EXPERT
 
 
-/datum/skills/CE
+/*/datum/skills/CE
 	name = "Chief Engineer"
 	engineer = SKILL_ENGINEER_MT
 	construction = SKILL_CONSTRUCTION_MASTER
 	leadership = SKILL_LEAD_MASTER
 	police = SKILL_POLICE_FLASH
 	powerloader = SKILL_POWERLOADER_TRAINED
+*/
+/datum/skills/LO
+	name = "Logistics Officer"
+	engineer = SKILL_ENGINEER_MT
+	construction = SKILL_CONSTRUCTION_MASTER
+	leadership = SKILL_LEAD_MASTER
+	police = SKILL_POLICE_FLASH
+	powerloader = SKILL_POWERLOADER_TRAINED
 
+/datum/skills/SMT
+	name = "Supply and Maintenance Tech"
+	engineer = SKILL_ENGINEER_MT
+	construction = SKILL_CONSTRUCTION_MASTER
+	powerloader = SKILL_POWERLOADER_MASTER
 
-/datum/skills/RO
+/*/datum/skills/RO
 	name = "Requisition Officer"
 	construction = SKILL_CONSTRUCTION_PLASTEEL
 	leadership = SKILL_LEAD_TRAINED
@@ -253,7 +266,7 @@
 	name = "Cargo Technician"
 	construction = SKILL_CONSTRUCTION_METAL
 	powerloader = SKILL_POWERLOADER_PRO
-
+*/
 
 
 

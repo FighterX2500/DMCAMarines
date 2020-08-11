@@ -192,9 +192,9 @@
 	S["job_medsci_high"]	>> job_medsci_high
 	S["job_medsci_med"]		>> job_medsci_med
 	S["job_medsci_low"]		>> job_medsci_low
-	S["job_engi_high"]		>> job_engi_high
-	S["job_engi_med"]		>> job_engi_med
-	S["job_engi_low"]		>> job_engi_low
+	S["job_logistics_high"]	>> job_logistics_high
+	S["job_logistics_med"]	>> job_logistics_med
+	S["job_logistics_low"]	>> job_logistics_low
 	S["job_marines_high"]	>> job_marines_high
 	S["job_marines_med"]	>> job_marines_med
 	S["job_marines_low"]	>> job_marines_low
@@ -280,9 +280,9 @@
 	job_medsci_high = sanitize_integer(job_medsci_high, 0, 65535, initial(job_medsci_high))
 	job_medsci_med = sanitize_integer(job_medsci_med, 0, 65535, initial(job_medsci_med))
 	job_medsci_low = sanitize_integer(job_medsci_low, 0, 65535, initial(job_medsci_low))
-	job_engi_high = sanitize_integer(job_engi_high, 0, 65535, initial(job_engi_high))
-	job_engi_med = sanitize_integer(job_engi_med, 0, 65535, initial(job_engi_med))
-	job_engi_low = sanitize_integer(job_engi_low, 0, 65535, initial(job_engi_low))
+	job_logistics_high = sanitize_integer(job_logistics_high, 0, 65535, initial(job_logistics_high))
+	job_logistics_med = sanitize_integer(job_logistics_med, 0, 65535, initial(job_logistics_med))
+	job_logistics_low = sanitize_integer(job_logistics_low, 0, 65535, initial(job_logistics_low))
 	job_marines_high = sanitize_integer(job_marines_high, 0, 65535, initial(job_marines_high))
 	job_marines_med = sanitize_integer(job_marines_med, 0, 65535, initial(job_marines_med))
 	job_marines_low = sanitize_integer(job_marines_low, 0, 65535, initial(job_marines_low))
@@ -346,9 +346,9 @@
 	S["job_medsci_high"]	<< job_medsci_high
 	S["job_medsci_med"]		<< job_medsci_med
 	S["job_medsci_low"]		<< job_medsci_low
-	S["job_engi_high"]		<< job_engi_high
-	S["job_engi_med"]		<< job_engi_med
-	S["job_engi_low"]		<< job_engi_low
+	S["job_logistics_high"]	<< job_logistics_high
+	S["job_logistics_med"]	<< job_logistics_med
+	S["job_logistics_low"]	<< job_logistics_low
 	S["job_marines_high"]	<< job_marines_high
 	S["job_marines_med"]	<< job_marines_med
 	S["job_marines_low"]	<< job_marines_low
