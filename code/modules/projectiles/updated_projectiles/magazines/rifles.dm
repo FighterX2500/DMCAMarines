@@ -100,59 +100,6 @@
 	max_rounds = 40
 	gun_type = /obj/item/weapon/gun/rifle/type71
 
-//-------------------------------------------------------
-//UPP Saiga shotgun
 
-/obj/item/ammo_magazine/rifle/saiga
-	name = "Saiga 22 slug magazine"
-	desc = "A slug magazine that fits in the Saiga 22 shotgun."
-	caliber = "12g"
-	icon_state = "saiga_slug"
-	default_ammo = /datum/ammo/bullet/shotgun/slug
-	max_rounds = 10
-	gun_type = /obj/item/weapon/gun/rifle/saiga/
-//-------------------------------------------------------
-/obj/item/ammo_magazine/rifle/saiga/buckshot
-	name = "Saiga 22 buckshot magazine"
-	desc = "A buckshot magazine that fits in the Saiga 22 shotgun."
-	caliber = "12g"
-	icon_state = "saiga_buckshot"
-	default_ammo = /datum/ammo/bullet/shotgun/buckshot
-	max_rounds = 10
-	bonus_overlay = "saiga_buckshot_over"
-	gun_type = /obj/item/weapon/gun/rifle/saiga/
-//-------------------------------------------------------
-/obj/item/ammo_magazine/rifle/saiga/incendiary
-	name = "Saiga 22 incendiary magazine"
-	desc = "A incendiary magazine that fits in the Saiga 22 shotgun."
-	caliber = "12g"
-	icon_state = "saiga_incendiary"
-	default_ammo = /datum/ammo/bullet/shotgun/incendiary
-	max_rounds = 10
-	bonus_overlay = "saiga_incendiary_over"
-	gun_type = /obj/item/weapon/gun/rifle/saiga/
-//-------------------------------------------------------
-//AK-4047
-/obj/item/ammo_magazine/rifle/ak
-	name = "AK-4047 magazine (10x24mm)"
-	desc = "A 10mm assault rifle magazine."
-	caliber = "10x24mm"
-	icon_state = "akfuture"
-	w_class = 3
-	default_ammo = /datum/ammo/bullet/rifle/ak
-	max_rounds = 30
-	gun_type = /obj/item/weapon/gun/rifle/ak
-
-/obj/item/ammo_magazine/rifle/ak/incendiary
-	name = "AK-4047 incendiary magazine (10x24mm)"
-	desc = "A 10mm assault rifle magazine."
-	icon_state = "akfuture_incendiary"
-	default_ammo = /datum/ammo/bullet/rifle/ak/incendiary
-
-/obj/item/ammo_magazine/rifle/ak/ap
-	name = "AK-4047 AP magazine (10x24mm)"
-	desc = "A 10mm armor piercing magazine."
-	icon_state = "akfuture_AP"
-	default_ammo = /datum/ammo/bullet/rifle/ak/ap
 
 
