@@ -271,6 +271,7 @@
 		"/obj/item/ammo_magazine/sniper",
 		"/obj/item/ammo_magazine/handful",
 		"/obj/item/flareround_s",
+		"/obj/item/ammo_magazine/l42a",
 		"/obj/item/flareround_sp",
 		"/obj/item/explosive/grenade",
 		"/obj/item/explosive/mine",

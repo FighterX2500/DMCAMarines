@@ -196,6 +196,7 @@
 					/obj/item/ammobox/m39ext = 1,
 					/obj/item/ammo_magazine/smg/m39/extended = 5,
 					/obj/item/ammobox = 3,
+					/obj/item/ammo_magazine/l42a = 15,
 					/obj/item/ammo_magazine/rifle = 15,
 					/obj/item/ammobox/ext = 1,
 					/obj/item/ammo_magazine/rifle/extended = 5,
