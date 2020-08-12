@@ -214,7 +214,7 @@ var/global/list/frozen_items = list("Alpha"=list(),"Bravo"=list(),"Charlie"=list
 						dept_console = frozen_items["MP"]
 					if("Doctor","Researcher","Chief Medical Officer")
 						dept_console = frozen_items["Med"]
-					if("Maintenance Tech","Chief Engineer")
+					if("Supply And Maintenance Tech","Logistics Officer")
 						dept_console = frozen_items["Eng"]
 
 			var/list/deleteempty = list(/obj/item/storage/backpack/marine/satchel)

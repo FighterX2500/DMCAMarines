@@ -90,7 +90,7 @@ var/list/be_special_flags = list(
 #define ROLE_BRIDGE_OFFICER				4
 #define ROLE_MILITARY_POLICE			8
 #define ROLE_CORPORATE_LIAISON			16
-#define ROLE_REQUISITION_OFFICER		32
+#define ROLE_LOGISTICS_OFFICER			32
 #define ROLE_PILOT_OFFICER				64
 #define ROLE_CHIEF_MP					128
 #define ROLE_SYNTHETIC					256
@@ -98,11 +98,9 @@ var/list/be_special_flags = list(
 #define ROLE_MECH_PILOT					1024
 //=================================================
 
-#define ROLEGROUP_MARINE_ENGINEERING 	2
+#define ROLEGROUP_MARINE_LOGISTICS 		2
 
-#define ROLE_CHIEF_ENGINEER				1
-#define ROLE_MAINTENANCE_TECH			2
-#define ROLE_REQUISITION_TECH			4
+#define ROLE_SUPPLY_AND_MAINT_TECH		1
 //=================================================
 
 #define ROLEGROUP_MARINE_MED_SCIENCE 	4
@@ -130,14 +128,13 @@ var/list/be_special_flags = list(
 //=================================================
 
 //Role defines, specifically lists of roles for job bans and the like.
-#define ROLES_COMMAND 		list("Commander","Executive Officer","Staff Officer","Pilot Officer","Tank Crewman", "Mech Operator", "Military Police","Corporate Liaison","Requisitions Officer","Chief Engineer","Chief Medical Officer","Chief MP")
+#define ROLES_COMMAND 		list("Commander","Executive Officer","Staff Officer","Pilot Officer","Tank Crewman", "Mech Operator", "Military Police","Corporate Liaison","Logistics Officer","Chief Medical Officer","Chief MP")
 #define ROLES_OFFICERS		list("Commander","Executive Officer","Staff Officer","Pilot Officer","Tank Crewman", "Mech Operator","Chief MP","Military Police","Corporate Liaison", "Synthetic")
-#define ROLES_ENGINEERING 	list("Chief Engineer","Maintenance Tech")
-#define ROLES_REQUISITION 	list("Requisitions Officer","Cargo Technician")
+#define ROLES_LOGISTICS 	list("Logistics Officer","Supply And Maintenance Tech")
 #define ROLES_MEDICAL 		list("Chief Medical Officer","Doctor","Researcher")
 #define ROLES_MARINES		list("Squad Leader","Squad Specialist","Squad Smartgunner","Squad Medic","Squad Engineer","Squad Marine")
 #define ROLES_SQUAD_ALL		list("Alpha","Delta")
-#define ROLES_REGULAR_ALL	ROLES_OFFICERS + ROLES_ENGINEERING + ROLES_REQUISITION + ROLES_MEDICAL + ROLES_MARINES
+#define ROLES_REGULAR_ALL	ROLES_OFFICERS + ROLES_LOGISTICS + ROLES_MEDICAL + ROLES_MARINES
 #define ROLES_UNASSIGNED	list("Squad Marine")
 //=================================================
 

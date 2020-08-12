@@ -50,7 +50,7 @@
 
 		counter = 0
 		jobs_all += "</tr><tr><td><font color='#FFA500'><b>Engineering</b></font></td>"//Orange
-		for(var/job in ROLES_ENGINEERING)
+		for(var/job in ROLES_LOGISTICS)
 			counter++
 			if(counter >= 6)
 				jobs_all += "</tr><tr height='20'><td></td><td></td>"

@@ -118,9 +118,9 @@ datum/preferences
 	var/job_medsci_med = 0
 	var/job_medsci_low = 0
 
-	var/job_engi_high = 0
-	var/job_engi_med = 0
-	var/job_engi_low = 0
+	var/job_logistics_high = 0
+	var/job_logistics_med = 0
+	var/job_logistics_low = 0
 
 	var/job_marines_high = 0
 	var/job_marines_med = 0
@@ -691,9 +691,9 @@ datum/preferences
 	job_medsci_med = 0
 	job_medsci_low = 0
 
-	job_engi_high = 0
-	job_engi_med = 0
-	job_engi_low = 0
+	job_logistics_high = 0
+	job_logistics_med = 0
+	job_logistics_low = 0
 
 	job_marines_high = 0
 	job_marines_med = 0
@@ -718,14 +718,14 @@ datum/preferences
 					return job_medsci_med
 				if(3)
 					return job_medsci_low
-		if(ROLEGROUP_MARINE_ENGINEERING)
+		if(ROLEGROUP_MARINE_LOGISTICS)
 			switch(level)
 				if(1)
-					return job_engi_high
+					return job_logistics_high
 				if(2)
-					return job_engi_med
+					return job_logistics_med
 				if(3)
-					return job_engi_low
+					return job_logistics_low
 		if(ROLEGROUP_MARINE_SQUAD_MARINES)
 			switch(level)
 				if(1)
@@ -742,17 +742,17 @@ datum/preferences
 		if(1)//Only one of these should ever be active at once so clear them all here
 			job_command_high = 0
 			job_medsci_high = 0
-			job_engi_high = 0
+			job_logistics_high = 0
 			job_marines_high = 0
 			return 1
 		if(2)//Set current highs to med, then reset them
 			job_command_med |= job_command_high
 			job_medsci_med |= job_medsci_high
-			job_engi_med |= job_engi_high
+			job_logistics_med |= job_logistics_high
 			job_marines_med |= job_marines_high
 			job_command_high = 0
 			job_medsci_high = 0
-			job_engi_high = 0
+			job_logistics_high = 0
 			job_marines_high = 0
 
 	switch(job.department_flag)
@@ -776,16 +776,16 @@ datum/preferences
 					job_medsci_low &= ~job.flag
 				else
 					job_medsci_low |= job.flag
-		if(ROLEGROUP_MARINE_ENGINEERING)
+		if(ROLEGROUP_MARINE_LOGISTICS)
 			switch(level)
 				if(2)
-					job_engi_high = job.flag
-					job_engi_med &= ~job.flag
+					job_logistics_high = job.flag
+					job_logistics_med &= ~job.flag
 				if(3)
-					job_engi_med |= job.flag
-					job_engi_low &= ~job.flag
+					job_logistics_med |= job.flag
+					job_logistics_low &= ~job.flag
 				else
-					job_engi_low |= job.flag
+					job_logistics_low |= job.flag
 		if(ROLEGROUP_MARINE_SQUAD_MARINES)
 			switch(level)
 				if(2)

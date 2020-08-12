@@ -271,6 +271,11 @@
 	to_chat(usr, "<span class='notice'>You toggle [src]'s headset HUD [headset_hud_on ? "on":"off"].</span>")
 	playsound(src,'sound/machines/click.ogg', 20, 1)
 
+/obj/item/device/radio/headset/almayer/logoff
+	name = "logistics officer's headset"
+	desc = "The headset of the guy who is in charge of slaves. To access the engineering channel, use :e. For supply, use :U. For command, use :v."
+	icon_state = "com_headset"
+	keyslot1 = new /obj/item/device/encryptionkey/logoff
 
 /obj/item/device/radio/headset/almayer/ce
 	name = "chief engineer's headset"
@@ -301,6 +306,12 @@
 	desc = "A headset used by the RO and his slave(s). To access the supply channel, use :u."
 	icon_state = "cargo_headset"
 	keyslot1 = new /obj/item/device/encryptionkey/req
+
+/obj/item/device/radio/headset/almayer/log
+	name = "logistics radio headset"
+	desc = "A headset used by LO's kslave(s). To access the supply channel, use :u. For engineering - :e."
+	icon_state = "cargo_headset"
+	keyslot1 = new /obj/item/device/encryptionkey/log
 
 
 /obj/item/device/radio/headset/almayer/cmpcom

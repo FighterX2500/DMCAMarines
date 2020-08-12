@@ -102,7 +102,7 @@
 	data["regions"] = null
 
 	data["command_jobs"] = format_jobs(ROLES_COMMAND)
-	data["engineering_jobs"] = format_jobs(ROLES_ENGINEERING)
+	data["logistics_jobs"] = format_jobs(ROLES_LOGISTICS)
 	data["medical_jobs"] = format_jobs(ROLES_MEDICAL)
 	data["marine_jobs"] = format_jobs(ROLES_UNASSIGNED)
 	data["civilian_jobs"] = format_jobs(list("Colonist","Passenger"))

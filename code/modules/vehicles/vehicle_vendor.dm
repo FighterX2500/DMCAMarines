@@ -476,7 +476,7 @@
 	idle_power_usage = 20
 	icon = 'icons/obj/machines/drone_fab.dmi'
 	icon_state = "drone_fab_idle"
-	vendor_role = list ("Tank Crewman", "Synthetic", "Maintenance Technician")	//Having MTs and Synthetic to have access to repair machinery seems logical thing.
+	vendor_role = list ("Tank Crewman", "Synthetic", "Supply And Maintenance Tech")	//Having MTs and Synthetic to have access to repair machinery seems logical thing.
 	var/busy
 	var/obj/item/hardpoint/HP = null
 
