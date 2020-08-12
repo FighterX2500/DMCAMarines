@@ -48,7 +48,7 @@ var/global/datum/process_ui/proc_scheduler = new()
 
 /datum/process_ui/proc/display_ui()
 
-	var/text = {"<html><head>
+	var/text = {"<html>[UTF_CHARSET]<head>
 	<title>Process Scheduler UI</title>
 	</head>
 	<body>

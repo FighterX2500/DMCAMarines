@@ -136,10 +136,10 @@
 			if(P && (P.loc == src) && istype(P, /obj/item/paper) )
 
 				if(!(istype(usr, /mob/living/carbon/human) || istype(usr, /mob/dead/observer) || istype(usr, /mob/living/silicon)))
-					usr << browse(("<HTML><HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[stars(P.info)][P.stamps]</BODY></HTML>"), "window=[P.name]")
+					usr << browse(("<HTML>[UTF_CHARSET]<HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[stars(P.info)][P.stamps]</BODY></HTML>"), "window=[P.name]")
 					onclose(usr, "[P.name]")
 				else
-					usr << browse(("<HTML><HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[P.info][P.stamps]</BODY></HTML>"), "window=[P.name]")
+					usr << browse(("<HTML>[UTF_CHARSET]<HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[P.info][P.stamps]</BODY></HTML>"), "window=[P.name]")
 					onclose(usr, "[P.name]")
 
 		else if(href_list["look"])

@@ -60,7 +60,7 @@ var/global/floorIsLava = 0
 		to_chat(usr, "Error: you are not an admin!")
 		return
 
-	var/body = "<html><head><title>Options for [M.key]</title></head>"
+	var/body = "<html>[UTF_CHARSET]<head><title>Options for [M.key]</title></head>"
 	body += "<body>Options panel for <b>[M]</b>"
 	if(M.client)
 		body += " played by <b>[M.client]</b> "
@@ -282,10 +282,10 @@ var/global/floorIsLava = 0
 	if (!istype(src,/datum/admins))
 		to_chat(usr, "Error: you are not an admin!")
 		return
-	var/dat = "<html><head><title>Info on [key]</title></head>"
+	var/dat = "<html>[UTF_CHARSET]<head><title>Info on [key]</title></head>"
 	dat += "<body>"
 
-	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
+	var/savefile/info = new("data/player_saves/[copytext_char(key, 1, 2)]/[key]/info.sav")
 	var/list/infos
 	info >> infos
 	if(!infos)
@@ -323,7 +323,7 @@ var/global/floorIsLava = 0
 	if (!istype(src,/datum/admins))
 		to_chat(usr, "Error: you are not an admin!")
 		return
-	var/dat = "<html><head><title>Copying notes for [key]</title></head>"
+	var/dat = "<html>[UTF_CHARSET]<head><title>Copying notes for [key]</title></head>"
 	dat += "<body>"
 	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
 	var/list/infos

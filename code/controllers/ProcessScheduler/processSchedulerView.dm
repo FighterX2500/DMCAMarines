@@ -58,7 +58,7 @@
 	bootstrap_browse()
 	usr << browse('processScheduler.js', "file=processScheduler.js;display=0")
 
-	var/text = {"<html><head>
+	var/text = {"<html>[UTF_CHARSET]<head>
 	<title>Process Scheduler Detail</title>
 	<script type="text/javascript">var ref = '\ref[src]';</script>
 	[bootstrap_includes()]
