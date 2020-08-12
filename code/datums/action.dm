@@ -91,12 +91,21 @@
 		return TRUE
 
 /datum/action/item_action/update_button_icon()
+//	button.overlays.Cut()
+//	var/obj/item/I = target
+//	var/old = I.layer
+//	I.layer = FLOAT_LAYER
+//	button.overlays += I
+//	I.layer = old
 	button.overlays.Cut()
 	var/obj/item/I = target
-	var/old = I.layer
-	I.layer = FLOAT_LAYER
+	var/old_layer = I.layer
+	var/old_plane = I.plane
+	I.layer = ABOVE_HUD_LAYER
+	I.plane = HUD_PLANE
 	button.overlays += I
-	I.layer = old
+	I.layer = old_layer
+	I.plane = old_plane
 
 
 /datum/action/item_action/toggle/New(Target)
