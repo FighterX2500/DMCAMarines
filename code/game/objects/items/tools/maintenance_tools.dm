@@ -344,7 +344,8 @@
 //Decides whether or not to damage a player's eyes based on what they're wearing as protection
 //Note: This should probably be moved to mob
 /obj/item/tool/weldingtool/proc/eyecheck(mob/user)
-	if(!iscarbon(user))	return 1
+	return
+/*	if(!iscarbon(user))	return 1
 	var/safety = user.get_eye_protection()
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
@@ -383,7 +384,7 @@
 				H.disabilities |= NEARSIGHTED
 				spawn(100)
 					H.disabilities &= ~NEARSIGHTED
-
+*/
 
 
 
