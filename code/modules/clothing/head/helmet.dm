@@ -190,7 +190,9 @@
 						/obj/item/reagent_container/hypospray/autoinjector = "helmet_snack_eat",
 						/obj/item/reagent_container/food/snacks/packaged_burrito = "helmet_snack_burrito",
 						/obj/item/clothing/glasses/mgoggles = "goggles",
-						/obj/item/clothing/glasses/mgoggles/prescription = "goggles")
+						/obj/item/clothing/glasses/mgoggles/prescription = "goggles",
+						/obj/item/stack/medical/bruise_pack = "helmet_snack_eat",
+						/obj/item/stack/medical/ointment = "helmet_snack_eat")
 
 
 /obj/item/clothing/head/helmet/marine/New(loc,expected_type 		= /obj/item/clothing/head/helmet/marine,

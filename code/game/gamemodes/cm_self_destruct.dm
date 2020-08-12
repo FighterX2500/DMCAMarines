@@ -97,7 +97,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 		enter_allowed = 0 //No joining during evac.
 		evac_time = world.time
 		evac_status = EVACUATION_STATUS_INITIATING
-		ai_system.Announce("Attention. Emergency. All personel must evacuate immediately. You have [round(EVACUATION_ESTIMATE_DEPARTURE/60,1)] minute\s until departure.", 'sound/AI/evacuate.ogg')
+		command_announcement.Announce("Attention. Emergency. All personel must evacuate immediately. You have [round(EVACUATION_ESTIMATE_DEPARTURE/60,1)] minute\s until departure.", "ALMAYER EVACUATION SYSTEM",  new_sound='sound/AI/evacuate.ogg')
 		xeno_message("A wave of adrenaline ripples through the hive. The fleshy creatures are trying to escape!")
 		var/datum/shuttle/ferry/marine/evacuation_pod/P
 		for(var/i = 1 to MAIN_SHIP_ESCAPE_POD_NUMBER)
@@ -111,7 +111,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 		enter_allowed = 1
 		evac_time = null
 		evac_status = EVACUATION_STATUS_STANDING_BY
-		ai_system.Announce("Evacuation has been cancelled.", 'sound/AI/evacuate_cancelled.ogg')
+		command_announcement.Announce("Evacuation has been cancelled.", "ALMAYER EVACUATION SYSTEM",  new_sound='sound/AI/evacuate_cancelled.ogg')
 		var/datum/shuttle/ferry/marine/evacuation_pod/P
 		for(var/i = 1 to MAIN_SHIP_ESCAPE_POD_NUMBER)
 			P = shuttle_controller.shuttles["[MAIN_SHIP_NAME] Evac [i]"]
@@ -122,7 +122,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 	if(evac_status == EVACUATION_STATUS_INITIATING)
 		evac_status = EVACUATION_STATUS_IN_PROGRESS //Cannot cancel at this point. All shuttles are off.
 		spawn() //One of the few times spawn() is appropriate. No need for a new proc.
-			ai_system.Announce("WARNING: Evacuation order confirmed. Launching escape pods.", 'sound/AI/evacuation_confirmed.ogg')
+			command_announcement.Announce("WARNING: Evacuation order confirmed. Launching escape pods.", "ALMAYER EVACUATION SYSTEM",  new_sound='sound/AI/evacuation_confirmed.ogg')
 			var/datum/shuttle/ferry/marine/evacuation_pod/P
 			var/L[] = new
 			var/i
@@ -134,7 +134,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 				L -= i
 				sleep(50) //Sleeps 5 seconds each launch.
 			sleep(300) //Sleep 30 more seconds to make sure everyone had a chance to leave.
-			ai_system.Announce("ATTENTION: Evacuation complete. Outbound lifesigns detected: [P.passengers ? P.passengers  : "none"].", 'sound/AI/evacuation_complete.ogg')
+			command_announcement.Announce("ATTENTION: Evacuation complete. Outbound lifesigns detected: [P.passengers ? P.passengers  : "none"].", "ALMAYER EVACUATION SYSTEM",  new_sound='sound/AI/evacuation_complete.ogg')
 			evac_status = EVACUATION_STATUS_COMPLETE
 		return TRUE
 
@@ -409,7 +409,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 					to_chat(usr, "<span class='notice'>The system must be booting up the self-destruct sequence now.</span>")
 					command_announcement.Announce("Danger. The emergency destruct system is now activated. The ship will detonate in T-minus 10 minutes. The option to override automatic detonation expires in T-minus 5 minutes.", "ALMAYER SELF DESTRUCT SYSTEM", new_sound='sound/misc/notice1.ogg')
 					xeno_message("The hive is abnormally worried. The purification device is now active!")
-					world << sound('sound/AI/ARES_Self_Destruct_10m_FULL.ogg', repeat = 0, wait = 0, volume = 75, channel = 666)
+					world << sound('sound/AI/ARES_Self_Destruct_10m_FULL.ogg', repeat = 0, wait = 0, volume = 70, channel = 666)
 					EvacuationAuthority.dest_start_time = world.time
 					EvacuationAuthority.process_sd_ticking()
 					EvacuationAuthority.dest_already_armed = 1
