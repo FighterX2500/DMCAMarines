@@ -394,7 +394,7 @@
 		to_chat(src, "<span class='warning'>You are not ready to screech again.</span>")
 		return
 
-	if(!check_plasma(plasma_max))
+	if(!check_plasma(250))
 		return
 
 	//screech is so powerful it kills huggers in our hands
@@ -409,7 +409,7 @@
 			FH.Die()
 
 	has_screeched = 1
-	use_plasma(plasma_max)
+	use_plasma(250)
 	spawn(1000)
 		has_screeched = 0
 		to_chat(src, "<span class='warning'>You feel your throat muscles vibrate. You are ready to screech again.</span>")
