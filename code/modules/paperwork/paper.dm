@@ -65,10 +65,10 @@
 	if(in_range(user, src) || istype(user, /mob/dead/observer))
 		if(!(istype(user, /mob/dead/observer) || istype(user, /mob/living/carbon/human) || istype(user, /mob/living/silicon)))
 			// Show scrambled paper if they aren't a ghost, human, or silicone.
-			usr << browse(("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[stars(info)][stamps]</BODY></HTML>"), "window=[name]")
+			usr << browse(("<HTML>[UTF_CHARSET]<HEAD><TITLE>[name]</TITLE></HEAD><BODY>[stars(info)][stamps]</BODY></HTML>"), "window=[name]")
 			onclose(user, "[name]")
 		else
-			user << browse(("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[info][stamps]</BODY></HTML>"), "window=[name]")
+			user << browse(("<HTML>[UTF_CHARSET]<HEAD><TITLE>[name]</TITLE></HEAD><BODY>[info][stamps]</BODY></HTML>"), "window=[name]")
 			onclose(user, "[name]")
 	else
 		to_chat(user, "<span class='notice'>It is too far away.</span>")
@@ -105,11 +105,11 @@
 	else //cyborg or AI not seeing through a camera
 		dist = get_dist(src, user)
 	if(dist < 2)
-		usr << browse(("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[info][stamps]</BODY></HTML>"), "window=[name]")
+		usr << browse(("<HTML>[UTF_CHARSET]<HEAD><TITLE>[name]</TITLE></HEAD><BODY>[info][stamps]</BODY></HTML>"), "window=[name]")
 		onclose(usr, "[name]")
 	else
 		//Show scrambled paper
-		usr << browse(("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[stars(info)][stamps]</BODY></HTML>"), "window=[name]")
+		usr << browse(("<HTML>[UTF_CHARSET]<HEAD><TITLE>[name]</TITLE></HEAD><BODY>[stars(info)][stamps]</BODY></HTML>"), "window=[name]")
 		onclose(usr, "[name]")
 	return
 
@@ -262,7 +262,7 @@
 
 
 /obj/item/paper/proc/openhelp(mob/user as mob)
-	user << browse({"<HTML><HEAD><TITLE>Pen Help</TITLE></HEAD>
+	user << browse({"<HTML>[UTF_CHARSET]<HEAD><TITLE>Pen Help</TITLE></HEAD>
 	<BODY>
 		<b><center>Crayon&Pen commands</center></b><br>
 		<br>
@@ -343,7 +343,7 @@
 			info += t // Oh, he wants to edit to the end of the file, let him.
 			updateinfolinks()
 
-		usr << browse(("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>"), "window=[name]") // Update the window
+		usr << browse(("<HTML>[UTF_CHARSET]<HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>"), "window=[name]") // Update the window
 
 		update_icon()
 
@@ -378,7 +378,7 @@
 		if ( istype(P, /obj/item/tool/pen/robopen) && P:mode == 2 )
 			P:RenamePaper(user,src)
 		else
-			user << browse(("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[info_links][stamps]</BODY></HTML>"), "window=[name]")
+			user << browse(("<HTML>[UTF_CHARSET]<HEAD><TITLE>[name]</TITLE></HEAD><BODY>[info_links][stamps]</BODY></HTML>"), "window=[name]")
 		//openhelp(user)
 		return
 

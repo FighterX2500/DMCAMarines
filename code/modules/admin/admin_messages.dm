@@ -4,7 +4,7 @@
 	set desc = "View any Ahelps that went unanswered"
 	set category = "Admin"
 
-	var/body = "<html><head><title>Unheard Ahelps</title></head>" //DISCLAMER: I suck at HTML
+	var/body = "<html>[UTF_CHARSET]<head><title>Unheard Ahelps</title></head>" //DISCLAMER: I suck at HTML
 	body += "<body><B>Unheard Ahelps</B>"
 	body += "<br>"
 
@@ -21,7 +21,7 @@
 	set desc = "View all faxes from the CL this round"
 	set category = "Admin"
 
-	var/body = "<html><head><title>Faxes from the CL</title></head>"
+	var/body = "<html>[UTF_CHARSET]<head><title>Faxes from the CL</title></head>"
 	body += "<body><B>Faxes:</B>"
 	body += "<br><br>"
 
@@ -38,7 +38,7 @@
 	set desc = "View all faxes to USCM this round"
 	set category = "Admin"
 
-	var/body = "<html><head><title>Faxes</title></head>"
+	var/body = "<html>[UTF_CHARSET]<head><title>Faxes</title></head>"
 	body += "<body><B>Faxes:</B>"
 	body += "<br><br>"
 
