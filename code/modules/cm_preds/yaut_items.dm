@@ -324,6 +324,8 @@
 		charge = max(charge - 10, 0)
 		if(charge <= 0)
 			decloak(loc)
+		if(H.on_fire)
+			decloak(loc)
 	else
 		charge = min(charge + 30, charge_max)
 	var/perc_charge = (charge / charge_max * 100)
