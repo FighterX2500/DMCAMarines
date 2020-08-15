@@ -307,6 +307,24 @@ WEAPONS
 	containername = "rifles crate"
 	group = "Weapons"
 
+/datum/supply_packs/gun/l42a
+	contains = list(
+					/obj/item/ammo_magazine/l42a/ap,
+					/obj/item/ammo_magazine/l42a/ap,
+					/obj/item/ammo_magazine/l42a/ap,
+					/obj/item/ammo_magazine/l42a/ap,
+					/obj/item/ammo_magazine/l42a/ap,
+					/obj/item/ammo_magazine/l42a/ap,
+					/obj/item/ammo_magazine/l42a/incendiary,
+					/obj/item/ammo_magazine/l42a/incendiary,
+					/obj/item/ammo_magazine/l42a/incendiary
+					)
+	name = "surplus sniper crate (L42A AP mags x6, L42A incendiary ammo x3)"
+	cost = RO_PRICE_PRICY
+	containertype = /obj/structure/closet/crate
+	containername = "sniper crate"
+	group = "Weapons"
+
 /datum/supply_packs/gun/heavyrifle
 	contains = list(
 					/obj/item/weapon/gun/rifle/lmg,
