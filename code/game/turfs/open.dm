@@ -5,6 +5,7 @@
 	var/allow_construction = TRUE //whether you can build things like barricades on this turf.
 	var/slayer = 0 //snow layer
 	var/wet = 0 //whether the turf is wet (only used by floors).
+	plane = FLOOR_PLANE
 
 
 /turf/open/Entered(atom/A, atom/OL)
