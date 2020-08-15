@@ -410,7 +410,7 @@
 
 	has_screeched = 1
 	use_plasma(plasma_max)
-	spawn(1000)
+	spawn(750)
 		has_screeched = 0
 		to_chat(src, "<span class='warning'>You feel your throat muscles vibrate. You are ready to screech again.</span>")
 		for(var/Z in actions)
