@@ -30,6 +30,7 @@
 	vision_impair = 0
 	unacidable = 1
 	anti_hug = 100
+	var/zooming = FALSE
 
 /obj/item/clothing/mask/gas/yautja/New(location, mask_number = rand(1,7), elder_restricted = 0)
 	..()
@@ -88,16 +89,11 @@
 			to_chat(M, "<span class='notice'>Material vision module: activated.</span>")
 			if(prob(50)) playsound(src,'sound/effects/pred_vision.ogg', 15, 1)
 		if(3)
-			usr.client.change_view(14)
-			to_chat(M, "<span class='notice'>Extended vision module: activated.</span>")
-			if(prob(50)) playsound(src,'sound/effects/pred_vision.ogg', 15, 1)
-		if(4)
-			usr.client.change_view(world.view)
 			to_chat(M, "<span class='notice'>You deactivate your visor.</span>")
 			if(prob(50)) playsound(src,'sound/effects/pred_vision.ogg', 15, 1)
 	M.update_inv_glasses()
 	current_goggles++
-	if(current_goggles > 4) current_goggles = 0
+	if(current_goggles > 3) current_goggles = 0
 
 
 /obj/item/clothing/mask/gas/yautja/equipped(mob/living/carbon/human/user, slot)
@@ -328,6 +324,8 @@
 		charge = max(charge - 10, 0)
 		if(charge <= 0)
 			decloak(loc)
+		if(H.on_fire)
+			decloak(loc)
 	else
 		charge = min(charge + 30, charge_max)
 	var/perc_charge = (charge / charge_max * 100)
@@ -550,17 +548,7 @@
 		return
 
 	if(exploding)
-		if(alert("Are you sure you want to stop the countdown?","Bracers", "Yes", "No") == "Yes")
-			if(M.gloves != src)
-				return
-			if(M.stat == DEAD)
-				to_chat(M, "<span class='warning'>Little too late for that now!</span>")
-				return
-			if(!M.stat == CONSCIOUS)
-				to_chat(M, "<span class='warning'>Not while you're unconcious...</span>")
-				return
-			exploding = 0
-			to_chat(M, "<span class='notice'>Your bracers stop beeping.</span>")
+		to_chat(M, "<span class='notice'>No.</span>")
 		return
 	if((M.wear_mask && istype(M.wear_mask,/obj/item/clothing/mask/facehugger)) || M.status_flags & XENO_HOST)
 		to_chat(M, "<span class='warning'>Strange...something seems to be interfering with your bracer functions...</span>")
