@@ -9,6 +9,7 @@
 	anchored = 1
 	density = 0
 	layer = TURF_LAYER
+	plane = FLOOR_PLANE
 	unacidable = 1
 	health = 1
 
