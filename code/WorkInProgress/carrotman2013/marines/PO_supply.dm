@@ -2,7 +2,7 @@
 	name = "Crate Drop System"
 	desc = "A system for dropping supply crates during the flyby mode. Dispatch the crates through the dropship equipment console."
 	equip_category = DROPSHIP_CREW_WEAPON
-	icon = 'code/WorkInProgress/carrotman2013/marines/dropship.dmi'
+	icon = 'code/WorkInProgress/carrotman2013/marines/icons/dropship.dmi'
 	icon_state = "sup_system"
 	point_cost = 500
 	is_interactable = TRUE
