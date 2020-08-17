@@ -5,7 +5,7 @@
 	var/ntype = text2num(type)
 
 	//Add client links
-	var/dat = ""
+	var/dat = "[UTF_CHARSET]"
 	if(M.client)
 		dat += "<center><p>Client</p></center>"
 		dat += "<center>"
