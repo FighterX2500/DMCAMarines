@@ -12,8 +12,8 @@ client
 
 		if(!D)	return
 
-		var/title = ""
-		var/body = ""
+		var/title = "[UTF_CHARSET]"
+		var/body = "[UTF_CHARSET]"
 
 		//Sort of a temporary solution for right now.
 		if(istype(D,/datum/admins) && !(ishost(usr))) //Prevents non-hosts from changing their own permissions.
