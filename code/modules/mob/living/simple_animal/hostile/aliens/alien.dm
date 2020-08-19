@@ -55,6 +55,9 @@
 		hive_datum[number].xeno_lessers_list += src
 		color = hive_datum[number].color
 		name = "[hive_datum[number].prefix][name]"
+	see_invisible = SEE_INVISIBLE_MINIMUM
+	see_in_dark = 8
+	sight |= SEE_MOBS
 
 /mob/living/simple_animal/alien/verb/Enter_Bot()
 	set category = "Ghost"
@@ -86,9 +89,13 @@
 		return
 
 	var/mob/dead/observer/O = oldmob
-	if(O.timeofdeath < world.time + 300 SECONDS)
-		to_chat(O, "<span class='warning'>This alien deny you entrance!</span>")
+	if(world.time < O.timeofdeath + 300 SECONDS)
+		to_chat(O, "<span class='warning'>This alien deny you entrance! Wait another [round((O.timeofdeath + 300 SECONDS - world.time)/10)] seconds!</span>")
 		return
+
+	if(istype(src, /mob/living/simple_animal/alien/ravager) && prob(40))
+		O.timeofdeath = world.time
+		to_chat(O, "<span class='warning'>Tearer rages! You can't enter any mob for another 5 minutes!</span>")
 
 	message_admins("[key_name(oldmob)] entering [src]...")
 	src.ckey = oldmob.ckey
@@ -97,9 +104,6 @@
 	if(leader)
 		leader:bot_followers--
 		leader = null
-	see_invisible = SEE_INVISIBLE_MINIMUM
-	see_in_dark = 8
-	sight |= SEE_MOBS
 	visible_message("<span class='xenonotice'>This lesser starts look weird...</span>", "<span class='xenonotice'>Supposed intelligence filling your little spinal cord!</span>")
 	cdel(oldmob)
 
