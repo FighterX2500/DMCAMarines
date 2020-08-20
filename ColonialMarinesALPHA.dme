@@ -1475,6 +1475,8 @@
 #include "code\WorkInProgress\carrotman2013\marines\attachables.dm"
 #include "code\WorkInProgress\carrotman2013\marines\heartbeat.dm"
 #include "code\WorkInProgress\carrotman2013\other\profpref.dm"
+#include "code\WorkInProgress\carrotman2013\marines\motiondetector\pools.dm"
+#include "code\WorkInProgress\carrotman2013\marines\motiondetector\motiondetector.dm"
 #include "code\WorkInProgress\Cib\MedicalSideEffects.dm"
 #include "code\WorkInProgress\computer3\bios.dm"
 #include "code\WorkInProgress\computer3\buildandrepair.dm"
