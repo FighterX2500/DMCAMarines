@@ -187,12 +187,12 @@
 	src.icon_state = "facehugger_thrown"
 	flags_pass = PASSTABLE | PASSMOB
 	use_plasma(10)
-	throw_at(T, 4, 3, src) //Victim, distance, speed
+	throw_at(T, 4, 2, src) //Victim, distance, speed
 	spawn(2)
+		src.icon_state = "facehugger"
 		if(T.loc == src.loc)
 			leap_at_face(T)
 
-	src.icon_state = "facehugger"
 	spawn(20)
 		usedLeap = 0
 		to_chat(src, "<span class='notice'>You get ready to leap again.</span>")
