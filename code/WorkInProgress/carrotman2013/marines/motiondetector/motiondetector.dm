@@ -98,7 +98,7 @@ mob/var/current_detector = null
 				playsound(src.loc, 'sound/items/newtick.ogg', 25) //If player isn't the only blip, play ping
 		playsound(src.loc, 'sound/items/detector.ogg', 20)
 		flick("", detector_image)
-		sleep(8)
+		sleep(10)
 	active = 0
 	icon_state = "off"
 	user.current_detector = null
