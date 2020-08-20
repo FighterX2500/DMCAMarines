@@ -271,7 +271,7 @@ datum/admins/proc/DB_ban_unban_by_id(var/id)
 		to_chat(usr, "\red Failed to establish database connection")
 		return
 
-	var/output = "<div align='center'><table width='90%'><tr>"
+	var/output = "[UTF_CHARSET]<div align='center'><table width='90%'><tr>"
 
 	output += "<td width='35%' align='center'>"
 	output += "<h1>Banning panel</h1>"
