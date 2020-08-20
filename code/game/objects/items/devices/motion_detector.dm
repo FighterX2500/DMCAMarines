@@ -1,4 +1,4 @@
-
+/*
 #define MOTION_DETECTOR_LONG	0
 #define MOTION_DETECTOR_SHORT	1
 
@@ -141,4 +141,4 @@
 		sleep(12)
 		if(user.client)
 			user.client.screen -= DB
-
+*/
