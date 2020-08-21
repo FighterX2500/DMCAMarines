@@ -1130,7 +1130,7 @@
 			return
 		switch(selected_resin)
 			if("sunken colony")
-				if(hive.xeno_buildings[SUNKEN_COLONY] >= 10)
+				if(hive.xeno_buildings[SUNKEN_COLONY].len >= 10)
 					to_chat(src, "<span class='xenowarning'>Hive cannot sustain more sunken colonies!</span>")
 					return
 				if(locate(/obj/structure/alien/sunken) in range(6))
