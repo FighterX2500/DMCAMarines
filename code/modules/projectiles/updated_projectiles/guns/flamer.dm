@@ -432,7 +432,7 @@
 					Z.IgniteMob()
 			if(istype(H.wear_suit, /obj/item/clothing/suit/fire) || (istype(H.wear_suit, /obj/item/clothing/suit/storage/marine/M35) && istype(H.head, /obj/item/clothing/head/helmet/marine/pyro)))
 				H.show_message(text("Your suit protects you from the flames."),1)
-				H.adjustFireLoss(burnlevel*0.25) //Does small burn damage to a person wearing one of the suits.
+				H.adjustFireLoss(burnlevel*0.15) //Does small burn damage to a person wearing one of the suits.
 				return
 		if(isXeno(M))
 			var/mob/living/carbon/Xenomorph/X = M

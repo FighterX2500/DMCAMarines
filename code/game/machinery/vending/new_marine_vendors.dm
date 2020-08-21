@@ -902,7 +902,7 @@ var/list/available_specialist_sets = list("Scout Set", "Sniper Set", "Demolition
 							list("Flamethrower tank", 6, /obj/item/ammo_magazine/flamer_tank, null, "black"),
 							list("Whistle", 5, /obj/item/device/whistle, null, "black"),
 							list("Advanced firstaid kit", 10, /obj/item/storage/firstaid/adv, null, "orange"),
-							list("M41AE2 heavy pulse rifle", 22, /obj/item/weapon/gun/rifle/lmg, null, "orange"),
+							list("M41AE2 heavy pulse rifle", 23, /obj/item/weapon/gun/rifle/lmg, null, "orange"),
 							list("M41AE2 ammo box (10x24mm)", 8, /obj/item/ammo_magazine/rifle/lmg, null, "black"),
 							list("Tactical binoculars", 12, /obj/item/device/binoculars/tactical, null, "black"),
 
