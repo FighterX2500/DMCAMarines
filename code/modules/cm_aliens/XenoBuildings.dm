@@ -180,7 +180,7 @@
 					continue
 				targets += get_turf(Tank)
 
-	return pick(targets)
+	return targets ? pick(targets) : null
 
 /obj/structure/alien/sunken/proc/strike(turf/target)
 	set waitfor = 0
