@@ -10,7 +10,7 @@
 	return
 
 /obj/effect/manifest/proc/manifest()
-	var/dat = "<B>Crew Manifest</B>:<BR>"
+	var/dat = "[UTF_CHARSET]<B>Crew Manifest</B>:<BR>"
 	for(var/mob/living/carbon/human/M in mob_list)
 		if(M.species && M.species.name == "Yautja") continue
 		dat += text("    [] <B>[]</B> -  []<BR>", M.get_paygrade(0), M.name, M.get_assignment())
