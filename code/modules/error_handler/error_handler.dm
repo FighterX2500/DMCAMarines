@@ -25,9 +25,6 @@ var/global/total_runtimes_skipped = 0
 		//cache errors
 		error_cache.errors[erroruid] = E.name
 		error_cache.errors_stack_traces[erroruid] = E.desc
-		//show it's existance
-		log_debug("Exception detected. [E.name]. Check following file: [E.file], line [E.line].")
-		log_debug("Stack trace:[E.desc]")
 	else
 		total_runtimes_skipped++
 	return ..()
