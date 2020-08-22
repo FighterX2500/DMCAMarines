@@ -676,3 +676,19 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 		log_admin("[key_name(src)] has toggled [M.key]'s [blockname] block [state]!")
 	else
 		alert("Invalid mob")
+
+/client/proc/view_runtimes()
+	set category = "Debug"
+	set name = "View Runtimes"
+	set desc = "Open the runtime Viewer"
+
+	if(!check_rights(R_DEBUG))
+		return
+
+	if(error_cache)
+		error_cache.show_to(usr.client)
+	else
+		to_chat(usr, "<spac class='notice'>No runtimes detected</span>")
+		return
+
+	log_admin("[key_name(usr)] viewed the runtimes.")
