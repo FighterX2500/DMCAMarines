@@ -155,6 +155,7 @@ var/list/admin_verbs_debug = list(
 	/datum/proc/ra_diagnose,
 	/datum/proc/ta_purge,
 	/datum/proc/ra_purge,
+	/client/proc/view_runtimes,
 	/client/proc/scheduler,
 	/client/proc/cmd_admin_change_hivenumber
 	)
