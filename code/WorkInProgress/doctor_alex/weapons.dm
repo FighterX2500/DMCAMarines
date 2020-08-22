@@ -198,7 +198,7 @@
 	..()
 	attachable_offset = list("muzzle_x" = 32, "muzzle_y" = 14,"rail_x" = 17, "rail_y" = 19, "under_x" = 19, "under_y" = 12, "stock_x" = 24, "stock_y" = 13)
 	//scope
-	var/obj/item/attachable/scope/F = new(src)
+	var/obj/item/attachable/scope/mini/F = new(src)
 	F.attach_icon = ""
 	F.icon_state = ""
 	F.flags_attach_features &= ~ATTACH_REMOVABLE
