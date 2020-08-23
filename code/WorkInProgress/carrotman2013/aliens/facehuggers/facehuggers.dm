@@ -10,6 +10,8 @@
 	flags_pass = PASSTABLE | PASSMOB
 
 	maxHealth = 25
+	melee_damage_lower = 0
+	melee_damage_upper = 0
 	health = 25
 	plasma_stored = 20
 	plasma_max = 20
