@@ -248,6 +248,21 @@
 /mob/living/carbon/Xenomorph/facehugger/pull_response(mob/puller)
 	return TRUE
 
+/atom/proc/attack_facehugger(mob/user)
+	return
+
+/obj/machinery/door/airlock/attack_facehugger(mob/living/carbon/Xenomorph/facehugger/M)
+	for(var/atom/movable/AM in get_turf(src))
+		if(AM != src && AM.density && !AM.CanPass(M, M.loc))
+			to_chat(M, "<span class='warning'>\The [AM] prevents you from squeezing under \the [src]!</span>")
+			return
+	if(locked || welded) //Can't pass through airlocks that have been bolted down or welded
+		to_chat(M, "<span class='warning'>\The [src] is locked down tight. You can't squeeze underneath!</span>")
+		return
+	M.visible_message("<span class='warning'>\The [M] scuttles underneath \the [src]!</span>", \
+	"<span class='warning'>You squeeze and scuttle underneath \the [src].</span>", null, 5)
+	M.forceMove(loc)
+
 ////////////////
 ///No Talking///
 ////////////////
