@@ -29,6 +29,10 @@
 /obj/effect/landmark/lv624
 	icon = 'icons/misc/mark.dmi'
 
+/obj/effect/landmark/lv624/fog_blocker
+	name = "fog blocker"
+	icon_state = "spawn_event"
+
 /obj/effect/landmark/lv624/xeno_tunnel
 	name = "xeno tunnel"
 	icon_state = "spawn_event"
