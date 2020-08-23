@@ -683,6 +683,10 @@
 	if (..())
 		return TRUE
 	if (isXeno(user))
+		var/datum/hive_status/hive
+		if(!hive.living_xeno_queen)
+			to_chat(src, "<span class='warning'>There is no Queen. You are alone.</span>")
+			return
 		check_hive_status()
 	return TRUE
 

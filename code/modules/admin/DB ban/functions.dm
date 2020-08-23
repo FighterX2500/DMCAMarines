@@ -332,8 +332,8 @@ datum/admins/proc/DB_ban_unban_by_id(var/id)
 
 		adminckey = ckey(adminckey)
 		playerckey = ckey(playerckey)
-		var/adminsearch = "[UTF_CHARSET]"
-		var/playersearch = "[UTF_CHARSET]"
+		var/adminsearch = ""
+		var/playersearch = ""
 		if(adminckey)
 			adminsearch = "AND a_ckey = '[adminckey]' "
 		if(playerckey)
