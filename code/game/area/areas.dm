@@ -12,6 +12,8 @@
 	var/gas_type = GAS_TYPE_AIR
 	var/temperature = T20C
 	var/pressure = ONE_ATMOSPHERE
+	var/ambiencecooldown
+	var/oldamb
 
 
 /area/New()
@@ -293,7 +295,7 @@
 
 
 /area/Entered(A,atom/OldLoc)
-	var/musVolume = 20
+	var/musVolume = 24
 	var/sound = 'sound/ambience/ambigen1.ogg'
 
 	if(istype(A, /obj/machinery))
@@ -321,16 +323,26 @@
 	// Ambience goes down here -- make sure to list each area seperately for ease of adding things in later, thanks! Note: areas adjacent to each other should have the same sounds to prevent cutoff when possible.- LastyScratch
 	if(!(L && L.client && (L.client.prefs.toggles_sound & SOUND_AMBIENCE)))	return
 
-	if(!L.client.ambience_playing)
-		L.client.ambience_playing = 1
-		L << sound('sound/ambience/shipambience.ogg', repeat = 1, wait = 0, volume = 30, channel = 2)
+//	if(!L.client.ambience_playing || !src.ambience.len)
+//		L.client.ambience_playing = 1
+//		if(customplaying)
+//			L << sound(null, repeat = 1, wait = 0, volume = 0, channel = 1)
+//		L << sound('sound/ambience/shipambience.ogg', repeat = 1, wait = 0, volume = 15, channel = 2)
 
-	if(src.ambience.len && prob(35))
+	if(src.ambience.len)
 		sound = pick(ambience)
+		var/futureamb = sound
 
-		if(world.time > L.client.played + 900)
-			L << sound(sound, repeat = 0, wait = 0, volume = musVolume, channel = 1)
+		if(futureamb != oldamb)
+			L << sound(sound, repeat = 1, wait = 0, volume = musVolume, channel = 1)
 			L.client.played = world.time
+			oldamb = sound
+		else
+			return
+
+	else if(!L.client.ambience_playing)
+		L.client.ambience_playing = 1
+		L << sound('sound/ambience/shipambience.ogg', repeat = 1, wait = 0, volume = 15, channel = 1)
 
 /area/proc/gravitychange(var/gravitystate = 0, var/area/A)
 

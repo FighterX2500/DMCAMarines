@@ -4,6 +4,7 @@
 /area/almayer
 	icon = 'icons/turf/area_almayer.dmi'
 	ambience = list('sound/ambience/shipambience.ogg')
+	ambiencecooldown = 170
 	icon_state = "almayer"
 	ceiling = CEILING_METAL
 
