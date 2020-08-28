@@ -457,7 +457,7 @@
 				to_chat(M, "<span class='notice'>Something interrupted you while getting in.</span>")
 				return
 
-			if(M.loc != loc_check || M.loc != src)
+			if(M.loc != loc_check)
 				to_chat(M, "<span class='notice'>You stop getting in.</span>")
 				return
 
@@ -466,6 +466,9 @@
 				return
 			driver = M
 			M.Move(src)
+			if(driver.loc != src)
+				driver = null
+				return
 			if(loc_check == entrance.loc)
 				to_chat(M, "<span class='notice'>You enter the driver's seat.</span>")
 			else
@@ -496,6 +499,9 @@
 			gunner = M
 			//M.loc = src
 			M.Move(src)
+			if(gunner.loc != src)
+				gunner = null
+				return
 			deactivate_binos(gunner)
 			if(loc_check == entrance.loc)
 				to_chat(M, "<span class='notice'>You enter the driver's seat.</span>")
