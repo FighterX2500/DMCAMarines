@@ -679,15 +679,11 @@
 	name = "queen locator (click for hive status)"
 	screen_loc = ui_queen_locator
 
-/obj/screen/queen_locator/clicked(var/mob/user)
+/obj/screen/queen_locator/clicked(var/mob/living/carbon/Xenomorph/user)
 	if (..())
 		return TRUE
 	if (isXeno(user))
-		var/datum/hive_status/hive
-		if(!hive.living_xeno_queen)
-			to_chat(src, "<span class='warning'>There is no Queen. You are alone.</span>")
-			return
-		check_hive_status()
+		user.hive_status()
 	return TRUE
 
 

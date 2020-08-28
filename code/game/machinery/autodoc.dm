@@ -581,7 +581,7 @@
 			else
 				visible_message("[usr] engages the internal release mechanism, and climbs out of \the [src].")
 			return
-		if(usr.mind && usr.mind.cm_skills && usr.mind.cm_skills.surgery < SKILL_SURGERY_TRAINED && !event)
+		if(usr.mind && usr.mind.cm_skills && usr.mind.cm_skills.surgery < SKILL_MEDICAL_MEDIC && !event)
 			to_chat(usr, "<span class='warning'>You don't have the training to use this.</span>")
 			return
 		if(surgery)
