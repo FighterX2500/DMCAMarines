@@ -99,6 +99,9 @@
 ////Procs//////
 ///////////////
 
+/atom/proc/attack_facehugger(mob/living/carbon/Xenomorph/facehugger/user)
+	return attack_alien(user)
+
 //Leaping. Copypast from original facehuggers.
 /mob/living/carbon/Xenomorph/facehugger/proc/leap_at_face(mob/living/carbon/human/C)
 	if(!istype(C) || isXeno(C) || isSynth(C) || iszombie(C) || isHellhound(C) || C.stat == DEAD || C.status_flags & XENO_HOST)
@@ -183,6 +186,8 @@
 	if(!check_plasma(10))
 		return
 
+	playsound(src.loc, 'sound/voice/alien_facehugger_dies.ogg', 17, 1)
+
 	visible_message("<span class='xenowarning'>\The [src] leaps at [T]!</span>", \
 	"<span class='xenowarning'>You leap at [T]!</span>")
 	usedLeap = 1
@@ -190,7 +195,7 @@
 	flags_pass = PASSTABLE | PASSMOB
 	use_plasma(10)
 	throw_at(T, 4, 2, src) //Victim, distance, speed
-	spawn(2)
+	spawn(1)
 		src.icon_state = "facehugger"
 		if(T.loc == src.loc)
 			leap_at_face(T)
@@ -207,10 +212,6 @@
 /////////////
 //Mob stuff//
 /////////////
-
-/mob/living/carbon/Xenomorph/facehugger/UnarmedAttack(atom/A)
-	a_intent = "help" //Forces help intent for all interactions.
-	. = ..()
 
 /mob/living/carbon/Xenomorph/facehugger/update_icons()
 	var/name_prefix = ""
@@ -248,8 +249,9 @@
 /mob/living/carbon/Xenomorph/facehugger/pull_response(mob/puller)
 	return TRUE
 
-/atom/proc/attack_facehugger(mob/user)
-	return
+///////////////////////////////
+///Doors/objects on contact////
+///////////////////////////////
 
 /obj/machinery/door/airlock/attack_facehugger(mob/living/carbon/Xenomorph/facehugger/M)
 	for(var/atom/movable/AM in get_turf(src))
@@ -262,6 +264,42 @@
 	M.visible_message("<span class='warning'>\The [M] scuttles underneath \the [src]!</span>", \
 	"<span class='warning'>You squeeze and scuttle underneath \the [src].</span>", null, 5)
 	M.forceMove(loc)
+
+/obj/attack_facehugger(mob/living/carbon/Xenomorph/facehugger/M)
+	return //facehuggers can't do anything by default
+
+/obj/structure/mineral_door/resin/attack_facehugger(mob/living/carbon/Xenomorph/facehugger/M)
+	var/turf/cur_loc = M.loc
+	if(!istype(cur_loc))
+		return FALSE
+	TryToSwitchState(M)
+	return TRUE
+
+/turf/open/snow/attack_facehugger(mob/living/carbon/Xenomorph/facehugger/M)
+	return //hugger can't do shit
+
+/obj/machinery/colony_floodlight/attack_facehugger(mob/living/carbon/Xenomorph/facehugger/M)
+	M.visible_message("[M] freezes in front of [src]!","For a second, you freeze and stare at the [src], but can do nothing with it anyway!", null, 5)
+
+/mob/living/carbon/Xenomorph/facehugger/UnarmedAttack(var/atom/A, var/list/mods)
+
+	a_intent = "help"
+	if(lying) //No attacks while laying down
+		return 0
+
+	A.attack_facehugger(src)
+	next_move = world.time + (10 + attack_delay) //Adds some lag to the 'attack'
+
+/////////////////////////
+////Infecting on touch///
+/////////////////////////
+
+/mob/living/attack_facehugger(mob/living/carbon/Xenomorph/facehugger/M)
+	M.visible_message("<span class='danger'>[M] aims at [src]'s face...</span>", \
+	"<span class='danger'>You start focusing on [src]'s face.</span>", null, 5)
+	if(!do_after(M, 15, TRUE, 5, BUSY_ICON_HOSTILE))
+		return
+	M.leap_at_face(src)
 
 ////////////////
 ///No Talking///
