@@ -96,7 +96,7 @@ mob/var/current_detector = null
 			detected = null
 			if(detector_ping)
 				playsound(src.loc, 'sound/items/newtick.ogg', 25) //If player isn't the only blip, play ping
-		playsound(src.loc, 'sound/items/detector.ogg', 20)
+		playsound(src.loc, 'code/WorkInProgress/carrotman2013/marines/motiondetector/scan.ogg', 15)
 		flick("", detector_image)
 		sleep(10)
 	active = 0
@@ -111,11 +111,13 @@ mob/var/current_detector = null
 		user << "\red You deactivate the radar."
 		winshow(user, "detectorwindow", 0) //Closes the radar window
 		playsound(null) //Stops the radar pings
+		playsound(src.loc, 'code/WorkInProgress/carrotman2013/marines/motiondetector/detector_off.ogg', 15)
 		//user.current_detector = null
 	else if(!user.current_detector)
 		active = 1
 		icon_state = "on"
 		user << "\blue You activate the radar."
+		playsound(src.loc, 'code/WorkInProgress/carrotman2013/marines/motiondetector/detector_on.ogg', 15)
 		winshow(user, "detectorwindow", 1)
 		user.current_detector = src
 		Redraw(user)
