@@ -442,9 +442,6 @@
 		return
 
 	if(M == gunner || M == driver)
-		to_chat(M, "<span class='danger'>Fraymarines send their regards...</span>")
-		sleep(10)
-		M.gib()
 		return
 
 	to_chat(M, "<span class='notice'>You start climbing into [src].</span>")
@@ -460,7 +457,7 @@
 				to_chat(M, "<span class='notice'>Something interrupted you while getting in.</span>")
 				return
 
-			if(M.loc != loc_check)
+			if(M.loc != loc_check || M.loc != src)
 				to_chat(M, "<span class='notice'>You stop getting in.</span>")
 				return
 
