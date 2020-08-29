@@ -6,6 +6,7 @@
 	desc = "A strange-looking alien creature. It carries a number of scuttling jointed crablike creatures."
 	icon = 'icons/Xeno/xenomorph_64x64.dmi' //They are now like, 2x2
 	icon_state = "Carrier Walking"
+	caste_path = /datum/xeno_caste/Carrier
 	melee_damage_lower = 20
 	melee_damage_upper = 30
 	tacklemin = 2

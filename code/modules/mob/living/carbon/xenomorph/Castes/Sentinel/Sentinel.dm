@@ -6,6 +6,7 @@
 	desc = "A slithery, spitting kind of alien."
 	icon = 'icons/Xeno/xenomorph_48x48.dmi'
 	icon_state = "Sentinel Walking"
+	caste_path = /datum/xeno_caste/Sentinel
 	melee_damage_lower = 10
 	melee_damage_upper = 20
 	health = 130
