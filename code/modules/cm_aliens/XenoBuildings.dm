@@ -16,7 +16,7 @@
 	var/last_heal = 0
 	var/heal = 40
 	var/upgrade_level = 1
-	var/upgrade_max = 150
+	var/upgrade_max = 75
 	var/upgrade_stored = 0
 
 /obj/structure/alien/New()
