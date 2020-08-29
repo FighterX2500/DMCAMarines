@@ -609,7 +609,7 @@
 		to_chat(usr, "<span class='notice'>\The [src] is non-functional!</span>")
 		return
 
-	if(usr.mind && usr.mind.cm_skills && usr.mind.cm_skills.surgery < SKILL_SURGERY_TRAINED && !event)
+	if(usr.mind && usr.mind.cm_skills && usr.mind.cm_skills.surgery < SKILL_MEDICAL_MEDIC && !event)
 		to_chat(usr, "<span class='warning'>You're going to need someone trained in the use of \the [src] to help you get into it.</span>")
 		return
 
@@ -667,7 +667,7 @@
 			to_chat(user, "<span class='notice'>\The [src] is non-functional!</span>")
 			return
 
-		if(user.mind && user.mind.cm_skills && user.mind.cm_skills.surgery < SKILL_SURGERY_TRAINED && !event)
+		if(user.mind && user.mind.cm_skills && user.mind.cm_skills.medical < SKILL_MEDICAL_MEDIC && !event)
 			to_chat(user, "<span class='warning'>You have no idea how to put someone into \the [src]!</span>")
 			return
 
@@ -727,7 +727,7 @@
 		dat += "This console is not connected to a Med-Pod or the Med-Pod is non-functional."
 		to_chat(user, "This console seems to be powered down.")
 	else
-		if(user.mind && user.mind.cm_skills && user.mind.cm_skills.surgery < SKILL_SURGERY_TRAINED && !connected.event)
+		if(user.mind && user.mind.cm_skills && user.mind.cm_skills.medical < SKILL_MEDICAL_MEDIC && !connected.event)
 			to_chat(user, "<span class='warning'>You have no idea how to use this.</span>")
 			return
 		var/mob/living/occupant = connected.occupant

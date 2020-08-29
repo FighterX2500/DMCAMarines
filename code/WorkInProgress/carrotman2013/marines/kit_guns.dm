@@ -73,7 +73,7 @@
 
 /obj/item/pamphlet/medical/attack_self(mob/living/carbon/human/H as mob)
 	if(H.mind.assigned_role == "Squad Marine")
-		H.mind.cm_skills.medical = SKILL_MEDICAL_MEDIC
+		H.mind.cm_skills.medical = SKILL_MEDICAL_CHEM
 		to_chat(H, "Your medical skills have been updated.")
 		Dispose()
 	else
