@@ -290,6 +290,9 @@
 	A.attack_facehugger(src)
 	next_move = world.time + (10 + attack_delay) //Adds some lag to the 'attack'
 
+/obj/structure/ladder/attack_facehugger(mob/living/carbon/Xenomorph/facehugger/M)
+	return attack_hand(M)
+
 /////////////////////////
 ////Infecting on touch///
 /////////////////////////

@@ -63,7 +63,7 @@
 ///////////////////////////////////////
 
 /area/Entered(A,atom/OldLoc)
-	var/sound = 'sound/ambience/ambigen1.ogg'
+	var/sound
 
 	if(istype(A, /obj/machinery))
 		var/area/newarea = get_area(A)
@@ -119,7 +119,7 @@
 		sound = pick(ambience)
 		if(L.client?.last_ambience != sound)
 			L.client.ambience_playing = 1
-			L << sound(sound, repeat = 1, wait = 0, volume = 13, channel = 1)
+			L << sound(sound, repeat = 1, wait = 0, volume = 11, channel = 1)
 			L.client.last_ambience = sound
 		return
 
