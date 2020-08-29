@@ -53,7 +53,7 @@
 	if(client)
 		client.change_view(world.view) //just so we never get stuck with a large view somehow
 
-	if(client.ambience_playing)
+	if(client && client.ambience_playing)
 		src << sound(null, repeat = 0, wait = 0, channel = 1)
 
 	hide_fullscreens()
