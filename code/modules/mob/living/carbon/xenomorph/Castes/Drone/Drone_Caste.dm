@@ -1,5 +1,5 @@
 /datum/xeno_caste/Drone
-	name = "Xenomorph"
+	name = "Drone"
 	desc = "The workhorse of the hive."
 	eldery = "Young"
 	caste_type = /mob/living/carbon/Xenomorph/Drone

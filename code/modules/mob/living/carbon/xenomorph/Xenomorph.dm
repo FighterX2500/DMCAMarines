@@ -71,6 +71,9 @@
 	add_language("Hivemind") //hivemind
 	add_inherent_verbs()
 	add_abilities()
+	if(caste_path)
+		caste_datum = new caste_path()
+		caste_datum.apply_caste(src)
 
 	sight |= SEE_MOBS
 	see_invisible = SEE_INVISIBLE_MINIMUM
@@ -138,15 +141,11 @@
 	else
 		remove_language("English") // its hacky doing it here sort of
 
-	//Queens have weird, hardcoded naming conventions based on upgrade levels. They also never get nicknumbers
-	if(caste == "Queen")
-		switch(upgrade)
-			if(0) name = "[name_prefix]Queen"			 //Young
-			if(1) name = "[name_prefix]Elder Queen"	 //Mature
-			if(2) name = "[name_prefix]Elder Empress"	 //Elite
-			if(3) name = "[name_prefix]Ancient Empress" //Ancient
-	else if(caste == "Predalien") name = "[name_prefix][name] ([nicknumber])"
-	else name = "[name_prefix][upgrade_name] [caste] ([nicknumber])"
+	name = "[caste_datum.eldery] [caste_datum.name]"
+	if(caste == "Predalien")
+		name = "[name_prefix][name] ([nicknumber])"
+	else if(caste_datum.name != "Queen")
+		name += " ([nicknumber])"
 
 	//Update linked data so they show up properly
 	real_name = name
