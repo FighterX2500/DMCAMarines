@@ -145,7 +145,7 @@ These are used with cdel (clean delete). For example, cdel(atom, TA_REVIVE_ME) w
 //Alarm levels.
 #define ALARM_WARNING_FIRE 	1
 #define ALARM_WARNING_ATMOS	2
-#define ALARM_WARNING_EVAC	4
+#define ALARM_WARNING_RED	4
 #define ALARM_WARNING_READY	8
 #define ALARM_WARNING_DOWN	16
 

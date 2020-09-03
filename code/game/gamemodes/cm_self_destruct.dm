@@ -225,8 +225,6 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 		for(i in EvacuationAuthority.dest_rods)
 			I = i
 			I.in_progress = 1
-		command_announcement.Announce("DANGER. DANGER. Self destruct system activated. DANGER. DANGER. Self destruct in progress. DANGER. DANGER.", "ALMAYER SELF DESTRUCT SYSTEM")
-		xeno_message("Something extremely bad is happening...")
 		trigger_self_destruct(,,override)
 		return TRUE
 
@@ -235,8 +233,6 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 	if(dest_status < NUKE_EXPLOSION_IN_PROGRESS) //One more check for good measure, in case it's triggered through a bomb instead of the destruct mechanism/admin panel.
 		enter_allowed = 0 //Do not want baldies spawning in as everything is exploding.
 		dest_status = NUKE_EXPLOSION_IN_PROGRESS
-		playsound(origin, 'sound/machines/Alarm.ogg', 75, 0, 30)
-		to_chat(world, pick('sound/theme/nuclear_detonation1.ogg','sound/theme/nuclear_detonation2.ogg','sound/machines/Alarm.ogg'))
 
 		var/ship_status = 1
 		for(var/i in z_levels)
@@ -258,8 +254,6 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 					L1 |= M
 					shake_camera(M, 110, 4)
 
-
-		sleep(100)
 		/*Hardcoded for now, since this was never really used for anything else.
 		Would ideally use a better system for showing cutscenes.*/
 		var/obj/screen/cinematic/explosion/C = new
@@ -307,7 +301,7 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 	set background = 1
 
 	spawn while(dest_master && dest_master.loc && dest_master.active_state == SELF_DESTRUCT_MACHINE_ARMED && dest_status == NUKE_EXPLOSION_ACTIVE)
-		if(world.time >= dest_start_time + 6000)
+		if(world.time >= dest_start_time + 5970)
 			initiate_self_destruct()
 			return TRUE
 		sleep(10)
@@ -409,10 +403,12 @@ var/global/datum/authority/branch/evacuation/EvacuationAuthority //This is initi
 					to_chat(usr, "<span class='notice'>The system must be booting up the self-destruct sequence now.</span>")
 					command_announcement.Announce("Danger. The emergency destruct system is now activated. The ship will detonate in T-minus 10 minutes. The option to override automatic detonation expires in T-minus 5 minutes.", "ALMAYER SELF DESTRUCT SYSTEM", new_sound='sound/misc/notice1.ogg')
 					xeno_message("The hive is abnormally worried. The purification device is now active!")
-					world << sound('sound/AI/ARES_Self_Destruct_10m_FULL.ogg', repeat = 0, wait = 0, volume = 70, channel = 666)
+//					world << sound('sound/AI/ARES_Self_Destruct_10m_FULL.ogg', repeat = 0, wait = 0, volume = 70, channel = 666)
+					world << sound('code/WorkInProgress/carrotman2013/sounds/AI/selfdestruct.ogg', repeat = 0, wait = 0, volume = 53, channel = 666)
 					EvacuationAuthority.dest_start_time = world.time
 					EvacuationAuthority.process_sd_ticking()
 					EvacuationAuthority.dest_already_armed = 1
+					EvacuationAuthority.spawn_sd_effects()
 					var/data[] = list(
 						"dest_status" = active_state
 					)
