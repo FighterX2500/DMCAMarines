@@ -457,6 +457,9 @@
 		new_character.regenerate_icons()
 
 		new_character.key = key		//Manually transfer the key to log them in
+
+		new_character << sound('code/WorkInProgress/carrotman2013/sounds/ambience/nostromo.ogg', volume = 17, channel = 7925)
+
 		if(new_character.client) new_character.client.change_view(world.view)
 
 		return new_character
