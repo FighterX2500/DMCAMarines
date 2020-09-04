@@ -29,7 +29,7 @@ datum/AI_term_controller
 	desc = "A small CRT display with an inbuilt microcomputer which is loaded with an extensive database and allows to interact with the ship's AI. These terminals can be extremely useful."
 	icon = 'code/WorkInProgress/carrotman2013/icons/computers.dmi'
 	icon_state = "terminal"
-	var/access_type  //Every subtype of this type will be readable by this console. Use this for away terms as seen here \/
+	var/access_type = list() //Every subtype of this type will be readable by this console. Use this for away terms as seen here \/
 	var/using = FALSE
 
 	var/clicks
@@ -62,17 +62,21 @@ datum/AI_term_controller
 		to_chat(user, "<span class='warning'>Access denied</span>")
 		return
 	playsound(src, 'code/WorkInProgress/carrotman2013/sounds/computer/scroll_start.ogg', 25, 1)
+	sleep(10)
+	playsound(src, 'code/WorkInProgress/carrotman2013/sounds/computer/startup.ogg', 25, 1)
 	user.set_interaction(src)
 
 	var/dat
 	if(!entries.len)
 		get_entries()
+
+	dat += admins.len > 0 ? "<a href='?src=\ref[src];operation=InquiryAI'>>Custom Inquiry</a><br>" : "Interface unavailable<br>"
+
 	for(var/X in entries) //Allows you to remove things individually
 		var/datum/AI_entry/content = X
-		if(content.access_type == src.access_type)
+//		if(content.access_type == src.access_type)
+		if(content.access_type in src.access_type)
 			dat += "<a href='?src=\ref[src];selectitem=\ref[content]'>[content.name]</a><br>"
-
-	dat += admins.len > 0 ? "<a href='?src=\ref[src];operation=InquiryAI'>Inquiry</a><br>" : "Interface unavailable<br>"
 
 	var/datum/browser/popup = new(user, "Interface 4835", name, 300, 500)
 	popup.set_content(dat)
@@ -94,6 +98,7 @@ datum/AI_term_controller
 			var/input = stripped_input(usr, "Warning: runtimes detected - no guarantees of a response. To abort - send an empty message.", "Interface 4835 ready for inquiry", "")
 			if(!input || !(usr in view(1,src))) return FALSE
 			AI_inquiry(input, usr)
+			playsound(src, scrollsound, 25, 1)
 
 	else
 		var/datum/AI_entry/content = locate(href_list["selectitem"])
@@ -108,7 +113,7 @@ datum/AI_term_controller
 		\
 		<h4>ACCESS FILE: C:/entries/local/[content.name]</h4>\
 		<h3><i>Classification: [content.classified]</i></h3>\
-		<h6>- � Seegson systems inc, 2257</h6>\
+		<h6>- Seegson systems inc, 2186</h6>\
 		<hr style='border-top: dotted 1px;' />\
 		<h2>[content.title]</h2>\
 		\
@@ -180,7 +185,7 @@ datum/AI_term_controller
 		using = TRUE //Stops you from crashing the server with infinite sounds
 		icon_state = "terminal_scroll"
 
-		loops = clicks/4 //Each click sound has 4 clicks in it, so we only need to click 1/4th of the time per character yeet.
+		loops = clicks/3 //Each click sound has 4 clicks in it, so we only need to click 1/4th of the time per character yeet.
 		print_time = loops
 		started_printing_at = world.time
 		soundloop_start()
@@ -191,7 +196,7 @@ datum/AI_term_controller
 //////////////////
 /proc/AI_inquiry(var/text , var/mob/Sender , var/iamessage)
 	var/msg = copytext(sanitize(text), 1, MAX_MESSAGE_LEN)
-	msg = "\blue <b><font color=orange>AI Inquiry[iamessage ? " IA" : ""]:</font>[key_name(Sender, 1)] (<A HREF='?_src_=holder;ccmark=\ref[Sender]'>Mark</A>) (<A HREF='?_src_=holder;adminplayeropts=\ref[Sender]'>PP</A>) (<A HREF='?_src_=vars;Vars=\ref[Sender]'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=\ref[Sender]'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservejump=\ref[Sender]'>JMP</A>) (<A HREF='?_src_=holder;secretsadmin=check_antagonist'>CA</A>) (<A HREF='?_src_=holder;BlueSpaceArtillery=\ref[Sender]'>BSA</A>) (<A HREF='?_src_=holder;AIReply=\ref[Sender]'>RPLY</A>):</b> [msg]"
+	msg = "\blue <b><font color=orange>AI Inquiry[iamessage ? " IA" : ""]: </font>[key_name(Sender, 1)] (<A HREF='?_src_=holder;ccmark=\ref[Sender]'>Mark</A>) (<A HREF='?_src_=holder;adminplayeropts=\ref[Sender]'>PP</A>) (<A HREF='?_src_=vars;Vars=\ref[Sender]'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=\ref[Sender]'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservejump=\ref[Sender]'>JMP</A>) (<A HREF='?_src_=holder;secretsadmin=check_antagonist'>CA</A>) (<A HREF='?_src_=holder;BlueSpaceArtillery=\ref[Sender]'>BSA</A>) (<A HREF='?_src_=holder;AIReply=\ref[Sender]'>RPLY</A>):</b> [msg]"
 	for(var/client/C in admins)
 		if((R_ADMIN|R_MOD) & C.holder.rights)
 			to_chat(C, msg)
@@ -221,45 +226,59 @@ datum/AI_term_controller
 	if(!user.mind.assigned_role) return access_type = "denied"
 
 	if(user.mind.assigned_role == "Synthetic")
-		access_type = "uscmsynth"
+		access_type += "uscmsynth"
+		access_type += "uscmcaptain"
+		access_type += "uscmcommand"
+		access_type += "uscmofficer"
+		access_type += "W-YSpecial"
+		access_type += "uscmmedical"
+		access_type += "uscmpolice"
 		return
+////////////////
 	if(user.mind.assigned_role == "Corporate Liaison")
-		access_type = "W-YSpecial"
+		access_type += "W-YSpecial"
 		return
-	///////////////
-	if(user.mind.assigned_role == "Chief Medical Officer")
-		access_type = "uscmmedical"
-		return
-
-	///////////////
+///////////////
 	if(user.mind.assigned_role == "Commander")
-		access_type = "uscmcaptain"
+		access_type += "uscmcaptain"
+		access_type += "uscmcommand"
+		access_type += "uscmofficer"
+		access_type += "uscmpolice"
 		return
-
+///////////////////
 	if(user.mind.assigned_role == "Executive Officer")
-		access_type = "uscmcommand"
+		access_type += "uscmcommand"
+		access_type += "uscmofficer"
 		return
 	if(user.mind.assigned_role == "Staff Officer")
-		access_type = "uscmcommand"
+		access_type += "uscmcommand"
+		access_type += "uscmofficer"
 		return
-
+/////////////////
+	if(user.mind.assigned_role == "Chief MP")
+		access_type += "uscmpolice"
+		access_type += "uscmcommand"
+		access_type += "uscmofficer"
+		return
+/////////////////
+	if(user.mind.assigned_role == "Chief Medical Officer")
+		access_type += "uscmmedical"
+		access_type += "uscmofficer"
+		return
+////////////////////
 	if(user.mind.assigned_role == "Pilot Officer")
-		access_type = "uscmofficer"
+		access_type += "uscmofficer"
 		return
 	if(user.mind.assigned_role == "Tank Crewman")
-		access_type = "uscmofficer"
+		access_type += "uscmofficer"
 		return
 	if(user.mind.assigned_role == "Mech Operator")
-		access_type = "uscmofficer"
+		access_type += "uscmofficer"
 		return
 	if(user.mind.assigned_role == "Logistics Officer")
-		access_type = "uscmofficer"
+		access_type += "uscmofficer"
 		return
 
-	///////////////
-	if(user.mind.assigned_role == "Chief MP")
-		access_type = "uscmpolice"
-		return
 	else
 		access_type = "denied"
 
@@ -292,16 +311,30 @@ SPECIAL KEYS RESPOND AS FOLLOWS:
 
 */
 
-/datum/AI_entry/nt
-	name = "new_employees_memo.ntmail"
-	title = "Intercepted message"
-	path = "code/WorkInProgress/carrotman2013/other/AI_entries/welcome.txt"
-	access_type = "uscmcaptain"
+/*
+Теперь заметка от карротмана.
+Я поменял систему НСВ, теперь игрок получает заметки в зависимости от его роли.
+*/
 
-/datum/AI_entry/nt/ragnarok
+
+/datum/AI_entry/command
 	name = "ragnarok_class.ntdoc"
 	title = "Ragnarok Class Specifications"
 	path = "code/WorkInProgress/carrotman2013/other/AI_entries/ragnarok.txt"
+	access_type = "uscmcaptain"
+
+/datum/AI_entry/captain/
+/datum/AI_entry/officer/
+/datum/AI_entry/medical/
+/datum/AI_entry/command/
+/datum/AI_entry/synth/
+/datum/AI_entry/police/
+/datum/AI_entry/WY/
+
+/datum/AI_entry/nt//////////
+	name = "new_employees_memo.ntmail"
+	title = "Intercepted message"
+	path = "code/WorkInProgress/carrotman2013/other/AI_entries/welcome.txt"
 	access_type = "uscmcaptain"
 
 /datum/AI_entry/nt/firing_proceedure
@@ -372,10 +405,6 @@ SPECIAL KEYS RESPOND AS FOLLOWS:
 	Activate the brakes and begin a shutdown of your fighter. Once you have received more fuel, begin startup sequence as expected. If you run out of fuel, you will be stuck adrift. It is highly recommended that you RTB when you hit 100 fuel as you'll have 30 seconds or so more burn time before you fizzle out.`\
 	Tyrosene production:`\
 	1 part hydrogen : 1 part carbon to make hydrocarbon heated to 333K. Mix hydrocarbon and welding fuel to produce tyrosene fuel and apply to tyrosene fuel tanks to allow for fighter refuel ops."
-
-/datum/AI_entry/away_example
-	title = "Intercepted log file"
-	access_type = "awayexample"
 
 /datum/AI_entry/away_example/pilot_log
 	name = "pilot_log.txt"
