@@ -1514,6 +1514,27 @@
 				to_chat(X, "<b>ADMINS/MODS: \red [src.owner] replied to [key_name(H)]'s USCM message with: \blue \"[input]\"</b>")
 		to_chat(H, "\red You hear something crackle in your headset before a voice speaks, \"Please stand by for a message from USCM:\" \blue <b>\"[input]\"</b>")
 
+	else if(href_list["AIReply"])
+		var/mob/living/carbon/human/H = locate(href_list["AIReply"])
+
+		if(!istype(H))
+			to_chat(usr, "This can only be used on instances of type /mob/living/carbon/human")
+			return
+
+		//unanswered_distress -= H
+
+		var/input = input(src.owner, "Please enter a message to reply to [key_name(H)] via AI terminal.","Inquiry reply from ship's AI", "")
+		if(!input)	return
+
+		to_chat(src.owner, "You sent [input] to [H] via AI terminal.")
+		log_admin("[src.owner] replied to [key_name(H)]'s AI inquiry with the message [input].")
+		for(var/client/X in admins)
+			if((R_ADMIN|R_MOD) & X.holder.rights)
+				to_chat(X, "<b>ADMINS/MODS: \red [src.owner] replied to [key_name(H)]'s AI inquiry with: \blue \"[input]\"</b>")
+		for(var/obj/machinery/computer/AI_terminal/A in machines)
+			A.visible_message("A message suddenly appears on [A]'s screen: <font color='#009900'><b>\"[input]\"</b></font>")
+			playsound(A, A.soundloop, 25, 1)
+
 	else if(href_list["SyndicateReply"])
 		var/mob/living/carbon/human/H = locate(href_list["SyndicateReply"])
 		if(!istype(H))
