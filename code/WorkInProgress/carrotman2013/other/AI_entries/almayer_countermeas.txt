@@ -1,0 +1,5 @@
+- 'HALVE BLACK' ceramic tiles. These contain various metamaterials that distort active sensors in the radio to infrared range; they provide a delayed time before an enemy ship can acquire a target lock. Only effective when the engine is not burning.`\
+`\
+- AN/UPT-5 'SILENT' electronic countermeasure suite. Capable of identifying and employing various techniques to disarm or disable various guidance systems. Its capabilities also include jamming communication systems present on other craft, often in a bid to scramble the enemy.`\
+`\
+- VPES-3. Vapor Ejector System, a specialized gas is ejected from the ship to form a sort of cloud, distorting the ship's characteristics against enemy detection. Often used as a last resort for retreat from combat or during daring close range fighting as the gas also obscures sensors aboard the USS Almayer.

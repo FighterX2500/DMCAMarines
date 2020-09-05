@@ -1,0 +1,3 @@
+- Two 0.75cm/140 Mark 74 General Atomics railguns. Used as primary weapons in a direct conflict between spacecraft. Fires either kinetic penetrator rounds or shrapnel rounds.`\
+- 6 PD/L-122 Block 2A Point Defense lasers. Used to destroy inbound enemy missiles or any other minor objects that might threaten the ship (such as discarded missile parts).`\
+- 12 Mark 33 ASAT-LS systems. Cold launch tubes that can fire a few varieties of missiles, the most common being the ASAT-21 ‘Rapier IV’ missile used against satellites and other spacecraft and the BGM-227 ‘Sledgehammer’ missile which is used in ground attacks.
