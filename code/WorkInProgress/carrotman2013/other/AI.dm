@@ -42,6 +42,11 @@ datum/AI_term_controller
 	var/scrollsound
 	var/soundloop
 
+/////For prof-related buttons
+	var/pmc_requested = 0
+	var/tried_evac = 0
+	var/tried_sd = 0
+
 /obj/machinery/computer/AI_terminal/initialize()
 	. = ..()
 	if(!AI_term_controller)
@@ -56,7 +61,6 @@ datum/AI_term_controller
 /obj/machinery/computer/AI_terminal/attack_hand(mob/user)
 	. = ..()
 	if(using) return
-	if(user.set_interaction(src)) return
 
 	get_user_access(user)
 	if(access_type == "denied")
@@ -77,7 +81,6 @@ datum/AI_term_controller
 
 	for(var/X in entries) //Allows you to remove things individually
 		var/datum/AI_entry/content = X
-//		if(content.access_type == src.access_type)
 		if(content.access_type in src.access_type)
 			dat += "<a href='?src=\ref[src];selectitem=\ref[content]'>[content.name]</a><br>"
 
@@ -212,7 +215,7 @@ datum/AI_term_controller
 			using = FALSE
 			break
 		playsound(src, soundloop, 15)
-		sleep(13)
+		sleep(10)
 
 /obj/machinery/computer/AI_terminal/proc/get_entries()
 	for(var/datum/AI_entry/instance in AI_term_controller.entries)
@@ -240,6 +243,7 @@ datum/AI_term_controller
 ////////////////
 	if(user.mind.assigned_role == "Corporate Liaison")
 		access_type += "W-YSpecial"
+		access_type += "uscmofficer"
 		return
 ///////////////
 	if(user.mind.assigned_role == "Commander")
@@ -446,7 +450,7 @@ SPECIAL KEYS RESPOND AS FOLLOWS:
 /datum/AI_entry/WY/special
 	name = "W-Y_special_orders.uxldat"
 	title = "W-Y Special Orders"
-	access_type = "W-Yspecial"
+	access_type = "W-YSpecial"
 	content = "No specific orders detected.`\
 	No specific information provided.`\
 	Standart Operating Procedures applied."
@@ -458,7 +462,7 @@ SPECIAL KEYS RESPOND AS FOLLOWS:
 /datum/AI_entry/synth/special
 	name = "synth-special_orders.uxldat"
 	title = "USCM Special Orders"
-	access_type = "uscmspecial"
+	access_type = "uscmsynth"
 	content = "No specific orders detected.`\
 	No specific information provided.`\
 	Standart Operating Procedures applied."
@@ -466,7 +470,7 @@ SPECIAL KEYS RESPOND AS FOLLOWS:
 /datum/AI_entry/synth/predators
 	name = "bioscan_special_info.uldat"
 	title = "Xeno Alert Information"
-	access_type = "uscmofficer"
+	access_type = "uscmsynth"
 	content = "Attention. Restricted information. Synth special. Crew is prohibited from notification.`\
 	Presence of a second unknown lifeform detected during the last bioscan.`\
 	No detailed information specified on the organisms.`\
