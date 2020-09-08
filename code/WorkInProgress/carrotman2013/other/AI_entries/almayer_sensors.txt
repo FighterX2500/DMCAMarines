@@ -1,0 +1,4 @@
+- AN/PIR-27 'Percy', a passive IR sensor that is used most of the time to spot enemy craft.`\
+- AN/SPQ-337, a phased array active radar that is used to track enemy ships and missiles. It is more covert than most radar arrays due to its use of background frequencies that are filtered out by passive and active detection systems.`\
+- AN/PRQ-76, a passive radar sensor that is used for detecting any active radar transmissions within a star system.`\
+- AN/LIDAR-7, an active short range sensor often used to gain detailed information about enemy ships through the use of LIDAR and LADAR systems.

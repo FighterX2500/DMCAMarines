@@ -1,0 +1,10 @@
+Length: 278 meters`\
+Crew Capacity: 120 (320 with hypersleep capsule storage)`\
+Empty Weight: 35,000 tonnes`\
+Gross Weight (full weight): 43,000 tonnes`\
+Hangar Space: 2 AUD-25 dropships, 4 MUTT-4M7 Multipurpose Trucks, 1 M577 APC, 1 M34A2 Longstreet light tank`\
+------------`\
+Engine`\
+`\
+- Westingland S-52 Fusion Reactor: A Type V linear fusion drive provides the main ship mode of movement when not in FTL travel.`\ Capable of generating 1.2 terawatt of engine power.`\
+- Thiokol-Rockwell Dynamic Cygnus 7 hyperdrive tachyon shunt: A surprisingly efficient FTL engine capable of a dynamic power setting. Going from a lower power of traveling .75 light years per day to an afterburner of 1.3 light years per day. The USCM often uses a regular speed of 1 light year per day for patrol craft in order to avoid excessive fuel usage.

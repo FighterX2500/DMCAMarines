@@ -1477,6 +1477,7 @@
 #include "code\WorkInProgress\carrotman2013\aliens\misc.dm"
 #include "code\WorkInProgress\carrotman2013\marines\attachables.dm"
 #include "code\WorkInProgress\carrotman2013\marines\heartbeat.dm"
+#include "code\WorkInProgress\carrotman2013\other\AI.dm"
 #include "code\WorkInProgress\carrotman2013\other\profpref.dm"
 #include "code\WorkInProgress\carrotman2013\other\almayerstuff.dm"
 #include "code\WorkInProgress\carrotman2013\other\ambience.dm"
