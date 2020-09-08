@@ -338,7 +338,7 @@ var/force_mapdaemon_vote = 0
 	set name = "Map Vote"
 
 	if(!ticker.mode || !ticker.mode.round_finished)
-		to_chat(src, "<span class='notice'>Please wait until the round ends.</span>")
+		src << "<span class='notice'>Please wait until the round ends.</span>"
 		return
 
 	var/list/L = list()
@@ -349,10 +349,10 @@ var/force_mapdaemon_vote = 0
 	if(!selection || !src) return
 
 	if(selection == "Don't care")
-		to_chat(src, "<span class='notice'>You have not voted.</span>")
+		src << "<span class='notice'>You have not voted.</span>"
 		return
 
-	to_chat(src, "<span class='notice'>You have voted for [selection].</span>")
+	src << "<span class='notice'>You have voted for [selection].</span>"
 
 	player_votes[src.ckey] = selection
 
@@ -361,7 +361,7 @@ var/force_mapdaemon_vote = 0
 	set category = "Server"
 
 	force_mapdaemon_vote = !force_mapdaemon_vote
-	to_chat(src, "<span class='notice'>The server will [force_mapdaemon_vote ? "now" : "no longer"] tell Mapdaemon to start a vote the next time possible.</span>")
+	src << "<span class='notice'>The server will [force_mapdaemon_vote ? "now" : "no longer"] tell Mapdaemon to start a vote the next time possible.</span>"
 
 	message_admins("[src] is attempting to force a MapDaemon vote.")
 	log_admin("[src] is attempting to force a MapDaemon vote.")
@@ -379,7 +379,7 @@ var/force_mapdaemon_vote = 0
 
 	if(!selection || !src) return
 
-	to_chat(src, "<span class='notice'>You have forced the next map to be [selection]</span>")
+	src << "<span class='notice'>You have forced the next map to be [selection]</span>"
 
 	log_admin("[src] just forced the next map to be [selection].")
 	message_admins("[src] just forced the next map to be [selection].")
@@ -396,8 +396,8 @@ var/enable_map_vote = 1
 
 	enable_map_vote = !enable_map_vote
 
-	to_chat(world, "<span class='notice'>[src] has toggled the map vote [enable_map_vote ? "on" : "off"]</span>")
-	to_chat(src, "<span class='notice'>You have toggled the map vote [enable_map_vote ? "on" : "off"]</span>")
+	world << "<span class='notice'>[src] has toggled the map vote [enable_map_vote ? "on" : "off"]</span>"
+	src << "<span class='notice'>You have toggled the map vote [enable_map_vote ? "on" : "off"]</span>"
 
 	log_admin("[src] just toggled the map vote [enable_map_vote ? "on" : "off"].")
 	message_admins("[src] just toggled the map vote [enable_map_vote ? "on" : "off"].")
@@ -406,10 +406,10 @@ var/enable_map_vote = 1
 	set name = "Map Vote - List Maps"
 	set category = "Server"
 
-	to_chat(src, "Next map candidates:")
+	src << "Next map candidates:"
 	var/i
 	for(i in NEXT_MAP_CANDIDATES)
-		to_chat(src, i)
+		src << i
 
 /client/proc/editVotableMaps()
 	set name = "Map Vote - Edit Maps"
@@ -456,6 +456,17 @@ var/kill_map_daemon = 0
 	message_admins("[src] just killed MapDaemon. It may be restarted with \"Map Vote - Revive MapDaemon\".")
 	log_admin("[src] just killed MapDaemon. It may be restarted with \"Map Vote - Revive MapDaemon\".")
 
+/client/proc/reviveMapDaemon()
+	set name = "Map Vote - Revive MapDaemon"
+	set category = "Server"
+
+	kill_map_daemon = 0
+
+	message_admins("[src] is attempting to restart MapDaemon.")
+	log_admin("[src] is attempting to restart MapDaemon.")
+
+	run_mapdaemon_batch()
+
 //Need to return 1 so that the thing calling hooks wont think that this failed
 /hook/roundstart/proc/launchMapDaemon()
 
@@ -470,127 +481,3 @@ var/kill_map_daemon = 0
 	if(world.system_type != MS_WINDOWS) return 0 //Don't know if it'll work for non-Windows, so let's just abort
 
 	shell("run_mapdaemon.bat")
-
-
-/client/proc/reviveMapDaemon()
-	set name = "Map Vote - Revive MapDaemon"
-	set category = "Server"
-
-	kill_map_daemon = 0
-
-	message_admins("[src] is attempting to restart MapDaemon.")
-	log_admin("[src] is attempting to restart MapDaemon.")
-
-	run_mapdaemon_batch()
-
-
-//############################################ HUB DAEMON HERE #####################################
-
-
-/proc/run_hub_daemon_py()
-	set waitfor = 0
-	if(world.system_type != MS_WINDOWS)
-		shell("python3 pymapdaemon.py")
-	else
-		shell("python.exe pymapdaemon.py --bind 127.0.0.1") //DO NOT FORGET TO CHANGE IT TO PROPER NAME!!!!11
-
-
-/hook/roundend/proc/initiate_roundend_vote()
-	run_hub_daemon_py()
-	initiate_map_voting()
-	return 1
-
-/proc/initiate_map_voting()
-	if(!ticker) return
-	sleep(20)
-
-	send_map_info("current_map:" + map_tag)
-
-	var/text = ""
-	text += "<hr><br>"
-	text += "<span class='centerbold'>"
-	text += "<font color='#00CC00'><b>You have 30 seconds to vote for the next map! Use the \"Map Vote\" verb in the OOC tab or click <a href='?src=\ref[src];vote_for_map=1'>here</a> to select an option.</b></font>"
-	text += "</span>"
-	text += "<hr><br>"
-
-	to_chat(world, text)
-	world << 'sound/voice/start_your_voting.ogg'
-
-	ticker.delay_end = 1
-	log_admin("Round delayed to process votes.")
-	message_admins("Round delayed to process votes.", 1)
-
-	sleep(310) //wait for 30 sec
-
-	// procces votes
-	if(!ticker) return "ERROR"
-
-
-	var/list/L = list()
-
-	var/i
-	for(i in NEXT_MAP_CANDIDATES)
-		L[i] = 0 //Initialize it
-
-	var/forced = 0
-	var/force_result = ""
-	i = null //Sanitize for safety
-	var/j
-	for(i in player_votes)
-		j = player_votes[i]
-		if(i == "}}}") //Special invalid ckey for forcing the next map
-			forced = 1
-			force_result = j
-			continue
-		L[j] = L[j] + 1 //Just number of votes indexed by map name
-
-	i = null
-	var/most_votes = -1
-	var/next_map = ""
-	for(i in L)
-		if(L[i] > most_votes)
-			most_votes = L[i]
-			next_map = i
-
-	if(!enable_map_vote && ticker && ticker.mode)
-		next_map = ticker.mode.name
-	else if(enable_map_vote && forced)
-		next_map = force_result
-
-	text = ""
-	text += "<font color='#00CC00'>"
-
-	var/log_text = ""
-	log_text += "\[[time2text(world.realtime, "DD Month YYYY")]\] Winner: [next_map] ("
-
-	text += "The voting results were:<br>"
-	for(var/name in L)
-		text += "[name] - [L[name]]<br>"
-		log_text += "[name] - [L[name]],"
-
-	log_text += ")\n"
-
-	if(forced) text += "<b>An admin has forced the next map.</b><br>"
-	else
-		text2file(log_text, "data/map_votes.txt")
-
-	text += "<b>The next map will be on [forced ? force_result : next_map].</b>"
-
-	text += "</font>"
-
-	to_chat(world, text)
-
-	send_map_info("next_map:" + next_map) //############################################# THIS #################################
-
-
-	// votes processed, moving on
-	ticker.delay_end = 0
-	message_admins("Votes processed", 1)
-
-	//So admins have a chance to make EORG bans and do whatever
-	message_staff("NOTICE: Delay round within 30 seconds in order to prevent auto-restart!", 1)
-
-	return "success"
-
-
-//############################################ HUB DAEMON HERE #######################################
