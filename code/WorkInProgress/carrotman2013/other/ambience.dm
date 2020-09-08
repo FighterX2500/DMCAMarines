@@ -93,6 +93,7 @@
 /*
 СТАРТ
 */
+
 	if(!src.ambience.len)
 		L << sound(null, repeat = 0, wait = 0, volume = 0, channel = 1)
 		L.client.ambience_playing = 0
@@ -101,7 +102,7 @@
 ////////////
 ///Алмаер///
 ////////////
-	if(istype(src, /area/almayer))
+	if(istype(src, /area/almayer) && !EvacuationAuthority.dest_already_armed)//Чтоб не было какофонии при СД
 		sound = pick(ambience)
 		if(L.client?.last_ambience != sound)
 			L.client.last_ambience = sound

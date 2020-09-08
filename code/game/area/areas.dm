@@ -224,7 +224,7 @@
 	var/I //More important == bottom. Fire normally takes priority over everything.
 	if(flags_alarm_state && (!requires_power || power_environ)) //It either doesn't require power or the environment is powered. And there is an alarm.
 		if(flags_alarm_state & ALARM_WARNING_READY) I = "alarm_ready" //Area is ready for something.
-		if(flags_alarm_state & ALARM_WARNING_EVAC) I = "alarm_evac" //Evacuation happening.
+		if(flags_alarm_state & ALARM_WARNING_RED) I = "alarm_fire" //Evacuation happening.
 		if(flags_alarm_state & ALARM_WARNING_ATMOS) I = "alarm_atmos"	//Atmos breach.
 		if(flags_alarm_state & ALARM_WARNING_FIRE) I = "alarm_fire" //Fire happening.
 		if(flags_alarm_state & ALARM_WARNING_DOWN) I = "alarm_down" //Area is shut down.
