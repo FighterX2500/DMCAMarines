@@ -212,6 +212,9 @@ var/list/ob_type_fuel_requirements
 
 	var/turf/target = locate(T.x + inaccurate_fuel * pick(-1,1),T.y + inaccurate_fuel * pick(-1,1),T.z)
 
+	playsound(target, 'sound/weapons/gun_mortar_travel.ogg', 50, 1)
+	sleep(45)
+
 	tray.warhead.warhead_impact(target, inaccurate_fuel)
 
 	sleep(11)

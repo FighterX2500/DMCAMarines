@@ -73,9 +73,9 @@
 	//Low temperature seriously hampers larva growth (as in, way below livable), so does stasis
 	if(affected_mob.in_stasis || affected_mob.bodytemperature < 170)
 		if(stage <= 4)
-			counter += 0.33
+			counter += 0.7
 		else if(stage == 4)
-			counter += 0.11
+			counter += 0.5
 	else if(istype(affected_mob.buckled, /obj/structure/bed/nest)) //Hosts who are nested in resin nests provide an ideal setting, larva grows faster
 		counter += 2.5 //Currently twice as much and a bit, can be changed
 	else
