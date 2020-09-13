@@ -211,7 +211,8 @@ var/list/ob_type_fuel_requirements
 			inaccurate_fuel = abs(ob_type_fuel_requirements[1] - tray.fuel_amt)
 
 	var/turf/target = locate(T.x + inaccurate_fuel * pick(-1,1),T.y + inaccurate_fuel * pick(-1,1),T.z)
-
+	xeno_message("You notice something flying in the sky and leaving a long trail")
+	sleep(30)
 	playsound(target, 'sound/weapons/gun_mortar_travel.ogg', 50, 1)
 	sleep(45)
 
@@ -407,6 +408,9 @@ var/list/ob_type_fuel_requirements
 	for(var/turf/TU in range(range_num,target))
 		if(!locate(/obj/flamer_fire) in TU)
 			new/obj/flamer_fire(TU, 10, 50) //super hot flames
+		var/area/A = get_area(TU)
+		A.temperature = TCMB
+		A.pressure = 0
 
 /obj/structure/ob_ammo/warhead/cluster
 	name = "Cluster orbital warhead"

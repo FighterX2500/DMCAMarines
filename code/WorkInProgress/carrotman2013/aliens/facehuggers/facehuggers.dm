@@ -19,7 +19,7 @@
 	see_in_dark = 8
 	speed = -1.4
 	crit_health = -15
-	gib_chance = 50
+	gib_chance = 100
 	upgrade = -1
 
 	innate_healing = TRUE
