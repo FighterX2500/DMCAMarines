@@ -36,6 +36,9 @@
 	var/cooldown_central = 0
 	var/tmp_alertlevel = 0
 
+	var/time_is_set = 0
+	var/time = 0
+
 	var/status_display_freq = "1435"
 	var/stat_msg1
 	var/stat_msg2
@@ -121,6 +124,29 @@
 				return
 			if(give_medal_award(loc))
 				visible_message("<span class='notice'>[src] prints a medal.</span>")
+
+		if("deptime")
+			if(!usr.mind.cm_skills || (usr.mind.cm_skills && usr.mind.cm_skills.leadership < SKILL_LEAD_MASTER))
+				to_chat(usr, "<span class='warning'>Can't touch this.</span>")
+				return
+			if(time_is_set)
+				to_chat(usr, "<span class='warning'>The departure time was already choosen.</span>")
+				return
+
+			var/dep_time = input("Please choose a new departure time", "Departure time", null) in list("12:25", "12:30","12:35", "12:40", "12:45", "12:50")
+			switch(dep_time)
+				if("12:25")	time = 15000
+				if("12:30") time = 18000
+				if("12:35") time = 21000
+				if("12:40")	time = 24000
+				if("12:45")	time = 27000
+				if("12:50") time = 30000
+				else return
+			crew_announcement.Announce("The departure time was set to [dep_time].", to_xenos = 0)
+			time_is_set = 1
+			return
+
+
 
 		if("evacuation_start")
 			if(state == STATE_EVACUATION)
@@ -339,6 +365,7 @@
 					dat += "<BR>\[ <A HREF='?src=\ref[src];operation=announce'>Make an announcement</A> \]"
 					dat += admins.len > 0 ? "<BR>\[ <A HREF='?src=\ref[src];operation=messageUSCM'>Send a message to USCM</A> \]" : "<BR>\[ USCM communication offline \]"
 					dat += "<BR>\[ <A HREF='?src=\ref[src];operation=award'>Award a medal</A> \]"
+					dat += "<BR>\[ <A HREF='?src=\ref[src];operation=deptime'>Set departure time</A> \]"
 					dat += "<BR>\[ <A HREF='?src=\ref[src];operation=distress'>Send Distress Beacon</A> \]"
 					switch(EvacuationAuthority.evac_status)
 						if(EVACUATION_STATUS_STANDING_BY) dat += "<BR>\[ <A HREF='?src=\ref[src];operation=evacuation_start'>Initiate emergency evacuation</A> \]"
