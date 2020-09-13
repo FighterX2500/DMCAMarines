@@ -407,6 +407,8 @@ var/list/ob_type_fuel_requirements
 	for(var/turf/TU in range(range_num,target))
 		if(!locate(/obj/flamer_fire) in TU)
 			new/obj/flamer_fire(TU, 10, 50) //super hot flames
+			TU.temperature = TCMB
+			TU.pressure = 0
 
 /obj/structure/ob_ammo/warhead/cluster
 	name = "Cluster orbital warhead"
