@@ -32,7 +32,7 @@
 
 	if(!.)
 		walk(src, 0)
-		if(timeofdeath >= 5 MINUTES)
+		if(world.time >= timeofdeath + 5 MINUTES)
 			visible_message("<span class='xenowarning'>[src]'s body sizzle a little and fall apart!</span>", "")
 			cdel(src)
 		return 0
