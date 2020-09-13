@@ -175,6 +175,7 @@ Queen thingy - RESEARCH_XENO_QUEEN
 	resdesc = "Natural armor of Xenomorph race is something miraculous. It can withstand tremendous damage and regenerate itself. We have enough equipment to bolt in some imitation of this armor."
 	id = RESEARCH_XENO_ARMOR
 	req_tech = list(RESEARCH_CRUSHER_PLATING, RESEARCH_XENO_MUSCLES)
+	need_item = 0
 
 /datum/marineTech/hivelord
 	name = "Hivelord metabolism"
