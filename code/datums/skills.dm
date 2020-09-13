@@ -240,7 +240,7 @@
 	name = "Logistics Officer"
 	engineer = SKILL_ENGINEER_MT
 	construction = SKILL_CONSTRUCTION_MASTER
-	leadership = SKILL_LEAD_MASTER
+	leadership = SKILL_LEAD_EXPERT
 	police = SKILL_POLICE_FLASH
 	powerloader = SKILL_POWERLOADER_TRAINED
 

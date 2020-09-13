@@ -148,6 +148,13 @@
 			to_chat(usr, "<span class='warning'>The shuttle isn't responding to prompts, it looks like remote control was disabled.</span>")
 			return
 		//Comment to test
+
+		for(var/obj/machinery/computer/communications/C in machines)
+			if(C.time_is_set)
+				if(!skip_time_lock && world.time < C.time && istype(shuttle, /datum/shuttle/ferry/marine))
+					to_chat(usr, "<span class='warning'>The shuttle is still undergoing pre-flight fuelling and cannot depart yet. Please wait another [round((C.time-world.time)/600)] minutes before trying again.</span>")
+					return
+
 		if(!skip_time_lock && world.time < SHUTTLE_TIME_LOCK && istype(shuttle, /datum/shuttle/ferry/marine))
 			to_chat(usr, "<span class='warning'>The shuttle is still undergoing pre-flight fuelling and cannot depart yet. Please wait another [round((SHUTTLE_TIME_LOCK-world.time)/600)] minutes before trying again.</span>")
 			return
