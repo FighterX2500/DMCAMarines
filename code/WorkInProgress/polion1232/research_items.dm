@@ -605,9 +605,9 @@
 	min_cold_protection_temperature = ARMOR_min_cold_protection_temperature
 	max_heat_protection_temperature = ARMOR_max_heat_protection_temperature
 	blood_overlay_type = "armor"
-	armor = list(melee = 85, bullet = 40, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 85, bullet = 65, laser = 50, energy = 50, bomb = 60, bio = 25, rad = 30)
 	siemens_coefficient = 0.7
-	slowdown = SLOWDOWN_ARMOR_MEDIUM
+	slowdown = SLOWDOWN_ARMOR_LIGHT
 	unacidable = 1
 	is_modifyed = 1
 
@@ -617,7 +617,7 @@
 	icon = 'code/WorkInProgress/polion1232/alien_armor.dmi'
 	icon_state = "alien_helmet"
 	item_state = "alien_helmet"
-	armor = list(melee = 90, bullet = 45, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 90, bullet = 60, laser = 45, energy = 45, bomb = 55, bio = 20, rad = 25)
 	flags_inventory = COVEREYES|BLOCKSHARPOBJ|COVERMOUTH
 	flags_inv_hide = HIDEEARS|HIDEEYES|HIDEALLHAIR|HIDEMASK|HIDEFACE
 	unacidable = 1
