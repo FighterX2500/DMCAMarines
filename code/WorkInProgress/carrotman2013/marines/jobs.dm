@@ -40,8 +40,6 @@ Your role involves a lot of roleplaying, and though your supervisor is the milit
 
 /obj/item/device/radio/DJ
 	name = "DJ-Station radio"
-	desc = "Talk through this."
-	icon_state = "intercom"
 	frequency = DJ_FREQ
 
 
