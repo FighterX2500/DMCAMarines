@@ -4,7 +4,7 @@
 /datum/job/civilian/DJ
 	title = "Disc Jokey"
 	comm_title = "DJ"
-	paygrade = "E2"
+	paygrade = "C"
 	flag = ROLE_MARINE_DJ
 	department_flag = ROLEGROUP_MARINE_SQUAD_MARINES
 	total_positions = 1
@@ -53,7 +53,7 @@ Your role involves a lot of roleplaying, and though your supervisor is the milit
 /datum/job/civilian/cook
 	title = "Cook"
 	comm_title = "Cook"
-	paygrade = "E2"
+	paygrade = "C"
 	flag = ROLE_MARINE_COOK
 	department_flag = ROLEGROUP_MARINE_SQUAD_MARINES
 	total_positions = 1
