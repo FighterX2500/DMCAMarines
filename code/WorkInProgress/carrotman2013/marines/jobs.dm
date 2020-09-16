@@ -137,11 +137,11 @@ Your role involves a lot of roleplaying, and though your supervisor is the milit
 	for(var/mob/living/carbon/human/H in living_mob_list)
 		if(istype(H.wear_ear, /obj/item/device/radio/headset))
 			H << sound(casseta.sound_inside, repeat = 1, wait = 0, volume = 10, channel = 800)
-			msg = "Your hear music playing from your headset(<A HREF='?\ref[src];globalmusicstop=\ref[src]'> Stop</a>)"
+			msg = "Your hear music playing from your headset (<A HREF='?\ref[src];globalmusicstop=\ref[src]'>Stop</a>)"
 			to_chat(H, msg)
 	for(var/mob/dead/observer/O in world)
 		O << sound(casseta.sound_inside, repeat = 1, wait = 0, volume = 10, channel = 800)
-		msg = "Your hear music playing from your headset(<A HREF='?\ref[src];globalmusicstop=\ref[src]'> Stop</a>)"
+		msg = "The DJ has just put on a new song (<A HREF='?\ref[src];globalmusicstop=\ref[src]'>Stop</a>)"
 		to_chat(O, msg)
 
 	playing = 1
