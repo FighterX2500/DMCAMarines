@@ -47,6 +47,10 @@ mob/var/current_detector = null
 					var/mob/living/carbon/human/C = t
 					if(istype(C.wear_suit, /obj/item/clothing/suit/storage/marine))
 						continue
+					else if(H.gloves && istype(H.gloves, /obj/item/clothing/gloves/yautja))
+						var/obj/item/clothing/gloves/yautja/Y = H.gloves
+						if(Y && istype(Y) && Y.stealth_device)
+							continue
 					C.tracker_position = C.loc
 
 				else
