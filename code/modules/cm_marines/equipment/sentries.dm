@@ -930,7 +930,10 @@
 		*/
 		var/mob/living/carbon/human/H = M
 		if(istype(H) && H.get_target_lock(iff_signal)) continue
-
+		if(H.gloves && istype(H.gloves, /obj/item/clothing/gloves/yautja))
+			var/obj/item/clothing/gloves/yautja/Y = H.gloves
+			if(Y && istype(Y) && Y.stealth_device)
+				continue
 		var/angle = get_dir(src, M)
 		if(angle & dir)
 			path = getline2(src, M)
