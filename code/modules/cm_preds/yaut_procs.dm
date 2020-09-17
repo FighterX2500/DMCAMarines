@@ -167,8 +167,8 @@
 	var/sure = alert("An array of powerful weapons are displayed to you. Pick your gear carefully. If you cancel at any point, you will not claim your equipment.","Sure?","Begin the Hunt","No, not now")
 	if(sure == "Begin the Hunt")
 		var/melee[] = list("The Lumbering Glaive", "The Rending Chain-Whip","The Piercing Hunting Sword","The Cleaving War-Scythe", "The Adaptive Combi-Stick")
-		var/other[] = list("The Fleeting Spike Launcher", "The Swift Plasma Pistol", "The Brutal Plasma Rifle", "The Purifying Smart-Disc", "The Formidable Plate Armor", "The Enhanced Bracer")//, "The Clever Hologram")
-		var/restricted[] = list("The Fleeting Spike Launcher", "The Swift Plasma Pistol", "The Brutal Plasma Rifle", "The Formidable Plate Armor") //Can only select them once each.
+		var/other[] = list("The Fleeting Spike Launcher", "The Swift Plasma Pistol", "The Brutal Plasma Rifle", "The Purifying Smart-Disc", "The Formidable Plate Armor", "The Stealth Device", "The Enhanced Bracer")//, "The Clever Hologram")
+		var/restricted[] = list("The Fleeting Spike Launcher", "The Swift Plasma Pistol", "The Brutal Plasma Rifle", "The Formidable Plate Armor", "The Stealth Device") //Can only select them once each.
 
 		var/msel = input("Which weapon shall you use on your hunt?:","Melee Weapon") as null|anything in melee
 		if(!msel) return //We don't want them to cancel out then get nothing.
@@ -208,7 +208,7 @@
 				if("The Formidable Plate Armor")
 					new /obj/item/clothing/suit/armor/yautja/full(src.loc)
 				if("The Stealth Device")
-					Y.Stealth_device = 1
+					Y.stealth_device = 1
 				if("The Enhanced Bracer")
 					Y.charge_max += 500
 					Y.upgrades++
