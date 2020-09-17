@@ -105,7 +105,7 @@
 	if(!armed || triggered) return
 
 	if((istype(H) && H.get_target_lock(iff_signal)) || isrobot(H)) return
-	if(H.gloves && istype(H.gloves, /obj/item/clothing/gloves/yautja))
+	elst if(H.gloves && istype(H.gloves, /obj/item/clothing/gloves/yautja))
 		var/obj/item/clothing/gloves/yautja/Y = H.gloves
 		if(Y && istype(Y) && Y.stealth_device)
 			return
