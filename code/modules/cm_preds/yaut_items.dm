@@ -292,6 +292,7 @@
 	var/inject_timer = 0
 	var/cloak_timer = 0
 	var/upgrades = 0
+	var/stealth_device = 0
 
 /obj/item/clothing/gloves/yautja/emp_act(severity)
 	charge -= (severity * 500)
