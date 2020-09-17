@@ -208,7 +208,7 @@
 				if("The Formidable Plate Armor")
 					new /obj/item/clothing/suit/armor/yautja/full(src.loc)
 				if("The Stealth Device")
-					Y.Stalth_device = 1
+					Y.Stealth_device = 1
 				if("The Enhanced Bracer")
 					Y.charge_max += 500
 					Y.upgrades++
