@@ -1,5 +1,5 @@
 //Items specific to yautja. Other people can use em, they're not restricted or anything.
-//They can't, however, activate any of the special functions. te2
+//They can't, however, activate any of the special functions.
 
 //=================//\\=================\\
 //======================================\\
