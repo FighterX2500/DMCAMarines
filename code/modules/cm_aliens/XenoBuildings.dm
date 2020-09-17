@@ -165,6 +165,10 @@
 			continue
 		else if(get_dist(targ, src) < 2)
 			continue
+		else if(H.gloves && istype(H.gloves, /obj/item/clothing/gloves/yautja))
+			var/obj/item/clothing/gloves/yautja/Y = H.gloves
+			if(Y && istype(Y) && Y.stealth_device)
+				continue
 		else if(ishuman(targ))
 			var/mob/living/carbon/human/H = targ
 			if(locate(/obj/item/alien_embryo) in H)
