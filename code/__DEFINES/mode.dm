@@ -118,6 +118,8 @@ var/list/be_special_flags = list(
 #define ROLE_MARINE_STANDARD		8
 #define ROLE_MARINE_SPECIALIST		16
 #define ROLE_MARINE_SMARTGUN		32
+#define ROLE_MARINE_DJ				64
+#define ROLE_MARINE_COOK			128
 //=================================================
 
 #define ROLE_ADMIN_NOTIFY			1
@@ -132,7 +134,7 @@ var/list/be_special_flags = list(
 #define ROLES_OFFICERS		list("Commander","Executive Officer","Staff Officer","Pilot Officer","Tank Crewman", "Mech Operator","Chief MP","Military Police","Corporate Liaison", "Synthetic")
 #define ROLES_LOGISTICS 	list("Logistics Officer","Supply And Maintenance Tech")
 #define ROLES_MEDICAL 		list("Chief Medical Officer","Doctor","Researcher")
-#define ROLES_MARINES		list("Squad Leader","Squad Specialist","Squad Smartgunner","Squad Medic","Squad Engineer","Squad Marine")
+#define ROLES_MARINES		list("Squad Leader","Squad Specialist","Squad Smartgunner","Squad Medic","Squad Engineer","Squad Marine","Disc Jokey","Cook")
 #define ROLES_SQUAD_ALL		list("Alpha","Delta")
 #define ROLES_REGULAR_ALL	ROLES_OFFICERS + ROLES_LOGISTICS + ROLES_MEDICAL + ROLES_MARINES
 #define ROLES_UNASSIGNED	list("Squad Marine")
