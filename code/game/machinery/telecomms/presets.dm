@@ -81,7 +81,7 @@
 	id = "Receiver B"
 	network = "tcommsat"
 	autolinkers = list("receiverB") // link to relay
-	freq_listening = list(COMM_FREQ, ENG_FREQ, SEC_FREQ, MED_FREQ, CIV_GEN_FREQ, CIV_COMM_FREQ, SUP_FREQ, JTAC_FREQ, DJ_FREQ)
+	freq_listening = list(COMM_FREQ, ENG_FREQ, SEC_FREQ, MED_FREQ, CIV_GEN_FREQ, CIV_COMM_FREQ, SUP_FREQ, JTAC_FREQ)
 
 	//Common and other radio frequencies for people to freely use
 	New()
@@ -108,7 +108,7 @@
 /obj/machinery/telecomms/bus/preset_two
 	id = "Bus 2"
 	network = "tcommsat"
-	freq_listening = list(ALPHA_FREQ, BRAVO_FREQ, CHARLIE_FREQ, DELTA_FREQ, DJ_FREQ)
+	freq_listening = list(ALPHA_FREQ, BRAVO_FREQ, CHARLIE_FREQ, DELTA_FREQ)
 	autolinkers = list("processor2","squads")
 
 /obj/machinery/telecomms/bus/preset_three
@@ -120,8 +120,8 @@
 /obj/machinery/telecomms/bus/preset_four
 	id = "Bus 4"
 	network = "tcommsat"
-	freq_listening = list(CIV_GEN_FREQ, DJ_FREQ)
-	autolinkers = list("processor4", "common", "DJ")
+	freq_listening = list(CIV_GEN_FREQ)
+	autolinkers = list("processor4", "common")
 
 /obj/machinery/telecomms/bus/preset_four/New()
 	for(var/i = 1441, i < 1489, i += 2)
@@ -186,8 +186,8 @@
 */
 /obj/machinery/telecomms/server/presets/common
 	id = "Common Server"
-	freq_listening = list(DJ_FREQ)
-	autolinkers = list("common", "DJ")
+	freq_listening = list()
+	autolinkers = list("common")
 
 	//Common and other radio frequencies for people to freely use
 	// 1441 to 1489

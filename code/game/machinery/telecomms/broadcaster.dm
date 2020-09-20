@@ -235,9 +235,6 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 				if(H.mind.cm_skills && H.mind.cm_skills.leadership >= SKILL_LEAD_TRAINED)
 					command = 3
 
-				if(H.mind.assigned_role == "Disc Jokey")
-					command = 3
-
 				if(H.mind.role_comm_title)
 					comm_title = H.mind.role_comm_title //Set up [CO] and stuff after frequency
 		else if(istype(M,/mob/living/silicon/decoy/ship_ai)) command = 3
@@ -342,10 +339,6 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 
 		else if (display_freq == SUP_FREQ) // cargo
 			part_a = "<span class='supradio'><span class='name'>"
-
-		// DJ Station channel
-		else if (display_freq == DJ_FREQ)
-			part_a = "<span class='djradio'><span class='name'>"
 
 
 

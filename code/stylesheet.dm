@@ -30,7 +30,6 @@ em						{font-style: normal;	font-weight: bold;}
 .deptradio				{color: #993399;}
 .comradio				{color: #004080;}
 .jtacradio				{color: #9A4D3C;}
-.djradio				{color: #FF7C1C;}
 .syndradio				{color: #6D3F40;}
 .centradio				{color: #5C5C8A;}
 .airadio				{color: #FF00FF;}
