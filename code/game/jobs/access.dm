@@ -234,7 +234,6 @@ proc/get_all_job_icons() return joblist + list("Prisoner")//For all existing HUD
 				"Chief Medical Officer",
 				"Doctor",
 				"Researcher",
-				"Disc Jokey",
 				"Cook",
 				"Military Police",
 				"Chief MP"

@@ -26,9 +26,6 @@ datum/preferences
 				if(ROLE_MARINE_SMARTGUN)
 					choosen_job = "Squad Smartgunner"
 
-				if(ROLE_MARINE_DJ)
-					choosen_job = "Disc Jokey"
-
 				if(ROLE_MARINE_COOK)
 					choosen_job = "Cook"
 
