@@ -9,6 +9,7 @@
 	name = "\proper space"
 	icon_state = "0"
 	can_bloody = FALSE
+	plane = GAME_PLANE
 
 
 // override for space turfs, since they should never hide anything

@@ -47,6 +47,7 @@
 	var/move_to_delay = 3
 	var/xeno_forbid_retract = 0
 	var/xeno_number = XENO_HIVE_NORMAL
+	var/statement = 0
 
 /mob/living/simple_animal/alien/New(loc, number=XENO_HIVE_NORMAL)
 	. = ..()
@@ -55,6 +56,9 @@
 		hive_datum[number].xeno_lessers_list += src
 		color = hive_datum[number].color
 		name = "[hive_datum[number].prefix][name]"
+	see_invisible = SEE_INVISIBLE_MINIMUM
+	see_in_dark = 8
+	sight |= SEE_MOBS
 
 /mob/living/simple_animal/alien/verb/Enter_Bot()
 	set category = "Ghost"
@@ -86,8 +90,17 @@
 		return
 
 	var/mob/dead/observer/O = oldmob
-	if(O.timeofdeath < world.time + 300 SECONDS)
-		to_chat(O, "<span class='warning'>This alien deny you entrance!</span>")
+	if(world.time < O.timeofdeath + 300 SECONDS)
+		to_chat(O, "<span class='warning'>This alien deny you entrance! Wait another [round((O.timeofdeath + 300 SECONDS - world.time)/10)] seconds!</span>")
+		return
+
+	if(istype(src, /mob/living/simple_animal/alien/ravager) && prob(40))
+		O.timeofdeath = world.time
+		to_chat(O, "<span class='warning'>Tearer rages! You can't enter any mob for another 5 minutes!</span>")
+		return
+
+	if(istype(src, /mob/living/simple_animal/alien/explosive))
+		to_chat(O, "<span class='warning'>This thing don't look smart enough...</span>")
 		return
 
 	message_admins("[key_name(oldmob)] entering [src]...")
@@ -97,9 +110,6 @@
 	if(leader)
 		leader:bot_followers--
 		leader = null
-	see_invisible = SEE_INVISIBLE_MINIMUM
-	see_in_dark = 8
-	sight |= SEE_MOBS
 	visible_message("<span class='xenonotice'>This lesser starts look weird...</span>", "<span class='xenonotice'>Supposed intelligence filling your little spinal cord!</span>")
 	cdel(oldmob)
 
@@ -200,10 +210,6 @@
 		melee_damage_upper += 5*rage
 		melee_damage_lower += 5
 
-/obj/item/projectile/neurotox
-	damage = 30
-	icon_state = "toxin"
-
 
 /mob/living/simple_animal/alien/leader
 	name = "alien alpha trooper"
@@ -227,3 +233,23 @@
 		visible_message("<span class='avoidharm'>[src] easily deflects bullet!</span>","", null, 5)
 		return 1
 	return ..()
+
+
+/mob/living/simple_animal/alien/explosive
+	name = "alien suicider"
+	desc = "Fast and deadly mutated alien trooper, carrying huge amount of toxins and acid. But because his arsenal is on the show, he's quite fragile."
+	icon = 'icons/Xeno/2x2_Xenos.dmi'
+	icon_state = "Suicide Running"
+	icon_living = "Suicide Running"
+	maxHealth = 50
+	health = 50
+
+	var/datum/effect_system/smoke_spread/xeno_acid/smoke
+
+	pixel_x = -16
+	old_x = -16
+
+/mob/living/simple_animal/alien/explosive/New()
+	. = ..()
+	smoke = new /datum/effect_system/smoke_spread/xeno_acid
+	smoke.attach(src)

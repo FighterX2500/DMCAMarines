@@ -3,7 +3,7 @@
 	config_tag = "Distress Signal"
 	required_players = 1 //Need at least one player, but really we need 2.
 	xeno_required_num = 1 //Need at least one xeno.
-	monkey_amount = 10
+	monkey_amount = 7
 	flags_round_type = MODE_INFESTATION|MODE_FOG_ACTIVATED
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -28,6 +28,10 @@
 //Temporary, until we sort this out properly.
 /obj/effect/landmark/lv624
 	icon = 'icons/misc/mark.dmi'
+
+/obj/effect/landmark/lv624/fog_blocker
+	name = "fog blocker"
+	icon_state = "spawn_event"
 
 /obj/effect/landmark/lv624/xeno_tunnel
 	name = "xeno tunnel"

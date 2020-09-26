@@ -194,7 +194,7 @@
 	desc = "A suit of armor with heavy padding. It looks old, yet functional."
 	icon_state = "fullarmor"
 	flags_armor_protection = UPPER_TORSO|LOWER_TORSO|ARMS
-	armor = list(melee = 90, bullet = 95, laser = 75, energy = 75, bomb = 75, bio = 25, rad = 25)
+	armor = list(melee = 115, bullet = 120, laser = 95, energy = 95, bomb = 115, bio = 40, rad = 45)
 	slowdown = 1
 
 /obj/item/clothing/suit/armor/yautja/full/New(location)
@@ -643,14 +643,14 @@
 	if(!msg || !usr.client) return
 
 	msg = sanitize(msg)
-	msg = oldreplacetext(msg, "a", "@")
-	msg = oldreplacetext(msg, "e", "3")
+	msg = oldreplacetext(msg, "а", "@")
+	msg = oldreplacetext(msg, "е", "3")
 	msg = oldreplacetext(msg, "i", "1")
-	msg = oldreplacetext(msg, "o", "0")
+	msg = oldreplacetext(msg, "о", "0")
 	msg = oldreplacetext(msg, "u", "^")
 	msg = oldreplacetext(msg, "y", "7")
 	msg = oldreplacetext(msg, "r", "9")
-	msg = oldreplacetext(msg, "s", "5")
+	msg = oldreplacetext(msg, "п", "5")
 	msg = oldreplacetext(msg, "t", "7")
 	msg = oldreplacetext(msg, "l", "1")
 	msg = oldreplacetext(msg, "n", "*")
@@ -670,7 +670,7 @@
 		var/mob/Q
 		for(Q in hearers(usr))
 			if(Q.stat == 1) continue //Unconscious
-			if(isXeno(Q) && upgrades != 2) continue
+			if(isXeno(Q) && upgrades != 1) continue
 			to_chat(Q, "<span class='info'>A strange voice says,</span> <span class='rough'>'[msg]'.</span>")
 
 //=================//\\=================\\

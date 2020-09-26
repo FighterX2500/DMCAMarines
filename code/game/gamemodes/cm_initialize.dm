@@ -55,7 +55,7 @@ Additional game mode variables.
 	var/marine_starting_num = 0 //number of players not in something special
 	var/pred_current_num 	= 0 //How many are there now?
 	var/pred_maximum_num 	= 2 //How many are possible per round? Does not count elders.
-	var/pred_round_chance 	= 20 //%
+	var/pred_round_chance 	= 30 //%
 
 	//Some gameplay variables.
 	var/round_checkwin 		= 0

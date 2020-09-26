@@ -29,7 +29,6 @@
 	power_light = 0
 	power_equip = 0
 	power_environ = 0
-	ambience = list('sound/ambience/ambispace.ogg')
 	temperature = ICE_COLONY_TEMPERATURE
 
 /*

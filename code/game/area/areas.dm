@@ -12,6 +12,7 @@
 	var/gas_type = GAS_TYPE_AIR
 	var/temperature = T20C
 	var/pressure = ONE_ATMOSPHERE
+	var/ambiencecooldown
 
 
 /area/New()
@@ -223,7 +224,7 @@
 	var/I //More important == bottom. Fire normally takes priority over everything.
 	if(flags_alarm_state && (!requires_power || power_environ)) //It either doesn't require power or the environment is powered. And there is an alarm.
 		if(flags_alarm_state & ALARM_WARNING_READY) I = "alarm_ready" //Area is ready for something.
-		if(flags_alarm_state & ALARM_WARNING_EVAC) I = "alarm_evac" //Evacuation happening.
+		if(flags_alarm_state & ALARM_WARNING_RED) I = "alarm_fire" //Evacuation happening.
 		if(flags_alarm_state & ALARM_WARNING_ATMOS) I = "alarm_atmos"	//Atmos breach.
 		if(flags_alarm_state & ALARM_WARNING_FIRE) I = "alarm_fire" //Fire happening.
 		if(flags_alarm_state & ALARM_WARNING_DOWN) I = "alarm_down" //Area is shut down.
@@ -291,46 +292,6 @@
 		if(ENVIRON)
 			master.used_environ += amount
 
-
-/area/Entered(A,atom/OldLoc)
-	var/musVolume = 20
-	var/sound = 'sound/ambience/ambigen1.ogg'
-
-	if(istype(A, /obj/machinery))
-		var/area/newarea = get_area(A)
-		var/area/oldarea = get_area(OldLoc)
-		oldarea.master.area_machines -= A
-		newarea.master.area_machines += A
-		return
-
-	if(!istype(A,/mob/living))	return
-
-	var/mob/living/L = A
-	if(!L.ckey)	return
-
-	if(!L.lastarea)
-		L.lastarea = get_area(L.loc)
-	var/area/newarea = get_area(L.loc)
-	var/area/oldarea = L.lastarea
-	if((oldarea.has_gravity == 0) && (newarea.has_gravity == 1) && (L.m_intent == MOVE_INTENT_RUN)) // Being ready when you change areas gives you a chance to avoid falling all together.
-		thunk(L)
-		L.make_floating(0)
-
-	L.lastarea = newarea
-
-	// Ambience goes down here -- make sure to list each area seperately for ease of adding things in later, thanks! Note: areas adjacent to each other should have the same sounds to prevent cutoff when possible.- LastyScratch
-	if(!(L && L.client && (L.client.prefs.toggles_sound & SOUND_AMBIENCE)))	return
-
-	if(!L.client.ambience_playing)
-		L.client.ambience_playing = 1
-		L << sound('sound/ambience/shipambience.ogg', repeat = 1, wait = 0, volume = 30, channel = 2)
-
-	if(src.ambience.len && prob(35))
-		sound = pick(ambience)
-
-		if(world.time > L.client.played + 900)
-			L << sound(sound, repeat = 0, wait = 0, volume = musVolume, channel = 1)
-			L.client.played = world.time
 
 /area/proc/gravitychange(var/gravitystate = 0, var/area/A)
 

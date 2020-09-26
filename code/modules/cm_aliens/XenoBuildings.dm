@@ -7,6 +7,7 @@
 	pixel_x = -16
 
 	var/xeno_tag = null				//see misc.dm
+	var/number = 0
 
 	var/health = 400
 	var/maxHealth = 400
@@ -15,7 +16,7 @@
 	var/last_heal = 0
 	var/heal = 40
 	var/upgrade_level = 1
-	var/upgrade_max = 150
+	var/upgrade_max = 75
 	var/upgrade_stored = 0
 
 /obj/structure/alien/New()
@@ -23,26 +24,27 @@
 	processing_objects.Add(src)
 	if(xeno_tag)
 		var/datum/hive_status/hive = hive_datum[XENO_HIVE_NORMAL]
-		hive.xeno_buildings[xeno_tag]++
+		hive.xeno_buildings[xeno_tag] += src
+	number = rand(1, 999)
 	generate_name()
 
 /obj/structure/alien/proc/generate_name()
 	switch(upgrade_level)
 		if(1)
-			name = "Young " + initial(name)
+			name = "Young " + "[initial(name)] ([number])"
 		if(2)
-			name = "Mature " + initial(name)
+			name = "Mature " + "[initial(name)] ([number])"
 		if(3)
-			name = "Elder " + initial(name)
+			name = "Elder " + "[initial(name)] ([number])"
 		if(4 to INFINITY)
-			name = "Ancient " + initial(name)
+			name = "Ancient " + "[initial(name)] ([number])"
 
 /obj/structure/alien/Dispose()
 	. = ..()
 	processing_objects.Remove(src)
 	if(xeno_tag)
 		var/datum/hive_status/hive = hive_datum[XENO_HIVE_NORMAL]
-		hive.xeno_buildings[xeno_tag]--
+		hive.xeno_buildings[xeno_tag] -= src
 
 /obj/structure/alien/process()
 	if(dying)
@@ -109,10 +111,7 @@
 		if(W.flags_item & ANTISTRUCTURE)
 			damage *= 2
 		health -= damage
-		if(istype(src, /obj/effect/alien/resin/sticky))
-			playsound(loc, "alien_resin_move", 25)
-		else
-			playsound(loc, "alien_resin_break", 25)
+		playsound(loc, "alien_resin_break", 25)
 		healthcheck()
 	return ..()
 
@@ -121,10 +120,7 @@
 		return 0
 	M.visible_message("<span class='xenonotice'>\The [M] claws \the [src]!</span>", \
 	"<span class='xenonotice'>You claw \the [src].</span>")
-	if(istype(src, /obj/effect/alien/resin/sticky))
-		playsound(loc, "alien_resin_move", 25)
-	else
-		playsound(loc, "alien_resin_break", 25)
+	playsound(loc, "alien_resin_break", 25)
 	health -= (M.melee_damage_upper + 100) //Beef up the damage a bit
 	healthcheck()
 
@@ -167,9 +163,9 @@
 	for(var/atom/targ in orange(7, src))
 		if(istype(get_turf(targ), /turf/open/shuttle))
 			continue
-		if(get_dist(targ, src) < 2)
+		else if(get_dist(targ, src) < 2)
 			continue
-		if(ishuman(targ))
+		else if(ishuman(targ))
 			var/mob/living/carbon/human/H = targ
 			if(locate(/obj/item/alien_embryo) in H)
 				continue
@@ -178,13 +174,13 @@
 		else if(isVehicle(targ))
 			if(isMech(targ))
 				targets += get_turf(targ)
-			else if(isTank(targ))
-				var/obj/vehicle/multitile/hitbox/cm_armored/Tank = targ
-				if(Tank.root.health == 0)
+			if(istype(targ,/obj/vehicle/multitile/root/cm_armored))
+				var/obj/vehicle/multitile/root/cm_armored/Tank = targ
+				if(Tank.health == 0)
 					continue
-				targets += get_turf(targ)
+				targets += get_turf(Tank)
 
-	return pick(targets)
+	return targets.len > 0 ? pick(targets) : null
 
 /obj/structure/alien/sunken/proc/strike(turf/target)
 	set waitfor = 0
@@ -197,6 +193,7 @@
 	flick("s_hitting",src)
 
 	var/obj/effect/impaler/I = rnew(/obj/effect/impaler, target)
+	I.visible_message("<span class='xenodanger' font-size='large'>GROUND RUMBLES!</span>")
 	sleep(10)
 	I.strike(upgrade_level)
 	sleep(5)
@@ -223,10 +220,9 @@
 
 	var/obj/vehicle/V = locate(/obj/vehicle) in src.loc
 	if(V)									//Good against slow-moving targets
-		if(isTank(V))
-			var/obj/vehicle/multitile/hitbox/cm_armored/Tank = V
-			var/obj/vehicle/multitile/root/cm_armored/ROOT = Tank.root
-			ROOT.take_damage_type(damage, "abstract")
+		if(istype(V,/obj/vehicle/multitile/root/cm_armored))
+			var/obj/vehicle/multitile/root/cm_armored/Tank = V
+			Tank.take_damage_type(damage, "abstract")
 		if(isMech(V))
 			var/obj/vehicle/walker/W = V
 			W.take_damage(damage, "abstract")

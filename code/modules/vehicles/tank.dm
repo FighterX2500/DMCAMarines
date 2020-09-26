@@ -442,9 +442,6 @@
 		return
 
 	if(M == gunner || M == driver)
-		to_chat(M, "<span class='danger'>Fraymarines send their regards...</span>")
-		sleep(10)
-		M.gib()
 		return
 
 	to_chat(M, "<span class='notice'>You start climbing into [src].</span>")
@@ -469,6 +466,9 @@
 				return
 			driver = M
 			M.Move(src)
+			if(driver.loc != src)
+				driver = null
+				return
 			if(loc_check == entrance.loc)
 				to_chat(M, "<span class='notice'>You enter the driver's seat.</span>")
 			else
@@ -499,6 +499,9 @@
 			gunner = M
 			//M.loc = src
 			M.Move(src)
+			if(gunner.loc != src)
+				gunner = null
+				return
 			deactivate_binos(gunner)
 			if(loc_check == entrance.loc)
 				to_chat(M, "<span class='notice'>You enter the driver's seat.</span>")

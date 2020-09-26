@@ -1130,7 +1130,7 @@
 			return
 		switch(selected_resin)
 			if("sunken colony")
-				if(hive.xeno_buildings[SUNKEN_COLONY] >= 10)
+				if(hive.xeno_buildings[SUNKEN_COLONY].len >= 20)
 					to_chat(src, "<span class='xenowarning'>Hive cannot sustain more sunken colonies!</span>")
 					return
 				if(locate(/obj/structure/alien/sunken) in range(6))
@@ -1344,6 +1344,8 @@
 	var/stored_larva_count = ticker.mode.stored_larva
 	var/leader_list = ""
 	var/lessers_count = 0
+	var/facehugger_list = ""
+	var/facehugger_count = 0
 
 	if(!istype(user))
 		var/datum/hive_status/hive = hive_datum[XENO_HIVE_NORMAL]
@@ -1431,6 +1433,9 @@
 			if("Bloody Larva") // all larva are caste = blood larva
 				if(leader == "") larva_list += xenoinfo
 				larva_count++
+			if("Facehugger")
+				if(leader == "") facehugger_list += xenoinfo
+				facehugger_count++
 
 	dat += "<b>Total Living Sisters: [count]</b><BR>"
 	//if(exotic_count != 0) //Exotic Xenos in the Hive like Predalien or Xenoborg
@@ -1439,12 +1444,13 @@
 	dat += "<b>Tier 2: [carrier_count + hivelord_count + hunter_count + spitter_count + warrior_count] Sisters</b> | Carriers: [carrier_count] | Hivelords: [hivelord_count] | Warriors: [warrior_count] | Lurkers: [hunter_count] | Spitters: [spitter_count]<BR>"
 	dat += "<b>Tier 1: [drone_count + runner_count + sentinel_count + defender_count] Sisters</b> | Drones: [drone_count] | Runners: [runner_count] | Sentinels: [sentinel_count] | Defenders: [defender_count]<BR>"
 	dat += "<b>Larvas: [larva_count] Sisters</b><BR>"
+	dat += "<b>Facehuggers: [facehugger_count] Sisters</b><BR>"
 	if(istype(user)) // cover calling it without parameters
 		if(user.hivenumber == XENO_HIVE_NORMAL)
 			dat += "<b>Burrowed Larva: [stored_larva_count] Sisters<BR>"
 	dat +="<b>Lesser Sisters: [lessers_count]</b><BR>"
 	dat += "<table cellspacing=4>"
-	dat += queen_list + leader_list + boiler_list + crusher_list + praetorian_list + ravager_list + carrier_list + hivelord_list + warrior_list + hunter_list + spitter_list + drone_list + runner_list + sentinel_list + defender_list + larva_list
+	dat += queen_list + leader_list + boiler_list + crusher_list + praetorian_list + ravager_list + carrier_list + hivelord_list + warrior_list + hunter_list + spitter_list + drone_list + runner_list + sentinel_list + defender_list + larva_list + facehugger_list
 	dat += "</table></body>"
 	usr << browse(dat, "window=roundstatus;size=500x500")
 

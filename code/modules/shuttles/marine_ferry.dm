@@ -428,6 +428,11 @@
 			for(var/mob/living/carbon/Xenomorph/Larva/larva in potential_host)
 				cdel(larva)
 
+	command_announcement.Announce("General Quarters, General Quarters. All hands man your battle stations." , "Automated Bridge Announcement", new_sound='code/WorkInProgress/carrotman2013/sounds/AI/Generalquaters.ogg')
+	for(var/obj/machinery/firealarm/FA in machines)
+		if(FA.z == MAIN_SHIP_Z_LEVEL)
+			FA.startemergency()
+
 	sleep(travel_time) //Wait while we fly, but give extra time for crashing announcements etc
 
 	if(EvacuationAuthority.dest_status >= NUKE_EXPLOSION_IN_PROGRESS) return FALSE //If a nuke is in progress, don't attempt a landing.
@@ -449,6 +454,10 @@
 		if(prob(A.crash_break_probability))
 			A.overload_lighting()
 			A.set_broken()
+
+	for(var/obj/machinery/firealarm/FA in machines)
+		if(FA.z == MAIN_SHIP_Z_LEVEL)
+			FA.resetemergency()
 
 	var/turf/sploded
 	for(var/j=0; j<10; j++)

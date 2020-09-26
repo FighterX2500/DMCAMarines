@@ -822,6 +822,8 @@ TUNNEL
 			switch(rand(0, 40))
 				if(10, 20)
 					new /mob/living/simple_animal/alien/ravager(src.loc, hivenumber)
+				if(21 to 23)
+					new /mob/living/simple_animal/alien/explosive(src.loc, hivenumber)
 				if(7 to 12)
 					new /mob/living/simple_animal/alien/drone(src.loc, hivenumber)
 				if(1 to 3)

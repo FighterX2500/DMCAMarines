@@ -93,28 +93,28 @@ datum/mind
 
 
 	proc/store_memory(new_text)
-		memory += "[new_text]<BR>"
+		memory += "[new_text]<br>"
 
 	proc/show_memory(mob/recipient)
-		var/output = "<B>[current.real_name]'s Memory</B><HR>"
+		var/output = "[UTF_CHARSET]<b>[current.real_name]'s Memory</b><hr>"
 		output += memory
 
 		if(objectives.len>0)
-			output += "<HR><B>Objectives:</B>"
+			output += "<hr><b>Objectives:</b>"
 
 			var/obj_count = 1
 			for(var/datum/objective/objective in objectives)
-				output += "<B>Objective #[obj_count]</B>: [objective.explanation_text]"
+				output += "<b>Objective #[obj_count]</b>: [objective.explanation_text]"
 				obj_count++
 
-		recipient << browse(sanitize(output),"window=memory")
+		recipient << browse(sanitize_simple(output),"window=memory")
 
 	proc/edit_memory()
 		if(!ticker || !ticker.mode)
 			alert("Not before round-start!", "Alert")
 			return
 
-		var/out = "<B>[name]</B>[(current&&(current.real_name!=name))?" (as [current.real_name])":""]<br>"
+		var/out = "<b>[name]</b>[(current&&(current.real_name!=name))?" (as [current.real_name])":""]<br>"
 		out += "Mind currently owned by key: [key] [active?"(synced)":"(not synced)"]<br>"
 		out += "Assigned role: [assigned_role]. <a href='?src=\ref[src];role_edit=1'>Edit</a><br>"
 		out += "Factions and special roles:<br>"
@@ -170,7 +170,7 @@ datum/mind
 
 		out += "<a href='?src=\ref[src];obj_announce=1'>Announce objectives</a><br><br>"
 
-		usr << browse(sanitize(out), "window=edit_memory[src]")
+		usr << browse(sanitize_simple(out), "window=edit_memory[src]")
 
 	Topic(href, href_list)
 		if(!check_rights(R_ADMIN))	return
@@ -191,7 +191,7 @@ datum/mind
 							break
 
 		else if (href_list["memory_edit"])
-			var/new_memo = copytext(sanitize(input("Write new memory", "Memory", memory) as null|message),1,MAX_MESSAGE_LEN)
+			var/new_memo = copytext(sanitize_simple(input("Write new memory", "Memory", memory) as null|message),1,MAX_MESSAGE_LEN)
 			if (isnull(new_memo)) return
 			memory = new_memo
 

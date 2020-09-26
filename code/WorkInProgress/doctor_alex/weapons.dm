@@ -198,7 +198,7 @@
 	..()
 	attachable_offset = list("muzzle_x" = 32, "muzzle_y" = 14,"rail_x" = 17, "rail_y" = 19, "under_x" = 19, "under_y" = 12, "stock_x" = 24, "stock_y" = 13)
 	//scope
-	var/obj/item/attachable/scope/F = new(src)
+	var/obj/item/attachable/scope/mini/F = new(src)
 	F.attach_icon = ""
 	F.icon_state = ""
 	F.flags_attach_features &= ~ATTACH_REMOVABLE
@@ -208,7 +208,7 @@
 /obj/item/weapon/gun/rifle/ak/set_gun_config_values()
 	fire_delay = config.med_fire_delay
 	burst_amount = config.med_burst_value
-	burst_delay = config.mlow_fire_delay
+	burst_delay = config.min_fire_delay
 	accuracy_mult = config.base_hit_accuracy_mult
 	accuracy_mult_unwielded = config.base_hit_accuracy_mult - config.max_hit_accuracy_mult
 	scatter = config.low_scatter_value

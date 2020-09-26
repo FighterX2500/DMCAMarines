@@ -1556,7 +1556,7 @@
 			M.equip_to_slot_or_del(new /obj/item/clothing/under/marine/veteran/UPP(M), WEAR_BODY)
 			M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/faction/UPP/heavy(M), WEAR_JACKET)
 			M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/UPP/heavy(M), WEAR_HEAD)
-			M.equip_to_slot_or_del(new /obj/item/storage/belt/marine/upp/full(M), WEAR_WAIST)
+			M.equip_to_slot_or_del(new /obj/item/storage/belt/marine/upp/heavy/full(M), WEAR_WAIST)
 			M.equip_to_slot_or_del(new /obj/item/storage/backpack/lightpack(M), WEAR_BACK)
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(M), WEAR_FEET)
 			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine/veteran/PMC(M), WEAR_HANDS)
@@ -1600,6 +1600,7 @@
 			M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/faction/UPP/heavy(M), WEAR_JACKET)
 			M.equip_to_slot_or_del(new /obj/item/clothing/head/uppcap/beret(M), WEAR_HEAD)
 			M.equip_to_slot_or_del(new /obj/item/storage/backpack/lightpack(M), WEAR_BACK)
+			M.equip_to_slot_or_del(new /obj/item/storage/belt/marine/upp/heavy/full(M), WEAR_WAIST)
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine(M), WEAR_FEET)
 			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine/veteran/PMC(M), WEAR_HANDS)
 
