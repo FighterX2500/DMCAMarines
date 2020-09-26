@@ -196,7 +196,26 @@ var/list/squad_colors = list(rgb(230,25,25), rgb(255,195,45), rgb(200,100,200), 
 		A.update_button_icon()
 
 
+/obj/item/clothing/suit/storage/marine/heavy
+	name = "M3-R pattern marine heavy armor"
+	desc = "A heavy Colonial Marines M3 Pattern Chestplate modification, which will surely protect the user from external threats. By less weight and convenience, that armor have some additional armor plates"
+	icon_state = "HeavyArmorIcon"
+	slowdown = 0.80
+	armor = list(melee = 55, bullet = 50, laser = 40, energy = 30, bomb = 35, bio = 10, rad = 10)
 
+/obj/item/clothing/suit/storage/marine/light
+	name = "M3-S pattern marine light armor"
+	desc = "A light Colonial Marines M3 Pattern Chestplate modification. Almost does not slow down the movement, but gives poor protection to the user. "
+	icon_state = "LightArmorIcon"
+	slowdown = SLOWDOWN_ARMOR_LIGHT
+	armor = list(melee = 40, bullet = 30, laser = 30, energy = 15, bomb = 10, bio = 0, rad = 0)
+
+/obj/item/clothing/suit/storage/marine/melee
+	name = "M3-B pattern marine CQC armor"
+	desc = "An Colonial Marines M3-B Chestplate Armor, that provides good protection from melee attacks."
+	icon_state = "MeleeArmorIcon"
+	slowdown = SLOWDOWN_ARMOR_MEDIUM
+	armor = list(melee = 65, bullet = 30, laser = 30, energy = 15, bomb = 10, bio = 0, rad = 0)
 
 /obj/item/clothing/suit/storage/marine/MP
 	name = "M2 pattern MP armor"
