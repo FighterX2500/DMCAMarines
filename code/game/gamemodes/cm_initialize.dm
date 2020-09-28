@@ -195,7 +195,7 @@ datum/game_mode/proc/initialize_special_clamps()
 		if(show_warning) to_chat(pred_candidate, "<span class='warning'>You already were a Yautja! Give someone else a chance.</span>")
 		return
 
-	if(!(RoleAuthority.roles_whitelist[pred_candidate.ckey] & WHITELIST_YAUTJA_ELDER))
+	if(!(RoleAuthority.roles_whitelist[pred_candidate.ckey] & (WHITELIST_YAUTJA_ELITE|WHITELIST_YAUTJA_ELDER)))
 		if(pred_current_num >= pred_maximum_num)
 			if(show_warning) to_chat(pred_candidate, "<span class='warning'>Only [pred_maximum_num] predators may spawn per round, but Elders are excluded.</span>")
 			return
