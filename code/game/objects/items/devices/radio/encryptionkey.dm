@@ -74,7 +74,7 @@
 /obj/item/device/encryptionkey/log
 	name = "Logistics radio encryption key"
 	icon_state = "rob_cypherkey"
-	channels = list("MP" = 1, "Engi" = 1)
+	channels = list("Req" = 1, "Engi" = 1)
 
 
 

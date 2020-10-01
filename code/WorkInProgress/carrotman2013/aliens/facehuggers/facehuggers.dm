@@ -130,13 +130,12 @@
 				C.visible_message("<span class='danger'>[src] smashes against [C]'s [D.name]!")
 				return
 			else
-				C.visible_message("<span class='danger'>[src] smashes against [C]'s [D.name] and rips it off!")
+				C.visible_message("<span class='danger'>[src] melts [C]'s [D.name] and rips it off!")
 				C.drop_inv_item_on_ground(D)
 				if(istype(D, /obj/item/clothing/head/helmet/marine)) //Marine helmets now get a fancy overlay.
 					var/obj/item/clothing/head/helmet/marine/m_helmet = D
 					m_helmet.add_hugger_damage()
 				C.update_inv_head()
-				return
 
 
 	if(C.wear_mask)
@@ -154,9 +153,8 @@
 				C.visible_message("<span class='danger'>[src] smashes against [C]'s [W.name]!</span>")
 				return
 			else
-				C.visible_message("<span class='danger'>[src] smashes against [C]'s [W.name] and rips it off!</span>")
+				C.visible_message("<span class='danger'>[src] melts [C]'s [W.name] and rips it off!</span>")
 				C.drop_inv_item_on_ground(W)
-				return
 
 	var/obj/item/clothing/mask/facehugger/FH = new(loc)
 	src.loc = FH
@@ -299,7 +297,7 @@
 
 /mob/living/attack_facehugger(mob/living/carbon/Xenomorph/facehugger/M)
 	M.visible_message("<span class='danger'>[M] aims at [src]'s face...</span>", \
-	"<span class='danger'>You start focusing on [src]'s face.</span>", null, 5)
+	"<span class='danger'>You start aiming at [src]'s face.</span>", null, 5)
 	if(!do_after(M, 15, TRUE, 5, BUSY_ICON_HOSTILE))
 		return
 	M.leap_at_face(src)

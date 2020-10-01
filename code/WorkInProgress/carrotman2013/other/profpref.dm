@@ -1,6 +1,6 @@
 //Job names for lobby proc. Written by Carrotman2013.
 
-//Если на "High" стоит какая-то профессия - будет название, иначе - ничего.
+//пїЅпїЅпїЅпїЅ пїЅпїЅ "High" пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅ.
 datum/preferences
 	proc/update_future_job()
 		if(updating_future_job)
@@ -25,6 +25,10 @@ datum/preferences
 
 				if(ROLE_MARINE_SMARTGUN)
 					choosen_job = "Squad Smartgunner"
+
+				if(ROLE_MARINE_COOK)
+					choosen_job = "Cook"
+
 
 		else if(job_command_high)
 			switch(job_command_high)
