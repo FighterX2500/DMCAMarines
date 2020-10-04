@@ -673,7 +673,7 @@
 		var/mob/Q
 		for(Q in hearers(usr))
 			if(Q.stat == 1) continue //Unconscious
-			if(isXeno(Q) && upgrades != 1) continue
+			if(isXeno(Q) && upgrades != 0) continue
 			to_chat(Q, "<span class='info'>A strange voice says,</span> <span class='rough'>'[msg]'.</span>")
 
 //=================//\\=================\\
