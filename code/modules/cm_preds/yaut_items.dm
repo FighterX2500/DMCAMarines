@@ -617,7 +617,7 @@
 
 	if(!drain_power(usr,70)) return
 	inject_timer = 1
-	spawn(100)
+	spawn(40)
 		inject_timer = 0
 
 	for(var/mob/living/simple_animal/hostile/smartdisc/S in range(7))
@@ -627,6 +627,9 @@
 
 	for(var/obj/item/explosive/grenade/spawnergrenade/smartdisc/D in range(10))
 		D.throw_at(usr,10,1,usr)
+
+	for(var/obj/item/weapon/combistick/K in range(10))
+		K.throw_at(usr,10,1,usr)
 
 /obj/item/clothing/gloves/yautja/proc/translate()
 	set name = "Translator"
@@ -1080,15 +1083,30 @@
 	flags_equip_slot = SLOT_BACK
 	w_class = 4
 	force = 32
-	throwforce = 70
+	throwforce = 85
 	unacidable = 1
-	sharp = IS_SHARP_ITEM_ACCURATE
 	attack_verb = list("speared", "stabbed", "impaled")
 	var/on = 1
 	var/timer = 0
 
 	IsShield()
 		return on
+
+	throw_impact(atom/hit_atom)
+		if(isYautja(hit_atom))
+			var/mob/living/carbon/human/H = hit_atom
+			if(H.put_in_hands(src))
+				hit_atom.visible_message("[hit_atom] easily catches [src] out of the air.","You catch [src] easily.")
+				return
+		..()
+
+	pickup(mob/living/user as mob)
+		if(!isYautja(user))
+			user.visible_message("<span class='warning'>You start to untangle the chain on \the [src]...")
+			if(do_after(user,30, TRUE, 5, BUSY_ICON_HOSTILE))
+			else 
+				user.KnockDown(1)
+				user.visible_message("<span class='danger'>It wasn't a good idea to take a long spear in one hand and try to walk like that. You lost your balance and fell.</span>")
 
 /obj/item/weapon/combistick/attack_self(mob/user as mob)
 	if(timer) return
