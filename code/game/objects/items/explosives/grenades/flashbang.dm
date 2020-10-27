@@ -2,12 +2,11 @@
 	name = "flashbang"
 	icon_state = "flashbang2"
 	item_state = "flashbang"
-	origin_tech = "materials=2;combat=1"
 	var/banglet = 0
 
 
 /obj/item/explosive/grenade/flashbang/attack_self(mob/user)
-	if(user.mind && user.mind.cm_skills && user.mind.cm_skills.police < SKILL_POLICE_MP)
+	if(user.skills.getRating("police") < SKILL_POLICE_MP)
 		to_chat(user, "<span class='warning'>You don't seem to know how to use [src]...</span>")
 		return
 	..()
@@ -16,29 +15,29 @@
 /obj/item/explosive/grenade/flashbang/prime()
 	..()
 	var/turf/T = get_turf(src)
-	for(var/obj/structure/closet/L in hear(7, T))
+	for(var/obj/structure/closet/L in get_hear(7, T))
 		if(locate(/mob/living/carbon/, L))
 			for(var/mob/living/carbon/M in L)
 				bang(get_turf(src), M)
 
 
-	for(var/mob/living/carbon/M in hear(7, T))
-		if(!istype(M,/mob/living/carbon/Xenomorph))
+	for(var/mob/living/carbon/M in get_hear(7, T))
+		if(!HAS_TRAIT(M, TRAIT_FLASHBANGIMMUNE))
 			bang(T, M)
 
 
 
 	new/obj/effect/particle_effect/smoke/flashbang(T)
-	cdel(src)
+	qdel(src)
 	return
 
-/obj/item/explosive/grenade/flashbang/proc/bang(var/turf/T , var/mob/living/carbon/M)						// Added a new proc called 'bang' that takes a location and a person to be banged.
-	if (locate(/obj/item/device/cloaking_device, M))			// Called during the loop that bangs people in lockers/containers and when banging
-		for(var/obj/item/device/cloaking_device/S in M)			// people in normal view.  Could theroetically be called during other explosions.
+/obj/item/explosive/grenade/flashbang/proc/bang(turf/T , mob/living/carbon/M)						// Added a new proc called 'bang' that takes a location and a person to be banged.
+	if (locate(/obj/item/cloaking_device, M))			// Called during the loop that bangs people in lockers/containers and when banging
+		for(var/obj/item/cloaking_device/S in M)			// people in normal view.  Could theroetically be called during other explosions.
 			S.active = 0										// -- Polymorph
 			S.icon_state = "shield0"
 
-	to_chat(M, "\red <B>BANG</B>")
+	to_chat(M, "<span class='danger'>BANG</span>")
 	playsound(src.loc, 'sound/effects/bang.ogg', 50, 1)
 
 //Checking for protections
@@ -48,61 +47,56 @@
 			var/mob/living/carbon/human/H = M
 			if(istype(H.wear_ear, /obj/item/clothing/ears/earmuffs))
 				ear_safety += 2
-			if(HULK in H.mutations)
-				ear_safety += 1
 			if(istype(H.head, /obj/item/clothing/head/helmet/riot))
 				ear_safety += 2
 
 //Flashing everyone
-	if(M.flash_eyes())
-		M.Stun(2)
-		M.KnockDown(10)
+	if(M.flash_act())
+		M.Stun(40)
+		M.Paralyze(20 SECONDS)
 
 
 
 //Now applying sound
 	if((get_dist(M, T) <= 2 || src.loc == M.loc || src.loc == M))
 		if(ear_safety > 0)
-			M.Stun(2)
-			M.KnockDown(1)
+			M.Stun(40)
+			M.Paralyze(20)
 		else
-			M.Stun(10)
-			M.KnockDown(3)
+			M.Stun(20 SECONDS)
+			M.Paralyze(60)
 			if ((prob(14) || (M == src.loc && prob(70))))
-				M.ear_damage += rand(1, 10)
+				M.adjust_ear_damage(rand(1, 10))
 			else
-				M.ear_damage += rand(0, 5)
-				M.ear_deaf = max(M.ear_deaf,15)
+				M.adjust_ear_damage(rand(0, 5), 15)
 
 	else if(get_dist(M, T) <= 5)
 		if(!ear_safety)
-			M.Stun(8)
-			M.ear_damage += rand(0, 3)
-			M.ear_deaf = max(M.ear_deaf,10)
+			M.Stun(16 SECONDS)
+			M.adjust_ear_damage(rand(0, 3), 10)
 
 	else if(!ear_safety)
-		M.Stun(4)
-		M.ear_damage += rand(0, 1)
-		M.ear_deaf = max(M.ear_deaf,5)
+		M.Stun(80)
+		M.adjust_ear_damage(rand(0, 1), 5)
 
 //This really should be in mob not every check
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/datum/internal_organ/eyes/E = H.internal_organs_by_name["eyes"]
 		if (E && E.damage >= E.min_bruised_damage)
-			to_chat(M, "\red Your eyes start to burn badly!")
+			to_chat(M, "<span class='warning'>Your eyes start to burn badly!</span>")
 			if(!banglet && !(istype(src , /obj/item/explosive/grenade/flashbang/clusterbang)))
 				if (E.damage >= E.min_broken_damage)
-					to_chat(M, "\red You can't see anything!")
+					to_chat(M, "<span class='warning'>You can't see anything!</span>")
 	if (M.ear_damage >= 15)
-		to_chat(M, "\red Your ears start to ring badly!")
+		to_chat(M, "<span class='warning'>Your ears start to ring badly!</span>")
 		if(!banglet && !(istype(src , /obj/item/explosive/grenade/flashbang/clusterbang)))
 			if (prob(M.ear_damage - 10 + 5))
-				to_chat(M, "\red You can't hear anything!")
-				M.sdisabilities |= DEAF
+				to_chat(M, "<span class='warning'>You can't hear anything!</span>")
+				M.disabilities |= DEAF
 	else
 		if (M.ear_damage >= 5)
-			to_chat(M, "\red Your ears start to ring!")
+			to_chat(M, "<span class='warning'>Your ears start to ring!</span>")
 
 
 /obj/item/explosive/grenade/flashbang/clusterbang//Created by Polymorph, fixed by Sieve
@@ -111,66 +105,57 @@
 	icon_state = "clusterbang"
 
 /obj/item/explosive/grenade/flashbang/clusterbang/prime()
-	var/numspawned = rand(4,8)
-	var/again = 0
-	for(var/more = numspawned,more > 0,more--)
+	var/clusters = rand(4,8)
+	var/segments = 0
+	var/randomness = clusters
+	while(randomness-- > 0)
 		if(prob(35))
-			again++
-			numspawned --
+			segments++
+			clusters--
 
-	for(,numspawned > 0, numspawned--)
-		spawn(0)
-			new /obj/item/explosive/grenade/flashbang/cluster(src.loc)//Launches flashbangs
-			playsound(src.loc, 'sound/weapons/armbomb.ogg', 25, 1, 6)
+	while(clusters-- > 0)
+		new /obj/item/explosive/grenade/flashbang/cluster(loc)//Launches flashbangs
 
-	for(,again > 0, again--)
-		spawn(0)
-			new /obj/item/explosive/grenade/flashbang/clusterbang/segment(src.loc)//Creates a 'segment' that launches a few more flashbangs
-			playsound(src.loc, 'sound/weapons/armbomb.ogg', 25, 1, 6)
-	spawn(0)
-		cdel(src)
-		return
+	while(segments-- > 0)
+		new /obj/item/explosive/grenade/flashbang/clusterbang/segment(loc)//Creates a 'segment' that launches a few more flashbangs
+
+	qdel(src)
 
 /obj/item/explosive/grenade/flashbang/clusterbang/segment
 	desc = "A smaller segment of a clusterbang. Better run."
 	name = "clusterbang segment"
 	icon_state = "clusterbang_segment"
 
-/obj/item/explosive/grenade/flashbang/clusterbang/segment/New()//Segments should never exist except part of the clusterbang, since these immediately 'do their thing' and asplode
+/obj/item/explosive/grenade/flashbang/clusterbang/segment/Initialize() //Segments should never exist except part of the clusterbang, since these immediately 'do their thing' and asplode
+	. = ..()
+	playsound(loc, 'sound/weapons/armbomb.ogg', 25, TRUE, 6)
 	icon_state = "clusterbang_segment_active"
-	active = 1
-	banglet = 1
+	active = TRUE
+	banglet = TRUE
 	var/stepdist = rand(1,4)//How far to step
-	var/temploc = src.loc//Saves the current location to know where to step away from
+	var/temploc = loc//Saves the current location to know where to step away from
 	walk_away(src,temploc,stepdist)//I must go, my people need me
-	var/dettime = rand(15,60)
-	spawn(dettime)
-		prime()
-	..()
+	addtimer(CALLBACK(src, .proc/prime), rand(1.5,6) SECONDS)
 
 /obj/item/explosive/grenade/flashbang/clusterbang/segment/prime()
-	var/numspawned = rand(4,8)
-	for(var/more = numspawned,more > 0,more--)
+	var/clusters = rand(4,8)
+	var/randomness = clusters
+	while(randomness-- > 0)
 		if(prob(35))
-			numspawned --
+			clusters--
 
-	for(,numspawned > 0, numspawned--)
-		spawn(0)
-			new /obj/item/explosive/grenade/flashbang/cluster(src.loc)
-			playsound(src.loc, 'sound/weapons/armbomb.ogg', 25, 1, 6)
-	spawn(0)
-		cdel(src)
-		return
+	while(clusters-- > 0)
+		new /obj/item/explosive/grenade/flashbang/cluster(loc)
 
-/obj/item/explosive/grenade/flashbang/cluster/New()//Same concept as the segments, so that all of the parts don't become reliant on the clusterbang
-	spawn(0)
-		icon_state = "flashbang_active"
-		active = 1
-		banglet = 1
-		var/stepdist = rand(1,3)
-		var/temploc = src.loc
-		walk_away(src,temploc,stepdist)
-		var/dettime = rand(15,60)
-		spawn(dettime)
-		prime()
-	..()
+	qdel(src)
+
+/obj/item/explosive/grenade/flashbang/cluster/Initialize()//Same concept as the segments, so that all of the parts don't become reliant on the clusterbang
+	. = ..()
+	playsound(loc, 'sound/weapons/armbomb.ogg', 25, TRUE, 6)
+	icon_state = "flashbang_active"
+	active = TRUE
+	banglet = TRUE
+	var/stepdist = rand(1,3)
+	var/temploc = loc
+	walk_away(src,temploc,stepdist)
+	addtimer(CALLBACK(src, .proc/prime), rand(1.5,6) SECONDS)

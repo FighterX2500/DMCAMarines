@@ -9,20 +9,18 @@
 	icon_off = "cabinetdetective_broken"
 
 
-	New()
-		..()
-		sleep(2)
-		new /obj/item/reagent_container/food/drinks/cans/beer( src )
-		new /obj/item/reagent_container/food/drinks/cans/beer( src )
-		new /obj/item/reagent_container/food/drinks/cans/beer( src )
-		new /obj/item/reagent_container/food/drinks/cans/beer( src )
-		new /obj/item/reagent_container/food/drinks/cans/beer( src )
-		new /obj/item/reagent_container/food/drinks/cans/beer( src )
-		new /obj/item/reagent_container/food/drinks/cans/beer( src )
-		new /obj/item/reagent_container/food/drinks/cans/beer( src )
-		new /obj/item/reagent_container/food/drinks/cans/beer( src )
-		new /obj/item/reagent_container/food/drinks/cans/beer( src )
-		return
+/obj/structure/closet/secure_closet/bar/Initialize()
+	. = ..()
+	new /obj/item/reagent_containers/food/drinks/cans/beer( src )
+	new /obj/item/reagent_containers/food/drinks/cans/beer( src )
+	new /obj/item/reagent_containers/food/drinks/cans/beer( src )
+	new /obj/item/reagent_containers/food/drinks/cans/beer( src )
+	new /obj/item/reagent_containers/food/drinks/cans/beer( src )
+	new /obj/item/reagent_containers/food/drinks/cans/beer( src )
+	new /obj/item/reagent_containers/food/drinks/cans/beer( src )
+	new /obj/item/reagent_containers/food/drinks/cans/beer( src )
+	new /obj/item/reagent_containers/food/drinks/cans/beer( src )
+	new /obj/item/reagent_containers/food/drinks/cans/beer( src )
 
 /obj/structure/closet/secure_closet/bar/update_icon()
 	if(broken)
@@ -35,3 +33,8 @@
 				icon_state = icon_closed
 		else
 			icon_state = icon_opened
+
+/obj/structure/closet/secure_closet/bar/captain
+	name = "Success Cabinet"
+	req_access = list(ACCESS_MARINE_CAPTAIN)
+

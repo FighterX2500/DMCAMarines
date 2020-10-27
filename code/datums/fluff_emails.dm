@@ -4,11 +4,11 @@
 	var/entry_text //email content
 
 
-//emails for the Almayer computers
-/datum/fluff_email/almayer
+//emails for the marine ship computers
+/datum/fluff_email/mainship
 
 
-/datum/fluff_email/almayer/iwantout
+/datum/fluff_email/mainship/iwantout
 	title = "RE: I want out.."
 
 	entry_text = {"<html>
@@ -30,7 +30,7 @@
 				"}
 
 
-/datum/fluff_email/almayer/thermalcloak
+/datum/fluff_email/mainship/thermalcloak
 	title = "M68 Thermal Cloak.."
 	entry_text = {"<html>
 					Are you sure these things are safe, man? I just tried one on during a training exercise back at Bernice 378, took a wrong turn,
@@ -45,12 +45,12 @@
 				"}
 
 
-/datum/fluff_email/almayer/snow
+/datum/fluff_email/mainship/snow
 	title = "Snow? Where the hell is all the snow?"
 	entry_text = {"<html>
 					Why were we issued these damn snow uniforms in the first place? We've been around the sector almost three dozen times and we've
 					yet to put them to use. They even issued us bulky kits to repaint our rifles, pistols and shotguns to match the cold weather gear,
-					and masks to keep us warm. But what's the point? They're just taking up a forth of the cargo hold, half infested with moths we picked
+					and masks to keep us warm. But what's the point? They're just taking up a fourth of the cargo hold, half infested with moths we picked
 					up six months ago from Bernice 378 (that base is a sanitation nightmare), and they need to be steamed on a regular basis.
 					For all the effort it's been worth to me, the moment the "Falling Falcons" have the misfortune of falling on what is probably
 					the last ice planet in the galaxy, I'm making sure we stay there for another two cycles.
@@ -59,7 +59,7 @@
 
 
 
-/datum/fluff_email/almayer/hawaianpizza
+/datum/fluff_email/mainship/hawaianpizza
 	title = "Hawaiian Pizza in the MREs?"
 	entry_text = {"<html>
 					I swear this must have been a joke, but the other day I opened up my MRE packet to come face to face with a 'Hawaiian Pizza" packet.
@@ -71,18 +71,18 @@
 					<br>
 					PS: The supply sergeant's grandparents are from Naples. Don't let him hear about this or he'll be sure to cause a big fuss.
 					Last time he went on a personal crusade on behalf of the entire battalion, those pricks over at central started supplying
-					the Almayer store-rooms with only the 'Meatloaf' flavored MRE for months. I can still taste the stuff it in my mouth I think..
+					the ship's store-rooms with only the 'Meatloaf' flavored MRE for months. I can still taste the stuff it in my mouth I think..
 				</html>
 				"}
 
 
 
-/datum/fluff_email/almayer/themajor
+/datum/fluff_email/mainship/themajor
 	title = "The Major?"
 	entry_text = {"<html>
-					I keep forgetting what the new Major's name is. I got quizzed by one of the jackass staff officers last week about the commander's name,
+					I keep forgetting what the new Major's name is. I got quizzed by one of the jackass staff officers last week about the captain's name,
 					and I absolutely spilled my marbles. PCF Mable was watching too, and she probably thinks I've got rocks in my head. I know it's been weeks
-					since the new commander took over, but for some reason the name keeps escaping me when it matters. Either the cryo-sleepers are juicing my
+					since the new captain took over, but for some reason the name keeps escaping me when it matters. Either the cryo-sleepers are juicing my
 					memory capacity or the CO keeps changing their name and not telling anybody. Maybe next jump I'll scrawl it on a sticky note and plaster it
 					to the inside of my sleeper pod. I can't be the only one having this problem.
 				</html>

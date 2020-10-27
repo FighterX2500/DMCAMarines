@@ -7,86 +7,93 @@
 	name = "alien thing"
 	desc = "You shouldn't be seeing this."
 	icon = 'icons/Xeno/effects.dmi'
-	unacidable = 1
 	layer = FLY_LAYER
 
 /obj/effect/xenomorph/splatter
 	name = "splatter"
 	desc = "It burns! It burns like hygiene!"
 	icon_state = "splatter"
-	density = 0
-	opacity = 0
-	anchored = 1
+	density = FALSE
+	opacity = FALSE
+	anchored = TRUE
 
-/obj/effect/xenomorph/splatter/New() //Self-deletes after creation & animation
-	..()
-	spawn(8)
-		cdel(src)
-
+/obj/effect/xenomorph/splatter/Initialize() //Self-deletes after creation & animation
+	. = ..()
+	QDEL_IN(src, 8)
 
 /obj/effect/xenomorph/splatterblob
 	name = "splatter"
 	desc = "It burns! It burns like hygiene!"
 	icon_state = "acidblob"
-	density = 0
-	opacity = 0
-	anchored = 1
+	density = FALSE
+	opacity = FALSE
+	anchored = TRUE
 
-/obj/effect/xenomorph/splatterblob/New() //Self-deletes after creation & animation
-	..()
-	spawn(40)
-		cdel(src)
-
+/obj/effect/xenomorph/splatterblob/Initialize() //Self-deletes after creation & animation
+	. = ..()
+	QDEL_IN(src, 4 SECONDS)
 
 /obj/effect/xenomorph/spray
 	name = "splatter"
 	desc = "It burns! It burns like hygiene!"
 	icon_state = "acid2"
-	density = 0
-	opacity = 0
-	anchored = 1
+	density = FALSE
+	opacity = FALSE
+	anchored = TRUE
 	layer = ABOVE_OBJ_LAYER
 	mouse_opacity = 0
 	flags_pass = PASSTABLE|PASSMOB|PASSGRILLE
+	var/slow_amt = 0.8
+	var/duration = 10 SECONDS
 
-/obj/effect/xenomorph/spray/New() //Self-deletes
-	..()
-	processing_objects.Add(src)
-	spawn(100 + rand(0, 20))
-		processing_objects.Remove(src)
-		cdel(src)
-		return
+/obj/effect/xenomorph/spray/Initialize(mapload, duration = 10 SECONDS) //Self-deletes
+	. = ..()
+	START_PROCESSING(SSprocessing, src)
+	QDEL_IN(src, duration + rand(0, 2 SECONDS))
 
-/obj/effect/xenomorph/spray/Crossed(AM as mob|obj)
-	..()
+/obj/effect/xenomorph/spray/Destroy()
+	STOP_PROCESSING(SSprocessing, src)
+	return ..()
+
+/obj/effect/xenomorph/spray/Crossed(atom/movable/AM)
+	. = ..()
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
-		if(istype(H.wear_suit, /obj/item/clothing/suit/knight) && istype(H.head, /obj/item/clothing/head/helmet/knight))
+		var/armor_block
+		if(TIMER_COOLDOWN_CHECK(H, COOLDOWN_ACID))
 			return
-		if(!H.lying)
+		TIMER_COOLDOWN_START(H, COOLDOWN_ACID, 1 SECONDS)
+		if(!H.lying_angle)
 			to_chat(H, "<span class='danger'>Your feet scald and burn! Argh!</span>")
-			H.emote("pain")
-			H.KnockDown(3)
+			if(!(H.species.species_flags & NO_PAIN))
+				H.emote("pain")
+			H.next_move_slowdown += slow_amt
 			var/datum/limb/affecting = H.get_limb("l_foot")
-			if(istype(affecting) && affecting.take_damage(0, rand(5, 10)))
+			armor_block = H.run_armor_check(affecting, "acid")
+			if(istype(affecting) && affecting.take_damage_limb(0, rand(14, 18), FALSE, FALSE, armor_block, TRUE))
+				UPDATEHEALTH(H)
 				H.UpdateDamageIcon()
 			affecting = H.get_limb("r_foot")
-			if(istype(affecting) && affecting.take_damage(0, rand(5, 10)))
+			armor_block = H.run_armor_check(affecting, "acid")
+			if(istype(affecting) && affecting.take_damage_limb(0, rand(14, 18), FALSE, FALSE, armor_block, TRUE))
+				UPDATEHEALTH(H)
 				H.UpdateDamageIcon()
-			H.updatehealth()
 		else
-			H.adjustFireLoss(rand(2, 5)) //This is ticking damage!
+			armor_block = H.run_armor_check("chest", "acid")
+			H.take_overall_damage(0, rand(12, 14), armor_block)
+			UPDATEHEALTH(H)
 			to_chat(H, "<span class='danger'>You are scalded by the burning acid!</span>")
+
 
 /obj/effect/xenomorph/spray/process()
 	var/turf/T = loc
 	if(!istype(T))
-		processing_objects.Remove(src)
-		cdel(src)
+		STOP_PROCESSING(SSobj, src)
+		qdel(src)
 		return
 
 	for(var/mob/living/carbon/M in loc)
-		if(isXeno(M))
+		if(isxeno(M))
 			continue
 		Crossed(M)
 
@@ -95,47 +102,51 @@
 	name = "acid"
 	desc = "Burbling corrosive stuff. I wouldn't want to touch it."
 	icon_state = "acid_normal"
-	density = 0
-	opacity = 0
-	anchored = 1
-	unacidable = 1
+	density = FALSE
+	opacity = FALSE
+	anchored = TRUE
 	var/atom/acid_t
 	var/ticks = 0
 	var/acid_strength = 1 //100% speed, normal
+	var/acid_damage = 125 //acid damage on pick up, subject to armor
 
 //Sentinel weakest acid
 /obj/effect/xenomorph/acid/weak
 	name = "weak acid"
 	acid_strength = 2.5 //250% normal speed
+	acid_damage = 75
 	icon_state = "acid_weak"
 
 //Superacid
 /obj/effect/xenomorph/acid/strong
 	name = "strong acid"
 	acid_strength = 0.4 //20% normal speed
+	acid_damage = 175
 	icon_state = "acid_strong"
 
-/obj/effect/xenomorph/acid/New(loc, target)
-	..(loc)
+/obj/effect/xenomorph/acid/Initialize(mapload, target)
+	. = ..()
 	acid_t = target
 	var/strength_t = isturf(acid_t) ? 8:4 // Turf take twice as long to take down.
 	tick(strength_t)
 
-/obj/effect/xenomorph/acid/Dispose()
+/obj/effect/xenomorph/acid/Destroy()
 	acid_t = null
 	. = ..()
 
 /obj/effect/xenomorph/acid/proc/tick(strength_t)
 	set waitfor = 0
 	if(!acid_t || !acid_t.loc)
-		cdel(src)
+		qdel(src)
 		return
+	if(loc != acid_t.loc && !isturf(acid_t))
+		loc = acid_t.loc
 	if(++ticks >= strength_t)
 		visible_message("<span class='xenodanger'>[acid_t] collapses under its own weight into a puddle of goop and undigested debris!</span>")
 		playsound(src, "acid_hit", 25)
 
 		if(istype(acid_t, /turf))
-			if(istype(acid_t, /turf/closed/wall))
+			if(iswallturf(acid_t))
 				var/turf/closed/wall/W = acid_t
 				new /obj/effect/acid_hole (W)
 			else
@@ -143,19 +154,19 @@
 				T.ChangeTurf(/turf/open/floor/plating)
 		else if (istype(acid_t, /obj/structure/girder))
 			var/obj/structure/girder/G = acid_t
-			G.dismantle()
+			G.deconstruct(FALSE)
 		else if(istype(acid_t, /obj/structure/window/framed))
 			var/obj/structure/window/framed/WF = acid_t
-			WF.drop_window_frame()
+			WF.deconstruct(FALSE)
 
 		else
 			if(acid_t.contents.len) //Hopefully won't auto-delete things inside melted stuff..
 				for(var/mob/M in acid_t.contents)
 					if(acid_t.loc) M.forceMove(acid_t.loc)
-			cdel(acid_t)
+			qdel(acid_t)
 			acid_t = null
 
-		cdel(src)
+		qdel(src)
 		return
 
 	switch(strength_t - ticks)
@@ -166,28 +177,3 @@
 
 	sleep(rand(200,300) * (acid_strength))
 	.()
-
-//When anti-acid is primed
-/obj/effect/xenomorph/acid/attackby(var/obj/O as obj, var/mob/user as mob)
-	if(istype(O, /obj/item/anti_acid))
-		var/obj/item/anti_acid/deacid = O
-		switch(acid_strength)
-			if(2.5)
-				if(deacid.use_time < 1)
-					return
-				deacid.use_time--
-				cdel(src)
-				visible_message("<span class='warning'>Anti-acid mixture succsessfully neutrilize the acid!</span>")
-				return
-			if(1)
-				if(deacid.use_time < 5)
-					return
-				deacid.use_time -= 5
-				cdel(src)
-				visible_message("<span class='warning'>Anti-acid mixture barely neutrilize the acid!</span>")
-				return
-			if(0.4)
-				visible_message("<span class='warning'>Anti-acid mixture failed to neutralize the acid!</span>")
-				return
-		return
-	return

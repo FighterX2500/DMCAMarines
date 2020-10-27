@@ -5,7 +5,7 @@
 /area/lv624/ground
 	name = "Ground"
 	icon_state = "green"
-	always_unpowered = 1 //Will this mess things up? God only knows
+	always_unpowered = TRUE //Will this mess things up? God only knows
 
 //Jungle
 /area/lv624/ground/jungle1
@@ -55,96 +55,116 @@
 
 //Sand
 /area/lv624/ground/sand1
-	name = "Western Barrens"
+	name = "\improper Western Barrens"
 	icon_state = "west"
-//	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
+	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
 
 /area/lv624/ground/sand2
-	name = "Central Barrens"
+	name = "\improper Central Barrens"
 	icon_state = "red"
-//	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
+	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
 
 /area/lv624/ground/sand3
-	name = "Eastern Barrens"
+	name = "\improper Eastern Barrens"
 	icon_state = "east"
-//	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
+	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
 
 /area/lv624/ground/sand4
-	name = "North Western Barrens"
+	name = "\improper North Western Barrens"
 	icon_state = "northwest"
-//	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
+	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
 
 /area/lv624/ground/sand5
-	name = "North Central Barrens"
+	name = "\improper North Central Barrens"
 	icon_state = "blue-red"
-//	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
+	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
 
 /area/lv624/ground/sand6
-	name = "North Eastern Barrens"
+	name = "\improper North Eastern Barrens"
 	icon_state = "northeast"
-//	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
+	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
 
 /area/lv624/ground/sand7
-	name = "South Western Barrens"
+	name = "\improper South Western Barrens"
 	icon_state = "southwest"
-//	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
+	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
 
 /area/lv624/ground/sand8
-	name = "South Central Barrens"
+	name = "\improper South Central Barrens"
 	icon_state = "away1"
-//	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
+	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
 
 /area/lv624/ground/sand9
-	name = "South Eastern Barrens"
+	name = "\improper South Eastern Barrens"
 	icon_state = "southeast"
-//	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
+	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen4.ogg','sound/ambience/ambisin4.ogg')
+
+/area/lv624/ground/tfort
+	name = "\improper Table Fort"
+	icon_state = "purple"
+	outside = FALSE
 
 /area/lv624/ground/river1
-	name = "Western River"
+	name = "\improper Western River"
 	icon_state = "blueold"
-//	ambience = list('sound/ambience/jungle_amb1.ogg')
+	ambience = list('sound/ambience/jungle_amb1.ogg')
 
 /area/lv624/ground/river2
-	name = "Central River"
+	name = "\improper Central River"
 	icon_state = "purple"
-//	ambience = list('sound/ambience/jungle_amb1.ogg')
+	ambience = list('sound/ambience/jungle_amb1.ogg')
 
 /area/lv624/ground/river3
-	name = "Eastern River"
+	name = "\improper Eastern River"
 	icon_state = "bluenew"
-//	ambience = list('sound/ambience/jungle_amb1.ogg')
+	ambience = list('sound/ambience/jungle_amb1.ogg')
+
+/area/lv624/ground/filtration
+	name = "\improper Filtration Plant"
+	icon_state = "green"
+	outside = FALSE
 
 /area/lv624/ground/compound
-	name = "Weyland Yutani Compound"
+	name = "\improper Nanotrasen Compound"
 	icon_state = "green"
 
 /area/lv624/ground/compound/ne
-	name = "Northeast W-Y Compound"
+	name = "\improper Northeast NT Compound"
 	icon_state = "northeast"
 
 /area/lv624/ground/compound/n
-	name = "Northern W-Y Compound"
+	name = "\improper Northern NT Compound"
 	icon_state = "north"
 
 /area/lv624/ground/compound/c
-	name = "Central W-Y Compound"
+	name = "\improper Central NT Compound"
 	icon_state = "purple"
 
 /area/lv624/ground/compound/se
-	name = "Southeast W-Y Compound"
+	name = "\improper Southeast NT Compound"
 	icon_state = "southeast"
 
 /area/lv624/ground/compound/sw
-	name = "Southwest W-Y Compound"
+	name = "\improper Southwest NT Compound"
 	icon_state = "southwest"
-
 //	ambience = list('sound/ambience/jungle_amb1.ogg')
+
+/area/lv624/ground/shelter
+	name = "\improper Rain shelter"
+	icon_state = "blue"
+	outside = FALSE
+
+/area/lv624/ground/ruin
+	name = "\improper Unknown structure"
+	icon_state = "red"
+	outside = FALSE
 
 /area/lv624/ground/caves //Does not actually exist
 	name ="Caves"
 	icon_state = "cave"
-//	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen12.ogg','sound/ambience/ambisin4.ogg')
+	ambience = list('sound/ambience/ambimine.ogg','sound/ambience/ambigen10.ogg','sound/ambience/ambigen12.ogg','sound/ambience/ambisin4.ogg')
 	ceiling = CEILING_DEEP_UNDERGROUND
+	outside = FALSE
 
 //Caves
 /area/lv624/ground/caves/west1
@@ -177,151 +197,136 @@
 
 //Lazarus landing
 /area/lv624/lazarus
-	name = "Lazarus"
+	name = "\improper Lazarus"
 	icon_state = "green"
 	ceiling = CEILING_METAL
+	outside = FALSE
 
 /area/lv624/lazarus/atmos
-	name = "Atmospherics"
+	name = "\improper Atmospherics"
 	icon_state = "atmos"
 	ceiling = CEILING_GLASS
 
 /area/lv624/lazarus/atmos/outside
-	name = "Atmospherics Area"
+	name = "\improper Atmospherics Area"
 	icon_state = "purple"
 	ceiling = CEILING_NONE
 
 /area/lv624/lazarus/hallway_one
-	name = "Hallway"
+	name = "\improper Hallway"
 	icon_state = "green"
-	can_hellhound_enter = 0
 
 /area/lv624/lazarus/hallway_two
-	name = "Hallway"
+	name = "\improper Hallway"
 	icon_state = "purple"
-	can_hellhound_enter = 0
 
 /area/lv624/lazarus/medbay
-	name = "Medbay"
+	name = "\improper Medbay"
 	icon_state = "medbay"
 
 /area/lv624/lazarus/armory
-	name = "Armory"
+	name = "\improper Armory"
 	icon_state = "armory"
 
 /area/lv624/lazarus/security
-	name = "Security"
+	name = "\improper Security"
 	icon_state = "security"
-	can_hellhound_enter = 0
 
 /area/lv624/lazarus/captain
-	name = "Commandant's Quarters"
+	name = "\improper Commandant's Quarters"
 	icon_state = "captain"
-	can_hellhound_enter = 0
 
 /area/lv624/lazarus/hop
-	name = "Head of Personnel's Office"
+	name = "\improper Head of Personnel's Office"
 	icon_state = "head_quarters"
-	can_hellhound_enter = 0
 
 /area/lv624/lazarus/kitchen
-	name = "Kitchen"
+	name = "\improper Kitchen"
 	icon_state = "kitchen"
-	can_hellhound_enter = 0
 
 /area/lv624/lazarus/canteen
-	name = "Canteen"
+	name = "\improper Canteen"
 	icon_state = "cafeteria"
-	can_hellhound_enter = 0
 
 /area/lv624/lazarus/main_hall
-	name = "Main Hallway"
+	name = "\improper Main Hallway"
 	icon_state = "hallC1"
-	can_hellhound_enter = 0
 
 /area/lv624/lazarus/main_hall
-	name = "Main Hallway"
+	name = "\improper Main Hallway"
 	icon_state = "hallC1"
-	can_hellhound_enter = 0
 
 /area/lv624/lazarus/toilet
-	name = "Dormitory Toilet"
+	name = "\improper Dormitory Toilet"
 	icon_state = "toilet"
-	can_hellhound_enter = 0
 
 /area/lv624/lazarus/chapel
-	name = "Chapel"
+	name = "\improper Chapel"
 	icon_state = "chapel"
 	ambience = list('sound/ambience/ambicha1.ogg','sound/ambience/ambicha2.ogg','sound/ambience/ambicha3.ogg','sound/ambience/ambicha4.ogg')
-	can_hellhound_enter = 0
 
 /area/lv624/lazarus/toilet
-	name = "Dormitory Toilet"
+	name = "\improper Dormitory Toilet"
 	icon_state = "toilet"
-	can_hellhound_enter = 0
 
 /area/lv624/lazarus/sleep_male
-	name = "Male Dorm"
+	name = "\improper Male Dorm"
 	icon_state = "Sleep"
-	can_hellhound_enter = 0
 
 /area/lv624/lazarus/sleep_female
-	name = "Female Dorm"
+	name = "\improper Female Dorm"
 	icon_state = "Sleep"
-	can_hellhound_enter = 0
 
 /area/lv624/lazarus/quart
-	name = "Quartermasters"
+	name = "\improper Quartermasters"
 	icon_state = "quart"
-	can_hellhound_enter = 0
 
 /area/lv624/lazarus/quartstorage
-	name = "Cargo Bay"
+	name = "\improper Cargo Bay"
 	icon_state = "quartstorage"
-	can_hellhound_enter = 0
 
 /area/lv624/lazarus/quartstorage/outdoors
-	name = "Cargo Bay Area"
+	name = "\improper Cargo Bay Area"
 	icon_state = "purple"
 	ceiling = CEILING_NONE
 
 /area/lv624/lazarus/engineering
-	name = "Engineering"
+	name = "\improper Engineering"
 	icon_state = "engine_smes"
 
 /area/lv624/lazarus/comms
-	name = "Communications Relay"
+	name = "\improper Communications Relay"
 	icon_state = "tcomsatcham"
 
 /area/lv624/lazarus/secure_storage
-	name = "Secure Storage"
+	name = "\improper Secure Storage"
 	icon_state = "storage"
 
 /area/lv624/lazarus/internal_affairs
-	name = "Internal Affairs"
+	name = "\improper Internal Affairs"
 	icon_state = "law"
 
 /area/lv624/lazarus/robotics
-	name = "Robotics"
+	name = "\improper Robotics"
 	icon_state = "ass_line"
 
 /area/lv624/lazarus/research
-	name = "Research Lab"
+	name = "\improper Research Lab"
 	icon_state = "toxlab"
 
 /area/lv624/lazarus/fitness
-	name = "Fitness Room"
+	name = "\improper Fitness Room"
 	icon_state = "fitness"
 
 /area/lv624/lazarus/hydroponics
-	name = "Hydroponics"
+	name = "\improper Hydroponics"
 	icon_state = "hydro"
 	ceiling = CEILING_GLASS
 
 /area/lv624/lazarus/relay
-	name = "Secret Relay Room"
+	name = "\improper Secret Relay Room"
 	icon_state = "tcomsatcham"
 
 /area/lv624/lazarus/console
-	name = "Shuttle Console"
+	name = "\improper Shuttle Console"
 	icon_state = "tcomsatcham"

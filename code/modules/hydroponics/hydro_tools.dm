@@ -4,31 +4,31 @@
 	name = "plant clippers"
 	desc = "A tool used to take samples from plants."
 
-/obj/item/device/analyzer/plant_analyzer
+/obj/item/analyzer/plant_analyzer
 	name = "plant analyzer"
 	icon_state = "hydro"
 	item_state = "analyzer"
 
-/obj/item/device/analyzer/plant_analyzer/attack_self(mob/user as mob)
+/obj/item/analyzer/plant_analyzer/attack_self(mob/user as mob)
 	return 0
 
-/obj/item/device/analyzer/plant_analyzer/afterattack(obj/target, mob/user, flag)
+/obj/item/analyzer/plant_analyzer/afterattack(obj/target, mob/user, flag)
 	if(!flag) return
 
 	var/datum/seed/grown_seed
 	var/datum/reagents/grown_reagents
 	if(istype(target,/obj/structure/rack) || istype(target,/obj/structure/table))
 		return ..()
-	else if(istype(target,/obj/item/reagent_container/food/snacks/grown))
+	else if(istype(target,/obj/item/reagent_containers/food/snacks/grown))
 
-		var/obj/item/reagent_container/food/snacks/grown/G = target
-		grown_seed = seed_types[G.plantname]
+		var/obj/item/reagent_containers/food/snacks/grown/G = target
+		grown_seed = GLOB.seed_types[G.plantname]
 		grown_reagents = G.reagents
 
 	else if(istype(target,/obj/item/grown))
 
 		var/obj/item/grown/G = target
-		grown_seed = seed_types[G.plantname]
+		grown_seed = GLOB.seed_types[G.plantname]
 		grown_reagents = G.reagents
 
 	else if(istype(target,/obj/item/seeds))
@@ -43,11 +43,11 @@
 		grown_reagents = H.reagents
 
 	if(!grown_seed)
-		to_chat(user, "\red [src] can tell you nothing about [target].")
+		to_chat(user, "<span class='warning'>[src] can tell you nothing about [target].</span>")
 		return
 
-	var/dat = "<h3>Plant data for [target]</h3>"
-	user.visible_message("\blue [user] runs the scanner over [target].")
+	var/dat
+	user.visible_message("<span class='notice'> [user] runs the scanner over [target].</span>")
 
 	dat += "<h2>General Data</h2>"
 
@@ -65,7 +65,7 @@
 
 		dat += "<br>This sample contains: "
 		for(var/datum/reagent/R in grown_reagents.reagent_list)
-			dat += "<br>- [R.id], [grown_reagents.get_reagent_amount(R.id)] unit(s)"
+			dat += "<br>- [R.name], [grown_reagents.get_reagent_amount(R.type)] unit(s)"
 
 	dat += "<h2>Other Data</h2>"
 
@@ -155,10 +155,9 @@
 	if(grown_seed.flowers)
 		dat += "<br>It has [grown_seed.flower_colour ? "<font color='[grown_seed.flower_colour]'>flowers</font>" : "flowers"]."
 
-	if(dat)
-		user << browse(dat,"window=plant_analyzer")
-
-	return
+	var/datum/browser/popup = new(user, "plant_analyzer", "<div align='center'>Plant data for [target]</div>")
+	popup.set_content(dat)
+	popup.open()
 
 
 
@@ -166,14 +165,13 @@
 // Nutrient defines for hydroponics
 // *************************************
 
-/obj/item/reagent_container/glass/fertilizer
+/obj/item/reagent_containers/glass/fertilizer
 	name = "fertilizer bottle"
 	desc = "A small glass bottle. Can hold up to 10 units."
 	icon = 'icons/obj/items/chemistry.dmi'
 	icon_state = "bottle16"
-	flags_atom = OPENCONTAINER
 	possible_transfer_amounts = null
-	w_class = 2.0
+	w_class = WEIGHT_CLASS_SMALL
 
 	var/fertilizer //Reagent contained, if any.
 
@@ -181,26 +179,28 @@
 	amount_per_transfer_from_this = 10
 	volume = 10
 
-/obj/item/reagent_container/glass/fertilizer/New()
-	..()
 
-	src.pixel_x = rand(-5.0, 5)
-	src.pixel_y = rand(-5.0, 5)
+/obj/item/reagent_containers/glass/fertilizer/Initialize()
+	. = ..()
+
+	pixel_x = rand(-5.0, 5)
+	pixel_y = rand(-5.0, 5)
 
 	if(fertilizer)
 		reagents.add_reagent(fertilizer,10)
 
-/obj/item/reagent_container/glass/fertilizer/ez
+
+/obj/item/reagent_containers/glass/fertilizer/ez
 	name = "bottle of E-Z-Nutrient"
 	icon_state = "bottle16"
-	fertilizer = "eznutrient"
+	fertilizer = /datum/reagent/toxin/fertilizer/eznutrient
 
-/obj/item/reagent_container/glass/fertilizer/l4z
+/obj/item/reagent_containers/glass/fertilizer/l4z
 	name = "bottle of Left 4 Zed"
 	icon_state = "bottle18"
-	fertilizer = "left4zed"
+	fertilizer = /datum/reagent/toxin/fertilizer/left4zed
 
-/obj/item/reagent_container/glass/fertilizer/rh
+/obj/item/reagent_containers/glass/fertilizer/rh
 	name = "bottle of Robust Harvest"
 	icon_state = "bottle15"
-	fertilizer = "robustharvest"
+	fertilizer = /datum/reagent/toxin/fertilizer/robustharvest

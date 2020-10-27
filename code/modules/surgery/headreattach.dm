@@ -9,7 +9,7 @@
 /datum/surgery_step/head/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected, checks_only)
 	if(!affected)
 		return 0
-	if(!(affected.status & LIMB_DESTROYED))
+	if(!(affected.limb_status & LIMB_DESTROYED))
 		return 0
 	if(affected.body_part != HEAD)
 		return 0
@@ -18,9 +18,9 @@
 
 /datum/surgery_step/head/peel
 	allowed_tools = list(
-	/obj/item/tool/surgery/retractor = 100,           \
-	/obj/item/tool/crowbar = 75,              \
-	/obj/item/tool/kitchen/utensil/fork = 50, \
+		/obj/item/tool/surgery/retractor = 100,
+		/obj/item/tool/crowbar = 75,
+		/obj/item/tool/kitchen/utensil/fork = 50,
 	)
 
 	min_duration = 30
@@ -49,9 +49,9 @@
 
 /datum/surgery_step/head/shape
 	allowed_tools = list(
-	/obj/item/tool/surgery/FixOVein = 100,         \
-	/obj/item/stack/cable_coil = 75,         \
-	/obj/item/device/assembly/mousetrap = 10
+		/obj/item/tool/surgery/FixOVein = 100,
+		/obj/item/stack/cable_coil = 75,
+		/obj/item/assembly/mousetrap = 10,
 	)
 
 	min_duration = 60
@@ -73,16 +73,14 @@
 		affected = affected.parent
 		user.visible_message("<span class='warning'>[user]'s hand slips, further rending flesh on [target]'s neck!</span>", \
 		"<span class='warning'>Your hand slips, further rending flesh on [target]'s neck!</span>")
-		target.apply_damage(10, BRUTE, affected)
-		target.updatehealth()
-
+		target.apply_damage(10, BRUTE, affected, updating_health = TRUE)
 
 
 /datum/surgery_step/head/suture
 	allowed_tools = list(
-	/obj/item/tool/surgery/hemostat = 100, \
-	/obj/item/stack/cable_coil = 60, \
-	/obj/item/tool/surgery/FixOVein = 80
+		/obj/item/tool/surgery/hemostat = 100,
+		/obj/item/stack/cable_coil = 60,
+		/obj/item/tool/surgery/FixOVein = 80,
 	)
 
 	min_duration = 60
@@ -104,17 +102,15 @@
 		affected = affected.parent
 		user.visible_message("<span class='warning'>[user]'s hand slips, ripping apart flesh on [target]'s neck!</span>", \
 		"<span class='warning'>Your hand slips, ripping apart flesh on [target]'s neck!</span>")
-		target.apply_damage(10, BRUTE, affected)
-		target.updatehealth()
-
+		target.apply_damage(10, BRUTE, affected, updating_health = TRUE)
 
 
 /datum/surgery_step/head/prepare
 	allowed_tools = list(
-	/obj/item/tool/surgery/cautery = 100,			\
-	/obj/item/clothing/mask/cigarette = 75,	\
-	/obj/item/tool/lighter = 50,    \
-	/obj/item/tool/weldingtool = 25
+		/obj/item/tool/surgery/cautery = 100,
+		/obj/item/clothing/mask/cigarette = 75,
+		/obj/item/tool/lighter = 50,
+		/obj/item/tool/weldingtool = 25,
 	)
 
 	min_duration = 60
@@ -130,7 +126,7 @@
 	user.visible_message("<span class='notice'>[user] has finished adjusting the area around [target]'s neck with \the [tool].</span>",	\
 	"<span class='notice'>You have finished adjusting the area around [target]'s neck with \the [tool].</span>")
 	affected.limb_replacement_stage = 0
-	affected.status |= LIMB_AMPUTATED
+	affected.add_limb_flags(LIMB_AMPUTATED)
 	affected.setAmputatedTree()
 
 /datum/surgery_step/head/prepare/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected)
@@ -138,9 +134,7 @@
 		affected = affected.parent
 		user.visible_message("<span class='warning'>[user]'s hand slips, searing [target]'s neck!</span>", \
 		"<span class='warning'>Your hand slips, searing [target]'s [affected.display_name]!</span>")
-		target.apply_damage(10, BURN, affected)
-		target.updatehealth()
-
+		target.apply_damage(10, BURN, affected, updating_health = TRUE)
 
 
 /datum/surgery_step/head/attach
@@ -152,7 +146,7 @@
 
 /datum/surgery_step/head/attach/can_use(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected, checks_only)
 	if(..())
-		if(affected.status & LIMB_AMPUTATED)
+		if(affected.limb_status & LIMB_AMPUTATED)
 			return 1
 
 /datum/surgery_step/head/attach/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected)
@@ -178,11 +172,10 @@
 		B.brainmob.mind.transfer_to(target)
 
 	//Deal with the head item properly
-	user.temp_drop_inv_item(B)
-	cdel(B)
+	user.temporarilyRemoveItemFromInventory(B)
+	qdel(B)
 
 /datum/surgery_step/head/attach/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected)
 	user.visible_message("<span class='warning'>[user]'s hand slips, damaging connectors on [target]'s neck!</span>", \
 	"<span class='warning'>Your hand slips, damaging connectors on [target]'s neck!</span>")
-	target.apply_damage(10, BRUTE, affected, sharp = 1)
-	target.updatehealth()
+	target.apply_damage(10, BRUTE, affected, 0, TRUE, updating_health = TRUE)

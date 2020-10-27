@@ -46,23 +46,18 @@
 
 
 //spec_weapons skill
-//hidden. who can and can't use specialist weapons
-#define SKILL_SPEC_DEFAULT		0
-#define SKILL_SPEC_ROCKET		1 //can use the demolitionist specialist gear
-#define SKILL_SPEC_SCOUT		2
-#define SKILL_SPEC_SNIPER		3
-#define SKILL_SPEC_GRENADIER	4
-#define SKILL_SPEC_PYRO			5
-#define SKILL_SPEC_ST           6
-#define SKILL_SPEC_TRAINED		7 //can use all specialist gear
+//increase or decrase accuracy, recoil, and firing delay of spec weapons
+#define SKILL_SPEC_DEFAULT		-2 //marines
+#define SKILL_SPEC_TRAINED		1 //special training
+
 
 
 
 //construction skill
 #define SKILL_CONSTRUCTION_DEFAULT	0
 #define SKILL_CONSTRUCTION_METAL 	1	//metal barricade construction (CT)
-#define SKILL_CONSTRUCTION_PLASTEEL 2	//plasteel barricade,(Req)(combat engi)
-#define SKILL_CONSTRUCTION_ADVANCED	3	//windows and girder construction
+#define SKILL_CONSTRUCTION_PLASTEEL 2	//plasteel barricade,(RO, SL)
+#define SKILL_CONSTRUCTION_ADVANCED	3	//windows and girder construction (combat engi, CO)
 #define SKILL_CONSTRUCTION_MASTER	4	//building machine&computer frames (MT, CE)
 
 
@@ -73,28 +68,28 @@
 #define SKILL_ENGINEER_METAL 	1	//metal barricade repair && c4 use
 #define SKILL_ENGINEER_PLASTEEL 2	//plasteel barricade repair
 #define SKILL_ENGINEER_ENGI 	3	//hacking&&planet engine fixing&&apc building (combat engi)
-#define SKILL_ENGINEER_MT 		4	//Telecomms fixing, faster engine fixing (MT)
-//higher levels give faster Almayer engine repair.
+#define SKILL_ENGINEER_MASTER 	4	//Telecomms fixing, faster engine fixing (ST)
+//higher levels give faster engine repair.
 
 
 //medical skill
-#define SKILL_MEDICAL_DEFAULT	0
-#define SKILL_MEDICAL_CHEM		1 // recognizing chemicals, using autoinjectors & hyposprays with any chemicals (SL)
-#define SKILL_MEDICAL_MEDIC		2 //syringe use & defib use (Combat Medic)
-#define SKILL_MEDICAL_DOCTOR	3
-#define SKILL_MEDICAL_CMO		4
+#define SKILL_MEDICAL_UNTRAINED	0
+#define SKILL_MEDICAL_NOVICE	1 //Premed or paramedic. Recognizing chemicals. SL, survivors.
+#define SKILL_MEDICAL_PRACTICED	2 //Beginning intern, Squad Corpsman, IO.
+#define SKILL_MEDICAL_COMPETENT	3 //General practitioner. Survivor doc, early synth.
+#define SKILL_MEDICAL_EXPERT	4 //Surgeons. CMO, MO, synth.
+#define SKILL_MEDICAL_MASTER	5 //Modern-day Aesculapius. Spatial agent only now.
 //higher levels means faster syringe use and better defibrillation
 
 
 //surgery skill
-#define SKILL_SURGERY_DEFAULT	0
-#define SKILL_SURGERY_TRAINED	1 //can do surgery (Doctor)
-#define SKILL_SURGERY_EXPERT	2 //faster surgery (CMO)
+#define SKILL_SURGERY_DEFAULT		0 //untrained, really slow
+#define SKILL_SURGERY_AMATEUR		1 //basic notions of first aid and biology (SL, SO)
+#define SKILL_SURGERY_TRAINED		2 //semi-professional surgery (Squad Corpsman)
+#define SKILL_SURGERY_PROFESSIONAL	3 //professional but unspecialized (Researcher)
+#define SKILL_SURGERY_EXPERT		4 //specialized (Doctor, CMO)
+#define SKILL_SURGERY_MASTER		5 //to be implemented, perhaps instant surgery
 //higher levels means faster surgery.
-
-
-
-
 
 //police skill, hidden
 #define SKILL_POLICE_DEFAULT 	0
@@ -116,17 +111,17 @@
 //hidden
 //proficiency with powerloader, changes powerloader speed.
 #define SKILL_POWERLOADER_DEFAULT	0
-#define SKILL_POWERLOADER_DABBLING	1 //Pilot
-#define SKILL_POWERLOADER_TRAINED	2 //CT, Req
-#define SKILL_POWERLOADER_PRO		3 //MT
-#define SKILL_POWERLOADER_MASTER	4 //CE
+#define SKILL_POWERLOADER_DABBLING	1 //Combat Engineer
+#define SKILL_POWERLOADER_TRAINED	2 //Captain, FC
+#define SKILL_POWERLOADER_PRO		3 //Pilot
+#define SKILL_POWERLOADER_MASTER	4 //CE, RO, ST
 
 
 //leadership skill
 #define SKILL_LEAD_NOVICE			0 //Anyone but the above. Using SL items is possible but painfully slow
 #define SKILL_LEAD_BEGINNER			1 //All non-Standard Marines
 #define SKILL_LEAD_TRAINED			2 //SL
-#define SKILL_LEAD_EXPERT			3 //SOs, CMP
+#define SKILL_LEAD_EXPERT			3 //SOs
 #define SKILL_LEAD_MASTER			4 //XO, CO
 
 
@@ -143,9 +138,6 @@
 #define SKILL_PILOT_TRAINED		1 //Pilot
 
 
-//endurance skill TBD
-
-
 
 ////////////////////////////////////////////////
 
@@ -157,9 +149,19 @@
 #define GUN_SKILL_RIFLES		"rifles"
 #define GUN_SKILL_HEAVY_WEAPONS	"heavy_weapons"
 #define GUN_SKILL_SMARTGUN		"smartgun"
-#define GUN_SKILL_SPEC			"spec_weapons"
-
 
 //multitile vehicle skills
 #define SKILL_LARGE_VEHICLE_DEFAULT 0
 #define SKILL_LARGE_VEHICLE_TRAINED 1
+
+////////////////////////////////////////////////
+
+//skill-related fumble and delay times
+#define SKILL_TASK_TRIVIAL		10
+#define SKILL_TASK_VERY_EASY	20
+#define SKILL_TASK_EASY			30
+#define SKILL_TASK_AVERAGE		50
+#define SKILL_TASK_TOUGH		80
+#define SKILL_TASK_DIFFICULT	100
+#define SKILL_TASK_CHALLENGING	150
+#define SKILL_TASK_FORMIDABLE	200

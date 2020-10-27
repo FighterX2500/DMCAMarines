@@ -29,47 +29,49 @@
 	var/corpseback = null
 	var/corpseid = 0     //Just set to 1 if you want them to have an ID
 	var/corpseidjob = null // Needs to be in quotes, such as "Clown" or "Chef." This just determines what the ID reads as, not their access
-	var/corpseidaccess = null //This is for access. See access.dm for which jobs give what access. Again, put in quotes. Use "Captain" if you want it to be all access.
+	var/corpseidaccess = null //This is for access. See access.dm for which jobs give what access. Use CAPTAIN if you want it to be all access.
 	var/corpseidicon = null //For setting it to be a gold, silver, centcomm etc ID
-	var/mutantrace = "human"
 	var/xenovictim = FALSE //whether this person was infected and killed by xenos
 
 
-/obj/effect/landmark/corpsespawner/initialize()
-	if(loc && !disposed) //there's some issue with the code that calls this initialize twice,
+/obj/effect/landmark/corpsespawner/Initialize()
+	. = ..()
+	if(loc && !gc_destroyed) //there's some issue with the code that calls this initialize twice,
 		createCorpse()	//once normally and once when the landmark is in null space, thus spawning a mob there
 						//this is a bandaid until it's properly fixed.
 
 /obj/effect/landmark/corpsespawner/proc/createCorpse() //Creates a mob and checks for gear in each slot before attempting to equip it.
 	var/mob/living/carbon/human/M = new /mob/living/carbon/human (src.loc)
-	round_statistics.total_humans_created-- //corpses don't count
-	M.dna.mutantrace = mutantrace
+	GLOB.round_statistics.total_humans_created-- //corpses don't count
+	SSblackbox.record_feedback("tally", "round_statistics", -1, "total_humans_created")
+
 	M.real_name = name
-	M.death(1) //Kills the new mob
+	M.death(silent = TRUE) //Kills the new mob
+	M.timeofdeath = -CONFIG_GET(number/revive_grace_period)
 	if(corpseuniform)
-		M.equip_to_slot_or_del(new corpseuniform(M), WEAR_BODY)
+		M.equip_to_slot_or_del(new corpseuniform(M), SLOT_W_UNIFORM)
 	if(corpsesuit)
-		M.equip_to_slot_or_del(new corpsesuit(M), WEAR_JACKET)
+		M.equip_to_slot_or_del(new corpsesuit(M), SLOT_WEAR_SUIT)
 	if(corpseshoes)
-		M.equip_to_slot_or_del(new corpseshoes(M), WEAR_FEET)
+		M.equip_to_slot_or_del(new corpseshoes(M), SLOT_SHOES)
 	if(corpsegloves)
-		M.equip_to_slot_or_del(new corpsegloves(M), WEAR_HANDS)
+		M.equip_to_slot_or_del(new corpsegloves(M), SLOT_GLOVES)
 	if(corpseradio)
-		M.equip_to_slot_or_del(new corpseradio(M), WEAR_EAR)
+		M.equip_to_slot_or_del(new corpseradio(M), SLOT_EARS)
 	if(corpseglasses)
-		M.equip_to_slot_or_del(new corpseglasses(M), WEAR_EYES)
+		M.equip_to_slot_or_del(new corpseglasses(M), SLOT_GLASSES)
 	if(corpsemask)
-		M.equip_to_slot_or_del(new corpsemask(M), WEAR_FACE)
+		M.equip_to_slot_or_del(new corpsemask(M), SLOT_WEAR_MASK)
 	if(corpsehelmet)
-		M.equip_to_slot_or_del(new corpsehelmet(M), WEAR_HEAD)
+		M.equip_to_slot_or_del(new corpsehelmet(M), SLOT_HEAD)
 	if(corpsebelt)
-		M.equip_to_slot_or_del(new corpsebelt(M), WEAR_WAIST)
+		M.equip_to_slot_or_del(new corpsebelt(M), SLOT_BELT)
 	if(corpsepocket1)
-		M.equip_to_slot_or_del(new corpsepocket1(M), WEAR_R_STORE)
+		M.equip_to_slot_or_del(new corpsepocket1(M), SLOT_R_STORE)
 	if(corpsepocket2)
-		M.equip_to_slot_or_del(new corpsepocket2(M), WEAR_L_STORE)
+		M.equip_to_slot_or_del(new corpsepocket2(M), SLOT_L_STORE)
 	if(corpseback)
-		M.equip_to_slot_or_del(new corpseback(M), WEAR_BACK)
+		M.equip_to_slot_or_del(new corpseback(M), SLOT_BACK)
 	if(corpseid)
 		var/obj/item/card/id/W = new(M)
 		W.name = "[M.real_name]'s ID Card"
@@ -89,11 +91,9 @@
 		if(corpseidjob)
 			W.assignment = corpseidjob
 		W.registered_name = M.real_name
-		M.equip_to_slot_or_del(W, WEAR_ID)
+		M.equip_to_slot_or_del(W, SLOT_WEAR_ID)
 	if(xenovictim)
-		M.adjustBruteLoss(100)
-		M.adjustBruteLoss(100)
-		M.adjustBruteLoss(100)
+		// no damage because limb updates are expensive
 		var/datum/internal_organ/O
 		var/i
 		for(i in list("heart","lungs"))
@@ -103,14 +103,10 @@
 		M.chestburst = 2
 		M.update_burst()
 		//buckle to nest
-		var/obj/structure/bed/nest/N = locate() in get_turf(src)
-		if(N)
-			M.buckled = N
-			M.dir = N.dir
-			M.update_canmove()
-			N.buckled_mob = M
-			N.afterbuckle(M)
-	cdel(src)
+		var/obj/structure/bed/nest/victim_nest = locate() in get_turf(src)
+		if(victim_nest)
+			victim_nest.buckle_mob(M, silent = TRUE)
+	qdel(src)
 
 
 
@@ -123,7 +119,7 @@
 	corpsesuit = /obj/item/clothing/suit/armor/vest
 	corpseshoes = /obj/item/clothing/shoes/swat
 	corpsegloves = /obj/item/clothing/gloves/swat
-	corpseradio = /obj/item/device/radio/headset
+	corpseradio = /obj/item/radio/headset
 	corpsemask = /obj/item/clothing/mask/gas
 	corpsehelmet = /obj/item/clothing/head/helmet/swat
 	corpseback = /obj/item/storage/backpack
@@ -139,7 +135,7 @@
 	corpsesuit = /obj/item/clothing/suit/space/rig/syndi
 	corpseshoes = /obj/item/clothing/shoes/swat
 	corpsegloves = /obj/item/clothing/gloves/swat
-	corpseradio = /obj/item/device/radio/headset
+	corpseradio = /obj/item/radio/headset
 	corpsemask = /obj/item/clothing/mask/gas/syndicate
 	corpsehelmet = /obj/item/clothing/head/helmet/space/rig/syndi
 	corpseback = /obj/item/tank/jetpack/oxygen
@@ -156,7 +152,7 @@
 	corpsesuit = /obj/item/clothing/suit/armor/vest
 	corpseshoes = /obj/item/clothing/shoes/swat
 	corpsegloves = /obj/item/clothing/gloves/swat
-	corpseradio = /obj/item/device/radio/headset
+	corpseradio = /obj/item/radio/headset
 	corpsemask = /obj/item/clothing/mask/gas
 	corpsehelmet = /obj/item/clothing/head/helmet/swat
 	corpseback = /obj/item/storage/backpack
@@ -168,7 +164,7 @@
 	corpseuniform = /obj/item/clothing/under/pirate
 	corpseshoes = /obj/item/clothing/shoes/jackboots
 	corpseglasses = /obj/item/clothing/glasses/eyepatch
-	corpsehelmet = /obj/item/clothing/head/bandana
+	corpsehelmet = /obj/item/clothing/head/bandanna
 
 
 
@@ -193,7 +189,7 @@
 
 /obj/effect/landmark/corpsespawner/prisoner
 	name = "Prisoner"
-	corpseuniform = /obj/item/clothing/under/color/orange
+	corpseuniform = /obj/item/clothing/under/rank/prisoner
 	corpseshoes = /obj/item/clothing/shoes/orange
 	corpseid = 1
 	corpseidjob = "Prisoner"
@@ -215,8 +211,8 @@
 	name = "Doctor"
 	corpseuniform = /obj/item/clothing/under/colonist
 	corpsesuit = /obj/item/clothing/suit/storage/labcoat
-	corpseback = /obj/item/storage/backpack/medic
-	corpsepocket1 = /obj/item/device/flashlight/pen
+	corpseback = /obj/item/storage/backpack/corpsman
+	corpsepocket1 = /obj/item/flashlight/pen
 	corpseshoes = /obj/item/clothing/shoes/black
 	corpseid = 1
 	corpseidjob = "Medical Doctor"
@@ -279,19 +275,41 @@
 	corpsehelmet = /obj/item/clothing/head/helmet/space/rig/mining
 
 /obj/effect/landmark/corpsespawner/security
-	corpseuniform = /obj/item/clothing/under/marine/veteran/PMC
+	corpseuniform = /obj/item/clothing/under/rank/security
 	corpseshoes = /obj/item/clothing/shoes/jackboots
 	corpsesuit = /obj/item/clothing/suit/armor/vest/security
-	xenovictim = TRUE
 
 /obj/effect/landmark/corpsespawner/prison_security
 	name = "Prison Guard"
 	corpseuniform = /obj/item/clothing/under/rank/security
 	corpseshoes = /obj/item/clothing/shoes/jackboots
+	corpsegloves = /obj/item/clothing/gloves/black
 	corpsesuit = /obj/item/clothing/suit/armor/vest/security
 	corpsehelmet = /obj/item/clothing/head/helmet
 	corpseid = 1
 	corpseidjob = "Prison Guard"
+
+
+/obj/effect/landmark/corpsespawner/pmc
+	name = "Unknown PMC"
+	corpseuniform = /obj/item/clothing/under/marine/veteran/PMC
+	corpseshoes = /obj/item/clothing/shoes/jackboots
+	corpsesuit = /obj/item/clothing/suit/armor/vest/security
+	corpseback = /obj/item/storage/backpack/satchel
+	corpsebelt = /obj/item/storage/belt/gun/m4a3/vp70
+	corpsegloves = /obj/item/clothing/gloves/marine/veteran/PMC
+	corpsehelmet = /obj/item/clothing/head/helmet/marine/veteran/PMC
+	corpsemask = /obj/item/clothing/mask/gas/PMC/damaged
+	corpseradio = /obj/item/radio/headset/survivor
+	corpsesuit = /obj/item/clothing/suit/storage/marine/veteran/PMC
+	xenovictim = TRUE
+
+/obj/effect/landmark/corpsespawner/colonist
+	name = "Colonist"
+	corpseuniform = /obj/item/clothing/under/colonist
+	corpseshoes = /obj/item/clothing/shoes/black
+	xenovictim = TRUE
+
 
 /////////////////Officers//////////////////////
 
@@ -303,7 +321,7 @@
 	corpseglasses = /obj/item/clothing/glasses/sunglasses
 	corpseid = 1
 	corpseidjob = "Staff Officer"
-	corpseidaccess = "Captain"
+	corpseidaccess = CAPTAIN
 
 /obj/effect/landmark/corpsespawner/commander
 	name = "Commander"
@@ -317,7 +335,7 @@
 	corpsepocket1 = /obj/item/tool/lighter/zippo
 	corpseid = 1
 	corpseidjob = "Commander"
-	corpseidaccess = "Captain"
+	corpseidaccess = CAPTAIN
 
 /obj/effect/landmark/corpsespawner/PMC
 	name = "Private Security Officer"
@@ -332,6 +350,3 @@
 	corpseid = 1
 	corpseidjob = "Private Security Officer"
 	corpseidaccess = "101"
-
-
-

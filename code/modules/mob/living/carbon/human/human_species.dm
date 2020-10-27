@@ -2,36 +2,70 @@
 // might be worth adapting the bugs into a feature and using these
 // subtypes as a basis for non-common-speaking alien foreigners. ~ Z
 
-/mob/living/carbon/human/dummy
-	real_name = "Test Dummy"
-	status_flags = GODMODE|CANPUSH
 
-/mob/living/carbon/human/skrell/New(var/new_loc)
-	h_style = "Skrell Male Tentacles"
-	..(new_loc, "Skrell")
+/mob/living/carbon/human/species/skrell
+	race = "Skrell"
 
-/mob/living/carbon/human/tajaran/New(var/new_loc)
-	h_style = "Tajaran Ears"
-	..(new_loc, "Tajara")
+/datum/species/skrell/handle_post_spawn(mob/living/carbon/human/H)
+	. = ..()
+	H.h_style = "Skrell Male Tentacles"
 
-/mob/living/carbon/human/unathi/New(var/new_loc)
-	h_style = "Unathi Horns"
-	..(new_loc, "Unathi")
+/mob/living/carbon/human/species/tajaran
+	race = "Tajara"
 
-/mob/living/carbon/human/vox/New(var/new_loc)
-	h_style = "Short Vox Quills"
-	..(new_loc, "Vox")
+/datum/species/tajaran/handle_post_spawn(mob/living/carbon/human/H)
+	. = ..()
+	H.h_style = "Tajaran Ears"
 
-/mob/living/carbon/human/voxarmalis/New(var/new_loc)
-	h_style = "Bald"
-	..(new_loc, "Vox Armalis")
+/mob/living/carbon/human/species/unathi
+	race = "Unathi"
 
-/mob/living/carbon/human/machine/New(var/new_loc)
-	h_style = "blue IPC screen"
-	..(new_loc, "Machine")
+/datum/species/unathi/handle_post_spawn(mob/living/carbon/human/H)
+	. = ..()
+	H.h_style = "Unathi Horns"
 
-/mob/living/carbon/human/synthetic/New(var/new_loc)
-	..(new_loc, "Synthetic")
+/mob/living/carbon/human/species/vox
+	race = "Vox"
 
-/mob/living/carbon/human/synthetic_old/New(var/new_loc)
-	..(new_loc, "Early Synthetic")
+/datum/species/vox/handle_post_spawn(mob/living/carbon/human/H)
+	. = ..()
+	H.h_style = "Short Vox Quills"
+
+/mob/living/carbon/human/species/voxarmalis
+	race = "Vox Armalis"
+
+/datum/species/vox/armalis/handle_post_spawn(mob/living/carbon/human/H)
+	. = ..()
+	H.h_style = "Bald"
+
+/mob/living/carbon/human/species/machine
+	race = "Machine"
+
+/datum/species/machine/handle_post_spawn(mob/living/carbon/human/H)
+	. = ..()
+	H.h_style = "blue IPC screen"
+
+/mob/living/carbon/human/species/synthetic
+	race = "Synthetic"
+
+/mob/living/carbon/human/species/early_synthetic
+	race = "Early Synthetic"
+
+/mob/living/carbon/human/species/moth
+	race = "Moth"
+
+/datum/species/moth/handle_post_spawn(mob/living/carbon/human/H)
+	. = ..()
+	H.moth_wings = pick(GLOB.moth_wings_list - "Burnt Off")
+
+/mob/living/carbon/human/species/vatgrown
+	race = "Vat-Grown"
+
+/mob/living/carbon/human/species/sectoid
+	race = "Sectoid"
+
+/mob/living/carbon/human/species/vatborn
+	race = "Vatborn"
+
+/mob/living/carbon/human/species/skeleton
+	race = "Skeleton"

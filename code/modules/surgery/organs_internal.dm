@@ -13,9 +13,9 @@
 
 /datum/surgery_step/internal/remove_embryo
 	allowed_tools = list(
-	/obj/item/tool/surgery/hemostat = 100,           \
-	/obj/item/tool/wirecutters = 75,         \
-	/obj/item/tool/kitchen/utensil/fork = 20
+		/obj/item/tool/surgery/hemostat = 100,
+		/obj/item/tool/wirecutters = 75,
+		/obj/item/tool/kitchen/utensil/fork = 20,
 	)
 	blood_level = 2
 
@@ -23,7 +23,7 @@
 	max_duration = 80
 
 /datum/surgery_step/internal/remove_embryo/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected, checks_only)
-	if(target_zone != "chest")
+	if(affected.body_part != CHEST)
 		return 0
 	if(..())
 		var/obj/item/alien_embryo/A = locate() in target
@@ -40,11 +40,11 @@
 	var/obj/item/alien_embryo/A = locate() in target
 	if(A)
 		user.visible_message("<span class='warning'>[user] rips a wriggling parasite out of [target]'s ribcage!</span>",
-							 "<span class='warning'>You rip a wriggling parasite out of [target]'s ribcage!</span>")
-		var/mob/living/carbon/Xenomorph/Larva/L = locate() in target //the larva was fully grown, ready to burst.
+							"<span class='warning'>You rip a wriggling parasite out of [target]'s ribcage!</span>")
+		var/mob/living/carbon/xenomorph/larva/L = locate() in target //the larva was fully grown, ready to burst.
 		if(L)
 			L.forceMove(target.loc)
-			cdel(A)
+			qdel(A)
 		else
 			A.forceMove(target.loc)
 			target.status_flags &= ~XENO_HOST
@@ -61,9 +61,9 @@
 
 /datum/surgery_step/internal/fix_organ
 	allowed_tools = list(
-	/obj/item/stack/medical/advanced/bruise_pack= 100, \
-	/obj/item/stack/medical/bruise_pack = 20,          \
-	/obj/item/stack/medical/bruise_pack/tajaran = 70,  \
+		/obj/item/stack/medical/advanced/bruise_pack= 100,
+		/obj/item/stack/medical/bruise_pack = 20,
+		/obj/item/stack/medical/bruise_pack/tajaran = 70,
 	)
 
 	min_duration = FIX_ORGAN_MIN_DURATION
@@ -129,9 +129,9 @@
 
 /datum/surgery_step/internal/fix_organ_robotic //For artificial organs
 	allowed_tools = list(
-	/obj/item/stack/nanopaste = 100,   \
-	/obj/item/tool/surgery/bonegel = 30,     \
-	/obj/item/tool/screwdriver = 70, \
+		/obj/item/stack/nanopaste = 100,
+		/obj/item/tool/surgery/bonegel = 30,
+		/obj/item/tool/screwdriver = 70,
 	)
 
 	min_duration = 60
@@ -352,8 +352,8 @@
 
 	if(target.species.has_organ[O.organ_tag])
 
-		if(!O.health)
-			to_chat(user, "<span class='warning'>\The [O.organ_tag] [o_is] in no state to be anted.</span>")
+		if(!O.obj_integrity)
+			to_chat(user, "<span class='warning'>\The [O.organ_tag] [o_is] in no state to be implanted.</span>")
 			return SPECIAL_SURGERY_INVALID
 
 		if(!target.internal_organs_by_name[O.organ_tag])
@@ -382,7 +382,7 @@
 /datum/surgery_step/internal/replace_organ/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected)
 	user.visible_message("<span class='notice'>[user] has transplanted \the [tool] into [target]'s [affected.display_name].</span>", \
 	"<span class='notice'>You have transplanted \the [tool] into [target]'s [affected.display_name].</span>")
-	user.temp_drop_inv_item(tool)
+	user.temporarilyRemoveItemFromInventory(tool)
 	var/obj/item/organ/O = tool
 
 	if(istype(O))
@@ -391,13 +391,11 @@
 		if(!transplant_blood)
 			O.organ_data.transplant_data = list()
 			O.organ_data.transplant_data["species"]    = target.species.name
-			O.organ_data.transplant_data["blood_type"] = target.dna.b_type
-			O.organ_data.transplant_data["blood_DNA"]  = target.dna.unique_enzymes
+			O.organ_data.transplant_data["blood_type"] = target.blood_type
 		else
 			O.organ_data.transplant_data = list()
 			O.organ_data.transplant_data["species"]    = transplant_blood.data["species"]
 			O.organ_data.transplant_data["blood_type"] = transplant_blood.data["blood_type"]
-			O.organ_data.transplant_data["blood_DNA"]  = transplant_blood.data["blood_DNA"]
 
 		O.organ_data.organ_holder = null
 		O.organ_data.owner = target
@@ -407,7 +405,7 @@
 		O.organ_data.cut_away = TRUE
 		O.replaced(target)
 
-	cdel(O)
+	qdel(O)
 
 /datum/surgery_step/internal/replace_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected)
 	user.visible_message("<span class='warning'>[user]'s hand slips, damaging \the [tool]!</span>", \
@@ -422,8 +420,8 @@
 
 /datum/surgery_step/internal/attach_organ
 	allowed_tools = list(
-	/obj/item/tool/surgery/FixOVein = 100, \
-	/obj/item/stack/cable_coil = 75
+		/obj/item/tool/surgery/FixOVein = 100,
+		/obj/item/stack/cable_coil = 75,
 	)
 
 	min_duration = 60

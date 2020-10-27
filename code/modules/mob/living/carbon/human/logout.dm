@@ -1,4 +1,7 @@
 /mob/living/carbon/human/Logout()
-	..()
-	if(species) species.handle_logout_special(src)
-	return
+	. = ..()
+	species?.handle_logout_special(src)
+	if(!key)
+		set_afk_status(MOB_DISCONNECTED)
+	else if(!isclientedaghost(src))
+		set_afk_status(MOB_RECENTLY_DISCONNECTED, 15 MINUTES)

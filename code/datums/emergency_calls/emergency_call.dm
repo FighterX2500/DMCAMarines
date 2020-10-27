@@ -2,121 +2,103 @@
 //There's also an admin commmand which lets you set one to your liking.
 
 
-
-
-//basic persistent gamemode stuff.
-/datum/game_mode
-	var/list/datum/emergency_call/all_calls = list() //initialized at round start and stores the datums.
-	var/datum/emergency_call/picked_call = null //Which distress call is currently active
-	var/has_called_emergency = 0
-	var/distress_cooldown = 0
-	var/waiting_for_candidates = 0
-
-//The distress call parent. Cannot be called itself due to "name" being a filtered target.
+//The distress call parent.
 /datum/emergency_call
-	var/name = "name"
-	var/mob_max = 3
-	var/mob_min = 3
-	var/dispatch_message = "An encrypted signal has been received from a nearby vessel. Stand by." //Msg to display when starting
-	var/arrival_message = "" //Msg to display about when the shuttle arrives
-	var/objectives //Txt of objectives to display to joined. Todo: make this into objective notes
-	var/probability = 0 //Chance of it occuring. Total must equal 100%
-	var/hostility //For ERTs who are either hostile or friendly by random chance.
+	var/name = ""
+	var/mob_max = 10
+	var/mob_min = 1
+	var/dispatch_message = "An encrypted signal has been received from a nearby vessel. Stand by." //Message displayed to marines once the signal is finalized.
+	var/objectives = "" //Objectives to display to the members.
+	var/probability = 0 //So we can give different ERTs a different probability.
 	var/list/datum/mind/members = list() //Currently-joined members.
 	var/list/datum/mind/candidates = list() //Potential candidates for enlisting.
-//	var/waiting_for_candidates = 0 //Are we waiting on people to join?
-	var/role_needed = BE_RESPONDER //Obsolete
-	var/name_of_spawn = "Distress" //If we want to set up different spawn locations
-	var/mob/living/carbon/leader = null //Who's leading these miscreants
+	var/mob/living/carbon/leader = null
+	var/shuttle_id = "distress"
+	var/obj/docking_port/mobile/ert/shuttle
+	var/auto_shuttle_launch = FALSE //Useful for xenos that can't interact with the shuttle console.
 	var/medics = 0
-	var/heavies = 0
 	var/max_medics = 1
-	var/max_heavies = 1
-	var/shuttle_id = "Distress"
-	var/auto_shuttle_launch = FALSE
-
+	var/candidate_timer
+	var/cooldown_timer
+	var/spawn_type = /mob/living/carbon/human
 
 /datum/game_mode/proc/initialize_emergency_calls()
-	if(all_calls.len) //It's already been set up.
+	if(length(all_calls)) //It's already been set up.
 		return
 
 	var/list/total_calls = typesof(/datum/emergency_call)
-	if(!total_calls.len)
-		to_chat(world, "\red \b Error setting up emergency calls, no datums found.")
-		return 0
-	for(var/S in total_calls)
-		var/datum/emergency_call/C= new S()
-		if(!C)	continue
-		if(C.name == "name") continue //The default parent, don't add it
-		all_calls += C
+	if(!length(total_calls))
+		CRASH("No distress Datums found.")
+
+	for(var/x in total_calls)
+		var/datum/emergency_call/D = new x()
+		if(!D?.name)
+			continue //The default parent, don't add it
+		all_calls += D
+
 
 //Randomizes and chooses a call datum.
 /datum/game_mode/proc/get_random_call()
-	var/chance = rand(1,100)
-	var/add_prob = 0
 	var/datum/emergency_call/chosen_call
+	var/list/valid_calls = list()
 
 	for(var/datum/emergency_call/E in all_calls) //Loop through all potential candidates
-		if(chance >= E.probability + add_prob) //Tally up probabilities till we find which one we landed on
-			add_prob += E.probability
+		if(E.probability < 1) //Those that are meant to be admin-only
 			continue
-		chosen_call = E //Our random chance found one.
-		E.hostility = pick(75;0,25;1)
-		break
+
+		valid_calls.Add(E)
+
+		if(prob(E.probability))
+			chosen_call = E
+			break
 
 	if(!istype(chosen_call))
-		to_chat(world, "\red Something went wrong with emergency calls. Tell a coder!")
-		return null
-	else
-		return chosen_call
+		chosen_call = pick(valid_calls)
+
+	return chosen_call
 
 /datum/emergency_call/proc/show_join_message()
-	if(!mob_max || !ticker || !ticker.mode) //Just a supply drop, don't bother.
+	if(!mob_max || !SSticker?.mode) //Not a joinable distress call.
 		return
 
-//	var/list/datum/mind/possible_joiners = ticker.mode.get_players_for_role(role_needed) //Default role_needed is BE_RESPONDER
-	for(var/mob/dead/observer/M in player_list)
-		if(M.client)
-			to_chat(M, "\n<font size='3'><span class='attack'>An emergency beacon has been activated. Use the <B>Ghost > Join Response Team</b> verb to join!</span>")
-			to_chat(M, "<span class='attack'>You cannot join if you have Ghosted recently.</span>\n")
+	for(var/i in GLOB.observer_list)
+		var/mob/dead/observer/M = i
+		to_chat(M, "<br><font size='3'><span class='attack'>An emergency beacon has been activated. Use the <B>Ghost > <a href='byond://?src=[REF(M)];join_ert=1'>Join Response Team</a></b> verb to join!</span></font><br>")
+		to_chat(M, "<span class='attack'>You cannot join if you have Ghosted before this message.</span><br>")
 
-/datum/game_mode/proc/activate_distress()
-	picked_call = get_random_call()
-	if(!istype(picked_call, /datum/emergency_call)) //Something went horribly wrong
-		return
-	if(ticker && ticker.mode && ticker.mode.waiting_for_candidates) //It's already been activated
-		return
+
+/datum/game_mode/proc/activate_distress(datum/emergency_call/chosen_call)
+	picked_call = chosen_call || get_random_call()
+
+	if(SSticker?.mode?.waiting_for_candidates) //It's already been activated
+		return FALSE
+
+	picked_call.mob_max = rand(5, 15)
+
 	picked_call.activate()
-	return
+
 
 /mob/dead/observer/verb/JoinResponseTeam()
 	set name = "Join Response Team"
 	set category = "Ghost"
 	set desc = "Join an ongoing distress call response. You must be ghosted to do this."
 
-	if(jobban_isbanned(usr, "Syndicate") || jobban_isbanned(usr, "Emergency Response Team"))
+	var/datum/emergency_call/distress = SSticker?.mode?.picked_call //Just to simplify things a bit
+
+	if(is_banned_from(usr.ckey, ROLE_ERT))
 		to_chat(usr, "<span class='danger'>You are jobbanned from the emergency reponse team!</span>")
 		return
-	if(!ticker || !ticker.mode || isnull(ticker.mode.picked_call))
-		to_chat(usr, "<span class='warning'>No distress beacons are active. You will be notified if this changes.</span>")
+
+	if(!istype(distress) || !SSticker.mode.waiting_for_candidates || distress.mob_max < 1)
+		to_chat(usr, "<span class='warning'>No distress beacons that need candidates are active. You will be notified if that changes.</span>")
 		return
 
-	var/datum/emergency_call/distress = ticker.mode.picked_call //Just to simplify things a bit
-	if(!istype(distress) || !distress.mob_max)
-		to_chat(usr, "<span class='warning'>The emergency response team is already full!</span>")
+	var/deathtime = world.time - usr.timeofdeath
+
+	if(deathtime < 600 && !check_other_rights(usr.client, R_ADMIN, FALSE)) //They have ghosted after the announcement.
+		to_chat(usr, "<span class='warning'>You ghosted too recently. Try again later.</span>")
 		return
 
-	if(!ticker.mode.waiting_for_candidates)
-		to_chat(usr, "<span class='warning'>The emergency response team has already been selected.</span>")
-		return
-
-	if(!usr.mind) //How? Give them a new one anyway.
-		usr.mind = new /datum/mind(usr.key)
-		usr.mind.active = 1
-		usr.mind.current = usr
-	if(usr.mind.key != usr.key) usr.mind.key = usr.key //Sigh. This can happen when admin-switching people into afking people, leading to runtime errors for a clientless key.
-
-	if(!usr.client || !usr.mind) return //Somehow
 	if(usr.mind in distress.candidates)
 		to_chat(usr, "<span class='warning'>You are already a candidate for this emergency response team.</span>")
 		return
@@ -124,125 +106,175 @@
 	if(distress.add_candidate(usr))
 		to_chat(usr, "<span class='boldnotice'>You are now a candidate in the emergency response team! If there are enough candidates, you may be picked to be part of the team.</span>")
 	else
-		to_chat(usr, "<span class='warning'>You did not get enlisted in the response team. Better luck next time!</span>")
+		to_chat(usr, "<span class='warning'>Something went wrong while adding you into the candidate list!</span>")
+
+/datum/emergency_call/proc/reset()
+	if(candidate_timer)
+		deltimer(candidate_timer)
+		candidate_timer = null
+	if(cooldown_timer)
+		deltimer(cooldown_timer)
+		cooldown_timer = null
+	members.Cut()
+	candidates.Cut()
+	SSticker.mode.waiting_for_candidates = FALSE
+	SSticker.mode.on_distress_cooldown = FALSE
+	message_admins("Distress beacon: [name] has been reset.")
 
 /datum/emergency_call/proc/activate(announce = TRUE)
-	if(!ticker || !ticker.mode) //Something horribly wrong with the gamemode ticker
-		return
+	if(!SSticker?.mode) //Something horribly wrong with the gamemode SSticker
+		message_admins("Distress beacon: [name] attempted to activate but no gamemode exists")
+		return FALSE
 
-	if(ticker.mode.has_called_emergency) //It's already been called.
-		return
+	if(SSticker.mode.on_distress_cooldown) //It's already been called.
+		message_admins("Distress beacon: [name] attempted to activate but distress is on cooldown")
+		return FALSE
 
 	if(mob_max > 0)
-		ticker.mode.waiting_for_candidates = 1
+		SSticker.mode.waiting_for_candidates = TRUE
+
 	show_join_message() //Show our potential candidates the message to let them join.
-	message_admins("Distress beacon: '[name]' activated. Looking for candidates.", 1)
+	message_admins("Distress beacon: '[name]' activated. Looking for candidates.")
 
-	if (announce)
-		command_announcement.Announce("A distress beacon has been launched from the [MAIN_SHIP_NAME].", "Priority Alert", new_sound='sound/AI/distressbeacon.ogg')
+	if(announce)
+		priority_announce("A distress beacon has been launched from the [SSmapping.configs[SHIP_MAP].map_name].", "Priority Alert", sound = 'sound/AI/distressbeacon.ogg')
 
-	ticker.mode.has_called_emergency = 1
-	spawn(600) //If after 60 seconds we aren't full, abort
-		if(candidates.len < mob_min)
-			message_admins("Aborting distress beacon, not enough candidates: found [candidates.len].", 1)
-			ticker.mode.waiting_for_candidates = 0
-			ticker.mode.has_called_emergency = 0
-			members = list() //Empty the members list.
-			candidates = list()
+	SSticker.mode.on_distress_cooldown = TRUE
 
-			if (announce)
-				command_announcement.Announce("The distress signal has not received a response, the launch tubes are now recalibrating.", "Distress Beacon")
+	candidate_timer = addtimer(CALLBACK(src, .proc/do_activate, announce), 1 MINUTES, TIMER_STOPPABLE)
 
-			ticker.mode.distress_cooldown = 1
-			ticker.mode.picked_call = null
-			spawn(1200)
-				ticker.mode.distress_cooldown = 0
-		else //We've got enough!
-			//Trim down the list
-			var/list/datum/mind/picked_candidates = list()
-			if(mob_max > 0)
-				for(var/i = 1 to mob_max)
-					if(!candidates.len) break//We ran out of candidates, maybe they alienized. Use what we have.
-					var/datum/mind/M = pick(candidates) //Get a random candidate, then remove it from the candidates list.
-					if(istype(M.current,/mob/living/carbon/Xenomorph))
-						candidates.Remove(M) //Strip them from the list, they aren't dead anymore.
-						if(!candidates.len) break //NO picking from empty lists
-						M = pick(candidates)
-					if(!istype(M))//Something went horrifically wrong
-						candidates.Remove(M)
-						if(!candidates.len) break //No empty lists!!
-						M = pick(candidates) //Lets try this again
-					picked_candidates.Add(M)
-					candidates.Remove(M)
-				spawn(3) //Wait for all the above to be done
-					if(candidates.len)
-						for(var/datum/mind/I in candidates)
-							if(I.current)
-								to_chat(I.current, "<span class='warning'>You didn't get selected to join the distress team. Better luck next time!</span>")
+/datum/emergency_call/proc/do_activate(announce = TRUE)
+	candidate_timer = null
+	SSticker.mode.waiting_for_candidates = FALSE
 
-			if (announce)
-				command_announcement.Announce(dispatch_message, "Distress Beacon", new_sound='sound/AI/distressreceived.ogg') //Announcement that the Distress Beacon has been answered, does not hint towards the chosen ERT
+	var/list/valid_candidates = list()
 
-			message_admins("Distress beacon: [src.name] finalized, setting up candidates.", 1)
-			var/datum/shuttle/ferry/shuttle = shuttle_controller.shuttles[shuttle_id]
-			if(!shuttle || !istype(shuttle))
-				message_admins("Warning: Distress shuttle not found. Aborting.")
-				return
-			spawn_items()
+	for(var/i in candidates)
+		var/datum/mind/M = i
+		if(!istype(M)) // invalid
+			continue
+		if(M.current) //If they still have a body
+			if(!isaghost(M.current) && M.current.stat != DEAD) // and not dead or admin ghosting,
+				to_chat(M.current, "<span class='warning'>You didn't get selected to join the distress team because you aren't dead.</span>")
+				continue
+		if(name == "Xenomorphs" && is_banned_from(ckey(M.key), ROLE_XENOMORPH))
+			if(M.current)
+				to_chat(M, "<span class='warning'>You didn't get selected to join the distress team because you are jobbanned from Xenomorph.</span>")
+			continue
+		valid_candidates += M
 
-			if(auto_shuttle_launch)
-				shuttle.launch()
+	message_admins("Distress beacon: [name] got [length(candidates)] candidates, [length(valid_candidates)] of them were valid.")
 
-			if(picked_candidates.len)
-				var/i = 0
-				for(var/datum/mind/M in picked_candidates)
-					members += M
-					i++
-					if(i > mob_max) break //Some logic. Hopefully this will never happen..
-					spawn(1 + i)
-						create_member(M)
-			candidates = null //Blank out the candidates list for next time.
-			candidates = list()
+	if(mob_min && length(valid_candidates) < mob_min)
+		message_admins("Aborting distress beacon [name], not enough candidates. Found: [length(valid_candidates)]. Minimum required: [mob_min].")
+		SSticker.mode.waiting_for_candidates = FALSE
+		members.Cut() //Empty the members list.
+		candidates.Cut()
 
-/datum/emergency_call/proc/add_candidate(var/mob/M)
-	if(!M.client) return 0//Not connected
-	if(M.mind && M.mind in candidates) return 0//Already there.
-	if(istype(M,/mob/living/carbon/Xenomorph) && !M.stat) return 0//Something went wrong
-	if(M.mind)
-		candidates += M.mind
+		if(announce)
+			priority_announce("The distress signal has not received a response, the launch tubes are now recalibrating.", "Distress Beacon")
+
+		SSticker.mode.picked_call = null
+		SSticker.mode.on_distress_cooldown = TRUE
+
+		cooldown_timer = addtimer(CALLBACK(src, .proc/reset), COOLDOWN_COMM_REQUEST, TIMER_STOPPABLE)
+		return
+
+	var/list/datum/mind/picked_candidates = list()
+	if(length(valid_candidates) > mob_max)
+		for(var/i in 1 to mob_max)
+			if(!length(valid_candidates)) //We ran out of candidates.
+				break
+			picked_candidates += pick_n_take(valid_candidates) //Get a random candidate, then remove it from the candidates list.
+
+		for(var/datum/mind/M in valid_candidates)
+			if(M.current)
+				to_chat(M.current, "<span class='warning'>You didn't get selected to join the distress team. Better luck next time!</span>")
+		message_admins("Distress beacon: [length(valid_candidates)] valid candidates were not selected.")
 	else
-		if(M.key)
-			M.mind = new /datum/mind(M.key)
-			candidates += M.mind
-	return 1
+		picked_candidates = valid_candidates // save some time
+		message_admins("Distress beacon: All valid candidates were selected.")
+
+	if(announce)
+		priority_announce(dispatch_message, "Distress Beacon", sound = 'sound/AI/distressreceived.ogg')
+
+	message_admins("Distress beacon: [name] finalized, starting spawns.")
+
+	// begin loading the shuttle
+	if(!SSmapping.shuttle_templates[shuttle_id])
+		message_admins("Distress beacon: [name] couldn't find a valid shuttle template")
+		CRASH("ert called with invalid shuttle_id")
+	var/datum/map_template/shuttle/S = SSmapping.shuttle_templates[shuttle_id]
+
+	shuttle = SSshuttle.load_template_to_transit(S)
+	if(!shuttle)
+		message_admins("Distress beacon: shuttle loading failed")
+		reset()
+		return
+
+	spawn_items()
+
+	if(mob_min > 0)
+		if(length(picked_candidates))
+			max_medics = max(round(length(picked_candidates) * 0.25), 1)
+			for(var/i in picked_candidates)
+				var/datum/mind/candidate_mind = i
+				members += candidate_mind
+				create_member(candidate_mind)
+		else
+			message_admins("ERROR: No picked candidates, aborting.")
+			shuttle.intoTheSunset() // delete
+			return
+
+	if(auto_shuttle_launch)
+		if(!shuttle.auto_launch())
+			shuttle.intoTheSunset()
+			message_admins("Distress beacon: [name] couldn't find a valid target to autolaunch")
+			CRASH("can't find a valid place to autolaunch ert shuttle towards")
+
+	message_admins("Distress beacon: [name] finished spawning.")
+
+	candidates.Cut() //Blank out the candidates list for next time.
+
+	cooldown_timer = addtimer(CALLBACK(src, .proc/reset), COOLDOWN_COMM_REQUEST, TIMER_STOPPABLE)
+
+/datum/emergency_call/proc/add_candidate(mob/M)
+	if(!M.client)
+		return FALSE  //Not connected
+
+	if(M.mind && (M.mind in candidates))
+		return FALSE  //Already there.
+
+	if(M.stat != DEAD)
+		return FALSE  //Alive, could have been drafted into xenos or something else.
+
+	if(!M.mind) //They don't have a mind
+		return FALSE
+
+	candidates += M.mind
+	return TRUE
 
 
 /datum/emergency_call/proc/get_spawn_point(is_for_items)
-	var/list/spawn_list = list()
+	var/obj/effect/landmark/L
+	if(is_for_items)
+		L = pick(shuttle?.item_spawns)
+	else
+		L = pick(shuttle?.mob_spawns)
+	if(L)
+		return get_turf(L)
 
-	for(var/obj/effect/landmark/L in landmarks_list)
-		if(is_for_items && L.name == "[name_of_spawn]Item")
-			spawn_list += L
-		else
-			if(L.name == name_of_spawn) //Default is "Distress"
-				spawn_list += L
+/datum/emergency_call/proc/create_member(datum/mind/mind_to_assign) //Overriden in each distress call file.
+	SHOULD_CALL_PARENT(TRUE)
+	var/turf/spawn_loc = get_spawn_point()
 
-	if(!spawn_list.len) //Empty list somehow
-		return null
-
-	var/turf/spawn_loc	= get_turf(pick(spawn_list))
 	if(!istype(spawn_loc))
-		return null
+		CRASH("[type] failed to find a proper spawn_loc")
 
-	return spawn_loc
+	return spawn_type ? new spawn_type(spawn_loc) : spawn_loc
 
 
-
-/datum/emergency_call/proc/create_member(datum/mind/M) //This is the parent, each type spawns its own variety.
-	return
-
-//Spawn various items around the shuttle area thing.
-/datum/emergency_call/proc/spawn_items()
+/datum/emergency_call/proc/spawn_items() //Allows us to spawn various things around the shuttle.
 	return
 
 

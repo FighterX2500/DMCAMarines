@@ -8,7 +8,7 @@
 	priority = 1
 
 /datum/surgery_step/cavity/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected, checks_only)
-	return affected.surgery_open_stage == (affected.encased ? 3 : 2) && !(affected.status & LIMB_BLEEDING)
+	return affected.surgery_open_stage == (affected.encased ? 3 : 2) && !(affected.limb_status & LIMB_BLEEDING)
 
 /datum/surgery_step/cavity/proc/get_max_wclass(datum/limb/affected)
 	switch (affected.name)
@@ -32,9 +32,9 @@
 
 /datum/surgery_step/cavity/make_space
 	allowed_tools = list(
-	/obj/item/tool/surgery/surgicaldrill = 100, \
-	/obj/item/tool/pen = 75,            \
-	/obj/item/stack/rods = 50
+		/obj/item/tool/surgery/surgicaldrill = 100,
+		/obj/item/tool/pen = 75,
+		/obj/item/stack/rods = 50,
 	)
 
 	min_duration = 60
@@ -65,10 +65,10 @@
 
 /datum/surgery_step/cavity/close_space
 	allowed_tools = list(
-	/obj/item/tool/surgery/cautery = 100,			\
-	/obj/item/clothing/mask/cigarette = 75,	\
-	/obj/item/tool/lighter = 50,    \
-	/obj/item/tool/weldingtool = 25
+		/obj/item/tool/surgery/cautery = 100,
+		/obj/item/clothing/mask/cigarette = 75,
+		/obj/item/tool/lighter = 50,
+		/obj/item/tool/weldingtool = 25,
 	)
 
 	min_duration = 60
@@ -106,7 +106,7 @@
 
 /datum/surgery_step/cavity/place_item/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected, checks_only)
 	if(..())
-		return !istype(user,/mob/living/silicon/robot) && !affected.hidden && affected.cavity && tool.w_class <= get_max_wclass(affected)
+		return !affected.hidden && affected.cavity && tool.w_class <= get_max_wclass(affected)
 
 /datum/surgery_step/cavity/place_item/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected)
 	user.visible_message("<span class='notice'>[user] starts putting \the [tool] inside [target]'s [get_cavity(affected)] cavity.</span>", \
@@ -122,7 +122,7 @@
 		var/datum/wound/internal_bleeding/I = new (10)
 		affected.wounds += I
 		affected.owner.custom_pain("You feel something rip in your [affected.display_name]!", 1)
-	user.drop_inv_item_to_loc(tool, target)
+	user.transferItemToLoc(tool, target)
 	affected.hidden = tool
 	affected.cavity = 0
 
@@ -142,9 +142,9 @@
 /datum/surgery_step/cavity/implant_removal
 	priority = 1
 	allowed_tools = list(
-	/obj/item/tool/surgery/hemostat = 100,           \
-	/obj/item/tool/wirecutters = 75,         \
-	/obj/item/tool/kitchen/utensil/fork = 20
+		/obj/item/tool/surgery/hemostat = 100,
+		/obj/item/tool/wirecutters = 75,
+		/obj/item/tool/kitchen/utensil/fork = 20,
 	)
 
 	min_duration = HEMOSTAT_REMOVE_MIN_DURATION
@@ -167,7 +167,7 @@
 		var/obj/item/obj = affected.implants[1]
 		user.visible_message("<span class='notice'>[user] takes something out of incision on [target]'s [affected.display_name] with \the [tool].</span>", \
 		"<span class='notice'>You take [obj] out of incision on [target]'s [affected.display_name]s with \the [tool].</span>")
-		affected.implants -= obj
+		obj.unembed_ourself()
 
 		obj.loc = get_turf(target)
 		if(istype(obj,/obj/item/implant))
@@ -175,17 +175,10 @@
 			imp.imp_in = null
 			imp.implanted = 0
 
-		if(istype(target, /mob/living/carbon/human))
-			var/mob/living/carbon/human/H = target
-			H.sec_hud_set_implants()
-
 	else if(affected.hidden)
 		user.visible_message("<span class='notice'>[user] takes something out of incision on [target]'s [affected.display_name] with \the [tool].</span>", \
-		"\blue You take something out of incision on [target]'s [affected.display_name]s with \the [tool].</span>")
+		"<span class='notice'> You take something out of incision on [target]'s [affected.display_name]s with \the [tool].</span>")
 		affected.hidden.loc = get_turf(target)
-		if(!affected.hidden.blood_DNA)
-			affected.hidden.blood_DNA = list()
-		affected.hidden.blood_DNA[target.dna.unique_enzymes] = target.dna.b_type
 		affected.hidden.update_icon()
 		affected.hidden = null
 
@@ -206,7 +199,6 @@
 				var/obj/item/implant/imp = I
 				user.visible_message("<span class='warning'>Something beeps inside [target]'s [affected.display_name]!</span>")
 				playsound(imp.loc, 'sound/items/countdown.ogg', 25, 1)
-				spawn(25)
-					imp.activate()
+				addtimer(CALLBACK(imp, /obj/item/implant.proc/activate), 25)
 	target.updatehealth()
 	affected.update_wounds()

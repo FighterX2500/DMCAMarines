@@ -1,5 +1,7 @@
 /* SURGERY STEPS */
 
+GLOBAL_LIST_EMPTY(surgery_steps)
+
 /datum/surgery_step
 	var/priority = 0 //Steps with higher priority will be attempted first. Accepts decimals
 
@@ -11,7 +13,7 @@
 	//3 : Special surgeries (Embryos, Bone Chips, Hematoma)
 
 	var/list/allowed_tools = null //Array of type path referencing tools that can be used for this step, and how well are they suited for it
-	var/list/allowed_species = null //List of names referencing mutantraces that this step applies to.
+	var/list/allowed_species = null //List of names referencing species that this step applies to.
 	var/list/disallowed_species = null
 
 
@@ -70,50 +72,66 @@
 	return null
 
 proc/spread_germs_to_organ(datum/limb/E, mob/living/carbon/human/user)
-	if(!istype(user) || !istype(E)) return
+	if(!istype(user) || !istype(E))
+		return
 
 	//Gloves
 	if(user.gloves)
-		if(user.gloves.germ_level && user.gloves.germ_level > 60)
-			E.germ_level += user.gloves.germ_level / 2
-	else if(user.germ_level)
-		E.germ_level += user.germ_level / 2
+		if(istype(user.gloves, /obj/item/clothing/gloves/latex))
+			E.germ_level += user.gloves.germ_level * 0.1
+		else if(user.gloves.germ_level && user.gloves.germ_level > 60)
+			E.germ_level += user.gloves.germ_level * 0.2
+	else
+		E.germ_level += user.germ_level * 0.33
 
 	//Masks
 	if(user.wear_mask)
-		if(user.germ_level && istype(user.wear_mask, /obj/item/clothing/mask/cigarette))
-			E.germ_level += user.germ_level + 200  // fuck you smoking doctors
-		else if(user.wear_mask.germ_level && !istype(user.wear_mask, /obj/item/clothing/mask/surgical) && prob(30))
-			E.germ_level += user.wear_mask.germ_level / 2
-	else if(user.germ_level && prob(60))
-		E.germ_level += user.germ_level / 2
+		if(istype(user.wear_mask, /obj/item/clothing/mask/cigarette))
+			E.germ_level += user.germ_level * 1
+		else if(istype(user.wear_mask, /obj/item/clothing/mask/surgical))
+			E.germ_level += user.wear_mask.germ_level * 0.1
+		else
+			E.germ_level += user.wear_mask.germ_level * 0.2
+	else
+		E.germ_level += user.germ_level * 0.33
+
+	//Suits
+	if(user.wear_suit)
+		if(istype(user.wear_suit, /obj/item/clothing/suit/surgical))
+			E.germ_level += user.germ_level * 0.1
+		else
+			E.germ_level += user.germ_level * 0.2
+	else
+		E.germ_level += user.germ_level * 0.33
 
 	if(locate(/obj/structure/bed/roller, E.owner.loc))
-		E.germ_level += 100
+		E.germ_level += 75
 	else if(locate(/obj/structure/table/, E.owner.loc))
-		E.germ_level += 200
+		E.germ_level += 100
+
 
 proc/do_surgery(mob/living/carbon/M, mob/living/user, obj/item/tool)
 	if(!istype(M))
 		return 0
-	if(user.a_intent == "harm") //Check for Hippocratic Oath
+	if(user.a_intent == INTENT_HARM) //Check for Hippocratic Oath
 		return 0
 	if(user.action_busy) //already doing an action
 		return 1
-	if(user.mind && user.mind.cm_skills && user.mind.cm_skills.surgery < SKILL_SURGERY_TRAINED)
-		to_chat(user, "<span class='warning'>You have no idea how to do surgery...</span>")
-		return 1
-	if(isXeno(M))
-		xeno_do_surgery(M, user, tool)
-		return 1
-	var/datum/limb/affected = M.get_limb(user.zone_selected)
+	if(user.skills.getRating("surgery") < SKILL_SURGERY_PROFESSIONAL)
+		user.visible_message("<span class='notice'>[user] fumbles around figuring out how to operate [M].</span>",
+		"<span class='notice'>You fumble around figuring out how to operate [M].</span>")
+		var/fumbling_time = max(0,SKILL_TASK_FORMIDABLE - ( 8 SECONDS * user.skills.getRating("surgery") )) // 20 secs non-trained, 12 amateur, 4 trained, 0 prof
+		if(fumbling_time && !do_after(user, fumbling_time, TRUE, M, BUSY_ICON_UNSKILLED))
+			return
+	var/datum/limb/affected = user.client.prefs.toggles_gameplay & RADIAL_MEDICAL ? radial_medical(M, user) : M.get_limb(user.zone_selected)
 	if(!affected)
-		return 0
+		return TRUE
 	if(affected.in_surgery_op) //two surgeons can't work on same limb at same time
 		to_chat(user, "<span class='warning'>You can't operate on the patient's [affected.display_name] while it's already being operated on.</span>")
-		return 1
+		return TRUE
 
-	for(var/datum/surgery_step/S in surgery_steps)
+	for(var/i in GLOB.surgery_steps)
+		var/datum/surgery_step/S = i
 		//Check if tool is right or close enough, and the target mob valid, and if this step is possible
 		if(S.tool_quality(tool) && S.is_valid_target(M))
 			var/step_is_valid = S.can_use(user, M, user.zone_selected, tool, affected)
@@ -139,21 +157,18 @@ proc/do_surgery(mob/living/carbon/M, mob/living/user, obj/item/tool)
 							multipler += 0.25
 						if(PAIN_REDUCTION_VERY_HEAVY to PAIN_REDUCTION_FULL)
 							multipler += 0.40
+						if(PAIN_REDUCTION_FULL to INFINITY)
+							multipler += 0.45
 					if(M.shock_stage > 100) //Being near to unconsious is good in this case
 						multipler += 0.25
-				if(istype(M.loc, /turf/open/shuttle/dropship))
-					multipler -= 0.65
-
-				if(isSynth(M) || isYautja(M)) multipler = 1
+				if(issynth(M))
+					multipler = 1
 
 				//calculate step duration
-				var/step_duration = rand(S.min_duration, S.max_duration)
-				if(user.mind && user.mind.cm_skills)
-					//1 second reduction per level above minimum for performing surgery
-					step_duration = max(5, step_duration - 10*user.mind.cm_skills.surgery)
+				var/step_duration = max(0.5 SECONDS, rand(S.min_duration, S.max_duration) - 1 SECONDS * user.skills.getRating("surgery"))
 
 				//Multiply tool success rate with multipler
-				if(prob(S.tool_quality(tool) * CLAMP01(multipler)) &&  do_mob(user, M, step_duration, BUSY_ICON_FRIENDLY, BUSY_ICON_MEDICAL, TRUE))
+				if(do_mob(user, M, step_duration, BUSY_ICON_FRIENDLY, BUSY_ICON_MEDICAL, extra_checks = CALLBACK(user, /mob/proc/break_do_after_checks, null, null, user.zone_selected)) && prob(S.tool_quality(tool) * CLAMP01(multipler)))
 					if(S.can_use(user, M, user.zone_selected, tool, affected, TRUE)) //to check nothing changed during the do_mob
 						S.end_step(user, M, user.zone_selected, tool, affected) //Finish successfully
 
@@ -161,7 +176,7 @@ proc/do_surgery(mob/living/carbon/M, mob/living/user, obj/item/tool)
 					if(M.stat == CONSCIOUS) //If not on anesthetics or not unconsious, warn player
 						if(ishuman(M))
 							var/mob/living/carbon/human/H = M
-							if(!(H.species.flags & NO_PAIN))
+							if(!(H.species.species_flags & NO_PAIN))
 								M.emote("pain")
 						to_chat(user, "<span class='danger'>[M] moved during the surgery! Use anesthetics!</span>")
 					S.fail_step(user, M, user.zone_selected, tool, affected) //Malpractice
@@ -170,14 +185,14 @@ proc/do_surgery(mob/living/carbon/M, mob/living/user, obj/item/tool)
 				affected.in_surgery_op = FALSE
 				return 1				   //Don't want to do weapony things after surgery
 
-	if(user.a_intent == "help")
+	if(user.a_intent == INTENT_HELP)
 		to_chat(user, "<span class='warning'>You can't see any useful way to use \the [tool] on [M].</span>")
 		return 1
 	return 0
 
 //Comb Sort. This works apparently, so we're keeping it that way
-proc/sort_surgeries()
-	var/gap = surgery_steps.len
+/proc/sort_surgeries()
+	var/gap = length(GLOB.surgery_steps)
 	var/swapped = 1
 	while(gap > 1 || swapped)
 		swapped = 0
@@ -185,11 +200,11 @@ proc/sort_surgeries()
 			gap = round(gap / 1.247330950103979)
 		if(gap < 1)
 			gap = 1
-		for(var/i = 1; gap + i <= surgery_steps.len; i++)
-			var/datum/surgery_step/l = surgery_steps[i]		//Fucking hate
-			var/datum/surgery_step/r = surgery_steps[gap+i]	//how lists work here
+		for(var/i = 1; gap + i <= length(GLOB.surgery_steps); i++)
+			var/datum/surgery_step/l = GLOB.surgery_steps[i]		//Fucking hate
+			var/datum/surgery_step/r = GLOB.surgery_steps[gap+i]	//how lists work here
 			if(l.priority < r.priority)
-				surgery_steps.Swap(i, gap + i)
+				GLOB.surgery_steps.Swap(i, gap + i)
 				swapped = 1
 
 

@@ -2,13 +2,13 @@
 /obj/item/clothing/under
 	icon = 'icons/obj/clothing/uniforms.dmi'
 	name = "under"
-	flags_armor_protection = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
-	flags_cold_protection = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
-	flags_heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+	flags_armor_protection = CHEST|GROIN|LEGS|ARMS
+	flags_cold_protection = CHEST|GROIN|LEGS|ARMS
+	flags_heat_protection = CHEST|GROIN|LEGS|ARMS
 	permeability_coefficient = 0.90
-	flags_equip_slot = SLOT_ICLOTHING
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
-	w_class = 3
+	flags_equip_slot = ITEM_SLOT_ICLOTHING
+	soft_armor = list("melee" = 0, "bullet" = 0, "laser" = 0, "energy" = 0, "bomb" = 0, "bio" = 0, "rad" = 0, "fire" = 0, "acid" = 0)
+	w_class = WEIGHT_CLASS_NORMAL
 	var/has_sensor = 1//For the crew computer 2 = unable to change mode
 	var/sensor_mode = 3
 		/*
@@ -20,15 +20,14 @@
 	var/displays_id = 1
 	var/rollable_sleeves = FALSE //can we roll the sleeves on this uniform?
 	var/rolled_sleeves = FALSE //are the sleeves currently rolled?
-	var/list/suit_restricted //for uniforms that only accept to be combined with certain suits
 	sprite_sheets = list("Vox" = 'icons/mob/species/vox/uniform.dmi')
 
 
 
 
-/obj/item/clothing/under/Dispose()
+/obj/item/clothing/under/Destroy()
 	if(hastie)
-		cdel(hastie)
+		qdel(hastie)
 		hastie = null
 	. = ..()
 
@@ -39,35 +38,37 @@
 		var/mob/M = src.loc
 		M.update_inv_w_uniform()
 
-/obj/item/clothing/under/attackby(obj/item/I, mob/user)
+/obj/item/clothing/under/attackby(obj/item/I, mob/user, params)
 	if(hastie)
-		hastie.attackby(I, user)
-		return 1
+		hastie.attackby(I, user, params)
+		return TRUE
 
+	else if(!ishuman(user))
+		return ..()
+
+	var/mob/living/carbon/human/H = user
 	if(!hastie && istype(I, /obj/item/clothing/tie))
 		var/obj/item/clothing/tie/T = I
-		if(!T.tie_check(src, user)) return
+		if(!T.tie_check(src, user))
+			return ..()
 		user.drop_held_item()
 		hastie = T
 		hastie.on_attached(src, user)
+		H.update_inv_w_uniform()
 
-		if(istype(loc, /mob/living/carbon/human))
-			var/mob/living/carbon/human/H = loc
-			H.update_inv_w_uniform()
+	else if(loc == user && istype(I, /obj/item/clothing/under) && src != I)
+		if(H.w_uniform != src)
+			return ..()
 
-		return
+		H.dropItemToGround(src)
+		if(!H.equip_to_appropriate_slot(I))
+			return ..()
+		H.put_in_active_hand(src)
 
-	if(loc == user && istype(I,/obj/item/clothing/under) && src != I)
-		if(ishuman(user))
-			var/mob/living/carbon/human/H = user
-			if(H.w_uniform == src)
-				H.drop_inv_item_on_ground(src)
-				if(H.equip_to_appropriate_slot(I))
-					H.put_in_active_hand(src)
+	else
+		return ..()
 
-	..()
-
-/obj/item/clothing/under/attack_hand(mob/user as mob)
+/obj/item/clothing/under/attack_hand(mob/living/user)
 	//only forward to the attached accessory if the clothing is equipped (not in a storage)
 	if(hastie && src.loc == user)
 		hastie.attack_hand(user)
@@ -76,7 +77,7 @@
 	if ((ishuman(usr) || ismonkey(usr)) && src.loc == user)	//make it harder to accidentally undress yourself
 		return
 
-	..()
+	return ..()
 
 /obj/item/clothing/under/MouseDrop(obj/over_object as obj)
 	if (ishuman(usr) || ismonkey(usr))
@@ -84,16 +85,15 @@
 		if ((flags_item & NODROP) || loc != usr)
 			return
 
-		if (!usr.is_mob_incapacitated() && !(usr.buckled && usr.lying))
+		if (!usr.incapacitated() && !(usr.buckled && usr.lying_angle))
 			if(over_object)
 				switch(over_object.name)
 					if("r_hand")
-						usr.drop_inv_item_on_ground(src)
+						usr.dropItemToGround(src)
 						usr.put_in_r_hand(src)
 					if("l_hand")
-						usr.drop_inv_item_on_ground(src)
+						usr.dropItemToGround(src)
 						usr.put_in_l_hand(src)
-				add_fingerprint(usr)
 
 
 /obj/item/clothing/under/examine(mob/user)
@@ -111,15 +111,17 @@
 	if(hastie)
 		to_chat(user, "\A [hastie] is clipped to it.")
 
-/obj/item/clothing/under/proc/set_sensors(mob/user)
-	if (istype(user, /mob/dead/)) return
-	if (user.stat || user.is_mob_restrained()) return
+/obj/item/clothing/under/proc/set_sensors(mob/living/user)
+	if (!istype(user))
+		return
+	if (user.incapacitated(TRUE))
+		return
 	if(has_sensor >= 2)
-		to_chat(user, "The controls are locked.")
-		return 0
+		to_chat(user, "The sensors in [src] can't be modified.")
+		return FALSE
 	if(has_sensor <= 0)
-		to_chat(user, "This suit does not have any sensors.")
-		return 0
+		to_chat(user, "[src] does not have any sensors.")
+		return FALSE
 
 	var/list/modes = list("Off", "Binary sensors", "Vitals tracker", "Tracking beacon")
 	var/switchMode = input("Select a sensor mode:", "Suit Sensor Mode", modes[sensor_mode + 1]) in modes
@@ -146,17 +148,13 @@
 	else if (ismob(loc))
 		switch(sensor_mode)
 			if(0)
-				for(var/mob/V in viewers(usr, 1))
-					V.show_message("\red [user] disables [src.loc]'s remote sensing equipment.", 1)
+				visible_message("<span class='warning'>[user] disables [loc]'s remote sensing equipment.</span>", null, null, 1)
 			if(1)
-				for(var/mob/V in viewers(usr, 1))
-					V.show_message("[user] turns [src.loc]'s remote sensors to binary.", 1)
+				visible_message("[user] turns [loc]'s remote sensors to binary.", null, null, 1)
 			if(2)
-				for(var/mob/V in viewers(usr, 1))
-					V.show_message("[user] sets [src.loc]'s sensors to track vitals.", 1)
+				visible_message("[user] sets [loc]'s sensors to track vitals.", null, null, 1)
 			if(3)
-				for(var/mob/V in viewers(usr, 1))
-					V.show_message("[user] sets [src.loc]'s sensors to maximum.", 1)
+				visible_message("[user] sets [loc]'s sensors to maximum.", null, null, 1)
 
 /obj/item/clothing/under/verb/toggle()
 	set name = "Toggle Suit Sensors"
@@ -174,14 +172,14 @@
 
 	if(rollable_sleeves)
 		rolled_sleeves = !rolled_sleeves
-		var/full_coverage = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+		var/full_coverage = CHEST|GROIN|LEGS|ARMS
 		if(rolled_sleeves)
-			var/partial_coverage = UPPER_TORSO|LOWER_TORSO|LEGS
+			var/partial_coverage = CHEST|GROIN|LEGS
 			var/final_coverage
 			//Marine uniforms can only roll up the sleeves, not wear it at the waist.
 			if(istype(src,/obj/item/clothing/under/marine))
 				final_coverage = copytext(icon_state,1,3) == "s_" ? full_coverage : partial_coverage
-			else final_coverage = partial_coverage & ~UPPER_TORSO
+			else final_coverage = partial_coverage & ~CHEST
 			flags_armor_protection = final_coverage
 		else
 			flags_armor_protection = full_coverage
@@ -200,7 +198,6 @@
 	hastie.on_removed()
 	if(user)
 		user.put_in_hands(hastie)
-		hastie.add_fingerprint(user)
 	hastie = null
 	update_clothing_icon()
 
@@ -208,7 +205,8 @@
 	set name = "Remove Accessory"
 	set category = "Object"
 	set src in usr
-	if(!istype(usr, /mob/living)) return
+	if(!isliving(usr))
+		return
 	if(usr.stat) return
 
 	src.remove_accessory(usr)

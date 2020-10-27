@@ -1,161 +1,120 @@
 ////////////////////////////////////////////////////////////////////////////////
 /// Drinks.
 ////////////////////////////////////////////////////////////////////////////////
-/obj/item/reagent_container/food/drinks
+/obj/item/reagent_containers/food/drinks
 	name = "drink"
 	desc = "yummy"
 	icon = 'icons/obj/items/drinks.dmi'
 	icon_state = null
-	flags_atom = OPENCONTAINER
+	init_reagent_flags = OPENCONTAINER_NOUNIT
 	var/gulp_size = 5 //This is now officially broken ... need to think of a nice way to fix it.
 	possible_transfer_amounts = list(5,10,25)
 	volume = 50
 
-	on_reagent_change()
-		if (gulp_size < 5) gulp_size = 5
-		else gulp_size = max(round(reagents.total_volume / 5), 5)
+/obj/item/reagent_containers/food/drinks/on_reagent_change()
+	if (gulp_size < 5) gulp_size = 5
+	else gulp_size = max(round(reagents.total_volume / 5), 5)
 
-	attack_self(mob/user as mob)
+/obj/item/reagent_containers/food/drinks/attack(mob/M as mob, mob/user as mob, def_zone)
+	var/datum/reagents/R = src.reagents
+
+	if(!R.total_volume || !R)
+		to_chat(user, "<span class='warning'>The [src.name] is empty!</span>")
+		return FALSE
+
+	if(M == user)
+
+		if(istype(M,/mob/living/carbon/human))
+			var/mob/living/carbon/human/H = M
+			if(H.species.species_flags & IS_SYNTHETIC)
+				to_chat(H, "<span class='warning'>You have a monitor for a head, where do you think you're going to put that?</span>")
+				return
+
+		to_chat(M,"<span class='notice'>You swallow a gulp from \the [src].</span>")
+		if(reagents.total_volume)
+			reagents.reaction(M, INGEST)
+			reagents.trans_to(M, gulp_size)
+
+		playsound(M.loc,'sound/items/drink.ogg', 15, 1)
+		return TRUE
+	else if(istype(M,/mob/living/carbon/human))
+
+		var/mob/living/carbon/human/H = M
+		if(H.species.species_flags & IS_SYNTHETIC)
+			to_chat(H, "<span class='warning'>They have a monitor for a head, where do you think you're going to put that?</span>")
+			return
+
+		visible_message("<span class='warning'>[user] attempts to feed [M] [src].</span>")
+		if(!do_mob(user, M, 30, BUSY_ICON_FRIENDLY))
+			return
+		visible_message("<span class='warning'>[user] feeds [M] [src].</span>")
+
+		var/rgt_list_text = get_reagent_list_text()
+
+		log_combat(user, M, "fed", src, "Reagents: [rgt_list_text]")
+
+		if(reagents.total_volume)
+			reagents.reaction(M, INGEST)
+			reagents.trans_to(M, gulp_size)
+
+		playsound(M.loc,'sound/items/drink.ogg', 15, 1)
+		return TRUE
+
+	return FALSE
+
+
+/obj/item/reagent_containers/food/drinks/afterattack(obj/target, mob/user, proximity)
+	if(!proximity)
 		return
 
-	attack(mob/M as mob, mob/user as mob, def_zone)
-		var/datum/reagents/R = src.reagents
-		var/fillevel = gulp_size
+	if(target.is_refillable())
+		if(!is_drainable())
+			to_chat(user, "<span class='notice'>[src]'s tab isn't open!</span>")
+			return
+		if(!reagents.total_volume)
+			to_chat(user, "<span class='warning'>[src] is empty.</span>")
+			return
+		if(target.reagents.holder_full())
+			to_chat(user, "<span class='warning'>[target] is full.</span>")
+			return
 
-		if(!R.total_volume || !R)
-			to_chat(user, "\red The [src.name] is empty!")
-			return 0
+		var/trans = src.reagents.trans_to(target, amount_per_transfer_from_this)
+		to_chat(user, "<span class='notice'>You transfer [trans] units of the solution to [target].</span>")
 
-		if(M == user)
+	else if(target.is_drainable()) //A dispenser Transfer FROM it TO us.
+		if(!is_refillable())
+			to_chat(user, "<span class='notice'>[src]'s tab isn't open!</span>")
+			return
+		if(!target.reagents.total_volume)
+			to_chat(user, "<span class='warning'>[target] is empty.</span>")
+			return
+		if(reagents.holder_full())
+			to_chat(user, "<span class='warning'>[src] is full.</span>")
+			return
 
-			if(istype(M,/mob/living/carbon/human))
-				var/mob/living/carbon/human/H = M
-				if(H.species.flags & IS_SYNTHETIC)
-					to_chat(H, "\red You have a monitor for a head, where do you think you're going to put that?")
-					return
+		var/trans = target.reagents.trans_to(src, amount_per_transfer_from_this)
+		to_chat(user, "<span class='notice'>You fill [src] with [trans] units of the contents of [target].</span>")
 
-			to_chat(M, "\blue You swallow a gulp from \the [src].")
-			if(reagents.total_volume)
-				reagents.trans_to_ingest(M, gulp_size)
-
-			playsound(M.loc,'sound/items/drink.ogg', 15, 1)
-			return 1
-		else if( istype(M, /mob/living/carbon/human) )
-
-			var/mob/living/carbon/human/H = M
-			if(H.species.flags & IS_SYNTHETIC)
-				to_chat(H, "\red They have a monitor for a head, where do you think you're going to put that?")
-				return
-
-			for(var/mob/O in viewers(world.view, user))
-				O.show_message("\red [user] attempts to feed [M] [src].", 1)
-			if(!do_mob(user, M, 30, BUSY_ICON_FRIENDLY)) return
-			for(var/mob/O in viewers(world.view, user))
-				O.show_message("\red [user] feeds [M] [src].", 1)
-
-			var/rgt_list_text = get_reagent_list_text()
-
-			log_combat(user, M, "fed", src, "Reagents: [rgt_list_text]")
-			msg_admin_attack("[key_name(user)] fed [key_name(M)] with [src.name] Reagents: [rgt_list_text] (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
-
-			if(reagents.total_volume)
-				reagents.trans_to_ingest(M, gulp_size)
-
-			if(isrobot(user)) //Cyborg modules that include drinks automatically refill themselves, but drain the borg's cell
-				var/mob/living/silicon/robot/bro = user
-				bro.cell.use(30)
-				var/refill = R.get_master_reagent_id()
-				spawn(600)
-					R.add_reagent(refill, fillevel)
-
-			playsound(M.loc,'sound/items/drink.ogg', 15, 1)
-			return 1
-
-		return 0
-
-
-	afterattack(obj/target, mob/user, proximity)
-		if(!proximity) return
-
-		if(istype(target, /obj/structure/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
-
-			if(!target.reagents.total_volume)
-				to_chat(user, "\red [target] is empty.")
-				return
-
-			if(reagents.total_volume >= reagents.maximum_volume)
-				to_chat(user, "\red [src] is full.")
-				return
-
-			var/trans = target.reagents.trans_to(src, target:amount_per_transfer_from_this)
-			to_chat(user, "\blue You fill [src] with [trans] units of the contents of [target].")
-
-		else if(target.is_open_container()) //Something like a glass. Player probably wants to transfer TO it.
-			if(!reagents.total_volume)
-				to_chat(user, "\red [src] is empty.")
-				return
-
-			if(target.reagents.total_volume >= target.reagents.maximum_volume)
-				to_chat(user, "\red [target] is full.")
-				return
-
-
-
-			var/datum/reagent/refill
-			var/datum/reagent/refillName
-			if(isrobot(user))
-				refill = reagents.get_master_reagent_id()
-				refillName = reagents.get_master_reagent_name()
-
-			var/trans = src.reagents.trans_to(target, amount_per_transfer_from_this)
-			to_chat(user, "\blue You transfer [trans] units of the solution to [target].")
-
-			if(isrobot(user)) //Cyborg modules that include drinks automatically refill themselves, but drain the borg's cell
-				var/mob/living/silicon/robot/bro = user
-				var/chargeAmount = max(30,4*trans)
-				bro.cell.use(chargeAmount)
-				to_chat(user, "Now synthesizing [trans] units of [refillName]...")
-
-
-				spawn(300)
-					reagents.add_reagent(refill, trans)
-					to_chat(user, "Cyborg [src] refilled.")
-
-		return ..()
-
-	examine(mob/user)
-		..()
-		if (get_dist(user, src) > 1 && user != loc) return
-		if(!reagents || reagents.total_volume==0)
-			to_chat(user, "\blue \The [src] is empty!")
-		else if (reagents.total_volume<=src.volume/4)
-			to_chat(user, "\blue \The [src] is almost empty!")
-		else if (reagents.total_volume<=src.volume*0.66)
-			to_chat(user, "\blue \The [src] is half full!")
-		else if (reagents.total_volume<=src.volume*0.90)
-			to_chat(user, "\blue \The [src] is almost full!")
-		else
-			to_chat(user, "\blue \The [src] is full!")
-
+	return ..()
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Drinks. END
 ////////////////////////////////////////////////////////////////////////////////
 
-/obj/item/reagent_container/food/drinks/golden_cup
-	desc = "A golden cup"
+/obj/item/reagent_containers/food/drinks/golden_cup
+	desc = "You're winner!"
 	name = "golden cup"
 	icon_state = "golden_cup"
 	item_state = "" //nope :(
-	w_class = 4
+	w_class = WEIGHT_CLASS_BULKY
 	force = 14
 	throwforce = 10
 	amount_per_transfer_from_this = 20
 	possible_transfer_amounts = null
 	volume = 150
-	flags_atom = CONDUCT|OPENCONTAINER
+	flags_atom = CONDUCT
 
-/obj/item/reagent_container/food/drinks/golden_cup/tournament_26_06_2011
+/obj/item/reagent_containers/food/drinks/golden_cup/tournament_26_06_2011
 	desc = "A golden cup. It will be presented to a winner of tournament 26 june and name of the winner will be graved on it."
 
 
@@ -164,103 +123,88 @@
 //	rather then having to add it to something else first. They should only contain liquids. They have a default container size of 50.
 //	Formatting is the same as food.
 
-/obj/item/reagent_container/food/drinks/milk
+/obj/item/reagent_containers/food/drinks/milk
 	name = "Space Milk"
 	desc = "It's milk. White and nutritious goodness!"
 	icon_state = "milk"
 	item_state = "carton"
 	center_of_mass = list("x"=16, "y"=9)
-	New()
-		..()
-		reagents.add_reagent("milk", 50)
+	list_reagents = list(/datum/reagent/consumable/drink/milk = 50)
 
 /* Flour is no longer a reagent
-/obj/item/reagent_container/food/drinks/flour
+/obj/item/reagent_containers/food/drinks/flour
 	name = "flour sack"
 	desc = "A big bag of flour. Good for baking!"
 	icon = 'icons/obj/items/food.dmi'
 	icon_state = "flour"
 	item_state = "flour"
-	New()
-		..()
-		reagents.add_reagent("flour", 30)
-		src.pixel_x = rand(-10.0, 10)
-		src.pixel_y = rand(-10.0, 10)
+	center_of_mass = list(x=-10, y=-10)
+	list_reagents = list(/datum/reagent/consumable/flour = 30)
 */
 
-/obj/item/reagent_container/food/drinks/soymilk
+/obj/item/reagent_containers/food/drinks/soymilk
 	name = "soy milk"
 	desc = "It's soy milk. White and nutritious goodness!"
 	icon_state = "soymilk"
 	item_state = "carton"
 	center_of_mass = list("x"=16, "y"=9)
-	New()
-		..()
-		reagents.add_reagent("soymilk", 50)
+	list_reagents = list(/datum/reagent/consumable/drink/milk/soymilk = 50)
 
-/obj/item/reagent_container/food/drinks/coffee
-	name = "Coffee"
+/obj/item/reagent_containers/food/drinks/coffee
+	name = "\improper Coffee"
 	desc = "Careful, the beverage you're about to enjoy is extremely hot."
 	icon_state = "coffee"
 	center_of_mass = list("x"=15, "y"=10)
-	New()
-		..()
-		reagents.add_reagent("coffee", 10)
-		reagents.add_reagent("water", 20)
+	list_reagents = list(/datum/reagent/consumable/drink/coffee = 30)
 
-/obj/item/reagent_container/food/drinks/tea
-	name = "Duke Purple Tea"
+/obj/item/reagent_containers/food/drinks/coffee/cafe_latte
+	name = "\improper Cafe Latte"
+	desc = "The beverage you're about to enjoy is hot."
+	list_reagents = list(/datum/reagent/consumable/drink/coffee/cafe_latte = 30)
+
+/obj/item/reagent_containers/food/drinks/tea
+	name = "\improper Duke Purple Tea"
 	desc = "An insult to Duke Purple is an insult to the Space Queen! Any proper gentleman will fight you, if you sully this tea."
 	icon_state = "teacup"
 	item_state = "coffee"
 	center_of_mass = list("x"=16, "y"=14)
-	New()
-		..()
-		reagents.add_reagent("tea", 30)
+	list_reagents = list(/datum/reagent/consumable/drink/tea = 30)
 
-/obj/item/reagent_container/food/drinks/ice
+/obj/item/reagent_containers/food/drinks/ice
 	name = "ice cup"
 	desc = "Careful, cold ice, do not chew."
 	icon_state = "coffee"
 	center_of_mass = list("x"=15, "y"=10)
-	New()
-		..()
-		reagents.add_reagent("ice", 30)
+	list_reagents = list(/datum/reagent/consumable/drink/cold/ice = 30)
 
-/obj/item/reagent_container/food/drinks/h_chocolate
-	name = "Dutch hot coco"
+/obj/item/reagent_containers/food/drinks/h_chocolate
+	name = "\improper Dutch hot coco"
 	desc = "Made in Space South America."
 	icon_state = "hot_coco"
 	item_state = "coffee"
 	center_of_mass = list("x"=15, "y"=13)
-	New()
-		..()
-		reagents.add_reagent("hot_coco", 30)
+	list_reagents = list(/datum/reagent/consumable/drink/hot_coco = 30)
 
-/obj/item/reagent_container/food/drinks/dry_ramen
+/obj/item/reagent_containers/food/drinks/dry_ramen
 	name = "cup ramen"
 	desc = "Just add 10ml water, self heats! A taste that reminds you of your school years."
 	icon_state = "ramen"
 	center_of_mass = list("x"=16, "y"=11)
-	New()
-		..()
-		reagents.add_reagent("dry_ramen", 30)
+	list_reagents = list(/datum/reagent/consumable/dry_ramen = 30)
 
-
-/obj/item/reagent_container/food/drinks/sillycup
+/obj/item/reagent_containers/food/drinks/sillycup
 	name = "paper cup"
 	desc = "A paper water cup."
 	icon_state = "water_cup_e"
 	possible_transfer_amounts = null
 	volume = 10
 	center_of_mass = list("x"=16, "y"=12)
-	New()
-		..()
-	on_reagent_change()
-		if(reagents.total_volume)
-			icon_state = "water_cup"
-		else
-			icon_state = "water_cup_e"
+
+/obj/item/reagent_containers/food/drinks/sillycup/on_reagent_change()
+	if(reagents.total_volume)
+		icon_state = "water_cup"
+	else
+		icon_state = "water_cup_e"
 
 
 //////////////////////////drinkingglass and shaker//
@@ -268,7 +212,7 @@
 //	itself), in Chemistry-Recipes.dm (for the reaction that changes the components into the drink), and here (for the drinking glass
 //	icon states.
 
-/obj/item/reagent_container/food/drinks/shaker
+/obj/item/reagent_containers/food/drinks/shaker
 	name = "shaker"
 	desc = "A metal shaker to mix drinks in."
 	icon_state = "shaker"
@@ -276,46 +220,40 @@
 	volume = 100
 	center_of_mass = list("x"=17, "y"=10)
 
-/obj/item/reagent_container/food/drinks/flask
+/obj/item/reagent_containers/food/drinks/flask
 	name = "metal flask"
 	desc = "A metal flask with a decent liquid capacity."
 	icon_state = "flask"
 	volume = 60
 	center_of_mass = list("x"=17, "y"=8)
 
-/obj/item/reagent_container/food/drinks/flask/marine
-	name = "USCM flask"
-	desc = "A metal flask embossed with the USCM logo and probably filled with a slurry of water, motor oil, and medicinal alcohol."
-	icon_state = "flask_uscm"
-	volume = 60
+/obj/item/reagent_containers/food/drinks/flask/marine
+	name = "\improper TGMC flask"
+	desc = "A metal flask embossed with the TGMC logo and probably filled with a slurry of water, motor oil, and medicinal alcohol."
+	icon_state = "flask_tgmc"
 	center_of_mass = list("x"=17, "y"=8)
-	New()
-		..()
-		reagents.add_reagent("water", 59)
-		reagents.add_reagent("hooch", 1)
+	list_reagents = list(/datum/reagent/water = 51, /datum/reagent/consumable/ethanol/hooch = 9)
 
-/obj/item/reagent_container/food/drinks/flask/detflask
+/obj/item/reagent_containers/food/drinks/flask/detflask
 	name = "detective's flask"
 	desc = "A metal flask with a leather band and golden badge belonging to the detective."
 	icon_state = "detflask"
-	volume = 60
 	center_of_mass = list("x"=17, "y"=8)
+	list_reagents = list(/datum/reagent/consumable/ethanol/whiskey = 30)
 
-/obj/item/reagent_container/food/drinks/flask/barflask
+/obj/item/reagent_containers/food/drinks/flask/barflask
 	name = "flask"
 	desc = "For those who can't be bothered to hang out at the bar to drink."
 	icon_state = "barflask"
-	volume = 60
 	center_of_mass = list("x"=17, "y"=7)
 
-/obj/item/reagent_container/food/drinks/flask/vacuumflask
+/obj/item/reagent_containers/food/drinks/flask/vacuumflask
 	name = "vacuum flask"
 	desc = "Keeping your drinks at the perfect temperature since 1892."
 	icon_state = "vacuumflask"
-	volume = 60
 	center_of_mass = list("x"=15, "y"=4)
 
-/obj/item/reagent_container/food/drinks/britcup
+/obj/item/reagent_containers/food/drinks/britcup
 	name = "cup"
 	desc = "A cup with the British flag emblazoned on it. The sight of it irritates you."
 	icon_state = "britcup"

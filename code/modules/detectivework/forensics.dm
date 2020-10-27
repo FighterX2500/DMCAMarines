@@ -1,6 +1,6 @@
 //This is the output of the stringpercent(print) proc, and means about 80% of
 //the print must be there for it to be complete.  (Prints are 32 digits)
-var/const/FINGERPRINT_COMPLETE = 6
+#define FINGERPRINT_COMPLETE 6
 proc/is_complete_print(var/print)
 	return stringpercent(print) <= FINGERPRINT_COMPLETE
 
@@ -10,10 +10,10 @@ atom/proc/add_fibers(mob/living/carbon/human/M)
 	if(M.gloves)
 		var/obj/item/clothing/gloves/G = M.gloves
 		if(G.transfer_blood) //bloodied gloves transfer blood to touched objects
-			if(add_blood(G.blood_DNA, G.blood_color)) //only reduces the bloodiness of our gloves if the item wasn't already bloody
+			if(add_blood(G.blood_color)) //only reduces the bloodiness of our gloves if the item wasn't already bloody
 				G.transfer_blood--
 	else if(M.bloody_hands)
-		if(add_blood(M.blood_DNA, M.blood_color))
+		if(add_blood(M.blood_color))
 			M.bloody_hands--
 
 	if(!suit_fibers) suit_fibers = list()
@@ -40,16 +40,15 @@ atom/proc/add_fibers(mob/living/carbon/human/M)
 	name = "forensic data"
 	var/uid
 
-/datum/data/record/forensic/New(var/atom/A)
+/datum/data/record/forensic/New(atom/A)
 	uid = "\ref [A]"
 	fields["name"] = sanitize(A.name)
 	fields["area"] = sanitize("[get_area(A)]")
-	fields["fprints"] = A.fingerprints ? A.fingerprints.Copy() : list()
+	fields["fprints"] = "unavailable"
 	fields["fibers"] = A.suit_fibers ? A.suit_fibers.Copy() : list()
-	fields["blood"] = A.blood_DNA ? A.blood_DNA.Copy() : list()
 	fields["time"] = world.time
 
-/datum/data/record/forensic/proc/merge(var/datum/data/record/other)
+/datum/data/record/forensic/proc/merge(datum/data/record/other)
 	var/list/prints = fields["fprints"]
 	var/list/o_prints = other.fields["fprints"]
 	for(var/print in o_prints)

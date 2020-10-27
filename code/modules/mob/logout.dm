@@ -1,17 +1,17 @@
 /mob/Logout()
-	nanomanager.user_logout(src) // this is used to clean up (remove) this user's Nano UIs
-	if(interactee) unset_interaction()
-	player_list -= src
-	log_access("Logout: [key_name(src)]")
-	unansweredAhelps.Remove(src.computer_id)
-	if(admin_datums[src.ckey])
-		if (ticker && ticker.current_state == GAME_STATE_PLAYING) //Only report this stuff if we are currently playing.
-//			var/admins_number = admins.len
-
-			message_admins("Admin logout: [key_name(src)]")
-//			if(admins_number == 0) //Apparently the admin logging out is no longer an admin at this point, so we have to check this towards 0 and not towards 1. Awell.
-//				send2adminirc("[key_name(src)] logged out - no more admins online.")
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MOB_LOGOUT, src)
+	SEND_SIGNAL(src, COMSIG_MOB_LOGOUT)
+	SStgui.on_logout(src)
+	unset_machine()
+	if(interactee)
+		unset_interaction()
+	remove_typing_indicator()
+	GLOB.player_list -= src
+	log_message("[key_name(src)] has left mob [src]([type]).", LOG_OOC)
 	if(s_active)
 		s_active.hide_from(src)
-	..()
-	return 1
+	if(client)
+		for(var/foo in client.player_details.post_logout_callbacks)
+			var/datum/callback/CB = foo
+			CB.Invoke()
+	return ..()

@@ -5,8 +5,8 @@
 	name = "tank"
 	icon = 'icons/obj/items/tank.dmi'
 	flags_atom = CONDUCT
-	flags_equip_slot = SLOT_BACK
-	w_class = 3
+	flags_equip_slot = ITEM_SLOT_BACK
+	w_class = WEIGHT_CLASS_NORMAL
 
 	var/pressure_full = ONE_ATMOSPHERE*4
 
@@ -44,109 +44,27 @@
 			else
 				descriptive = "furiously hot"
 
-		to_chat(user, "\blue \The \icon[src][src] feels [descriptive]")
+		to_chat(user, "<span class='notice'>\The [icon2html(src, user)][src] feels [descriptive], the gauge reads [return_pressure()] kPa.</span>")
 
 
-/obj/item/tank/attackby(obj/item/W as obj, mob/user as mob)
-	..()
+/obj/item/tank/attackby(obj/item/I, mob/user, params)
+	. = ..()
 
-	if ((istype(W, /obj/item/device/analyzer)) && get_dist(user, src) <= 1)
-		for (var/mob/O in viewers(user, null))
-			to_chat(O, "\red [user] has used [W] on \icon[src] [src]")
+	if((istype(I, /obj/item/analyzer)) && get_dist(user, src) <= 1)
+		visible_message("<span class='warning'>[user] has used [I] on [icon2html(src, user)] [src]</span>")
 
 		manipulated_by = user.real_name			//This person is aware of the contents of the tank.
 
-		to_chat(user, "\blue Results of analysis of \icon[src]")
-		if (pressure>0)
-			to_chat(user, "\blue Pressure: [round(pressure,0.1)] kPa")
-
-			to_chat(user, "\blue [gas_type]: 100%")
-			to_chat(user, "\blue Temperature: [round(temperature-T0C)]&deg;C")
+		to_chat(user, "<span class='notice'>Results of analysis of [icon2html(src, user)]</span>")
+		if(pressure > 0)
+			to_chat(user, "<span class='notice'>Pressure: [round(pressure, 0.1)] kPa</span>")
+			to_chat(user, "<span class='notice'>[gas_type]: 100%</span>")
+			to_chat(user, "<span class='notice'>Temperature: [round(temperature - T0C)]&deg;C</span>")
 		else
-			to_chat(user, "\blue Tank is empty!")
-		src.add_fingerprint(user)
-
-
-/obj/item/tank/attack_self(mob/user as mob)
-	if (pressure == 0)
-		return
-
-	ui_interact(user)
-
-/obj/item/tank/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
-
-	var/using_internal
-	if(istype(loc,/mob/living/carbon))
-		var/mob/living/carbon/location = loc
-		if(location.internal==src)
-			using_internal = 1
-
-	// this is the data which will be sent to the ui
-	var/data[0]
-	data["tankPressure"] = round(pressure)
-	data["releasePressure"] = round(distribute_pressure ? distribute_pressure : 0)
-	data["defaultReleasePressure"] = round(TANK_DEFAULT_RELEASE_PRESSURE)
-	data["maxReleasePressure"] = round(TANK_MAX_RELEASE_PRESSURE)
-	data["valveOpen"] = using_internal ? 1 : 0
-
-	data["maskConnected"] = 0
-	if(istype(loc,/mob/living/carbon))
-		var/mob/living/carbon/location = loc
-		if(location.internal == src || (location.wear_mask && (location.wear_mask.flags_inventory & ALLOWINTERNALS)))
-			data["maskConnected"] = 1
-
-	// update the ui if it exists, returns null if no ui is passed/found
-	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if (!ui)
-		// the ui does not exist, so we'll create a new() one
-        // for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
-		ui = new(user, src, ui_key, "tanks.tmpl", "Tank", 500, 300)
-		// when the ui is first opened this is the data it will use
-		ui.set_initial_data(data)
-		// open the new ui window
-		ui.open()
-		// auto update every Master Controller tick
-		ui.set_auto_update(1)
-
-/obj/item/tank/Topic(href, href_list)
-	..()
-	if (usr.stat|| usr.is_mob_restrained())
-		return 0
-	if (src.loc != usr)
-		return 0
-
-	if (href_list["dist_p"])
-		if (href_list["dist_p"] == "reset")
-			src.distribute_pressure = TANK_DEFAULT_RELEASE_PRESSURE
-		else if (href_list["dist_p"] == "max")
-			src.distribute_pressure = TANK_MAX_RELEASE_PRESSURE
-		else
-			var/cp = text2num(href_list["dist_p"])
-			src.distribute_pressure += cp
-		src.distribute_pressure = min(max(round(src.distribute_pressure), 0), TANK_MAX_RELEASE_PRESSURE)
-	if (href_list["stat"])
-		if(istype(loc,/mob/living/carbon))
-			var/mob/living/carbon/location = loc
-			if(location.internal == src)
-				location.internal = null
-				to_chat(usr, "\blue You close the tank release valve.")
-				if (location.hud_used && location.hud_used.internals)
-					location.hud_used.internals.icon_state = "internal0"
-			else
-				if(location.wear_mask && (location.wear_mask.flags_inventory & ALLOWINTERNALS))
-					location.internal = src
-					to_chat(usr, "\blue You open \the [src] valve.")
-					if (location.hud_used && location.hud_used.internals)
-						location.hud_used.internals.icon_state = "internal1"
-				else
-					to_chat(usr, "\blue You need something to connect to \the [src].")
-
-	src.add_fingerprint(usr)
-	return 1
-
+			to_chat(user, "<span class='notice'>Tank is empty!</span>")
 
 /obj/item/tank/return_air()
-	return list(gas_type, temperature, pressure)
+	return list(gas_type, temperature, distribute_pressure)
 
 /obj/item/tank/return_pressure()
 	return pressure

@@ -1,129 +1,59 @@
-
-
-//UPP Strike Team
 /datum/emergency_call/upp
-	name = "UPP Naval Infantry (Squad)"
-	mob_max = 7
-	probability = 10
-	shuttle_id = "Distress_UPP"
-	name_of_spawn = "Distress_UPP"
-
-	New()
-		..()
-		arrival_message = "T*is i* UP* d^sp^*ch`. STr*&e teaM, #*u are cLe*% for a*pr*%^h. Pr*mE a*l wE*p^ns )0r c|*$e @u*r*r$ c0m&*t."
-		objectives = "Eliminate the UA Forces to ensure the UPP prescence in this sector is continued. Listen to your superior officers and take over the [MAIN_SHIP_NAME] at all costs."
+	name = "USL Pirate Band"
+	probability = 0
+	shuttle_id = "distress_upp"
+	spawn_type = /mob/living/carbon/human/species/moth
 
 
-/datum/emergency_call/upp/print_backstory(mob/living/carbon/human/M)
-	to_chat(M, "")
-	to_chat(M, "<B>You grew up in relativly simple family in [pick(75;"Eurasia", 25;"a famished UPP colony")] with few belongings or luxuries. </B>")
-	to_chat(M, "<B>The family you grew up with were [pick(50;"getting by", 25;"impoverished", 25;"starving")] and you were one of [pick(10;"two", 20;"three", 20;"four", 30;"five", 20;"six")] children.</B>")
-	to_chat(M, "<B>You come from a long line of [pick(40;"crop-harvesters", 20;"soldiers", 20;"factory workers", 5;"scientists", 15;"engineers")], and quickly enlisted to improve your living conditions.</B>")
-	to_chat(M, "")
-	to_chat(M, "")
-	to_chat(M, "<B>Following your enlistment UPP military at the age of 17 you were assigned to the 17th 'Smoldering Sons' battalion (six hundred strong) under the command of Colonel Ganbaatar. </B>")
-	to_chat(M, "<B>You were shipped off with the battalion to one of the UPP's most remote territories, a gas giant designated MV-35 in the Anglo-Japanese Arm, in the Tychon's Rift sector.  </B>")
-	to_chat(M, "")
-	to_chat(M, "")
-	to_chat(M, "<B>For the past 14 months, you and the rest of the Smoldering Sons have been stationed at MV-35's only facility, the helium refinery, Altai Station. </B>")
-	to_chat(M, "<B>As MV-35 and Altai Station are the only UPP-held zones in the Tychon's Rift sector for many lightyears, you have spent most of your military career holed up in crammed quarters in near darkness, waiting for supply shipments and transport escort deployments.</B>")
-	//to_chat(M, "<B>you have spent most of your military career holed up in crammed quarters in near darkness, waiting for supply shipments and transport escort deployments.</B>")
-	to_chat(M, "")
-	to_chat(M, "")
-	to_chat(M, "<B>With the recent arrival of the enemy USCM battalion the 'Falling Falcons' and their flagship, the [MAIN_SHIP_NAME], the UPP has felt threatened in the sector. </B>")
-	to_chat(M, "<B>In an effort to protect the vunerable MV-35 from the emproaching UA/USCM imperialists, the leadership of your battalion has opted this the best opportunity to strike at the Falling Falcons to catch them off guard. </B>")
-	to_chat(M, "")
-	to_chat(M, "")
-	to_chat(M, "<font size='3'>\red Glory to Colonel Ganbaatar.</font>")
-	to_chat(M, "<font size='3'>\red Glory to the Smoldering Sons.</font>")
-	to_chat(M, "<font size='3'>\red Glory to the UPP.</font>")
-	to_chat(M, "")
-	to_chat(M, "")
-	to_chat(M, "\blue Use say :3 <text> to speak in your native tongue.")
-	to_chat(M, "\blue This allows you to speak privately with your fellow UPP allies.")
-	to_chat(M, "\blue Utilize it with your radio to prevent enemy radio interceptions.")
+/datum/emergency_call/upp/print_backstory(mob/living/carbon/human/H)
+	to_chat(H, "<B>You grew up on [pick(50;"an asteriod", 25;"a famished colony", 25;"a classified station")] with [pick(75;"few", 25;"some")] belongings or luxuries.</B>")
+	to_chat(H, "<B>The family you grew up with were [pick(50;"getting by", 25;"impoverished", 25;"starving")] and you were one of [pick(10;"two", 20;"three", 30;"four", 20;"five", 20;"six")] children.</B>")
+	to_chat(H, "<B>You come from a long line of [pick(50;"pirates", 25;"renegades", 25;"rogue soldiers")] and quickly joined the local band to improve your living conditions.</B>")
+	to_chat(H, "")
+	to_chat(H, "<B>Today, a TGMC vessel, [SSmapping.configs[SHIP_MAP].map_name], has sent out a distress signal on the orbit of [SSmapping.configs[GROUND_MAP].map_name]. Your USL assault pirate warband heads out and your stealing begins!</b>")
+	to_chat(H, "<B>Eliminate the TGMC force if necessary. Do not harm the civilians unless they attack you first.</B>")
+	to_chat(H, "<span class='notice'>You speak in a language that humans cannot understand, only you and your fellow pirates can.<br>Type in <b>\",0 <text>\" in the say verb</b> to speak in Galactic Common.<br>Type in <b>\";,0 <text>\" in the say verb</b> to commincate the radio in Galactic Common.</span>")
 
-
-
-///////////////////UPP///////////////////////////
 
 /datum/emergency_call/upp/create_member(datum/mind/M)
-	var/turf/spawn_loc = get_spawn_point()
+	. = ..()
+	if(!.)
+		return
+
 	var/mob/original = M.current
+	var/mob/living/carbon/human/H = .
 
-	if(!istype(spawn_loc)) return //Didn't find a useable spawn point.
+	H.name = GLOB.namepool[/datum/namepool/moth].random_name(H)
+	H.real_name = H.name
 
-	var/mob/living/carbon/human/mob = new(spawn_loc)
-	mob.gender = pick(60;MALE,40;FEMALE)
-	var/datum/preferences/A = new()
-	A.randomize_appearance_for(mob)
-	var/list/first_names_mr = list("Badai","Mongkeemur","Alexei","Andrei","Artyom","Viktor","Xangai","Ivan","Choban","Oleg", "Dayan", "Taghi", "Batu", "Arik", "Orda", "Ghazan", "Bala", "Gao", "Zhan", "Ren", "Hou", "Xue", "Serafim", "Luca", "Su", "György", "István", "Mihály")
-	var/list/first_names_fr = list("Altani","Cirina","Anastasiya","Saran","Wei","Oksana","Ren","Svena","Tatyana","Yaroslava", "Izabella", "Kata", "Krisztina", "Miruna", "Flori", "Lucia", "Anica", "Li", "Yimu")
-	var/list/last_names_r = list("Azarov","Bogdanov","Barsukov","Golovin","Davydov","Khan","Noica","Barbu","Zhukov","Ivanov","Mihai","Kasputin","Belov","Melnikov", "Vasilevsky", "Aleksander", "Halkovich", "Stanislaw", "Proca", "Zaituc", "Arcos", "Kubat", "Kral", "Volf", "Xun", "Jia")
-	if(mob.gender == MALE)
-		mob.real_name = "[pick(first_names_mr)] [pick(last_names_r)]"
-		mob.f_style = "5 O'clock Shadow"
-	else
-		mob.real_name = "[pick(first_names_fr)] [pick(last_names_r)]"
-
-	mob.name = mob.real_name
-	mob.age = rand(17,35)
-	mob.h_style = "Shaved Head"
-	mob.r_hair = 15
-	mob.g_hair = 15
-	mob.b_hair = 25
-	mob.r_eyes = 139
-	mob.g_eyes = 62
-	mob.b_eyes = 19
-	mob.dna.ready_dna(mob)
-	mob.key = M.key
-	if(mob.client) mob.client.change_view(world.view)
-	mob.mind.assigned_role = "MODE"
-	mob.mind.special_role = "UPP"
-	ticker.mode.traitors += mob.mind
-	spawn(0)
-		if(!leader)       //First one spawned is always the leader.
-			leader = mob
-			mob.mind.set_cm_skills(/datum/skills/SL/upp)
-			mob.arm_equipment(mob, "UPP Soldier (Leader)")
-			to_chat(mob, "<font size='3'>\red You are an officer of the Union of Progressive People, a powerful socialist state that rivals the United Americas. </B>")
-		else if(medics < max_medics)
-			mob.mind.set_cm_skills(/datum/skills/combat_medic/crafty)
-			to_chat(mob, "<font size='3'>\red You are a medic of the Union of Progressive People, a powerful socialist state that rivals the United Americas. </B>")
-			mob.arm_equipment(mob, "UPP Soldier (Medic)")
-			medics++
-		else if(heavies < max_heavies)
-			mob.mind.set_cm_skills(/datum/skills/specialist/upp)
-			to_chat(mob, "<font size='3'>\red You are a soldier of the Union of Progressive People, a powerful socialist state that rivals the United Americas. </B>")
-			mob.arm_equipment(mob, "UPP Soldier (Heavy)")
-			heavies++
-		else
-			mob.mind.set_cm_skills(/datum/skills/pfc/crafty)
-			to_chat(mob, "<font size='3'>\red You are a soldier of the Union of Progressive People, a powerful socialist state that rivals the United Americas. </B>")
-			mob.arm_equipment(mob, "UPP Soldier (Standard)")
-
-		print_backstory(mob)
-
-
-	spawn(10)
-		to_chat(mob, "<B>Objectives:</b> [objectives]")
-
-	mob.remove_language("Sol Common")
-	mob.add_language("Russian")
+	M.transfer_to(H, TRUE)
+	H.fully_replace_character_name(M.name, H.real_name)
 
 	if(original)
-		cdel(original)
+		qdel(original)
 
+	print_backstory(H)
 
+	if(!leader)
+		leader = H
+		var/datum/job/J = SSjob.GetJobType(/datum/job/upp/leader)
+		H.apply_assigned_role_to_spawn(J)
+		to_chat(H, "<p style='font-size:1.5em'><span class='notice'>You are the leader of the USL pirate band in responding to the TGMC distress signal sent nearby. Let your squadmates march to battle, for the USL!</span></p>")
+		return
 
+	if(medics < max_medics)
+		var/datum/job/J = SSjob.GetJobType(/datum/job/upp/medic)
+		H.apply_assigned_role_to_spawn(J)
+		to_chat(H, "<p style='font-size:1.5em'><span class='notice'>You are a medic of the USL pirate band to respond to the TGMC distress signal sent nearby. Kit up and get ready to tend wounds!</span></p>")
+		medics++
+		return
 
+	if(prob(20))
+		var/datum/job/J = SSjob.GetJobType(/datum/job/upp/heavy)
+		H.apply_assigned_role_to_spawn(J)
+		to_chat(H, "<p style='font-size:1.5em'><span class='notice'>You are a specialist of the USL pirate band to respond to the TGMC distress signal sent nearby. Crush the vermin!</span></p>")
+		return
 
-/datum/emergency_call/upp/platoon
-	name = "UPP Naval Infantry (Platoon)"
-	mob_min = 8
-	mob_max = 30
-	probability = 0
-	max_medics = 2
-	max_heavies = 2
-
-
+	var/datum/job/J = SSjob.GetJobType(/datum/job/upp/standard)
+	H.apply_assigned_role_to_spawn(J)
+	to_chat(H, "<p style='font-size:1.5em'><span class='notice'>You are a member of the USL pirate band to respond to the TGMC distress signal sent nearby. Do not forget your training, stand tall with your other pirates!</span></p>")

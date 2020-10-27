@@ -1,11 +1,10 @@
 /obj/item/weapon/energy
-	var/active = 0
 	flags_atom = NOBLOODY
 
-	suicide_act(mob/user)
-		viewers(user) << pick("\red <b>[user] is slitting \his stomach open with the [src.name]! It looks like \he's trying to commit seppuku.</b>", \
-							"\red <b>[user] is falling on the [src.name]! It looks like \he's trying to commit suicide.</b>")
-		return (BRUTELOSS|FIRELOSS)
+/obj/item/weapon/energy/suicide_act(mob/user)
+	user.visible_message(pick("<span class='danger'>[user] is slitting [user.p_their()] stomach open with the [name]! It looks like [user.p_theyre()] trying to commit seppuku.</span>", \
+						"<span class='danger'>[user] is falling on the [name]! It looks like [user.p_theyre()] trying to commit suicide.</span>"))
+	return (BRUTELOSS|FIRELOSS)
 
 
 
@@ -17,33 +16,30 @@
 	throwforce = 25.0
 	throw_speed = 1
 	throw_range = 5
-	w_class = 3.0
+	w_class = WEIGHT_CLASS_NORMAL
 	flags_atom = CONDUCT|NOBLOODY
-	flags_item = NOSHIELD
-	origin_tech = "combat=3"
 	attack_verb = list("attacked", "chopped", "cleaved", "torn", "cut")
 	sharp = IS_SHARP_ITEM_BIG
 	edge = 1
 
 /obj/item/weapon/energy/axe/suicide_act(mob/user)
-	viewers(user) << "\red <b>[user] swings the [src.name] towards /his head! It looks like \he's trying to commit suicide.</b>"
+	user.visible_message("<span class='danger'>[user] swings the [name] towards [user.p_their()] head! It looks like [user.p_theyre()] trying to commit suicide.</span>")
 	return (BRUTELOSS|FIRELOSS)
 
 /obj/item/weapon/energy/axe/attack_self(mob/user)
 	active = !active
 	if(active)
-		to_chat(user, "\blue The axe is now energised.")
+		to_chat(user, "<span class='notice'>The axe is now energised.</span>")
 		force = 150
 		icon_state = "axe1"
-		w_class = 5
-		heat_source = 3500
+		w_class = WEIGHT_CLASS_HUGE
+		heat = 3500
 	else
-		to_chat(user, "\blue The axe can now be concealed.")
+		to_chat(user, "<span class='notice'>The axe can now be concealed.</span>")
 		force = 40
 		icon_state = "axe0"
-		w_class = 5
-		heat_source = 0
-	add_fingerprint(user)
+		w_class = WEIGHT_CLASS_HUGE
+		heat = 0
 
 
 
@@ -55,55 +51,48 @@
 	throwforce = 5.0
 	throw_speed = 1
 	throw_range = 5
-	w_class = 2.0
+	w_class = WEIGHT_CLASS_SMALL
 	flags_atom = NOBLOODY
-	flags_item = NOSHIELD
-	origin_tech = "magnets=3;syndicate=4"
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	sharp = IS_SHARP_ITEM_BIG
 	edge = 1
 	var/base_sword_icon = "sword"
 	var/sword_color
 
-/obj/item/weapon/energy/sword/IsShield()
-	if(active)
-		return 1
-	return 0
 
-/obj/item/weapon/energy/sword/New()
+/obj/item/weapon/energy/sword/Initialize()
+	. = ..()
 	if(!sword_color)
 		sword_color = pick("red","blue","green","purple")
+	AddComponent(/datum/component/shield, SHIELD_TOGGLE|SHIELD_PURE_BLOCKING)
+
 
 /obj/item/weapon/energy/sword/attack_self(mob/living/user as mob)
-	if ((CLUMSY in user.mutations) && prob(50))
-		to_chat(user, "\red You accidentally cut yourself with [src].")
-		user.take_limb_damage(5,5)
-	active = !active
+	toggle_active()
 	if (active)
 		force = 30
-		heat_source = 3500
+		heat = 3500
 		if(base_sword_icon != "sword")
 			icon_state = "[base_sword_icon]1"
 		else
 			icon_state = "sword[sword_color]"
-		w_class = 4
+		w_class = WEIGHT_CLASS_BULKY
 		playsound(user, 'sound/weapons/saberon.ogg', 25, 1)
-		to_chat(user, "\blue [src] is now active.")
+		to_chat(user, "<span class='notice'>[src] is now active.</span>")
 
 	else
 		force = 3
-		heat_source = 0
+		heat = 0
 		icon_state = "[base_sword_icon]0"
-		w_class = 2
+		w_class = WEIGHT_CLASS_SMALL
 		playsound(user, 'sound/weapons/saberoff.ogg', 25, 1)
-		to_chat(user, "\blue [src] can now be concealed.")
+		to_chat(user, "<span class='notice'>[src] can now be concealed.</span>")
 
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
 		H.update_inv_l_hand(0)
 		H.update_inv_r_hand()
 
-	add_fingerprint(user)
 	return
 
 

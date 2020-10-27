@@ -5,6 +5,10 @@
 // Similar to smoke, but spreads out more
 // metal foams leave behind a foamed metal wall
 
+#define METAL_FOAM 1
+#define RAZOR_FOAM 2
+
+
 //foam effect
 
 /obj/effect/particle_effect/foam
@@ -21,7 +25,7 @@
 	var/metal = 0
 
 
-/obj/effect/particle_effect/foam/New(loc, var/ismetal=0)
+/obj/effect/particle_effect/foam/New(loc, ismetal=0)
 	..(loc)
 	icon_state = "[ismetal ? "m":""]foam"
 	metal = ismetal
@@ -30,17 +34,16 @@
 		process()
 		checkReagents()
 	spawn(120)
-		processing_objects.Remove(src)
+		STOP_PROCESSING(SSobj, src)
 		sleep(30)
 
-		if(metal)
-			var/obj/structure/foamedmetal/M = new(src.loc)
-			M.metal = metal
-			M.updateicon()
+		if(metal == RAZOR_FOAM)
+			new /obj/structure/razorwire/foam(loc)
+		else if(metal == METAL_FOAM)
+			new /obj/structure/foamedmetal(loc)		
 
 		flick("[icon_state]-disolve", src)
-		sleep(5)
-		cdel(src)
+		QDEL_IN(src, 5)
 
 
 // transfer any reagents to the floor
@@ -56,7 +59,7 @@
 		return
 
 
-	for(var/direction in cardinal)
+	for(var/direction in GLOB.cardinals)
 
 
 		var/turf/T = get_step(src,direction)
@@ -76,7 +79,7 @@
 			F.create_reagents(10)
 			if (reagents)
 				for(var/datum/reagent/R in reagents.reagent_list)
-					F.reagents.add_reagent(R.id, 1, safety = 1)		//added safety check since reagents in the foam have already had a chance to react
+					F.reagents.add_reagent(R.type, 1, safety = 1)		//added safety check since reagents in the foam have already had a chance to react
 
 // foam disolves when heated
 // except metal foams
@@ -84,11 +87,11 @@
 	if(!metal && prob(max(0, exposed_temperature - 475)))
 		flick("[icon_state]-disolve", src)
 
-		spawn(5)
-			cdel(src)
+		QDEL_IN(src, 5)
 
 
-/obj/effect/particle_effect/foam/Crossed(var/atom/movable/AM)
+/obj/effect/particle_effect/foam/Crossed(atom/movable/AM)
+	. = ..()
 	if(metal)
 		return
 	if (iscarbon(AM))
@@ -102,7 +105,7 @@
 /datum/effect_system/foam_spread
 	var/amount = 5				// the size of the foam spread.
 	var/list/carried_reagents	// the IDs of reagents present when the foam was mixed
-	var/metal = 0				// 0=foam, 1=metalfoam, 2=ironfoam
+	var/metal = 0				// 0=foam, 1=metalfoam, 2=razorburn
 
 
 
@@ -125,7 +128,7 @@
 
 		if(carry && !metal)
 			for(var/datum/reagent/R in carry.reagent_list)
-				carried_reagents += R.id
+				carried_reagents += R.type
 
 	start()
 		spawn(0)
@@ -144,7 +147,7 @@
 					for(var/id in carried_reagents)
 						F.reagents.add_reagent(id, 1, null, 1) //makes a safety call because all reagents should have already reacted anyway
 				else
-					F.reagents.add_reagent("water", 1, safety = 1)
+					F.reagents.add_reagent(/datum/reagent/water, 1, safety = 1)
 
 
 
@@ -156,70 +159,15 @@
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "metalfoam"
 	density = TRUE
-	opacity = TRUE 	// changed in New()
+	opacity = FALSE 	// changed in New()
 	anchored = TRUE
 	name = "foamed metal"
 	desc = "A lightweight foamed metal wall."
-	var/metal = 1		// 1=aluminum, 2=iron
+	resistance_flags = XENO_DAMAGEABLE
+	max_integrity = 200
 
-/obj/structure/foamedmetal/Dispose()
-	density = FALSE
-	. = ..()
+/obj/structure/foamedmetal/fire_act() //flamerwallhacks go BRRR
+	take_damage(10, BURN, "fire")
 
-/obj/structure/foamedmetal/proc/updateicon()
-	if(metal == 1)
-		icon_state = "metalfoam"
-	else
-		icon_state = "ironfoam"
-
-
-/obj/structure/foamedmetal/ex_act(severity)
-	cdel(src)
-
-/obj/structure/foamedmetal/bullet_act()
-	if(metal==1 || prob(50))
-		cdel(src)
-	return TRUE
-
-/obj/structure/foamedmetal/attack_paw(var/mob/user)
-	attack_hand(user)
-	return
-
-/obj/structure/foamedmetal/attack_alien(mob/living/carbon/Xenomorph/M)
-	M.animation_attack_on(src)
-	if(prob(33))
-		M.visible_message("<span class='danger'>\The [M] slices [src] apart!</span>", \
-		"<span class='danger'>You slice [src] apart!</span>", null, 5)
-		cdel(src)
-		return TRUE
-	else
-		M.visible_message("<span class='danger'>\The [M] tears some shreds off [src]!</span>", \
-		"<span class='danger'>You tear some shreds off [src]!</span>", null, 5)
-
-/obj/structure/foamedmetal/attack_hand(var/mob/user)
-	if ((HULK in user.mutations) || (prob(75 - metal*25)))
-		to_chat(user, "\blue You smash through the metal foam wall.")
-		for(var/mob/O in oviewers(user))
-			if ((O.client && !( O.blinded )))
-				to_chat(O, "\red [user] smashes through the foamed metal.")
-
-		cdel(src)
-	else
-		to_chat(user, "\blue You hit the metal foam but bounce off it.")
-	return
-
-/obj/structure/foamedmetal/attackby(var/obj/item/I, var/mob/user)
-
-	if(prob(I.force*20 - metal*25))
-		to_chat(user, "\blue You smash through the foamed metal with \the [I].")
-		for(var/mob/O in oviewers(user))
-			if ((O.client && !( O.blinded )))
-				to_chat(O, "\red [user] smashes through the foamed metal.")
-		cdel(src)
-	else
-		to_chat(user, "\blue You hit the metal foam to no effect.")
-
-/obj/structure/foamedmetal/CanPass(atom/movable/mover, turf/target, height = 1.5, air_group = 0)
-	if(air_group)
-		return FALSE
-	return !density
+#undef METAL_FOAM
+#undef RAZOR_FOAM

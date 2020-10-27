@@ -1,7 +1,7 @@
 /*
 	AI ClickOn()
 
-	Note currently ai is_mob_restrained() returns 0 in all cases,
+	Note currently ai restrained() returns 0 in all cases,
 	therefore restrained code has been removed
 
 	The AI can double click to move the camera (this was already true but is cleaner),
@@ -9,53 +9,70 @@
 
 	Note that AI have no need for the adjacency proc, and so this proc is a lot cleaner.
 */
+/mob/living/silicon/ai/DblClickOn(atom/A, params)
+	if(control_disabled || incapacitated())
+		return
 
-/mob/living/silicon/ai/click(var/atom/A, var/list/mods)
-	..()
-
-	if(control_disabled || stat)
-		return 1
-
-	if (mods["ctrl"] && mods["middle"])
-		if(control_disabled || stat)
-			return 1
-
-		if(ismob(A))
-			ai_actual_track(A)
-		else
-			A.move_camera_by_click()
-		return 1
-
-	if (mods["middle"])
-		A.AIMiddleClick(src)
-		return 1
-
-	if (mods["shift"])
-		A.AIShiftClick(src)
-		return 1
-
-	if (mods["alt"])
-		A.AIAltClick(src)
-		return 1
-
-	if (mods["ctrl"])
-		A.AICtrlClick(src)
-		return 1
-
-	if (world.time <= next_move)
-		return 1
-
-	if(aiCamera.in_camera_mode)
-		aiCamera.camera_mode_off()
-		aiCamera.captureimage(A, usr)
-		return 1
-
-	next_move = world.time + 9
+	if(ismob(A))
+		ai_actual_track(A)
+	else
+		A.move_camera_by_click()
 
 
-	A.add_hiddenprint(src)
+/mob/living/silicon/ai/ClickOn(atom/A, location, params)
+	if(world.time <= next_click)
+		return
+	next_click = world.time + 1
+
+	if(!can_interact_with(A))
+		return
+
+	if(multicam_on)
+		var/turf/T = get_turf(A)
+		if(T)
+			for(var/obj/screen/movable/pic_in_pic/ai/P in T.vis_locs)
+				if(P.ai == src)
+					P.Click(params)
+					break
+
+	if(check_click_intercept(params, A))
+		return
+
+	if(control_disabled || incapacitated())
+		return
+
+	var/turf/pixel_turf = get_turf_pixel(A)
+	if(isnull(pixel_turf))
+		return
+	if(!can_see(A))
+		if(isturf(A)) //On unmodified clients clicking the static overlay clicks the turf underneath
+			return //So there's no point messaging admins
+		message_admins("[ADMIN_LOOKUPFLW(src)] might be running a modified client! (failed can_see on AI click of [A] (Turf Loc: [ADMIN_VERBOSEJMP(pixel_turf)]))")
+		var/message = "[key_name(src)] might be running a modified client! (failed can_see on AI click of [A] (Turf Loc: [AREACOORD(pixel_turf)]))"
+		log_admin(message)
+		send2tgs_adminless_only("NOCHEAT", message)
+		return
+
+	var/list/modifiers = params2list(params)
+	if(modifiers["shift"] && modifiers["ctrl"])
+		CtrlShiftClickOn(A)
+		return
+	if(modifiers["middle"])
+		return
+	if(modifiers["shift"])
+		ShiftClickOn(A)
+		return
+	if(modifiers["alt"]) // alt and alt-gr (rightalt)
+		AltClickOn(A)
+		return
+	if(modifiers["ctrl"])
+		CtrlClickOn(A)
+		return
+
+	if(world.time <= next_move)
+		return
+
 	A.attack_ai(src)
-	return 1
 
 /*
 	AI has no need for the UnarmedAttack() and RangedAttack() procs,
@@ -68,75 +85,110 @@
 /mob/living/silicon/ai/RangedAttack(atom/A)
 	A.attack_ai(src)
 
-/atom/proc/attack_ai(mob/user as mob)
+/atom/proc/attack_ai(mob/user)
 	return
+
+
+/*
+	Since the AI handles shift, ctrl, and alt-click differently
+	than anything else in the game, atoms have separate procs
+	for AI shift, ctrl, and alt clicking.
+*/
+/mob/living/silicon/ai/CtrlShiftClickOn(atom/A)
+	A.AICtrlShiftClick(src)
+
+/mob/living/silicon/ai/ShiftClickOn(atom/A)
+	A.AIShiftClick(src)
+	return TRUE
+
+/mob/living/silicon/ai/CtrlClickOn(atom/A)
+	A.AICtrlClick(src)
+
+/mob/living/silicon/ai/AltClickOn(atom/A)
+	A.AIAltClick(src)
+
 
 /*
 	The following criminally helpful code is just the previous code cleaned up;
 	I have no idea why it was in atoms.dm instead of respective files.
 */
 
+
+/* Atom Procs */
+/atom/proc/AICtrlClick()
+	return
+/atom/proc/AIAltClick(mob/living/silicon/ai/user)
+	AltClick(user)
+	return
+/atom/proc/AIShiftClick()
+	return
 /atom/proc/AICtrlShiftClick()
 	return
 
-/obj/machinery/door/airlock/AICtrlShiftClick()
-	if(emagged)
+
+/* Holopads */
+/obj/machinery/holopad/AIAltClick(mob/living/silicon/ai/user)
+	if(z != user.z)
 		return
-	return
 
-/atom/proc/AIShiftClick()
-	return
+	hangup_all_calls()
 
-/obj/machinery/door/airlock/AIShiftClick()  // Opens and closes doors!
-	if(density)
-		Topic("aiEnable=7", list("aiEnable"="7"), 1) // 1 meaning no window (consistency!)
-	else
-		Topic("aiDisable=7", list("aiDisable"="7"), 1)
-	return
 
-/atom/proc/AICtrlClick()
-	return
+/* Airlocks */
+/obj/machinery/door/airlock/AICtrlClick(mob/living/silicon/ai/user) // Bolts doors
+	if(z != user.z)
+		return
 
-atom/proc/AIAltClick()
-	return
-
-/obj/machinery/door/airlock/AICtrlClick() // Bolts doors
 	if(locked)
-		Topic("aiEnable=4", list("aiEnable"="4"), 1)// 1 meaning no window (consistency!)
-	else
-		Topic("aiDisable=4", list("aiDisable"="4"), 1)
+		bolt_raise(usr)
+	else if(hasPower())
+		bolt_drop(usr)
 
-/obj/machinery/power/apc/AICtrlClick() // turns off/on APCs.
-	Topic("breaker=1", list("breaker"="1"), 0) // 0 meaning no window (consistency! wait...)
 
-/obj/machinery/turretid/AICtrlClick() //turns off/on Turrets
-	Topic("toggleOn", list("toggleOn" = 1), 1) // 1 meaning no window (consistency!)
+/obj/machinery/door/airlock/AIAltClick(mob/living/silicon/ai/user) // Eletrifies doors.
+	if(z != user.z)
+		return
 
-/obj/machinery/door/airlock/AIAltClick() // Electrifies doors.
 	if(!secondsElectrified)
-		// permanent shock
-		Topic("aiEnable=6", list("aiEnable"="6"), 1) // 1 meaning no window (consistency!)
+		shock_perm(usr)
 	else
-		// disable/6 is not in Topic; disable/5 disables both temporary and permanent shock
-		Topic("aiDisable=5", list("aiDisable"="5"), 1)
-	return
+		shock_restore(usr)
 
-/obj/machinery/turretid/AIAltClick() //toggles lethal on turrets
-	Topic("toggleLethal", list("toggleLethal" = 1), 1) // 1 meaning no window (consistency!)
 
-/atom/proc/AIMiddleClick()
-	return
+/obj/machinery/door/airlock/AIShiftClick(mob/living/silicon/ai/user)  // Opens and closes doors!
+	if(z != user.z)
+		return
 
-/obj/machinery/door/airlock/AIMiddleClick() // Toggles door bolt lights.
-	if(!src.lights)
-		Topic("aiEnable=10", list("aiEnable"="10"), 1) // 1 meaning no window (consistency!)
-	else
-		Topic("aiDisable=10", list("aiDisable"="10"), 1)
-	return
+	user_toggle_open(usr)
+
+
+/* APC */
+/obj/machinery/power/apc/AICtrlClick(mob/living/silicon/ai/user) // turns off/on APCs.
+	if(z != user.z)
+		return
+	toggle_breaker(usr)
+
 
 //
-// Override AdjacentQuick for AltClicking
+// Override TurfAdjacent for AltClicking
 //
+/mob/living/silicon/ai/TurfAdjacent(turf/T)
+	return (GLOB.cameranet && GLOB.cameranet.checkTurfVis(T))
 
-/mob/living/silicon/ai/TurfAdjacent(var/turf/T)
-	return (cameranet && cameranet.checkTurfVis(T))
+
+/obj/structure/ladder/attack_ai(mob/living/silicon/ai/AI)
+	var/turf/TU = get_turf(up)
+	var/turf/TD = get_turf(down)
+	if(up && down)
+		switch(alert("Go up or down the ladder?", "Ladder", "Up", "Down", "Cancel"))
+			if("Up")
+				TU.move_camera_by_click()
+			if("Down")
+				TD.move_camera_by_click()
+			if("Cancel")
+				return
+	else if(up)
+		TU.move_camera_by_click()
+
+	else if(down)
+		TD.move_camera_by_click()

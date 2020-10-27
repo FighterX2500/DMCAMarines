@@ -1,85 +1,223 @@
-//trees
+/obj/structure/flora
+	anchored = TRUE
+	max_integrity = 25
+	var/on_fire = FALSE
+
+/obj/structure/flora/ex_act(severity)
+	switch(severity)
+		if(EXPLODE_DEVASTATE)
+			qdel(src)
+		if(EXPLODE_HEAVY)
+			if(prob(70))
+				qdel(src)
+		if(EXPLODE_LIGHT)
+			if(prob(50))
+				qdel(src)
+
+
+/obj/structure/flora/flamer_fire_act()
+	take_damage(25, BURN, "fire")
+
+/obj/structure/flora/fire_act()
+	take_damage(25, BURN, "fire")
+
+
+//TREES
+
 /obj/structure/flora/tree
 	name = "tree"
-	anchored = 1
-	density = 1
+	desc = "A large tree."
+	density = TRUE
 	pixel_x = -16
+	max_integrity = 500
 	layer = ABOVE_FLY_LAYER
+	var/log_amount = 10
+
+/obj/structure/flora/tree/Initialize()
+	. = ..()
+	AddTransparencyComponent()
+
+//Adds the transparency component, exists to be overridden for different args.
+/obj/structure/flora/tree/proc/AddTransparencyComponent()
+	AddComponent(/datum/component/largetransparency)
+
+/obj/structure/flora/tree/ex_act(severity)
+	switch(severity)
+		if(EXPLODE_DEVASTATE)
+			take_damage(500)
+		if(EXPLODE_HEAVY)
+			take_damage(rand(140, 300))
+		if(EXPLODE_LIGHT)
+			take_damage(rand(50, 100))
+	START_PROCESSING(SSobj, src)
+
+
+/obj/structure/flora/tree/deconstruct(disassembled = TRUE)
+	density = FALSE
+	var/obj/structure/flora/stump/S = new(loc)
+	S.name = "[name] stump"
+	return ..()
+
+
+/obj/structure/flora/tree/attackby(obj/item/I, mob/user, params)
+	. = ..()
+
+	if(!I.sharp && I.force <= 0)
+		return
+
+	if(I.hitsound)
+		playsound(get_turf(src), I.hitsound, 50, 0, 0)
+
+	user.visible_message("<span class='notice'>[user] begins to cut down [src] with [I].</span>","<span class='notice'>You begin to cut down [src] with [I].</span>", "You hear the sound of sawing.")
+	var/cut_force = min(1, I.force)
+	var/cutting_time = clamp(10, 20, 100 / cut_force) SECONDS
+	if(!do_after(user, cutting_time , TRUE, src, BUSY_ICON_BUILD))
+		return
+
+	user.visible_message("<span class='notice'>[user] fells [src] with the [I].</span>","<span class='notice'>You fell [src] with the [I].</span>", "You hear the sound of a tree falling.")
+	playsound(get_turf(src), 'sound/effects/meteorimpact.ogg', 10 , 0, 0)
+	for(var/i in 1 to log_amount)
+		new /obj/item/grown/log(get_turf(src))
+
+	var/obj/structure/flora/stump/S = new(loc)
+	S.name = "[name] stump"
+
+	qdel(src)
+
+/obj/structure/flora/tree/flamer_fire_act()
+	take_damage(5, BURN, "fire")
+
+
+/obj/structure/flora/tree/update_icon()
+	overlays.Cut()
+	if(on_fire)
+		overlays += "fire"
+
+/obj/structure/flora/stump
+	name = "stump"
+	desc = "This represents our promise to cut down as many trees as possible."
+	icon = 'icons/obj/flora/deadtrees.dmi'
+	icon_state = "tree_stump"
+	density = FALSE
+	pixel_x = -16
 
 /obj/structure/flora/tree/pine
 	name = "pine tree"
 	icon = 'icons/obj/flora/pinetrees.dmi'
-	icon_state = "pine_1"
+	icon_state = "pine"
 
-/obj/structure/flora/tree/pine/New()
-	..()
-	icon_state = "pine_[rand(1, 3)]"
+/obj/structure/flora/tree/pine/Initialize()
+	. = ..()
+	icon_state = "[icon_state][rand(1, 3)]"
 
-/obj/structure/flora/tree/pine/xmas
-	name = "xmas tree"
+/obj/structure/flora/tree/xmas
 	icon = 'icons/obj/flora/pinetrees.dmi'
+	name = "xmas tree"
 	icon_state = "pine_c"
 
-/obj/structure/flora/tree/pine/xmas/New()
-	..()
-	icon_state = "pine_c"
+/obj/structure/flora/tree/xmas/presents
+	icon_state = "pinepresents"
+	desc = "A wondrous decorated Christmas tree. It has presents!"
+	var/gift_type = /obj/item/gift/marine
+	var/list/ckeys_that_took = list()
+
+/obj/structure/flora/tree/xmas/presents/attack_hand(mob/living/user)
+	. = ..()
+	if(.)
+		return
+	if(!user.ckey)
+		return
+
+	if(ckeys_that_took[user.ckey])
+		to_chat(user, "<span class='warning'>There are no presents with your name on.</span>")
+		return
+	to_chat(user, "<span class='warning'>After a bit of rummaging, you locate a gift with your name on it!</span>")
+	ckeys_that_took[user.ckey] = TRUE
+	var/obj/item/G = new gift_type(src)
+	user.put_in_hands(G)
 
 /obj/structure/flora/tree/dead
 	icon = 'icons/obj/flora/deadtrees.dmi'
-	icon_state = "tree_1"
+	icon_state = "tree"
 
-/obj/structure/flora/tree/dead/New()
-	..()
-	icon_state = "tree_[rand(1, 6)]"
+/obj/structure/flora/tree/dead/AddTransparencyComponent()
+	AddComponent(/datum/component/largetransparency, 0, 1, 0, 0)
+
+/obj/structure/flora/tree/dead/Initialize()
+	. = ..()
+	icon_state = "[icon_state][rand(1, 6)]"
 
 /obj/structure/flora/tree/joshua
 	name = "joshua tree"
 	desc = "A tall tree covered in spiky-like needles, covering it's trunk."
 	icon = 'icons/obj/flora/joshuatree.dmi'
-	icon_state = "joshua_1"
+	icon_state = "joshua"
 	pixel_x = 0
-/obj/structure/flora/tree/joshua/New()
-	..()
-	icon_state = "joshua_[rand(1,4)]"
 
-//grass
+/obj/structure/flora/tree/joshua/Initialize()
+	. = ..()
+	icon_state = "[icon_state][rand(1,4)]"
+
+/obj/structure/flora/tree/jungle
+	name = "jungle tree"
+	icon_state = "tree"
+	desc = "It's seriously hampering your view of the jungle."
+	icon = 'icons/obj/flora/jungletrees.dmi'
+	pixel_x = -48
+	pixel_y = -20
+
+/obj/structure/flora/tree/jungle/AddTransparencyComponent()
+	AddComponent(/datum/component/largetransparency, -1, 1, 2, 2)
+
+/obj/structure/flora/tree/jungle/small
+	pixel_y = 0
+	pixel_x = -32
+	icon = 'icons/obj/flora/jungletreesmall.dmi'
+
+/obj/structure/flora/tree/jungle/small/AddTransparencyComponent()
+	AddComponent(/datum/component/largetransparency)
+
+/obj/structure/flora/tree/jungle/Initialize()
+	. = ..()
+	icon_state = "[icon_state][rand(1, 6)]"
+
+//GRASS
+
 /obj/structure/flora/grass
 	name = "grass"
 	icon = 'icons/obj/flora/snowflora.dmi'
-	anchored = 1
+	anchored = TRUE
 
 /obj/structure/flora/grass/brown
 	icon_state = "snowgrass1bb"
 
-/obj/structure/flora/grass/brown/New()
-	..()
+/obj/structure/flora/grass/brown/Initialize()
+	. = ..()
 	icon_state = "snowgrass[rand(1, 3)]bb"
-
 
 /obj/structure/flora/grass/green
 	icon_state = "snowgrass1gb"
 
-/obj/structure/flora/grass/green/New()
-	..()
+/obj/structure/flora/grass/green/Initialize()
+	. = ..()
 	icon_state = "snowgrass[rand(1, 3)]gb"
 
 /obj/structure/flora/grass/both
 	icon_state = "snowgrassall1"
 
-/obj/structure/flora/grass/both/New()
-	..()
+/obj/structure/flora/grass/both/Initialize()
+	. = ..()
 	icon_state = "snowgrassall[rand(1, 3)]"
-
 
 //bushes
 /obj/structure/flora/bush
 	name = "bush"
 	icon = 'icons/obj/flora/snowflora.dmi'
 	icon_state = "snowbush1"
-	anchored = 1
+	anchored = TRUE
 
-/obj/structure/flora/bush/New()
-	..()
+/obj/structure/flora/bush/Initialize()
+	. = ..()
 	icon_state = "snowbush[rand(1, 6)]"
 
 /obj/structure/flora/pottedplant
@@ -87,121 +225,130 @@
 	icon = 'icons/obj/flora/plants.dmi'
 	icon_state = "plant-26"
 
+/obj/structure/flora/pottedplant/ten
+	icon_state = "plant-10"
+
+/obj/structure/flora/pottedplant/twentyone
+	icon_state = "plant-21"
+
+/obj/structure/flora/pottedplant/twentytwo
+	icon_state = "plant-22"
+
 //newbushes
 
 /obj/structure/flora/ausbushes
 	name = "bush"
 	icon = 'icons/obj/flora/ausflora.dmi'
 	icon_state = "firstbush_1"
-	anchored = 1
+	anchored = TRUE
 
-/obj/structure/flora/ausbushes/New()
-	..()
+/obj/structure/flora/ausbushes/Initialize()
+	. = ..()
 	icon_state = "firstbush_[rand(1, 4)]"
 
 /obj/structure/flora/ausbushes/reedbush
 	icon_state = "reedbush_1"
 
-/obj/structure/flora/ausbushes/reedbush/New()
-	..()
+/obj/structure/flora/ausbushes/reedbush/Initialize()
+	. = ..()
 	icon_state = "reedbush_[rand(1, 4)]"
 
 /obj/structure/flora/ausbushes/leafybush
 	icon_state = "leafybush_1"
 
-/obj/structure/flora/ausbushes/leafybush/New()
-	..()
+/obj/structure/flora/ausbushes/leafybush/Initialize()
+	. = ..()
 	icon_state = "leafybush_[rand(1, 3)]"
 
 /obj/structure/flora/ausbushes/palebush
 	icon_state = "palebush_1"
 
-/obj/structure/flora/ausbushes/palebush/New()
-	..()
+/obj/structure/flora/ausbushes/palebush/Initialize()
+	. = ..()
 	icon_state = "palebush_[rand(1, 4)]"
 
 /obj/structure/flora/ausbushes/stalkybush
 	icon_state = "stalkybush_1"
 
-/obj/structure/flora/ausbushes/stalkybush/New()
-	..()
+/obj/structure/flora/ausbushes/stalkybush/Initialize()
+	. = ..()
 	icon_state = "stalkybush_[rand(1, 3)]"
 
 /obj/structure/flora/ausbushes/grassybush
 	icon_state = "grassybush_1"
 
-/obj/structure/flora/ausbushes/grassybush/New()
-	..()
+/obj/structure/flora/ausbushes/grassybush/Initialize()
+	. = ..()
 	icon_state = "grassybush_[rand(1, 4)]"
 
 /obj/structure/flora/ausbushes/fernybush
 	icon_state = "fernybush_1"
 
-/obj/structure/flora/ausbushes/fernybush/New()
-	..()
+/obj/structure/flora/ausbushes/fernybush/Initialize()
+	. = ..()
 	icon_state = "fernybush_[rand(1, 3)]"
 
 /obj/structure/flora/ausbushes/sunnybush
 	icon_state = "sunnybush_1"
 
-/obj/structure/flora/ausbushes/sunnybush/New()
-	..()
+/obj/structure/flora/ausbushes/sunnybush/Initialize()
+	. = ..()
 	icon_state = "sunnybush_[rand(1, 3)]"
 
 /obj/structure/flora/ausbushes/genericbush
 	icon_state = "genericbush_1"
 
-/obj/structure/flora/ausbushes/genericbush/New()
-	..()
+/obj/structure/flora/ausbushes/genericbush/Initialize()
+	. = ..()
 	icon_state = "genericbush_[rand(1, 4)]"
 
 /obj/structure/flora/ausbushes/pointybush
 	icon_state = "pointybush_1"
 
-/obj/structure/flora/ausbushes/pointybush/New()
-	..()
+/obj/structure/flora/ausbushes/pointybush/Initialize()
+	. = ..()
 	icon_state = "pointybush_[rand(1, 4)]"
 
 /obj/structure/flora/ausbushes/lavendergrass
 	icon_state = "lavendergrass_1"
 
-/obj/structure/flora/ausbushes/lavendergrass/New()
-	..()
+/obj/structure/flora/ausbushes/lavendergrass/Initialize()
+	. = ..()
 	icon_state = "lavendergrass_[rand(1, 4)]"
 
 /obj/structure/flora/ausbushes/ywflowers
 	icon_state = "ywflowers_1"
 
-/obj/structure/flora/ausbushes/ywflowers/New()
-	..()
+/obj/structure/flora/ausbushes/ywflowers/Initialize()
+	. = ..()
 	icon_state = "ywflowers_[rand(1, 3)]"
 
 /obj/structure/flora/ausbushes/brflowers
 	icon_state = "brflowers_1"
 
-/obj/structure/flora/ausbushes/brflowers/New()
-	..()
+/obj/structure/flora/ausbushes/brflowers/Initialize()
+	. = ..()
 	icon_state = "brflowers_[rand(1, 3)]"
 
 /obj/structure/flora/ausbushes/ppflowers
 	icon_state = "ppflowers_1"
 
-/obj/structure/flora/ausbushes/ppflowers/New()
-	..()
+/obj/structure/flora/ausbushes/ppflowers/Initialize()
+	. = ..()
 	icon_state = "ppflowers_[rand(1, 4)]"
 
 /obj/structure/flora/ausbushes/sparsegrass
 	icon_state = "sparsegrass_1"
 
-/obj/structure/flora/ausbushes/sparsegrass/New()
-	..()
+/obj/structure/flora/ausbushes/sparsegrass/Initialize()
+	. = ..()
 	icon_state = "sparsegrass_[rand(1, 3)]"
 
 /obj/structure/flora/ausbushes/fullgrass
 	icon_state = "fullgrass_1"
 
-/obj/structure/flora/ausbushes/fullgrass/New()
-	..()
+/obj/structure/flora/ausbushes/fullgrass/Initialize()
+	. = ..()
 	icon_state = "fullgrass_[rand(1, 3)]"
 
 
@@ -210,13 +357,13 @@
 // Generic undergrowth //
 //*********************//
 /obj/structure/flora/desert
-	anchored = 1
+	anchored = TRUE
 	icon = 'icons/obj/flora/dam.dmi'
 	var/icon_tag = null
 	var/variations = null
 
-/obj/structure/flora/desert/New()
-	..()
+/obj/structure/flora/desert/Initialize()
+	. = ..()
 	icon_state = "[icon_tag]_[rand(1,variations)]"
 
 //GRASS
@@ -262,9 +409,9 @@
 /obj/structure/jungle
 	name = "jungle foliage"
 	icon = 'icons/turf/ground_map.dmi'
-	density = 0
-	anchored = 1
-	unacidable = 1 // can toggle it off anyway
+	density = FALSE
+	anchored = TRUE
+	resistance_flags = UNACIDABLE
 	layer = ABOVE_MOB_LAYER
 
 /obj/structure/jungle/shrub
@@ -277,57 +424,42 @@
 	desc = "Some kind of bizarre alien tree. It oozes with a sickly yellow sap."
 	icon_state = "plantbot1"
 
+/obj/structure/jungle/plantbot1/alien
+	icon_state = "alienplant1"
+
 /obj/structure/jungle/planttop1
 	name = "strange tree"
 	desc = "Some kind of bizarre alien tree. It oozes with a sickly yellow sap."
 	icon_state = "planttop1"
-
-/obj/structure/jungle/tree
-	icon = 'icons/obj/flora/ground_map64.dmi'
-	desc = "What an enormous tree!"
-	layer = ABOVE_FLY_LAYER
-
-/obj/structure/jungle/tree/bigtreeTR
-	name = "huge tree"
-	icon_state = "bigtreeTR"
-
-/obj/structure/jungle/tree/bigtreeTL
-	name = "huge tree"
-	icon_state = "bigtreeTL"
-
-/obj/structure/jungle/tree/bigtreeBOT
-	name = "huge tree"
-	icon_state = "bigtreeBOT"
-
-/obj/structure/jungle/treeblocker
-	name = "huge tree"
-	icon_state = ""	//will this break it?? - Nope
-	density = 1
 
 /obj/structure/jungle/vines
 	name = "vines"
 	desc = "A mass of twisted vines."
 	icon = 'icons/effects/spacevines.dmi'
 
-/obj/structure/jungle/vines/attackby(obj/item/W, mob/living/user)
-	if(W.sharp == IS_SHARP_ITEM_BIG)
-		to_chat(user, "<span class='warning'>You cut \the [src] away with \the [W].</span>")
-		user.animation_attack_on(src)
-		playsound(src, 'sound/effects/vegetation_hit.ogg', 25, 1)
-		cdel(src)
-	else
-		. = ..()
+/obj/structure/jungle/vines/attackby(obj/item/I, mob/user, params)
+	. = ..()
 
-/obj/structure/jungle/vines/New()
-	..()
+	if(I.sharp != IS_SHARP_ITEM_BIG || !isliving(user))
+		return
+
+	var/mob/living/L = user
+
+	to_chat(L, "<span class='warning'>You cut \the [src] away with \the [I].</span>")
+	L.do_attack_animation(src, used_item = I)
+	playsound(src, 'sound/effects/vegetation_hit.ogg', 25, 1)
+	qdel(src)
+
+/obj/structure/jungle/vines/Initialize()
+	. = ..()
 	icon_state = pick("Light1","Light2","Light3")
 
 /obj/structure/jungle/vines/heavy
 	desc = "A thick, coiled mass of twisted vines."
-	opacity = 1
+	opacity = TRUE
 
-/obj/structure/jungle/vines/heavy/New()
-	..()
+/obj/structure/jungle/vines/heavy/Initialize()
+	. = ..()
 	icon_state = pick("Hvy1","Hvy2","Hvy3","Med1","Med2","Med3")
 
 /obj/structure/jungle/tree/grasscarpet
@@ -335,3 +467,45 @@
 	desc = "A thick mat of dense grass."
 	icon_state = "grasscarpet"
 	layer = BELOW_MOB_LAYER
+
+//ROCKS
+/obj/structure/flora/rock
+	name = "volcanic rock"
+	desc = "A volcanic rock. Pioneers used to ride these babies for miles."
+	icon = 'icons/obj/flora/rocks2.dmi'
+	density = TRUE
+	max_integrity = 250
+	layer = ABOVE_FLY_LAYER
+	coverage = 100
+	icon_state = "basalt"
+
+/obj/structure/flora/rock/alt
+	name = "volcanic rock"
+	icon_state = "basalt1"
+
+/obj/structure/flora/rock/alt2
+	name = "volcanic rock"
+	icon_state = "basalt2"
+
+/obj/structure/flora/rock/alt3
+	name = "volcanic rock"
+	icon_state = "basalt3"
+
+/obj/structure/flora/rock/pile
+	name = "rock pile"
+	desc = "pile of volcanic rocks."
+	density = FALSE
+	icon_state = "lavarocks"
+
+/obj/structure/flora/rock/pile/alt
+	name = "rock pile"
+	icon_state = "lavarocks1"
+
+/obj/structure/flora/rock/pile/alt2
+	name = "rock pile"
+	icon_state = "lavarocks2"
+
+/obj/structure/flora/rock/pile/alt3
+	name = "fossils"
+	desc = "A pile of ancient fossils. There are some oddly shaped skulls in here..."
+	icon_state = "lavarocks3"

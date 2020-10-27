@@ -1,12 +1,12 @@
 /*
- * Areas for the Ice Colony map (nickname is "Shiva's Snowball")
- * Area inheritance logic :
- * Exterior Areas all use the same code, under /exterior branch. Those are NOT homogenous but used to give rough locations to area scanners. THIS INCLUDES UNDERGROUND UNBUILT AREAS
- * Exterior is divided into /surface and /underground for ease of navigation. BOTH PATHS MUST INHERIT EXTERIOR
- * Otherwise, all areas on the surface excluding external areas use /surface, no exceptions. All areas underground use /underground, no exceptions
- * Areas are grouped by building if possible, this excludes some repeating buildings like storage units
- * ELEVATORS AND SHUTTLES ARE SEGREGATED AT THE END OF THE FILE IF APPLICABLE
- */
+* Areas for the Ice Colony map (nickname is "Shiva's Snowball")
+* Area inheritance logic :
+* Exterior Areas all use the same code, under /exterior branch. Those are NOT homogenous but used to give rough locations to area scanners. THIS INCLUDES UNDERGROUND UNBUILT AREAS
+* Exterior is divided into /surface and /underground for ease of navigation. BOTH PATHS MUST INHERIT EXTERIOR
+* Otherwise, all areas on the surface excluding external areas use /surface, no exceptions. All areas underground use /underground, no exceptions
+* Areas are grouped by building if possible, this excludes some repeating buildings like storage units
+* ELEVATORS AND SHUTTLES ARE SEGREGATED AT THE END OF THE FILE IF APPLICABLE
+*/
 
 //Base Instance
 /area/ice_colony
@@ -15,25 +15,26 @@
 	icon_state = "cliff_blocked"
 
 /*
- *  ----------------
- * | Exterior Areas |
- *  ----------------
- */
+*  ----------------
+* | Exterior Areas |
+*  ----------------
+*/
 
 /area/ice_colony/exterior
 	name = "Ice Colony"
 	icon_state = "cliff_blocked"
 	requires_power = 1
 	always_unpowered = 1
-	lighting_use_dynamic = 1
+	dynamic_lighting = DYNAMIC_LIGHTING_ENABLED
 	power_light = 0
 	power_equip = 0
 	power_environ = 0
+	ambience = list('sound/ambience/ambispace.ogg')
 	temperature = ICE_COLONY_TEMPERATURE
 
 /*
- * Exterior - Surface
- */
+* Exterior - Surface
+*/
 
 //Rough color code for the surface exteriors
 //Mountains : Deep Blue/Purple
@@ -43,7 +44,7 @@
 
 /area/ice_colony/exterior/surface
 	name = "Ice Colony - Exterior Surface"
-	fake_zlevel = 1 // above ground
+
 
 //Equivalent of space. None of this area should be accessible. If these are valleys, make separate areas
 /area/ice_colony/exterior/surface/cliff
@@ -54,12 +55,13 @@
 /area/ice_colony/exterior/surface/landing_pad
 	name = "Aerodrome Landing Pad"
 	icon_state = "landing_pad"
+	outside = FALSE
 
 //Landing Pad for the Vindi. THIS IS NOT THE SHUTTLE AREA
 /area/ice_colony/exterior/surface/landing_pad2
 	name = "Emergency Landing Pad"
 	icon_state = "landing_pad"
-
+	outside = FALSE
 
 //Everything around the physical landing pad
 /area/ice_colony/exterior/surface/landing_pad_external
@@ -136,14 +138,15 @@
 	icon_state = "clear_north"
 
 /*
- * Exterior - Underground
- */
+* Exterior - Underground
+*/
 
 /area/ice_colony/exterior/underground
 	name = "Ice Colony - Exterior Underground"
 	icon_state = "cave"
 	ceiling = CEILING_DEEP_UNDERGROUND
-	fake_zlevel = 2 // underground
+	outside = FALSE
+
 
 //
 // Caves
@@ -165,20 +168,20 @@
 
 
 /*
- *  ---------------------
- * | Built Surface Areas |
- *  ---------------------
- */
+*  ---------------------
+* | Built Surface Areas |
+*  ---------------------
+*/
 
 /area/ice_colony/surface
 	name = "Ice Colony - Built Surface"
 	icon_state = "clear"
 	ceiling = CEILING_METAL
-	fake_zlevel = 1 // above ground
+	outside = FALSE
 
 /*
- * Surface - Bar
- */
+* Surface - Bar
+*/
 
 
 /area/ice_colony/surface/bar
@@ -193,8 +196,8 @@
 	icon_state = "kitchen"
 
 /*
- * Surface - Clinic
- */
+* Surface - Clinic
+*/
 
 /area/ice_colony/surface/clinic
 	name = "Aurora Medical Clinic"
@@ -212,8 +215,8 @@
 	icon_state = "medbay3"
 
 /*
- * Surface - Colony Administration
- */
+* Surface - Colony Administration
+*/
 
 /area/ice_colony/surface/command
 	name = "Colony Administration"
@@ -244,16 +247,16 @@
 	icon_state = "head_quarters"
 
 /*
- * Surface - Disposals
- */
+* Surface - Disposals
+*/
 
 /area/ice_colony/surface/disposals
 	name = "Surface Disposals"
 	icon_state = "disposal"
 
 /*
- * Surface - Dormitories
- */
+* Surface - Dormitories
+*/
 
 /area/ice_colony/surface/dorms
 	name = "Dormitories"
@@ -276,8 +279,8 @@
 	icon_state = "toilet"
 
 /*
- * Surface - Engineering
- */
+* Surface - Engineering
+*/
 
 /area/ice_colony/surface/engineering
 	name = "Engineering"
@@ -296,11 +299,15 @@
 	icon_state = "storage"
 
 /*
- * Surface - Excavation Preparation
- */
+* Surface - Excavation Preparation
+*/
 
 /area/ice_colony/surface/excavation
 	name = "Excavation Outpost"
+	icon_state = "mining_outpost"
+
+/area/ice_colony/surface/excavationbarracks
+	name = "Excavation Barracks"
 	icon_state = "mining_outpost"
 
 /area/ice_colony/surface/excavation/storage
@@ -308,8 +315,8 @@
 	icon_state = "mining_storage"
 
 /*
- * Surface - Garage
- */
+* Surface - Garage
+*/
 
 /area/ice_colony/surface/garage
 	name = "Garage"
@@ -328,8 +335,8 @@
 	icon_state = "engine"
 
 /*
- * Surface - Hangar
- */
+* Surface - Hangar
+*/
 
 /area/ice_colony/surface/hangar
 	name = "Aerodrome Hangar"
@@ -351,8 +358,8 @@
 	icon_state = "security"
 
 /*
- * Surface - Hydroponics
- */
+* Surface - Hydroponics
+*/
 
 /area/ice_colony/surface/hydroponics
 	name = "Ice Colony Hydroponics"
@@ -372,16 +379,16 @@
 	icon_state = "hydro_south"
 
 /*
- * Surface - Mining
- */
+* Surface - Mining
+*/
 
 /area/ice_colony/surface/mining
 	name = "Mining Outpost"
 	icon_state = "mining_production"
 
 /*
- * Surface - Power
- */
+* Surface - Power
+*/
 
 /area/ice_colony/surface/substation
 	name = "Surface Power Substation"
@@ -392,16 +399,16 @@
 	icon_state = "substation"
 
 /*
- * Surface - Requesitions
- */
+* Surface - Requesitions
+*/
 
 /area/ice_colony/surface/requesitions
 	name = "Surface Requesition Warehouse"
 	icon_state = "quartstorage"
 
 /*
- * Surface - Research
- */
+* Surface - Research
+*/
 
 /area/ice_colony/surface/research
 
@@ -421,8 +428,8 @@
 	icon_state = "storage"
 
 /*
- * Surface - Storage Units
- */
+* Surface - Storage Units
+*/
 
 /area/ice_colony/surface/storage_unit
 	name = "Storage Unit"
@@ -441,28 +448,28 @@
 	icon_state = "storage"
 
 /*
- * Surface - Telecommunications
- */
+* Surface - Telecommunications
+*/
 
 /area/ice_colony/surface/tcomms
 	name = "Colony Telecommunications"
 	icon_state = "tcomsatcham"
 
 /*
- *  -------------------------
- * | Built Underground Areas |
- *  -------------------------
- */
+*  -------------------------
+* | Built Underground Areas |
+*  -------------------------
+*/
 
 /area/ice_colony/underground
 	name = "Ice Colony - Built Underground"
 	icon_state = "explored"
 	ceiling = CEILING_DEEP_UNDERGROUND_METAL
-	fake_zlevel = 2 // underground
+	outside = FALSE
 
 /*
- * Underground - Crew Areas
- */
+* Underground - Crew Areas
+*/
 
 /area/ice_colony/underground/crew
 	name = "Underground Crew Area"
@@ -506,8 +513,8 @@
 	icon_state = "morgue"
 
 /*
- * Underground - Colony Administration
- */
+* Underground - Colony Administration
+*/
 
 /area/ice_colony/underground/command
 	name = "Underground Colonial Administration"
@@ -530,8 +537,8 @@
 	icon_state = "green"
 
 /*
- * Underground - Engineering
- */
+* Underground - Engineering
+*/
 
 /area/ice_colony/underground/engineering
 	name = "Underground Engineering"
@@ -547,8 +554,8 @@
 	icon_state = "substation"
 
 /*
- * Underground - Hallways
- */
+* Underground - Hallways
+*/
 
 /area/ice_colony/underground/hallway
 	name = "Underground Hallway"
@@ -562,8 +569,8 @@
 	icon_state = "hallF"
 
 /*
- * Underground - Maintenance
- */
+* Underground - Maintenance
+*/
 
 /area/ice_colony/underground/maintenance
 	name = "Underground Maintenance"
@@ -601,8 +608,8 @@
 	icon_state = "asmaint"
 
 /*
- * Underground - Medbay
- */
+* Underground - Medbay
+*/
 
 /area/ice_colony/underground/medical
 	name = "Underground Medical Laboratory"
@@ -628,8 +635,8 @@
 	icon_state = "surgery"
 
 /*
- * Underground - Reception
- */
+* Underground - Reception
+*/
 
 /area/ice_colony/underground/reception
 	name = "Underground Reception"
@@ -652,8 +659,8 @@
 	icon_state = "toilet"
 
 /*
- * Underground - Requesition
- */
+* Underground - Requesition
+*/
 
 /area/ice_colony/underground/requesition
 	name = "Underground Requesitions"
@@ -672,8 +679,8 @@
 	icon_state = "storage"
 
 /*
- * Underground - Research
- */
+* Underground - Research
+*/
 
 /area/ice_colony/underground/research
 	name = "Theta-V Research Laboratory"
@@ -692,8 +699,8 @@
 	icon_state = "anosample"
 
 /*
- * Underground - Security
- */
+* Underground - Security
+*/
 
 /area/ice_colony/underground/security
 	name = "Underground Security Center"
@@ -728,17 +735,23 @@
 	icon_state = "brig"
 
 /*
- * Underground - Hangar
- */
+* Underground - Hangar
+*/
 
 /area/ice_colony/underground/hangar
 	name = "Underground Hangar"
 	icon_state = "hangar"
 	ceiling = CEILING_NONE
 
+/area/ice_colony/underground/responsehangar
+	name = "Colony Response Team Hangar"
+
+/area/ice_colony/underground/westroadtunnel
+	name = "West Road Tunnel"
+
 /*
- * Underground - Storage
- */
+* Underground - Storage
+*/
 
 /area/ice_colony/underground/storage
 	name = "Underground Technical Storage"
@@ -747,52 +760,3 @@
 /area/ice_colony/underground/storage/highsec
 	name = "Underground High Security Technical Storage"
 	icon_state = "armory"
-
-//Elevator-------
-/area/shuttle/elevator1/ground
-	name = "Elevator I"
-	icon_state = "shuttlered"
-
-/area/shuttle/elevator1/underground
-	name = "Elevator I"
-	icon_state = "shuttle"
-
-/area/shuttle/elevator1/transit
-	name = "Elevator I"
-	icon_state = "shuttle2"
-
-/area/shuttle/elevator2/ground
-	name = "Elevator II"
-	icon_state = "shuttle"
-
-/area/shuttle/elevator2/underground
-	name = "Elevator II"
-	icon_state = "shuttle2"
-
-/area/shuttle/elevator2/transit
-	name = "Elevator II"
-	icon_state = "shuttlered"
-
-/area/shuttle/elevator3/ground
-	name = "Elevator III"
-	icon_state = "shuttle"
-
-/area/shuttle/elevator3/underground
-	name = "Elevator III"
-	icon_state = "shuttle2"
-
-/area/shuttle/elevator3/transit
-	name = "Elevator III"
-	icon_state = "shuttlered"
-
-/area/shuttle/elevator4/ground
-	name = "Elevator IV"
-	icon_state = "shuttlered"
-
-/area/shuttle/elevator4/underground
-	name = "Elevator IV"
-	icon_state = "shuttle"
-
-/area/shuttle/elevator4/transit
-	name = "Elevator IV"
-	icon_state = "shuttle2"

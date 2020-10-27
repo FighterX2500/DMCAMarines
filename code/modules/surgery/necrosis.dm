@@ -8,13 +8,12 @@
 	if(target_zone == "mouth" || target_zone == "eyes")
 		return 0
 
-	return affected.surgery_open_stage == 2 && (affected.status & LIMB_NECROTIZED) && affected.necro_surgery_stage == necro_step
+	return affected.surgery_open_stage == 2 && (affected.limb_status & LIMB_NECROTIZED) && affected.necro_surgery_stage == necro_step
 
 
 /datum/surgery_step/necro/fix_dead_tissue //Debridement
 
 	allowed_tools = list(
-		/obj/item/tool/surgery/scalpel/manager = 0,			\
 		/obj/item/tool/surgery/scalpel = 100,		\
 		/obj/item/tool/kitchen/knife = 75,	\
 		/obj/item/shard = 50, 		\
@@ -47,8 +46,8 @@
 /datum/surgery_step/necro/treat_necrosis
 
 	allowed_tools = list(
-	/obj/item/stack/medical/advanced/bruise_pack= 100, \
-	/obj/item/stack/medical/bruise_pack = 20,          \
+		/obj/item/stack/medical/advanced/bruise_pack= 100,
+		/obj/item/stack/medical/bruise_pack = 20,
 	)
 
 	can_infect = 0
@@ -65,7 +64,7 @@
 	..()
 
 /datum/surgery_step/necro/treat_necrosis/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected)
-	affected.status &= ~LIMB_NECROTIZED
+	affected.remove_limb_flags(LIMB_NECROTIZED)
 	target.update_body()
 
 	user.visible_message("<span class='notice'>[user] applies \the [tool] on the affected tissue in [target]'s [affected.display_name].</span>", \

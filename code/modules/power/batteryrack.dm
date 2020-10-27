@@ -1,15 +1,11 @@
-
-
-
 //Machines
 //The one that works safely.
 /obj/machinery/power/smes/batteryrack
 	name = "power cell rack PSU"
 	desc = "A rack of power cells working as a PSU."
 	charge = 0 //you dont really want to make a potato PSU which already is overloaded
-	online = 0
-	chargelevel = 0
-	output = 0
+	input_level = 0
+	output_level = 0
 	input_level_max = 0
 	output_level_max = 0
 	icon_state = "gsmes"
@@ -21,9 +17,8 @@
 /obj/machinery/power/smes/batteryrack/substation
 	name = "Substation PSU"
 	desc = "A rack of power cells working as a PSU. This one seems to be equipped for higher power loads."
-	output = 150000
-	chargelevel = 150000
-	online = 1
+	output_level = 150000
+	input_level = 150000
 
 	// One high capacity cell, two regular cells. Lots of room for engineer upgrades
 	// Also five basic capacitors. Again, upgradeable.
@@ -39,12 +34,11 @@
 	component_parts += new /obj/item/stock_parts/capacitor
 	component_parts += new /obj/item/stock_parts/capacitor
 
-/obj/machinery/power/smes/batteryrack/New()
-	..()
+/obj/machinery/power/smes/batteryrack/Initialize()
+	. = ..()
 	add_parts()
 	RefreshParts()
 	start_processing()
-	return
 
 
 //Maybe this should be moved up to obj/machinery
@@ -74,13 +68,13 @@
 	capacity = C * 40   //Basic cells are such crap. Hyper cells needed to get on normal SMES levels.
 
 
-/obj/machinery/power/smes/batteryrack/updateicon()
+/obj/machinery/power/smes/batteryrack/update_icon()
 	overlays.Cut()
-	if(stat & BROKEN)	return
+	if(machine_stat & BROKEN)	return
 
-	if (online)
+	if (outputting)
 		overlays += image('icons/obj/power.dmi', "gsmes_outputting")
-	if(charging)
+	if(inputting)
 		overlays += image('icons/obj/power.dmi', "gsmes_charging")
 
 	var/clevel = chargedisplay()
@@ -93,42 +87,46 @@
 	return round(4 * charge/(capacity ? capacity : 5e6))
 
 
-/obj/machinery/power/smes/batteryrack/attackby(var/obj/item/W as obj, var/mob/user as mob) //these can only be moved by being reconstructed, solves having to remake the powernet.
-	..() //SMES attackby for now handles screwdriver, cable coils and wirecutters, no need to repeat that here
-	if(open_hatch)
-		if(istype(W, /obj/item/tool/crowbar))
-			if (charge < (capacity / 100))
-				if (!online && !chargemode)
-					playsound(get_turf(src), 'sound/items/Crowbar.ogg', 25, 1)
-					var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(src.loc)
-					M.state = 2
-					M.icon_state = "box_1"
-					for(var/obj/I in component_parts)
-						if(I.reliability != 100 && crit_fail)
-							I.crit_fail = 1
-						I.loc = src.loc
-					cdel(src)
-					return 1
-				else
-					to_chat(user, "<span class='warning'>Turn off the [src] before dismantling it.</span>")
-			else
-				to_chat(user, "<span class='warning'>Better let [src] discharge before dismantling it.</span>")
-		else if ((istype(W, /obj/item/stock_parts/capacitor) && (capacitors_amount < 5)) || (istype(W, /obj/item/cell) && (cells_amount < 5)))
-			if (charge < (capacity / 100))
-				if (!online && !chargemode)
-					if(user.drop_inv_item_to_loc(W, src))
-						component_parts += W
-						RefreshParts()
-						to_chat(user, "<span class='notice'>You upgrade the [src] with [W.name].</span>")
-				else
-					to_chat(user, "<span class='warning'>Turn off the [src] before dismantling it.</span>")
-			else
-				to_chat(user, "<span class='warning'>Better let [src] discharge before putting your hand inside it.</span>")
-		else
-			user.set_interaction(src)
-			interact(user)
-			return 1
-	return
+/obj/machinery/power/smes/batteryrack/attackby(obj/item/I, mob/user, params) //these can only be moved by being reconstructed, solves having to remake the powernet.
+	. = ..() //SMES attackby for now handles screwdriver, cable coils and wirecutters, no need to repeat that here
+
+	if(!CHECK_BITFIELD(machine_stat, PANEL_OPEN))
+		return
+
+	if(iscrowbar(I))
+		if(charge >= (capacity / 100))
+			to_chat(user, "<span class='warning'>Better let [src] discharge before dismantling it.</span>")
+			return
+
+		if(outputting || input_attempt)
+			to_chat(user, "<span class='warning'>Turn off the [src] before dismantling it.</span>")
+			return
+
+		playsound(get_turf(src), 'sound/items/crowbar.ogg', 25, 1)
+		var/obj/machinery/constructable_frame/machine_frame/M = new(loc)
+		M.state = 2
+		M.icon_state = "box_1"
+		for(var/obj/O in component_parts)
+			if(O.reliability != 100 && crit_fail)
+				O.crit_fail = TRUE
+			O.forceMove(loc)
+		qdel(src)
+
+	else if((istype(I, /obj/item/stock_parts/capacitor) && (capacitors_amount < 5)) || (istype(I, /obj/item/cell) && (cells_amount < 5)))
+		if(charge >= (capacity / 100))
+			to_chat(user, "<span class='warning'>Better let [src] discharge before putting your hand inside it.</span>")
+			return
+
+		if(outputting || input_attempt)
+			to_chat(user, "<span class='warning'>Turn off the [src] before dismantling it.</span>")
+			return
+
+		if(!user.transferItemToLoc(I, src))
+			return
+
+		component_parts += I
+		RefreshParts()
+		to_chat(user, "<span class='notice'>You upgrade the [src] with [I].</span>")
 
 
 //The shitty one that will blow up.
@@ -147,13 +145,13 @@
 
 
 
-/obj/machinery/power/smes/batteryrack/makeshift/updateicon()
+/obj/machinery/power/smes/batteryrack/makeshift/update_icon()
 	overlays.Cut()
-	if(stat & BROKEN)	return
+	if(machine_stat & BROKEN)	return
 
-	if (online)
+	if (outputting)
 		overlays += image('icons/obj/power.dmi', "gsmes_outputting")
-	if(charging)
+	if(inputting)
 		overlays += image('icons/obj/power.dmi', "gsmes_charging")
 	if (overcharge_percent > 100)
 		overlays += image('icons/obj/power.dmi', "gsmes_overcharge")
@@ -195,7 +193,7 @@
 					empulse(src.loc, 3, 8, 1)
 			if (overcharge_percent >= 150)
 				if (prob(1))
-					explosion(src.loc, 0, 1, 3, 5)
+					explosion(loc, 1, 2, 4, 5, small_animation = TRUE)
 		if ((3.6e6+1) to INFINITY)
 			if (overcharge_percent >= 115)
 				if (prob(8))
@@ -207,52 +205,52 @@
 					empulse(src.loc, 4, 10, 1)
 			if (overcharge_percent >= 140)
 				if (prob(1))
-					explosion(src.loc, 1, 3, 5, 8)
+					explosion(loc, 2, 4, 6, 8, small_animation = TRUE)
 		else //how the hell was this proc called for negative charge
 			charge = 0
 
 
 #define SMESRATE 0.05			// rate of internal charge to external power
 /obj/machinery/power/smes/batteryrack/makeshift/process()
-	if(stat & BROKEN)	return
+	if(machine_stat & BROKEN)	return
 
 	//store machine state to see if we need to update the icon overlays
 	var/last_disp = chargedisplay()
-	var/last_chrg = charging
-	var/last_onln = online
+	var/last_chrg = inputting
+	var/last_onln = outputting
 	var/last_overcharge = overcharge_percent
 
 	if(terminal)
 		var/excess = terminal.surplus()
 
-		if(charging)
+		if(inputting)
 			if(excess >= 0)		// if there's power available, try to charge
-				var/load = min((capacity * 1.5 - charge)/SMESRATE, chargelevel)		// charge at set rate, limited to spare capacity
+				var/load = min((capacity * 1.5 - charge)/SMESRATE, input_level)		// charge at set rate, limited to spare capacity
 				load = add_load(load)		// add the load to the terminal side network
 				charge += load * SMESRATE	// increase the charge
 
 
 			else					// if not enough capacity
-				charging = 0		// stop charging
+				inputting = 0		// stop charging
 
 		else
-			if (chargemode && excess > 0 && excess >= chargelevel)
-				charging = 1
+			if (input_attempt && excess > 0 && excess >= input_level)
+				inputting = TRUE
 
-	if(online)		// if outputting
-		lastout = min( charge/SMESRATE, output)		//limit output to that stored
-		charge -= lastout*SMESRATE		// reduce the storage (may be recovered in /restore() if excessive)
-		add_avail(lastout)				// add output to powernet (smes side)
+	if(outputting)		// if outputting
+		output_used = min( charge/SMESRATE, output_level)		//limit output to that stored
+		charge -= output_used*SMESRATE		// reduce the storage (may be recovered in /restore() if excessive)
+		add_avail(output_used)				// add output to powernet (smes side)
 		if(charge < 0.0001)
-			online = 0					// stop output if charge falls to zero
+			outputting = 0					// stop output if charge falls to zero
 
 	overcharge_percent = round((charge / capacity) * 100)
 	if (overcharge_percent > 115) //115% is the minimum overcharge for anything to happen
 		overcharge_consequences()
 
 	// only update icon if state changed
-	if(last_disp != chargedisplay() || last_chrg != charging || last_onln != online || ((overcharge_percent > 100) ^ (last_overcharge > 100)))
-		updateicon()
+	if(last_disp != chargedisplay() || last_chrg != inputting || last_onln != outputting || ((overcharge_percent > 100) ^ (last_overcharge > 100)))
+		update_icon()
 	return
 
 #undef SMESRATE

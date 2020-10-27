@@ -10,9 +10,9 @@
 /datum/surgery_step/limb/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected, checks_only)
 	if(!affected)
 		return 0
-	if(!(affected.status & LIMB_DESTROYED))
+	if(!(affected.limb_status & LIMB_DESTROYED))
 		return 0
-	if(affected.parent && (affected.parent.status & LIMB_DESTROYED))//parent limb is destroyed
+	if(affected.parent && (affected.parent.limb_status & LIMB_DESTROYED))//parent limb is destroyed
 		return 0
 	if(affected.limb_replacement_stage != limb_step)
 		return 0
@@ -22,9 +22,9 @@
 
 /datum/surgery_step/limb/cut
 	allowed_tools = list(
-	/obj/item/tool/surgery/scalpel = 100,		\
-	/obj/item/tool/kitchen/knife = 75,	\
-	/obj/item/shard = 50, 		\
+		/obj/item/tool/surgery/scalpel = 100,
+		/obj/item/tool/kitchen/knife = 75,
+		/obj/item/shard = 50,
 	)
 
 	min_duration = ROBOLIMB_CUT_MIN_DURATION
@@ -53,9 +53,9 @@
 
 /datum/surgery_step/limb/mend
 	allowed_tools = list(
-	/obj/item/tool/surgery/retractor = 100,          \
-	/obj/item/tool/crowbar = 75,             \
-	/obj/item/tool/kitchen/utensil/fork = 50
+		/obj/item/tool/surgery/retractor = 100,
+		/obj/item/tool/crowbar = 75,
+		/obj/item/tool/kitchen/utensil/fork = 50,
 	)
 
 	min_duration = ROBOLIMB_MEND_MIN_DURATION
@@ -77,17 +77,15 @@
 		affected = affected.parent
 		user.visible_message("<span class='warning'>[user]'s hand slips, tearing flesh on [target]'s [affected.display_name]!</span>", \
 		"<span class='warning'>Your hand slips, tearing flesh on [target]'s [affected.display_name]!</span>")
-		target.apply_damage(10, BRUTE, affected, sharp = 1)
-		target.updatehealth()
-
+		target.apply_damage(10, BRUTE, affected, 0, TRUE, updating_health = TRUE)
 
 
 /datum/surgery_step/limb/prepare
 	allowed_tools = list(
-	/obj/item/tool/surgery/cautery = 100,			\
-	/obj/item/clothing/mask/cigarette = 75,	\
-	/obj/item/tool/lighter = 50,    \
-	/obj/item/tool/weldingtool = 25
+		/obj/item/tool/surgery/cautery = 100,
+		/obj/item/clothing/mask/cigarette = 75,
+		/obj/item/tool/lighter = 50,
+		/obj/item/tool/weldingtool = 25,
 	)
 
 	min_duration = ROBOLIMB_PREPARE_MIN_DURATION
@@ -102,7 +100,7 @@
 /datum/surgery_step/limb/prepare/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected)
 	user.visible_message("<span class='notice'>[user] has finished adjusting the area around [target]'s [affected.display_name] with \the [tool].</span>",	\
 	"<span class='notice'>You have finished adjusting the area around [target]'s [affected.display_name] with \the [tool].</span>")
-	affected.status |= LIMB_AMPUTATED
+	affected.add_limb_flags(LIMB_AMPUTATED)
 	affected.setAmputatedTree()
 	affected.limb_replacement_stage = 0
 
@@ -111,9 +109,7 @@
 		affected = affected.parent
 		user.visible_message("<span class='warning'>[user]'s hand slips, searing [target]'s [affected.display_name]!</span>", \
 		"<span class='warning'>Your hand slips, searing [target]'s [affected.display_name]!</span>")
-		target.apply_damage(10, BURN, affected)
-		target.updatehealth()
-
+		target.apply_damage(10, BURN, affected, updating_health = TRUE)
 
 
 /datum/surgery_step/limb/attach
@@ -129,7 +125,7 @@
 		if(p.part)
 			if(!(target_zone in p.part))
 				return 0
-		return affected.status & LIMB_AMPUTATED
+		return affected.limb_status & LIMB_AMPUTATED
 
 /datum/surgery_step/limb/attach/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected)
 	user.visible_message("<span class='notice'>[user] starts attaching \the [tool] where [target]'s [affected.display_name] used to be.</span>", \
@@ -147,11 +143,10 @@
 	target.UpdateDamageIcon()
 
 	//Deal with the limb item properly
-	user.temp_drop_inv_item(tool)
-	cdel(tool)
+	user.temporarilyRemoveItemFromInventory(tool)
+	qdel(tool)
 
 /datum/surgery_step/limb/attach/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected)
 	user.visible_message("<span class='warning'>[user]'s hand slips, damaging connectors on [target]'s [affected.display_name]!</span>", \
 	"<span class='warning'>Your hand slips, damaging connectors on [target]'s [affected.display_name]!</span>")
-	target.apply_damage(10, BRUTE, affected, sharp = 1)
-	target.updatehealth()
+	target.apply_damage(10, BRUTE, affected, 0, TRUE, updating_health = TRUE)

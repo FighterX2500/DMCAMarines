@@ -1,51 +1,57 @@
 /obj/item/explosive/grenade
 	name = "grenade"
 	desc = "A hand held grenade, with an adjustable timer."
-	w_class = 2.0
+	w_class = WEIGHT_CLASS_SMALL
 	icon = 'icons/obj/items/grenade.dmi'
 	icon_state = "grenade"
 	item_state = "flashbang"
 	throw_speed = 3
 	throw_range = 7
 	flags_atom = CONDUCT
-	flags_equip_slot = SLOT_WAIST
+	flags_equip_slot = ITEM_SLOT_BELT
 	hitsound = 'sound/weapons/smash.ogg'
-	var/active = 0
+	var/launched = FALSE //if launched from a UGL/grenade launcher
+	var/launchforce = 10 //bonus impact damage if launched from a UGL/grenade launcher
 	var/det_time = 50
-	var/dangerous = 0		//Make an danger overlay for humans?
+	var/dangerous = TRUE 	//Does it make a danger overlay for humans? Can synths use it?
 	var/arm_sound = 'sound/weapons/armbomb.ogg'
 	var/underslug_launchable = FALSE
+	var/hud_state = "grenade_he"
+	var/hud_state_empty = "grenade_empty"
 
-/obj/item/explosive/grenade/New()
 
-	..()
-
+/obj/item/explosive/grenade/Initialize()
+	. = ..()
 	det_time = rand(det_time - 10, det_time + 10)
 
 /obj/item/explosive/grenade/attack_self(mob/user)
-	if(!active)
+	if(active)
+		return
 
-		if(!user.IsAdvancedToolUser())
-			to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
-			return
+	if(!user.dextrous)
+		to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
+		return
 
-		add_fingerprint(user)
-		activate(user)
-		if((CLUMSY in user.mutations) && prob(50))
-			to_chat(user, "<span class='warning'>Huh? How does this thing work?</span>")
-			spawn(5) prime()
+	if(issynth(user) && dangerous && !CONFIG_GET(flag/allow_synthetic_gun_use))
+		to_chat(user, "<span class='warning'>Your programming prevents you from operating this device!</span>")
+		return
 
-		else
-			user.visible_message("<span class='warning'>[user] primes \a [name]!</span>", \
-			"<span class='warning'>You prime \a [name]!</span>")
-			if(initial(dangerous) && has_species(user, "Human"))
-				var/nade_sound = user.gender == FEMALE ? get_sfx("female_fragout") : get_sfx("male_fragout")
+	activate(user)
 
-				for(var/mob/living/carbon/human/H in hearers(6,user))
-					H.playsound_local(user, nade_sound, 35)
-			if(iscarbon(user))
-				var/mob/living/carbon/C = user
-				C.throw_mode_on()
+	user.visible_message("<span class='warning'>[user] primes \a [name]!</span>", \
+	"<span class='warning'>You prime \a [name]!</span>")
+	if(initial(dangerous) && ishumanbasic(user))
+		var/nade_sound = user.gender == FEMALE ? get_sfx("female_fragout") : get_sfx("male_fragout")
+
+		for(var/mob/living/carbon/human/H in hearers(6,user))
+			H.playsound_local(user, nade_sound, 35)
+
+		var/image/grenade = image('icons/mob/talk.dmi', user, "grenade")
+		user.add_emote_overlay(grenade)
+
+	if(iscarbon(user))
+		var/mob/living/carbon/C = user
+		C.throw_mode_on()
 
 
 /obj/item/explosive/grenade/proc/activate(mob/user as mob)
@@ -53,16 +59,17 @@
 		return
 
 	if(user)
-		msg_admin_attack("[user.name] ([user.ckey]) primed \a [src] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
+		log_explosion("[key_name(user)] primed [src] at [AREACOORD(user.loc)].")
+		log_combat(user, src, "primed")
 
 	icon_state = initial(icon_state) + "_active"
-	active = 1
+	active = TRUE
 	playsound(loc, arm_sound, 25, 1, 6)
 	if(dangerous)
+		GLOB.round_statistics.grenades_thrown++
+		SSblackbox.record_feedback("tally", "round_statistics", 1, "grenades_thrown")
 		updateicon()
-	spawn(det_time)
-		prime()
-		return
+	addtimer(CALLBACK(src, .proc/prime), det_time)
 
 /obj/item/explosive/grenade/proc/updateicon()
 	if(dangerous)
@@ -70,34 +77,34 @@
 		dangerous = 0
 	return
 
+
 /obj/item/explosive/grenade/proc/prime()
-//	playsound(loc, 'sound/items/Welder2.ogg', 25, 1)
 
 
+/obj/item/explosive/grenade/attackby(obj/item/I, mob/user, params)
+	. = ..()
 
-/obj/item/explosive/grenade/attackby(obj/item/W as obj, mob/user as mob)
-	if(isscrewdriver(W))
+	if(isscrewdriver(I))
 		switch(det_time)
-			if ("1")
+			if(1)
 				det_time = 10
 				to_chat(user, "<span class='notice'>You set the [name] for 1 second detonation time.</span>")
-			if ("10")
+			if(10)
 				det_time = 30
 				to_chat(user, "<span class='notice'>You set the [name] for 3 second detonation time.</span>")
-			if ("30")
+			if(30)
 				det_time = 50
 				to_chat(user, "<span class='notice'>You set the [name] for 5 second detonation time.</span>")
-			if ("50")
+			if(50)
 				det_time = 1
 				to_chat(user, "<span class='notice'>You set the [name] for instant detonation.</span>")
-		add_fingerprint(user)
-	..()
-	return
 
-/obj/item/explosive/grenade/attack_hand()
+/obj/item/explosive/grenade/attack_hand(mob/living/user)
+	. = ..()
+	if(.)
+		return
 	walk(src, null, null)
-	..()
 	return
 
-/obj/item/explosive/grenade/attack_paw(mob/user as mob)
+/obj/item/explosive/grenade/attack_paw(mob/living/carbon/monkey/user)
 	return attack_hand(user)

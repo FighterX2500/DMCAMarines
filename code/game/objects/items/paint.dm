@@ -1,26 +1,23 @@
 //NEVER USE THIS IT SUX	-PETETHEGOAT
 
-var/global/list/cached_icons = list()
-
-/obj/item/reagent_container/glass/paint
+/obj/item/reagent_containers/glass/paint
 	desc = "It's a paint bucket."
 	name = "paint bucket"
 	icon = 'icons/obj/items/items.dmi'
 	icon_state = "paint_neutral"
 	item_state = "paintcan"
-	matter = list("metal" = 200)
-	w_class = 3.0
+	materials = list(/datum/material/metal = 200)
+	w_class = WEIGHT_CLASS_NORMAL
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(10,20,30,50,70)
 	volume = 70
-	flags_atom = OPENCONTAINER
+	init_reagent_flags = OPENCONTAINER
 	var/paint_type = ""
 
 	afterattack(turf/target, mob/user, proximity)
 		if(!proximity) return
 		if(istype(target) && reagents.total_volume > 5)
-			for(var/mob/O in viewers(user))
-				O.show_message("\red \The [target] has been splashed with something by [user]!", 1)
+			user.visible_message("<span class='warning'> \The [target] has been splashed with something by [user]!</span>")
 			spawn(5)
 				reagents.reaction(target, TOUCH)
 				reagents.remove_any(5)
@@ -33,7 +30,7 @@ var/global/list/cached_icons = list()
 		else if(paint_type && length(paint_type) > 0)
 			name = paint_type + " " + name
 		..()
-		reagents.add_reagent("paint_[paint_type]", volume)
+		reagents.add_reagent(text2path("/datum/reagent/paint/[paint_type]"), volume)
 
 	on_reagent_change() //Until we have a generic "paint", this will give new colours to all paints in the can
 		var/mixedcolor = mix_color_from_reagents(reagents.reagent_list)
@@ -70,168 +67,57 @@ var/global/list/cached_icons = list()
 
 	remover
 		paint_type = "remover"
-/*
-/obj/item/paint
-	gender= PLURAL
-	name = "paint"
-	desc = "Used to recolor floors and walls. Can not be removed by the janitor."
-	icon = 'icons/obj/items/items.dmi'
-	icon_state = "paint_neutral"
-	color = "FFFFFF"
-	item_state = "paintcan"
-	w_class = 3.0
 
-/obj/item/paint/red
-	name = "red paint"
-	color = "FF0000"
-	icon_state = "paint_red"
-
-/obj/item/paint/green
-	name = "green paint"
-	color = "00FF00"
-	icon_state = "paint_green"
-
-/obj/item/paint/blue
-	name = "blue paint"
-	color = "0000FF"
-	icon_state = "paint_blue"
-
-/obj/item/paint/yellow
-	name = "yellow paint"
-	color = "FFFF00"
-	icon_state = "paint_yellow"
-
-/obj/item/paint/violet
-	name = "violet paint"
-	color = "FF00FF"
-	icon_state = "paint_violet"
-
-/obj/item/paint/black
-	name = "black paint"
-	color = "333333"
-	icon_state = "paint_black"
-
-/obj/item/paint/white
-	name = "white paint"
-	color = "FFFFFF"
-	icon_state = "paint_white"
-
-
-/obj/item/paint/anycolor
-	gender= PLURAL
-	name = "any color"
-	icon_state = "paint_neutral"
-
-	attack_self(mob/user as mob)
-		var/t1 = input(user, "Please select a color:", "Locking Computer", null) in list( "red", "blue", "green", "yellow", "black", "white")
-		if ((user.get_active_hand() != src || user.stat || user.is_mob_restrained()))
-			return
-		switch(t1)
-			if("red")
-				color = "FF0000"
-			if("blue")
-				color = "0000FF"
-			if("green")
-				color = "00FF00"
-			if("yellow")
-				color = "FFFF00"
-			if("violet")
-				color = "FF00FF"
-			if("white")
-				color = "FFFFFF"
-			if("black")
-				color = "333333"
-		icon_state = "paint_[t1]"
-		add_fingerprint(user)
-		return
-
-
-/obj/item/paint/afterattack(turf/target, mob/user as mob, proximity)
-	if(!proximity) return
-	if(!istype(target) || istype(target, /turf/open/space))
-		return
-	var/ind = "[initial(target.icon)][color]"
-	if(!cached_icons[ind])
-		var/icon/overlay = new/icon(initial(target.icon))
-		overlay.Blend("#[color]",ICON_MULTIPLY)
-		overlay.SetIntensity(1.4)
-		target.icon = overlay
-		cached_icons[ind] = target.icon
-	else
-		target.icon = cached_icons[ind]
-	return
-
-/obj/item/paint/paint_remover
-	gender =  PLURAL
-	name = "paint remover"
-	icon_state = "paint_neutral"
-
-	afterattack(turf/target, mob/user as mob)
-		if(istype(target) && target.icon != initial(target.icon))
-			target.icon = initial(target.icon)
-		return
-*/
-
-datum/reagent/paint
+/datum/reagent/paint
 	name = "Paint"
-	id = "paint_"
 	reagent_state = 2
 	color = "#808080"
 	description = "This paint will only adhere to floor tiles."
 
-	reaction_turf(var/turf/T, var/volume)
-		if(!istype(T) || istype(T, /turf/open/space))
-			return
-		T.color = color
+/datum/reagent/paint/reaction_turf(turf/T, volume)
+	if(!istype(T) || isspaceturf(T))
+		return
+	T.color = color
 
-	reaction_obj(var/obj/O, var/volume)
-		..()
-		if(istype(O,/obj/item/light_bulb))
-			O.color = color
+/datum/reagent/paint/reaction_obj(obj/O, volume)
+	. = ..()
+	if(istype(O,/obj/item/light_bulb))
+		O.color = color
 
-	red
-		name = "Red Paint"
-		id = "paint_red"
-		color = "#FE191A"
+/datum/reagent/paint/red
+	name = "Red Paint"
+	color = "#FE191A"
 
-	green
-		name = "Green Paint"
-		color = "#18A31A"
-		id = "paint_green"
+/datum/reagent/paint/green
+	name = "Green Paint"
+	color = "#18A31A"
 
-	blue
-		name = "Blue Paint"
-		color = "#247CFF"
-		id = "paint_blue"
+/datum/reagent/paint/blue
+	name = "Blue Paint"
+	color = "#247CFF"
 
-	yellow
-		name = "Yellow Paint"
-		color = "#FDFE7D"
-		id = "paint_yellow"
+/datum/reagent/paint/yellow
+	name = "Yellow Paint"
+	color = "#FDFE7D"
 
-	violet
-		name = "Violet Paint"
-		color = "#CC0099"
-		id = "paint_violet"
+/datum/reagent/paint/violet
+	name = "Violet Paint"
+	color = "#CC0099"
 
-	black
-		name = "Black Paint"
-		color = "#333333"
-		id = "paint_black"
+/datum/reagent/paint/black
+	name = "Black Paint"
+	color = "#333333"
 
-	white
-		name = "White Paint"
-		color = "#F0F8FF"
-		id = "paint_white"
+/datum/reagent/paint/white
+	name = "White Paint"
+	color = "#F0F8FF"
 
-datum/reagent/paint_remover
+/datum/reagent/paint/remover
 	name = "Paint Remover"
-	id = "paint_remover"
 	description = "Paint remover is used to remove floor paint from floor tiles."
 	reagent_state = 2
 	color = "#808080"
 
-	reaction_turf(var/turf/T, var/volume)
-		if(istype(T) && T.icon != initial(T.icon))
-			T.icon = initial(T.icon)
-		return
+/datum/reagent/paint/remover/reaction_turf(turf/T, volume)
+	if(istype(T) && T.icon != initial(T.icon))
+		T.icon = initial(T.icon)

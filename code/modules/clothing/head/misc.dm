@@ -1,7 +1,7 @@
 
 
 /obj/item/clothing/head/centhat
-	name = "CentComm. hat"
+	name = "\improper CentComm. hat"
 	icon_state = "centcom"
 	desc = "It's good to be emperor."
 	item_state = "centhat"
@@ -85,13 +85,13 @@
 	flags_inventory = 0
 	flags_armor_protection = HEAD|FACE|EYES
 
-/obj/item/clothing/head/greenbandana
-	name = "green bandana"
-	desc = "It's a green bandana with some fine nanotech lining."
-	icon_state = "greenbandana"
-	item_state = "greenbandana"
-	flags_inventory = NOFLAGS
-	flags_inv_hide = NOFLAGS
+/obj/item/clothing/head/greenbandanna
+	name = "green bandanna"
+	desc = "It's a green bandanna with some fine nanotech lining."
+	icon_state = "greenbandanna"
+	item_state = "greenbandanna"
+	flags_inventory = NONE
+	flags_inv_hide = NONE
 	flags_armor_protection = 0
 
 /obj/item/clothing/head/cardborg
@@ -153,18 +153,19 @@
 	icon_state = "hgpiratecap"
 	item_state = "hgpiratecap"
 	flags_armor_protection = 0
-	armor = list(melee = 50, bullet = 80, laser = 50,energy = 10, bomb = 50, bio = 0, rad = 0)
+	flags_item = SYNTH_RESTRICTED
+	soft_armor = list("melee" = 50, "bullet" = 80, "laser" = 50, "energy" = 10, "bomb" = 50, "bio" = 0, "rad" = 0, "fire" = 10, "acid" = 10)
 
-/obj/item/clothing/head/bandana
-	name = "pirate bandana"
+/obj/item/clothing/head/bandanna
+	name = "pirate bandanna"
 	desc = "Yarr."
-	icon_state = "bandana"
-	item_state = "bandana"
+	icon_state = "bandanna"
+	item_state = "bandanna"
 
-/obj/item/clothing/head/bandana/red
-	name = "red bandana"
+/obj/item/clothing/head/bandanna/red
+	name = "red bandanna"
 	desc = "For when it comes crashing down and it hurts inside."
-	icon_state = "bandana_red"
+	icon_state = "bandanna_red"
 
 /obj/item/clothing/head/bowler
 	name = "bowler-hat"
@@ -195,19 +196,19 @@
 	desc = "The ultimate in summer fashion."
 
 /obj/item/clothing/head/fedora
-	name = "fedora"
+	name = "\improper fedora"
 	icon_state = "fedora"
 	item_state = "fedora"
 	desc = "A sharp, stylish hat."
 
 /obj/item/clothing/head/feathertrilby
-	name = "feather trilby"
+	name = "\improper feather trilby"
 	icon_state = "feather_trilby"
 	item_state = "feather_trilby"
 	desc = "A sharp, stylish hat with a feather."
 
 /obj/item/clothing/head/fez
-	name = "fez"
+	name = "\improper fez"
 	icon_state = "fez"
 	item_state = "fez"
 	desc = "You should wear a fez. Fezzes are cool."
@@ -219,7 +220,7 @@
 	desc = "Eeeee~heheheheheheh!"
 	icon_state = "witch"
 	item_state = "witch"
-	flags_inventory = NOFLAGS
+	flags_inventory = NONE
 	flags_inv_hide = HIDEALLHAIR
 	siemens_coefficient = 2.0
 
@@ -228,7 +229,7 @@
 	desc = "Bkaw!"
 	icon_state = "chickenhead"
 	item_state = "chickensuit"
-	flags_inventory = NOFLAGS
+	flags_inventory = NONE
 	flags_inv_hide = HIDEALLHAIR
 	siemens_coefficient = 2.0
 	flags_armor_protection = HEAD|FACE|EYES
@@ -244,8 +245,16 @@
 	flags_armor_protection = HEAD|FACE|EYES
 	anti_hug = 10 //Lel
 
-/obj/item/clothing/head/boonie
-	name = "Boonie Hat"
-	desc = "The pinnacle of tacticool technology."
-	icon_state = "booniehat"
-	item_state = "booniehat"
+/obj/item/clothing/head/white_dress
+	name = "White Dress Hat"
+	desc = "The white dress hat for your dress uniform."
+	icon_state = "white_dress" //with thanks to Baystation12
+	item_state = "white_dress" //with thanks to Baystation12
+
+/obj/item/clothing/head/techpriest
+	name = "Techpriest hood"
+	desc = "Praise the Omnissiah!"
+	icon_state = "tp_hood"
+	item_state = "tp_hood"
+	flags_inv_hide = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEALLHAIR
+	flags_armor_protection = HEAD|FACE|EYES

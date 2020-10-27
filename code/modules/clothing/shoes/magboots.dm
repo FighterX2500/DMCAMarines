@@ -2,7 +2,6 @@
 	desc = "Magnetic boots, often used during extravehicular activity to ensure the user remains safely attached to the vehicle."
 	name = "magboots"
 	icon_state = "magboots0"
-	species_restricted = null
 	var/magpulse = 0
 	actions_types = list(/datum/action/item_action/toggle)
 //	flags = NOSLIP //disabled by default
@@ -22,9 +21,7 @@
 			to_chat(user, "You enable the mag-pulse traction system.")
 		user.update_inv_shoes()	//so our mob-overlays update
 
-		for(var/X in actions)
-			var/datum/action/A = X
-			A.update_button_icon()
+		update_action_button_icons()
 
 
 	examine(mob/user)

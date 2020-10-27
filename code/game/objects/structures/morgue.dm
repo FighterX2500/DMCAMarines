@@ -1,27 +1,27 @@
 /*
- * Morgue
- */
+* Morgue
+*/
 /obj/structure/morgue
 	name = "morgue"
 	desc = "Used to keep bodies in untill someone fetches them."
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "morgue1"
 	dir = EAST
-	density = 1
+	density = TRUE
 	var/obj/structure/morgue_tray/connected = null
 	var/morgue_type = "morgue"
 	var/tray_path = /obj/structure/morgue_tray
 	var/morgue_open = 0
-	anchored = 1
+	anchored = TRUE
 
-/obj/structure/morgue/New()
-	..()
+/obj/structure/morgue/Initialize()
+	. = ..()
 	connected = new tray_path(src)
 
-/obj/structure/morgue/Dispose()
+/obj/structure/morgue/Destroy()
 	. = ..()
 	if(connected)
-		cdel(connected)
+		qdel(connected)
 		connected = null
 
 /obj/structure/morgue/update_icon()
@@ -35,96 +35,112 @@
 
 /obj/structure/morgue/ex_act(severity)
 	switch(severity)
-		if(2)
+		if(EXPLODE_HEAVY)
 			if(prob(50))
 				return
-		if(3)
+		if(EXPLODE_LIGHT)
 			if(prob(95))
 				return
 	for(var/atom/movable/A in src)
 		A.forceMove(loc)
 		ex_act(severity)
-	cdel(src)
+	qdel(src)
 
-/obj/structure/morgue/attack_paw(mob/user)
+/obj/structure/morgue/attack_paw(mob/living/carbon/monkey/user)
 	toggle_morgue(user)
 
-/obj/structure/morgue/attack_hand(mob/user)
+/obj/structure/morgue/attack_hand(mob/living/user)
+	. = ..()
+	if(.)
+		return
 	toggle_morgue(user)
+
+/atom/movable/proc/can_be_morgue_trayed()
+	return TRUE
+
+/mob/living/can_be_morgue_trayed()
+	return stat == DEAD
+
+/obj/structure/closet/bodybag/can_be_morgue_trayed()
+	. = ..()
+	for(var/atom/movable/AM in contents)
+		if(!AM.can_be_morgue_trayed())
+			return FALSE
 
 /obj/structure/morgue/proc/toggle_morgue(mob/user)
-	add_fingerprint(user)
 	if(!connected) return
 	if(morgue_open)
 		for(var/atom/movable/A in connected.loc)
-			if(!A.anchored)
+			if(!A.anchored && A.can_be_morgue_trayed())
 				A.forceMove(src)
 		connected.loc = src
 	else
 		if(step(connected, dir))
-			connected.dir = dir
+			connected.setDir(dir)
 			for(var/atom/movable/A in src)
 				A.forceMove(connected.loc)
 		else
 			connected.loc = src
 			return
 	morgue_open = !morgue_open
-	playsound(loc, 'sound/items/Deconstruct.ogg', 25, 1)
+	playsound(loc, 'sound/items/deconstruct.ogg', 25, 1)
 	update_icon()
 
 
-/obj/structure/morgue/attackby(obj/item/P, mob/user)
-	if (istype(P, /obj/item/weapon/zombie_claws))
-		attack_hand()
-		return
-	else if (istype(P, /obj/item/tool/pen))
-		var/t = copytext(stripped_input(user, "What would you like the label to be?", name, null),1,MAX_MESSAGE_LEN)
-		if (user.get_active_hand() != P)
+/obj/structure/morgue/attackby(obj/item/I, mob/user, params)
+	. = ..()
+
+	if(istype(I, /obj/item/tool/pen))
+		var/t = copytext(stripped_input(user, "What would you like the label to be?", name, null), 1, MAX_MESSAGE_LEN)
+		if(!t)
 			return
-		if ((!in_range(src, user) && src.loc != user))
+
+		if(user.get_active_held_item() != I)
 			return
-		if (t)
-			name = "[initial(name)]- '[t]'"
-		else
-			name = initial(name)
-		add_fingerprint(user)
-	else
-		. = ..()
+
+		if((!in_range(src, user) && loc != user))
+			return
+
+		name = "[initial(name)] - '[t]'"
+
 
 /obj/structure/morgue/relaymove(mob/user)
-	if(user.is_mob_incapacitated(TRUE))
+	if(user.incapacitated(TRUE))
 		return
 	toggle_morgue(user)
 
 
 /*
- * Morgue tray
- */
+* Morgue tray
+*/
 
 /obj/structure/morgue_tray
 	name = "morgue tray"
 	desc = "Apply corpse before closing."
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "morguet"
-	density = 1
+	density = TRUE
 	layer = OBJ_LAYER
 	var/obj/structure/morgue/linked_morgue = null
-	anchored = 1
+	anchored = TRUE
 	throwpass = 1
 
-/obj/structure/morgue_tray/New(loc, obj/structure/morgue/morgue_source)
+/obj/structure/morgue_tray/Initialize(mapload, obj/structure/morgue/morgue_source)
+	. = ..()
 	if(morgue_source)
 		linked_morgue = morgue_source
-	..()
 
-/obj/structure/morgue_tray/Dispose()
+/obj/structure/morgue_tray/Destroy()
 	. = ..()
 	linked_morgue = null
 
-/obj/structure/morgue_tray/attack_paw(mob/user)
+/obj/structure/morgue_tray/attack_paw(mob/living/carbon/monkey/user)
 	return src.attack_hand(user)
 
-/obj/structure/morgue_tray/attack_hand(mob/user)
+/obj/structure/morgue_tray/attack_hand(mob/living/user)
+	. = ..()
+	if(.)
+		return
 	if(linked_morgue)
 		linked_morgue.toggle_morgue(user)
 
@@ -134,18 +150,17 @@
 		return
 	if (!ismob(O) && !istype(O, /obj/structure/closet/bodybag))
 		return
-	if (!istype(user) || user.is_mob_incapacitated())
+	if (!istype(user) || user.incapacitated())
 		return
 	O.forceMove(loc)
 	if (user != O)
-		for(var/mob/B in viewers(user, 3))
-			B.show_message("\red [user] stuffs [O] into [src]!", 1)
+		visible_message("<span class='warning'>[user] stuffs [O] into [src]!</span>", null, null, 3)
 
 
 
 /*
- * Crematorium
- */
+* Crematorium
+*/
 
 /obj/structure/morgue/crematorium
 	name = "crematorium"
@@ -183,9 +198,9 @@
 		return
 
 	if(contents.len <= 1) //1 because the tray is inside.
-		visible_message("\red You hear a hollow crackle.")
+		visible_message("<span class='warning'> You hear a hollow crackle.</span>")
 	else
-		visible_message("\red You hear a roar as the crematorium activates.")
+		visible_message("<span class='warning'> You hear a roar as the crematorium activates.</span>")
 
 		cremating = 1
 
@@ -197,17 +212,15 @@
 					M.emote("scream")
 				else
 					var/mob/living/carbon/C = M
-					if (!(C.species && (C.species.flags & NO_PAIN)))
+					if (!(C.species && (C.species.species_flags & NO_PAIN)))
 						C.emote("scream")
 
 			log_combat(user, M, "creamated", src)
-			M.death(1)
-			M.ghostize()
-			cdel(M)
+			M.death(TRUE)
 
 		for(var/obj/O in contents)
 			if(istype(O, /obj/structure/morgue_tray)) continue
-			cdel(O)
+			qdel(O)
 
 		new /obj/effect/decal/cleanable/ash(src)
 		sleep(30)
@@ -217,8 +230,8 @@
 
 
 /*
- * Crematorium tray
- */
+* Crematorium tray
+*/
 
 /obj/structure/morgue_tray/crematorium
 	name = "crematorium tray"
@@ -227,37 +240,40 @@
 
 
 /*
- * Crematorium switch
- */
+* Crematorium switch
+*/
 
-/obj/machinery/crema_switch/attack_hand(mob/user)
+/obj/machinery/crema_switch/attack_hand(mob/living/user)
+	. = ..()
+	if(.)
+		return
 	if(allowed(user))
 		for (var/obj/structure/morgue/crematorium/C in range(7,src))
 			if (C.id == id)
 				if(!C.cremating)
 					C.cremate(user)
 	else
-		to_chat(user, "\red Access denied.")
+		to_chat(user, "<span class='warning'>Access denied.</span>")
 
 
 
 /*
- * Sarcophagus
- */
+* Sarcophagus
+*/
 
 /obj/structure/morgue/sarcophagus
-    name = "sarcophagus"
-    desc = "Used to store predators."
-    icon_state = "sarcophagus1"
-    morgue_type = "sarcophagus"
-    tray_path = /obj/structure/morgue_tray/sarcophagus
+	name = "sarcophagus"
+	desc = "Used to store mummies."
+	icon_state = "sarcophagus1"
+	morgue_type = "sarcophagus"
+	tray_path = /obj/structure/morgue_tray/sarcophagus
 
 
 /*
- * Sarcophagus tray
- */
+* Sarcophagus tray
+*/
 
 /obj/structure/morgue_tray/sarcophagus
-    name = "sarcophagus tray"
-    desc = "Apply corpse before closing."
-    icon_state = "sarcomat"
+	name = "sarcophagus tray"
+	desc = "Apply corpse before closing."
+	icon_state = "sarcomat"

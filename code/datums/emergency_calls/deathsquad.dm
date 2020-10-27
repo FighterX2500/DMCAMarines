@@ -1,124 +1,51 @@
-
-
-
-//Deathsquad Commandos
-/datum/emergency_call/death
-	name = "Weyland Deathsquad"
-	mob_max = 8
-	mob_min = 5
-	arrival_message = "Intercepted Transmission: '!`2*%slau#*jer t*h$em a!l%. le&*ve n(o^ w&*nes%6es.*v$e %#d ou^'"
-	objectives = "Wipe out everything. Ensure there are no traces of the infestation or any witnesses."
+/datum/emergency_call/deathsquad
+	name = "NT Deathsquad"
 	probability = 0
-	shuttle_id = "Distress_PMC"
-	name_of_spawn = "Distress_PMC"
+	shuttle_id = "distress_pmc"
 
 
+/datum/emergency_call/deathsquad/print_backstory(mob/living/carbon/human/H)
+	to_chat(H, "<B>You are part of an elite offshore Nanotrasen unit whose background remain classified.</b>")
+	to_chat(H, "<B>Though rumors say that [pick("you work for a death squad group assigned in", "you were modified to not feel any emotions in a research lab of", "you were a soldier who was affected by PTSD after an operation in", "you were an product of a classified genetics research in", "you were an experimental soldier in the depths of", "left for dead and later recovered in", "listed as KIA but remained alive during a botchered operation in", 5;"raised literally from the depths of hell itself. Only until you were recovered in", 5;"raised literally from the Higher Power. But realized you were in")] [pick(10;"Mars", 10;"Earth's moon, Luna", 10;"Earth", 10;"a space station", "a war-ridden outpost", "a jungle", "a defunct TGMC-NT station", "a desert planet", "an icey colony", "a frozen cave system", "a molten planet", "a digsite", "a research outpost")].</B>")
+	to_chat(H, "<B>Nevertheless, you deny all of those rumors and kept your real identity hidden.</b>")
+	to_chat(H, "")
+	to_chat(H, "<B>Today, you and your squadmates are sent by Nanotrasen to the TGMC vessel, [SSmapping.configs[SHIP_MAP].map_name], after a long period of [pick("cryostasis", "rest and relaxation")].</b>")
+	to_chat(H, "<B>You must sweep and terminate who are involved in the TGMC vessel, [SSmapping.configs[SHIP_MAP].map_name]...</b>")
+	to_chat(H, "<B>Follow any orders directly from Nanotrasen Central Command.</b>")
 
-// DEATH SQUAD--------------------------------------------------------------------------------
-/datum/emergency_call/death/create_member(datum/mind/M)
-	var/turf/spawn_loc = get_spawn_point()
+
+/datum/emergency_call/deathsquad/create_member(datum/mind/M)
+	. = ..()
+	if(!.)
+		return
+
 	var/mob/original = M.current
+	var/mob/living/carbon/human/H = .
 
-	if(!istype(spawn_loc)) return //Didn't find a useable spawn point.
+	H.name = pick(SSstrings.get_list_from_file("names/death_squad"))
+	H.real_name = H.name
 
-	var/mob/living/carbon/human/mob = new(spawn_loc)
-	mob.gender = pick(MALE)
-	//var/datum/preferences/A = new()
-	//A.randomize_appearance_for(mob)
-	var/list/first_names_mr = list("Alpha","Beta", "Gamma", "Delta","Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omnicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega")
-	if(mob.gender == MALE)
-		mob.real_name = "[pick(first_names_mr)]"
-	else
-		mob.real_name = "[pick(first_names_mr)]"
-	mob.name = mob.real_name
-	mob.age = rand(17,45)
-	mob.dna.ready_dna(mob)
-	mob.key = M.key
-	if(mob.client) mob.client.change_view(world.view)
-	mob.mind.assigned_role = "MODE"
-	mob.mind.special_role = "DEATH SQUAD"
-	ticker.mode.traitors += mob.mind
-	mob.mind.set_cm_skills(/datum/skills/commando/deathsquad)
-	spawn(0)
-		if(!leader)       //First one spawned is always the leader.
-			leader = mob
-			spawn_officer(mob)
-			to_chat(mob, "<font size='3'>\red You are the Death Squad Leader!</font>")
-			to_chat(mob, "<B> You must clear out any traces of the infestation and its survivors..</b>")
-			to_chat(mob, "<B> Follow any orders directly from Weyland-Yutani!</b>")
-		else
-			spawn_standard(mob)
-			to_chat(mob, "<font size='3'>\red You are a Death Squad Commando!!</font>")
-			to_chat(mob, "<B> You must clear out any traces of the infestation and its survivors..</b>")
-			to_chat(mob, "<B> Follow any orders directly from Weyland-Yutani!</b>")
-
-	spawn(10)
-		to_chat(M, "<B>Objectives:</b> [objectives]")
+	M.transfer_to(H, TRUE)
+	H.fully_replace_character_name(M.name, H.real_name)
 
 	if(original)
-		cdel(original)
-	return
+		qdel(original)
 
+	print_backstory(H)
 
-/datum/emergency_call/death/proc/spawn_standard(var/mob/M)
-	if(!M || !istype(M)) return
-	M.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/commando(M), WEAR_EAR)
-	M.equip_to_slot_or_del(new /obj/item/clothing/glasses/m42_goggles	(M), WEAR_EYES)
-	M.equip_to_slot_or_del(new /obj/item/clothing/under/marine/veteran/PMC/commando(M), WEAR_BODY)
-	M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/veteran/PMC/commando(M), WEAR_JACKET)
-	M.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine/veteran/PMC/commando(M), WEAR_HANDS)
-	M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/veteran/PMC/commando(M), WEAR_HEAD)
-	M.equip_to_slot_or_del(new /obj/item/storage/backpack/commando(M), WEAR_BACK)
-	M.equip_to_slot_or_del(new /obj/item/clothing/shoes/veteran/PMC/commando(M), WEAR_FEET)
-	M.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/PMC(M), WEAR_FACE)
-	M.equip_to_slot_or_del(new /obj/item/tank/emergency_oxygen/engi(M.back), WEAR_IN_BACK)
-	M.equip_to_slot_or_del(new /obj/item/explosive/grenade/incendiary(M), WEAR_L_STORE)
-	M.equip_to_slot_or_del(new /obj/item/explosive/plastique(M), WEAR_R_STORE)
-	M.equip_to_slot_or_del(new /obj/item/weapon/gun/revolver/mateba(M), WEAR_WAIST)
-	M.equip_to_slot_or_del(new /obj/item/ammo_magazine/revolver/mateba(M.back), WEAR_IN_BACK)
-	M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/ap(M.back), WEAR_IN_BACK)
-	M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/ap(M.back), WEAR_IN_BACK)
-	M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/ap(M.back), WEAR_IN_BACK)
-	M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/ap(M.back), WEAR_IN_BACK)
-	M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/ap(M.back), WEAR_IN_BACK)
-	M.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/m41a/elite(M), WEAR_J_STORE)
+	if(!leader)
+		leader = H
+		var/datum/job/J = SSjob.GetJobType(/datum/job/deathsquad/leader)
+		H.apply_assigned_role_to_spawn(J)
+		to_chat(H, "<p style='font-size:1.5em'><span class='notice'>You are the leader of the elite Asset Protection commando squad.</span></p>")
+		return
 
-	var/obj/item/card/id/W = new(src)
-	W.assignment = "Deathsquad"
-	W.registered_name = M.real_name
-	W.name = "[M.real_name]'s ID Card ([W.assignment])"
-	W.icon_state = "centcom"
-	W.access = get_antagonist_pmc_access()
-	M.equip_to_slot_or_del(W, WEAR_ID)
+	if(prob(50))
+		var/datum/job/J = SSjob.GetJobType(/datum/job/deathsquad/standard/energy)
+		H.apply_assigned_role_to_spawn(J)
+		to_chat(H, "<p style='font-size:1.5em'><span class='notice'>You are a member of the elite Asset Protection commando squad.</span></p>")
+		return
 
-/datum/emergency_call/death/proc/spawn_officer(var/mob/M)
-	if(!M || !istype(M)) return
-
-	M.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/commando(M), WEAR_EAR)
-	M.equip_to_slot_or_del(new /obj/item/clothing/glasses/m42_goggles	(M), WEAR_EYES)
-	M.equip_to_slot_or_del(new /obj/item/clothing/under/marine/veteran/PMC/commando(M), WEAR_BODY)
-	M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/veteran/PMC/commando(M), WEAR_JACKET)
-	M.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine/veteran/PMC/commando(M), WEAR_HANDS)
-	M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/veteran/PMC/commando(M), WEAR_HEAD)
-	M.equip_to_slot_or_del(new /obj/item/storage/backpack/commando(M), WEAR_BACK)
-	M.equip_to_slot_or_del(new /obj/item/clothing/shoes/veteran/PMC/commando(M), WEAR_FEET)
-	M.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/PMC/leader(M), WEAR_FACE)
-	M.equip_to_slot_or_del(new /obj/item/tank/emergency_oxygen/engi(M.back), WEAR_IN_BACK)
-	M.equip_to_slot_or_del(new /obj/item/explosive/grenade/incendiary(M), WEAR_L_STORE)
-	M.equip_to_slot_or_del(new /obj/item/explosive/plastique(M), WEAR_R_STORE)
-	M.equip_to_slot_or_del(new /obj/item/weapon/gun/revolver/mateba(M), WEAR_WAIST)
-	M.equip_to_slot_or_del(new /obj/item/ammo_magazine/revolver/mateba(M.back), WEAR_IN_BACK)
-	M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/ap(M.back), WEAR_IN_BACK)
-	M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/ap(M.back), WEAR_IN_BACK)
-	M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/ap(M.back), WEAR_IN_BACK)
-	M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/ap(M.back), WEAR_IN_BACK)
-	M.equip_to_slot_or_del(new /obj/item/ammo_magazine/rifle/ap(M.back), WEAR_IN_BACK)
-	M.equip_to_slot_or_del(new /obj/item/weapon/gun/rifle/m41a/elite(M), WEAR_J_STORE)
-
-	var/obj/item/card/id/W = new(src)
-	W.assignment = "Deathsquad Leader"
-	W.registered_name = M.real_name
-	W.name = "[M.real_name]'s ID Card ([W.assignment])"
-	W.icon_state = "centcom"
-	W.access = get_antagonist_pmc_access()
-	M.equip_to_slot_or_del(W, WEAR_ID)
+	var/datum/job/J = SSjob.GetJobType(/datum/job/deathsquad/standard)
+	H.apply_assigned_role_to_spawn(J)
+	to_chat(H, "<p style='font-size:1.5em'><span class='notice'>You are a member of the elite Asset Protection commando squad.</span></p>")

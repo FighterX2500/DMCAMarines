@@ -5,29 +5,29 @@
 	icon = 'icons/obj/items/items.dmi'
 	icon_state = "camo"
 	var/colour = "green"
-	w_class = 1.0
-	var/uses = 10
+	w_class = WEIGHT_CLASS_TINY
+	var/uses = 100
 
 /obj/item/facepaint/green
 	name = "green facepaint"
 	colour = "green"
-	icon_state = "green_cammo"
+	icon_state = "green_camo"
 
 
 /obj/item/facepaint/brown
 	name = "brown facepaint"
 	colour = "brown"
-	icon_state = "brown_cammo"
+	icon_state = "brown_camo"
 
 /obj/item/facepaint/black
 	name = "black facepaint"
 	colour = "black"
-	icon_state = "black_cammo"
+	icon_state = "black_camo"
 
 /obj/item/facepaint/sniper
 	name = "Fullbody paint"
 	colour = "full"
-	icon_state = "full_cammo"
+	icon_state = "full_camo"
 
 
 /obj/item/facepaint/attack(mob/M as mob, mob/user as mob)
@@ -52,17 +52,18 @@
 	to_chat(user, "<span class='warning'>Foiled!</span>")
 
 
-/obj/item/facepaint/proc/paint_face(var/mob/living/carbon/human/H, var/mob/user)
+/obj/item/facepaint/proc/paint_face(mob/living/carbon/human/H, mob/user)
 	if(!H || !user) return //In case they're passed as null.
 	user.visible_message("<span class='notice'>[user] carefully applies [src] on [H]'s face.</span>", \
-						 "<span class='notice'>You apply [src].</span>")
+						"<span class='notice'>You apply [src].</span>")
 	H.lip_style = colour
+	H.alpha = max(0, initial(H.alpha) - 1) // decreases your alpha by 1
 	H.update_body()
 	uses--
 	if(!uses)
-		user.temp_drop_inv_item(src)
+		user.temporarilyRemoveItemFromInventory(src)
 		user.update_inv_l_hand(0)
 		user.update_inv_r_hand()
-		cdel(src)
+		qdel(src)
 
 //you can wipe off lipstick with paper! see code/modules/paperwork/paper.dm, paper/attack()

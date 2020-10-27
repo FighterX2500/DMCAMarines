@@ -4,9 +4,9 @@
 	desc = "A pair of black shoes."
 
 	flags_cold_protection = FEET
-	min_cold_protection_temperature = SHOE_min_cold_protection_temperature
+	min_cold_protection_temperature = SHOE_MIN_COLD_PROTECTION_TEMPERATURE
 	flags_heat_protection = FEET
-	max_heat_protection_temperature = SHOE_max_heat_protection_temperature
+	max_heat_protection_temperature = SHOE_MAX_HEAT_PROTECTION_TEMPERATURE
 
 /obj/item/clothing/shoes/brown
 	name = "brown shoes"
@@ -56,9 +56,9 @@
 /obj/item/clothing/shoes/orange
 	name = "orange shoes"
 	icon_state = "orange"
-	var/obj/item/handcuffs/chained = null
+	var/obj/item/restraints/handcuffs/chained = null
 
-/obj/item/clothing/shoes/orange/proc/attach_cuffs(var/obj/item/handcuffs/cuffs, mob/user as mob)
+/obj/item/clothing/shoes/orange/proc/attach_cuffs(obj/item/restraints/handcuffs/cuffs, mob/user as mob)
 	if (src.chained) return
 
 	user.drop_held_item()
@@ -71,7 +71,6 @@
 	if (!src.chained) return
 
 	user.put_in_hands(src.chained)
-	src.chained.add_fingerprint(user)
 
 	src.slowdown = initial(slowdown)
 	src.icon_state = "orange"
@@ -81,9 +80,8 @@
 	..()
 	remove_cuffs(user)
 
-/obj/item/clothing/shoes/orange/attackby(H as obj, mob/user as mob)
-	..()
-	if (istype(H, /obj/item/handcuffs))
-		attach_cuffs(H, user)
+/obj/item/clothing/shoes/orange/attackby(obj/item/I, mob/user, params)
+	. = ..()
 
-
+	if(istype(I, /obj/item/restraints/handcuffs))
+		attach_cuffs(I, user)

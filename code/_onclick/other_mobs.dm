@@ -1,31 +1,9 @@
-
-/*
-	Carbon
-*/
-
-/mob/living/carbon/click(var/atom/A, var/list/mods)
-	if (mods["shift"] && mods["middle"])
-		point_to(A)
-		return 1
-
-	if (mods["middle"])
-		/*
-		var/obj/item/jumpack/J = locate(/obj/item/jumpack) in src
-		if(J.on && src.back == J)
-			J.dash(A, src)
-			return 1
-		*/
-		swap_hand()
-		return 1
-
-	return ..()
-
-
 /*
 	Animals & All Unspecified
 */
-/mob/living/UnarmedAttack(var/atom/A)
+/mob/living/UnarmedAttack(atom/A)
 	A.attack_animal(src)
+
 
 /atom/proc/attack_animal(mob/user as mob)
 	return
@@ -35,10 +13,47 @@
 /*
 	Monkeys
 */
-/mob/living/carbon/monkey/UnarmedAttack(var/atom/A)
+/mob/living/carbon/monkey/UnarmedAttack(atom/A)
 	A.attack_paw(src)
-/atom/proc/attack_paw(mob/user as mob)
+
+/atom/proc/attack_paw(mob/living/carbon/monkey/user)
 	return
+
+
+/atom/proc/attack_hand(mob/living/user)
+	. = FALSE
+	if(QDELETED(src))
+		stack_trace("attack_hand on a qdeleted atom")
+		return TRUE
+	add_fingerprint(user, "attack_hand")
+	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_HAND, user) & COMPONENT_NO_ATTACK_HAND)
+		return TRUE
+
+/atom/movable/attack_hand(mob/living/user)
+	. = ..()
+	if(.)
+		return
+	if(buckle_flags & CAN_BUCKLE)
+		switch(LAZYLEN(buckled_mobs))
+			if(0)
+				return
+			if(1)
+				if(user_unbuckle_mob(buckled_mobs[1], user))
+					return TRUE
+			else
+				var/unbuckled = input(user, "Who do you wish to unbuckle?", "Unbuckle Who?") as null|mob in sortNames(buckled_mobs)
+				if(!unbuckled)
+					return
+				if(user_unbuckle_mob(unbuckled, user))
+					return TRUE
+
+/obj/structure/bed/attack_hand(mob/living/user)
+	. = ..()
+	if(.)
+		return
+	if(buckled_bodybag)
+		unbuckle_bodybag()
+		return TRUE
 
 /*
 	Monkey RestrainedClickOn() was apparently the
@@ -47,8 +62,9 @@
 	moving it here instead of various hand_p's has simplified
 	things considerably
 */
-/mob/living/carbon/monkey/RestrainedClickOn(var/atom/A)
-	if(a_intent != "harm" || !ismob(A)) return
+/mob/living/carbon/monkey/RestrainedClickOn(atom/A)
+	if(a_intent != INTENT_HARM || !ismob(A))
+		return
 	if(istype(wear_mask, /obj/item/clothing/mask/muzzle))
 		return
 	var/mob/living/carbon/ML = A
@@ -56,75 +72,14 @@
 	var/armor = ML.run_armor_check(dam_zone, "melee")
 	if(prob(75))
 		ML.apply_damage(rand(1,3), BRUTE, dam_zone, armor)
-		for(var/mob/O in viewers(ML, null))
-			O.show_message("\red <B>[name] has bit [ML]!</B>", 1)
-		if(armor >= 2) return
-		if(ismonkey(ML))
-			for(var/datum/disease/D in viruses)
-				if(istype(D, /datum/disease/jungle_fever))
-					ML.contract_disease(D,1,0)
+		visible_message("<span class='danger'>[name] has bit [ML]!</span>")
 	else
-		for(var/mob/O in viewers(ML, null))
-			O.show_message("\red <B>[src] has attempted to bite [ML]!</B>", 1)
+		visible_message("<span class='danger'>[src] has attempted to bite [ML]!</span>")
+
 
 /*
 	New Players:
 	Have no reason to click on anything at all.
 */
-/mob/new_player/click()
-	return 1
-
-
-/*
-	Xenobots
-*/
-/mob/living/simple_animal/alien/click(var/atom/A, var/list/mods)
-	if(stat > 0)
-		return 1
-
-	if(get_dist(src,A) > 1)
-		return 1
-
-	if(isXeno(A))
-		return 1
-	if(isSynth(A))
-		return 1
-
-	if(world.time >= last_attack + attack_speed)
-		if(istype(A, /turf/closed))
-			return 1
-		last_attack = world.time
-		A.attack_animal(src)
-		animation_attack_on(A)
-	return 1
-
-/*
-	Hell Hound
-*/
-
-/mob/living/carbon/hellhound/click(atom/A)
-	..()
-
-	if(stat > 0)
-		return 1 //Can't click on shit buster!
-
-	if(attack_timer)
-		return 1
-
-	if(get_dist(src,A) > 1)
-		return 1
-
-	if(istype(A,/mob/living/carbon/human))
-		bite_human(A)
-	else if(istype(A,/mob/living/carbon/Xenomorph))
-		bite_xeno(A)
-	else if(istype(A,/mob/living))
-		bite_animal(A)
-	else
-		A.attack_animal(src)
-
-	attack_timer = 1
-	spawn(12)
-		attack_timer = 0
-
-	return 1
+/mob/new_player/Click()
+	return TRUE
