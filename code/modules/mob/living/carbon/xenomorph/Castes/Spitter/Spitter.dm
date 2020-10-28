@@ -1,39 +1,16 @@
-//Spitter Code - Colonial Marines - Last Edit: Apophis775 - 11JUN16
-
-/mob/living/carbon/Xenomorph/Spitter
-	caste = "Spitter"
+/mob/living/carbon/xenomorph/spitter
+	caste_base_type = /mob/living/carbon/xenomorph/spitter
 	name = "Spitter"
 	desc = "A gross, oozing alien of some kind."
-	icon = 'icons/Xeno/xenomorph_48x48.dmi'
+	icon = 'icons/Xeno/48x48_Xenos.dmi'
 	icon_state = "Spitter Walking"
-	melee_damage_lower = 12
-	melee_damage_upper = 22
-	health = 160
-	maxHealth = 160
+	health = 180
+	maxHealth = 180
 	plasma_stored = 150
-	plasma_gain = 20
-	plasma_max = 600
-	evolution_threshold = 140
-	upgrade_threshold = 140
-	spit_delay = 25
-	spit_types = list(/datum/ammo/xeno/toxin/medium, /datum/ammo/xeno/acid/medium)
-	speed = -0.5
-	caste_desc = "Ptui!"
 	pixel_x = -12
 	old_x = -12
-	evolves_to = list("Boiler")
-	armor_deflection = 15
-	tier = 2
-	t_squish_level = 1
-	upgrade = 0
-	actions = list(
-		/datum/action/xeno_action/xeno_resting,
-		/datum/action/xeno_action/regurgitate,
-		/datum/action/xeno_action/call_xeno,
-		/datum/action/xeno_action/activable/corrosive_acid,
-		/datum/action/xeno_action/shift_spits,
-		/datum/action/xeno_action/activable/xeno_spit,
-		)
+	tier = XENO_TIER_TWO
+	upgrade = XENO_UPGRADE_ZERO
 	inherent_verbs = list(
-		/mob/living/carbon/Xenomorph/proc/vent_crawl,
-		)
+		/mob/living/carbon/xenomorph/proc/vent_crawl,
+	)

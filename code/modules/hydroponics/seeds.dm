@@ -3,56 +3,30 @@
 	name = "packet of seeds"
 	icon = 'icons/obj/items/seeds.dmi'
 	icon_state = "seed"
-	flags_atom = NOFLAGS
-	w_class = 1
+	flags_atom = NONE
+	w_class = WEIGHT_CLASS_TINY
 
 	var/seed_type
 	var/datum/seed/seed
-	var/modified = 0
+	var/modified = FALSE
 
-/obj/item/seeds/New()
-	update_seed()
-	..()
+/obj/item/seeds/Initialize(mapload, update = TRUE)
+	. = ..()
+	if(update)
+		update_seed()
 
 //Grabs the appropriate seed datum from the global list.
 /obj/item/seeds/proc/update_seed()
-	if(!seed && seed_type && !isnull(seed_types) && seed_types[seed_type])
-		seed = seed_types[seed_type]
+	seed = GLOB.seed_types[seed_type]
 	update_appearance()
 
 //Updates strings and icon appropriately based on seed datum.
 /obj/item/seeds/proc/update_appearance()
-	if(!seed) return
 	icon_state = seed.packet_icon
-	src.name = "packet of [seed.seed_name] [seed.seed_noun]"
-	src.desc = "It has a picture of [seed.display_name] on the front."
+	name = "packet of [seed.seed_name] [seed.seed_noun]"
+	desc = "It has a picture of [seed.display_name] on the front."
 
-/obj/item/seeds/examine(mob/user)
-	..()
-	if(seed && !seed.roundstart)
-		to_chat(user, "It's tagged as variety #[seed.uid].")
 
-/obj/item/seeds/cutting
-	name = "cuttings"
-	desc = "Some plant cuttings."
-
-/obj/item/seeds/cutting/update_appearance()
-	..()
-	src.name = "packet of [seed.seed_name] cuttings"
-/*
-/obj/item/seeds/random
-	seed_type = null
-
-/obj/item/seeds/random/New()
-	seed = new()
-	seed.randomize()
-
-	seed.uid = seed_types.len + 1
-	seed.name = "[seed.uid]"
-	seed_types[seed.name] = seed
-
-	update_seed()
-*/
 /obj/item/seeds/poppyseed
 	seed_type = "poppies"
 

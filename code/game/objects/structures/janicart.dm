@@ -3,22 +3,22 @@
 	desc = "The ultimate in janitorial carts! Has space for water, mops, signs, trash bags, and more!"
 	icon = 'icons/obj/janitor.dmi'
 	icon_state = "cart"
-	anchored = 0
-	density = 1
+	anchored = FALSE
+	density = TRUE
 	drag_delay = 1
 	throwpass = TRUE
 	//copypaste sorry
 	var/amount_per_transfer_from_this = 5 //shit I dunno, adding this so syringes stop runtime erroring. --NeoFite
 	var/obj/item/storage/bag/trash/mybag
 	var/obj/item/tool/mop/mymop
-	var/obj/item/reagent_container/spray/myspray
-	var/obj/item/device/lightreplacer/myreplacer
-	var/obj/item/reagent_container/glass/bucket/janibucket/mybucket
+	var/obj/item/reagent_containers/spray/myspray
+	var/obj/item/lightreplacer/myreplacer
+	var/obj/item/reagent_containers/glass/bucket/janibucket/mybucket
 	var/signs = 0	//maximum capacity hardcoded below
 
 
-/obj/structure/janitorialcart/New()
-	..()
+/obj/structure/janitorialcart/Initialize()
+	. = ..()
 	mybucket = new(src)
 	update_icon()
 
@@ -30,11 +30,13 @@
 		to_chat(user, "It has no bucket.")
 
 
-/obj/structure/janitorialcart/attackby(obj/item/I, mob/user)
+/obj/structure/janitorialcart/attackby(obj/item/I, mob/user, params)
+	. = ..()
+
 	if(istype(I, /obj/item/storage/bag/trash) && !mybag)
 		user.drop_held_item()
 		mybag = I
-		I.loc = src
+		I.forceMove(src)
 		update_icon()
 		updateUsrDialog()
 		to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
@@ -43,64 +45,68 @@
 		if(I.reagents.total_volume < I.reagents.maximum_volume && mybucket)	//if it's not completely soaked we assume they want to wet it, otherwise store it
 			if(mybucket.reagents.total_volume < 1)
 				to_chat(user, "[mybucket] is out of water!</span>")
-			else
-				mybucket.reagents.trans_to(I, 5)	//
-				to_chat(user, "<span class='notice'>You wet [I] in [mybucket].</span>")
-				playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
-			return
-		if(!mymop)
+				return
+
+			mybucket.reagents.trans_to(I, 5)	//
+			to_chat(user, "<span class='notice'>You wet [I] in [mybucket].</span>")
+			playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
+
+		else if(!mymop)
 			user.drop_held_item()
 			mymop = I
-			I.loc = src
+			I.forceMove(src)
 			update_icon()
 			updateUsrDialog()
 			to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
 
-	else if(istype(I, /obj/item/reagent_container/spray) && !myspray)
+	else if(istype(I, /obj/item/reagent_containers/spray) && !myspray)
 		user.drop_held_item()
 		myspray = I
-		I.loc = src
+		I.forceMove(src)
 		update_icon()
 		updateUsrDialog()
 		to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
 
-	else if(istype(I, /obj/item/device/lightreplacer) && !myreplacer)
+	else if(istype(I, /obj/item/lightreplacer) && !myreplacer)
 		user.drop_held_item()
 		myreplacer = I
-		I.loc = src
+		I.forceMove(src)
 		update_icon()
 		updateUsrDialog()
 		to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
 
 	else if(istype(I, /obj/item/tool/wet_sign))
-		if(signs < 4)
-			user.drop_held_item()
-			I.loc = src
-			signs++
-			update_icon()
-			updateUsrDialog()
-			to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
-		else
+		if(signs >= 4)
 			to_chat(user, "<span class='notice'>[src] can't hold any more signs.</span>")
+			return
 
-	else if(istype(I, /obj/item/reagent_container/glass/bucket/janibucket))
 		user.drop_held_item()
-		mybucket = I
-		I.loc = src
+		I.forceMove(src)
+		signs++
 		update_icon()
 		updateUsrDialog()
 		to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
-		return TRUE //no afterattack
+
+	else if(istype(I, /obj/item/reagent_containers/glass/bucket/janibucket))
+		user.drop_held_item()
+		mybucket = I
+		I.forceMove(src)
+		update_icon()
+		updateUsrDialog()
+		to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
+		return TRUE
 
 	else if(mybag)
-		mybag.attackby(I, user)
+		mybag.attackby(I, user, params)
 
 
 
 
 
-/obj/structure/janitorialcart/attack_hand(mob/user)
-	user.set_interaction(src)
+/obj/structure/janitorialcart/interact(mob/user)
+	. = ..()
+	if(.)
+		return
 	var/dat
 	if(mybag)
 		dat += "<a href='?src=\ref[src];garbage=1'>[mybag.name]</a><br>"

@@ -3,37 +3,22 @@
 	desc = "A helmet worn by members of the NanoTrasen Emergency Response Team. Armoured and space ready."
 	icon_state = "rig0-ert_commander"
 	item_state = "helm-command"
-	armor = list(melee = 50, bullet = 50, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 60)
+	soft_armor = list("melee" = 50, "bullet" = 50, "laser" = 30, "energy" = 15, "bomb" = 30, "bio" = 100, "rad" = 60, "fire" = 15, "acid" = 15)
 	siemens_coefficient = 0.6
-	var/obj/machinery/camera/camera
 
-/obj/item/clothing/head/helmet/space/rig/ert/attack_self(mob/user)
-	if(camera)
-		..(user)
-	else
-		camera = new /obj/machinery/camera(src)
-		camera.network = list("ERT")
-		cameranet.removeCamera(camera)
-		camera.c_tag = user.name
-		to_chat(user, "\blue User scanned as [camera.c_tag]. Camera activated.")
-
-/obj/item/clothing/head/helmet/space/rig/ert/examine(mob/user)
-	..()
-	if(get_dist(user,src) <= 1)
-		to_chat(user, "This helmet has a built-in camera. It's [camera ? "" : "in"]active.")
 
 /obj/item/clothing/suit/space/rig/ert
 	name = "emergency response team suit"
 	desc = "A suit worn by members of the NanoTrasen Emergency Response Team. Armoured, space ready, and fire resistant."
 	icon_state = "ert_commander"
 	item_state = "suit-command"
-	w_class = 3
-	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/baton,/obj/item/weapon/energy/sword,/obj/item/handcuffs,/obj/item/tank/emergency_oxygen)
+	w_class = WEIGHT_CLASS_NORMAL
+	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/baton,/obj/item/weapon/energy/sword,/obj/item/restraints/handcuffs,/obj/item/tank/emergency_oxygen)
 	slowdown = 1
-	armor = list(melee = 60, bullet = 50, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 100)
-	allowed = list(/obj/item/device/flashlight, /obj/item/tank, /obj/item/device/t_scanner, /obj/item/device/rcd, /obj/item/tool/crowbar, \
-	/obj/item/tool/screwdriver, /obj/item/tool/weldingtool, /obj/item/tool/wirecutters, /obj/item/tool/wrench, /obj/item/device/multitool, \
-	/obj/item/device/radio, /obj/item/device/analyzer,/obj/item/weapon/gun)
+	soft_armor = list("melee" = 60, "bullet" = 50, "laser" = 30, "energy" = 15, "bomb" = 30, "bio" = 100, "rad" = 100, "fire" = 15, "acid" = 15)
+	allowed = list(/obj/item/flashlight, /obj/item/tank, /obj/item/t_scanner, /obj/item/rcd, /obj/item/tool/crowbar, \
+	/obj/item/tool/screwdriver, /obj/item/tool/weldingtool, /obj/item/tool/wirecutters, /obj/item/tool/wrench, /obj/item/multitool, \
+	/obj/item/radio, /obj/item/analyzer,/obj/item/weapon/gun)
 	siemens_coefficient = 0.6
 
 //Commander

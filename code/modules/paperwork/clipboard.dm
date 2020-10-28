@@ -4,14 +4,15 @@
 	icon_state = "clipboard"
 	item_state = "clipboard"
 	throwforce = 0
-	w_class = 2.0
+	w_class = WEIGHT_CLASS_SMALL
 	throw_speed = 3
 	throw_range = 10
 	var/obj/item/tool/pen/haspen		//The stored pen.
 	var/obj/item/toppaper	//The topmost piece of paper.
-	flags_equip_slot = SLOT_WAIST
+	flags_equip_slot = ITEM_SLOT_BELT
 
-/obj/item/clipboard/New()
+/obj/item/clipboard/Initialize()
+	. = ..()
 	update_icon()
 
 /obj/item/clipboard/MouseDrop(obj/over_object as obj) //Quick clipboard fix. -Agouri
@@ -20,16 +21,15 @@
 		if(!(istype(over_object, /obj/screen) ))
 			return ..()
 
-		if(!M.is_mob_restrained() && !M.stat)
+		if(!M.restrained() && !M.stat)
 			switch(over_object.name)
 				if("r_hand")
-					M.drop_inv_item_on_ground(src)
+					M.dropItemToGround(src)
 					M.put_in_r_hand(src)
 				if("l_hand")
-					M.drop_inv_item_on_ground(src)
+					M.dropItemToGround(src)
 					M.put_in_l_hand(src)
 
-			add_fingerprint(usr)
 			return
 
 /obj/item/clipboard/update_icon()
@@ -40,26 +40,30 @@
 	if(haspen)
 		overlays += "clipboard_pen"
 	overlays += "clipboard_over"
-	return
 
-/obj/item/clipboard/attackby(obj/item/W as obj, mob/user as mob)
 
-	if(istype(W, /obj/item/paper) || istype(W, /obj/item/photo))
+/obj/item/clipboard/attackby(obj/item/I, mob/user, params)
+	. = ..()
+
+	if(istype(I, /obj/item/paper) || istype(I, /obj/item/photo))
 		user.drop_held_item()
-		W.forceMove(src)
-		if(istype(W, /obj/item/paper))
-			toppaper = W
-		to_chat(user, "<span class='notice'>You clip the [W] onto \the [src].</span>")
+		I.forceMove(src)
+		if(istype(I, /obj/item/paper))
+			toppaper = I
+		to_chat(user, "<span class='notice'>You clip the [I] onto \the [src].</span>")
 		update_icon()
 
-	else if(istype(toppaper) && istype(W, /obj/item/tool/pen))
-		toppaper.attackby(W, usr)
+	else if(istype(toppaper) && istype(I, /obj/item/tool/pen))
+		toppaper.attackby(I, user, params)
 		update_icon()
 
-	return
 
-/obj/item/clipboard/attack_self(mob/user as mob)
-	var/dat = "<title>Clipboard</title>"
+/obj/item/clipboard/interact(mob/user)
+	. = ..()
+	if(.)
+		return
+
+	var/dat
 	if(haspen)
 		dat += "<A href='?src=\ref[src];pen=1'>Remove Pen</A><BR><HR>"
 	else
@@ -77,14 +81,14 @@
 	for(var/obj/item/photo/Ph in src)
 		dat += "<A href='?src=\ref[src];remove=\ref[Ph]'>Remove</A> - <A href='?src=\ref[src];look=\ref[Ph]'>[Ph.name]</A><BR>"
 
-	user << browse((dat), "window=clipboard")
-	onclose(user, "clipboard")
-	add_fingerprint(usr)
-	return
+	var/datum/browser/popup = new(user, "clipboard", "<div align='center'>Clipboard</div>")
+	popup.set_content(dat)
+	popup.open()
+
 
 /obj/item/clipboard/Topic(href, href_list)
-	..()
-	if((usr.stat || usr.is_mob_restrained()))
+	. = ..()
+	if(.)
 		return
 
 	if(src.loc == usr)
@@ -97,7 +101,7 @@
 
 		else if(href_list["addpen"])
 			if(!haspen)
-				var/obj/item/tool/pen/W = usr.get_active_hand()
+				var/obj/item/tool/pen/W = usr.get_active_held_item()
 				if(istype(W, /obj/item/tool/pen))
 					if(usr.drop_held_item())
 						W.forceMove(src)
@@ -109,7 +113,7 @@
 
 			if(P && (P.loc == src) && istype(P, /obj/item/paper) && (P == toppaper) )
 
-				var/obj/item/I = usr.get_active_hand()
+				var/obj/item/I = usr.get_active_held_item()
 
 				if(istype(I, /obj/item/tool/pen))
 
@@ -135,11 +139,11 @@
 
 			if(P && (P.loc == src) && istype(P, /obj/item/paper) )
 
-				if(!(istype(usr, /mob/living/carbon/human) || istype(usr, /mob/dead/observer) || istype(usr, /mob/living/silicon)))
-					usr << browse(("<HTML>[UTF_CHARSET]<HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[stars(P.info)][P.stamps]</BODY></HTML>"), "window=[P.name]")
+				if(!(ishuman(usr) || isobserver(usr) || issilicon(usr)))
+					usr << browse("<HTML><HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[stars(P.info)][P.stamps]</BODY></HTML>", "window=[P.name]")
 					onclose(usr, "[P.name]")
 				else
-					usr << browse(("<HTML>[UTF_CHARSET]<HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[P.info][P.stamps]</BODY></HTML>"), "window=[P.name]")
+					usr << browse("<HTML><HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[P.info][P.stamps]</BODY></HTML>", "window=[P.name]")
 					onclose(usr, "[P.name]")
 
 		else if(href_list["look"])

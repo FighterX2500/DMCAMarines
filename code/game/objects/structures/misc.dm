@@ -3,23 +3,42 @@
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "showcase_1"
 	desc = "A stand with the empty body of a cyborg bolted to it."
-	density = 1
-	anchored = 1
+	density = TRUE
+	anchored = TRUE
+
+/obj/structure/showcase/two
+	icon_state = "showcase_2"
+
+/obj/structure/showcase/three
+	icon_state = "showcase_3"
+
+/obj/structure/showcase/four
+	icon_state = "showcase_4"
+	desc = "A stand with the empty shell of a mech bolted to it."
+
+/obj/structure/showcase/five
+	icon_state = "showcase_5"
+	desc = "A stand with the empty shell of a mech bolted to it."
 
 /obj/structure/showcase/ex_act(severity)
 	switch(severity)
-		if(1)
-			cdel(src)
-		if(2)
+		if(EXPLODE_DEVASTATE)
+			qdel(src)
+		if(EXPLODE_HEAVY)
 			if(prob(50))
-				cdel(src)
+				qdel(src)
+
+/obj/structure/showcase/yaut
+	name = "alien sarcophagus"
+	desc = "An ancient, dusty tomb with strange alien writing. It's best not to touch it."
+	icon_state = "yaut"
 
 /obj/structure/monorail
 	name = "monorail track"
 	icon = 'icons/obj/structures/structures.dmi'
 	icon_state = "monorail"
-	density = 0
-	anchored = 1
+	density = FALSE
+	anchored = TRUE
 	layer = ATMOS_PIPE_LAYER + 0.01
 
 /obj/structure/mopbucket
@@ -27,38 +46,53 @@
 	desc = "Fill it with water, but don't forget a mop!"
 	icon = 'icons/obj/janitor.dmi'
 	icon_state = "mopbucket"
-	density = 1
-	anchored = 0
-	flags_atom = OPENCONTAINER
+	density = TRUE
+	anchored = FALSE
+	resistance_flags = XENO_DAMAGEABLE
 	var/amount_per_transfer_from_this = 5 //Shit I dunno, adding this so syringes stop runtime erroring. --NeoFite
 
-/obj/structure/mopbucket/New()
-	..()
-	create_reagents(100)
+/obj/structure/mopbucket/Initialize()
+	. = ..()
+	create_reagents(100, OPENCONTAINER)
 
 /obj/structure/mopbucket/examine(mob/user)
 	..()
 	to_chat(user, "It contains [reagents.total_volume] unit\s of water!")
 
-/obj/structure/mopbucket/attackby(obj/item/I, mob/user)
+/obj/structure/mopbucket/attackby(obj/item/I, mob/user, params)
+	. = ..()
+
 	if(istype(I, /obj/item/tool/mop))
 		if(reagents.total_volume < 1)
 			to_chat(user, "<span class='warning'>[src] is out of water!</span>")
-		else
-			reagents.trans_to(I, 5)
-			to_chat(user, "<span class='notice'>You wet [I] in [src].</span>")
-			playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
+			return
 
+		reagents.trans_to(I, 5)
+		to_chat(user, "<span class='notice'>You wet [I] in [src].</span>")
+		playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
 
+/obj/structure/shipmast
+	name = "\the Ships Mast"
+	icon = 'icons/obj/structures/structures.dmi'
+	icon_state = "shipmast" //Thank you to Spyroshark and Arachnidnexus
+	desc = "A piece of old earth that was. The plaque reads<br><br><span class='name'>HMS Victory Sailed 1765 to 1922.</span><br><span class='name'>Relaunched 2393.</span><br><span class='name'>On loan from the First Sea Lord.</span><br><br>"
+	layer = ABOVE_MOB_LAYER
+	density = TRUE
+	anchored = TRUE
 
-
-
-
-
-
-
-
-
+/obj/structure/shipmast/attack_hand(mob/living/user)
+	. = ..()
+	if(.)
+		return
+	switch(user.a_intent)
+		if(INTENT_HELP)
+			visible_message("[usr] rubs the [src] for good luck.")
+		if(INTENT_DISARM)
+			visible_message("[usr] pushes the [src]. It's surprisingly solid.")
+		if(INTENT_GRAB)
+			visible_message("[usr] hugs the [src].")
+		if(INTENT_HARM)
+			visible_message("[usr] punches the [src] while letting out a muttered curse.")
 
 //ICE COLONY RESEARCH DECORATION-----------------------//
 //Most of icons made by ~Morrinn
@@ -81,23 +115,24 @@ obj/structure/xenoautopsy/tank
 	icon_state = "tank_empty"
 	desc = "It is empty."
 
+obj/structure/xenoautopsy/tank/escaped
+	name = "broken cryo tank"
+	icon_state = "tank_escaped"
+	desc = "Something broke it..."
+
 obj/structure/xenoautopsy/tank/broken
-	name = "cryo tank"
 	icon_state = "tank_broken"
 	desc = "Something broke it..."
 
 obj/structure/xenoautopsy/tank/alien
-	name = "cryo tank"
 	icon_state = "tank_alien"
 	desc = "There is something big inside..."
 
 obj/structure/xenoautopsy/tank/hugger
-	name = "cryo tank"
 	icon_state = "tank_hugger"
 	desc = "There is something spider-like inside..."
 
 obj/structure/xenoautopsy/tank/larva
-	name = "cryo tank"
 	icon_state = "tank_larva"
 	desc = "There is something worm-like inside..."
 
@@ -125,5 +160,52 @@ obj/item/alienjar
 	icon = 'icons/obj/structures/structures.dmi'
 	desc = "Stairs.  You walk up and down them."
 	icon_state = "rampbottom"
-	density = 0
-	opacity = 0
+	density = FALSE
+	opacity = FALSE
+
+/obj/structure/plasticflaps //HOW DO YOU CALL THOSE THINGS ANYWAY
+	name = "\improper plastic flaps"
+	desc = "Completely impassable - or are they?"
+	icon = 'icons/obj/stationobjs.dmi' //Change this.
+	icon_state = "plasticflaps"
+	density = FALSE
+	anchored = TRUE
+	layer = MOB_LAYER
+	resistance_flags = XENO_DAMAGEABLE
+
+/obj/structure/plasticflaps/CanPass(atom/A, turf/T)
+	if(istype(A) && CHECK_BITFIELD(A.flags_pass, PASSGLASS))
+		return prob(60)
+
+	var/obj/structure/bed/B = A
+	if(istype(A, /obj/structure/bed) && LAZYLEN(B.buckled_mobs))//if it's a bed/chair and someone is buckled, it will not pass
+		return FALSE
+
+	if(istype(A, /obj/vehicle))	//no vehicles
+		return 0
+
+	if(isliving(A)) // You Shall Not Pass!
+		var/mob/living/M = A
+		if(!M.lying_angle && !ismonkey(M) && !istype(M, /mob/living/simple_animal/mouse) && !istype(M, /mob/living/carbon/xenomorph/larva) && !istype(M, /mob/living/carbon/xenomorph/runner) && !istype(M, /mob/living/carbon/xenomorph/panther))  //If your not laying down, or a small creature, no pass.
+			return 0
+	return ..()
+
+/obj/structure/plasticflaps/ex_act(severity)
+	switch(severity)
+		if (1)
+			qdel(src)
+		if (2)
+			if (prob(50))
+				qdel(src)
+		if (3)
+			if (prob(5))
+				qdel(src)
+
+/obj/structure/plasticflaps/mining //A specific type for mining that doesn't allow airflow because of them damn crates
+	name = "\improper Airtight plastic flaps"
+	desc = "Heavy duty, airtight, plastic flaps."
+
+/obj/structure/plasticflaps/sturdy //Anti-unga flaps
+	desc = "Plastic flaps for transporting supplies."
+	obj_flags = null
+	resistance_flags = XENO_DAMAGEABLE

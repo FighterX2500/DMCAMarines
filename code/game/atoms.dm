@@ -1,22 +1,69 @@
 /atom
 	layer = TURF_LAYER
+	plane = GAME_PLANE
+	appearance_flags = TILE_BOUND
 	var/level = 2
-	var/flags_atom = 0
-	var/list/fingerprints
-	var/list/fingerprintshidden
-	var/fingerprintslast = null
-	var/list/blood_DNA
-	var/blood_color
-	var/last_bumped = 0
-	var/flags_pass = 0
-	var/throwpass = 0
-	var/germ_level = GERM_LEVEL_AMBIENT // The higher the germ level, the more germ on the atom.
 
-	///Chemistry.
+	var/flags_atom = NONE
 	var/datum/reagents/reagents = null
 
-	//Detective Work, used for the duplicate data points kept in the scanners
-	var/list/original_atom
+	var/list/fingerprints
+	var/blood_color
+	var/list/blood_DNA
+
+	var/flags_pass = NONE
+	var/throwpass = FALSE
+
+	var/resistance_flags = NONE
+
+	var/germ_level = GERM_LEVEL_AMBIENT // The higher the germ level, the more germ on the atom.
+
+	var/list/priority_overlays	//overlays that should remain on top and not normally removed when using cut_overlay functions, like c4.
+	var/list/remove_overlays // a very temporary list of overlays to remove
+	var/list/add_overlays // a very temporary list of overlays to add
+
+	var/list/display_icons // related to do_after/do_mob overlays, I can't get my hopes high.
+
+	var/list/atom_colours	 //used to store the different colors on an atom
+							//its inherent color, the colored paint applied on it, special color effect etc...
+
+	var/list/image/hud_list //This atom's HUD (med/sec, etc) images. Associative list.
+
+	///How much does this atom block the explosion's shock wave.
+	var/explosion_block = 0
+
+	var/list/managed_overlays //overlays managed by update_overlays() to prevent removing overlays that weren't added by the same proc
+
+	var/datum/component/orbiter/orbiters
+	var/datum/proximity_monitor/proximity_monitor
+
+	var/datum/wires/wires = null
+
+	//light stuff
+
+	///Light systems, both shouldn't be active at the same time.
+	var/light_system = STATIC_LIGHT
+	///Range of the light in tiles. Zero means no light.
+	var/light_range = 0
+	///Intensity of the light. The stronger, the less shadows you will see on the lit area.
+	var/light_power = 1
+	///Hexadecimal RGB string representing the colour of the light. White by default.
+	var/light_color = COLOR_WHITE
+	///Boolean variable for toggleable lights. Has no effect without the proper light_system, light_range and light_power values.
+	var/light_on = TRUE
+	///Our light source. Don't fuck with this directly unless you have a good reason!
+	var/tmp/datum/light_source/light
+	///Any light sources that are "inside" of us, for example, if src here was a mob that's carrying a flashlight, that flashlight's light source would be part of this list.
+	var/tmp/list/light_sources
+
+	// popup chat messages
+
+	/// Last name used to calculate a color for the chatmessage overlays
+	var/chat_color_name
+	/// Last color calculated for the the chatmessage overlays
+	var/chat_color
+	/// A luminescence-shifted value of the last color calculated for chatmessage overlays
+	var/chat_color_darkened
 
 
 /*
@@ -26,16 +73,21 @@ Make sure the return value equals the return value of the parent so that the
 directive is properly returned.
 */
 //===========================================================================
-/atom/Dispose()
+/atom/Destroy()
 	if(reagents)
-		cdel(reagents)
-	if(light)
-		cdel(light)
-		light = null
-	. = ..()
+		qdel(reagents)
 
-/atom/Recycle()
-	return
+	orbiters = null // The component is attached to us normaly and will be deleted elsewhere
+
+	LAZYCLEARLIST(overlays)
+	LAZYCLEARLIST(priority_overlays)
+
+	QDEL_NULL(light)
+
+	if(isturf(loc))
+		loc.fingerprints = fingerprints
+
+	return ..()
 
 //===========================================================================
 
@@ -70,7 +122,8 @@ directive is properly returned.
 /atom/proc/on_reagent_change()
 	return
 
-/atom/proc/Bumped(AM as mob|obj)
+/atom/proc/Bumped(atom/movable/AM)
+	SEND_SIGNAL(src, COMSIG_ATOM_BUMPED, AM)
 	return
 
 /atom/proc/CanPass(atom/movable/mover, turf/target)
@@ -80,11 +133,11 @@ directive is properly returned.
 	//Outputs: Boolean if can pass.
 	if(density)
 		if( (flags_atom & ON_BORDER) && !(get_dir(loc, target) & dir) )
-			return 1
+			return TRUE
 		else
-			return 0
+			return FALSE
 	else
-		return 1
+		return TRUE
 
 
 /atom/proc/CheckExit(atom/movable/mover, turf/target)
@@ -94,48 +147,46 @@ directive is properly returned.
 		return 0
 
 
-// Convenience proc to see if a container is open for chemistry handling
-// returns true if open
-// false if closed
+// Convenience proc for reagents handling.
 /atom/proc/is_open_container()
-	return flags_atom & OPENCONTAINER
+	return is_refillable() && is_drainable()
 
-/*//Convenience proc to see whether a container can be accessed in a certain way.
+/atom/proc/is_injectable(allowmobs = TRUE)
+	return reagents && CHECK_BITFIELD(reagents.reagent_flags, INJECTABLE | REFILLABLE)
 
-	proc/can_subract_container()
-		return flags & EXTRACT_CONTAINER
+/atom/proc/is_drawable(allowmobs = TRUE)
+	return reagents && CHECK_BITFIELD(reagents.reagent_flags, DRAWABLE | DRAINABLE)
 
-	proc/can_add_container()
-		return flags & INSERT_CONTAINER
-*/
+/atom/proc/is_refillable()
+	return reagents && CHECK_BITFIELD(reagents.reagent_flags, REFILLABLE)
 
-/atom/proc/allow_drop()
-	return 1
+/atom/proc/is_drainable()
+	return reagents && CHECK_BITFIELD(reagents.reagent_flags, DRAINABLE)
 
 
-/atom/proc/HasProximity(atom/movable/AM as mob|obj)
+/atom/proc/HasProximity(atom/movable/AM)
 	return
 
-/atom/proc/emp_act(var/severity)
+
+/atom/proc/emp_act(severity)
 	return
 
-/atom/proc/in_contents_of(container)//can take class or object instance as argument
-	if(ispath(container))
-		if(istype(src.loc, container))
-			return 1
-	else if(src in container)
-		return 1
-	return
+
+/atom/proc/effect_smoke(obj/effect/particle_effect/smoke/S)
+	if(S.lifetime < 1)
+		return FALSE
+	return TRUE
+
 
 /*
- *	atom/proc/search_contents_for(path,list/filter_path=null)
- * Recursevly searches all atom contens (including contents contents and so on).
- *
- * ARGS: path - search atom contents for atoms of this type
- *	   list/filter_path - if set, contents of atoms not of types in this list are excluded from search.
- *
- * RETURNS: list of found atoms
- */
+*	atom/proc/search_contents_for(path,list/filter_path=null)
+* Recursevly searches all atom contens (including contents contents and so on).
+*
+* ARGS: path - search atom contents for atoms of this type
+*	   list/filter_path - if set, contents of atoms not of types in this list are excluded from search.
+*
+* RETURNS: list of found atoms
+*/
 
 /atom/proc/search_contents_for(path,list/filter_path=null)
 	var/list/found = list()
@@ -153,306 +204,167 @@ directive is properly returned.
 	return found
 
 
-
-
-/*
-Beam code by Gunbuddy
-
-Beam() proc will only allow one beam to come from a source at a time.  Attempting to call it more than
-once at a time per source will cause graphical errors.
-Also, the icon used for the beam will have to be vertical and 32x32.
-The math involved assumes that the icon is vertical to begin with so unless you want to adjust the math,
-its easier to just keep the beam vertical.
-*/
-/atom/proc/Beam(atom/BeamTarget,icon_state="b_beam",icon='icons/effects/beam.dmi',time=50, maxdistance=10)
-	//BeamTarget represents the target for the beam, basically just means the other end.
-	//Time is the duration to draw the beam
-	//Icon is obviously which icon to use for the beam, default is beam.dmi
-	//Icon_state is what icon state is used. Default is b_beam which is a blue beam.
-	//Maxdistance is the longest range the beam will persist before it gives up.
-	var/EndTime=world.time+time
-	while(BeamTarget&&world.time<EndTime&&get_dist(src,BeamTarget)<maxdistance&&z==BeamTarget.z)
-	//If the BeamTarget gets deleted, the time expires, or the BeamTarget gets out
-	//of range or to another z-level, then the beam will stop.  Otherwise it will
-	//continue to draw.
-
-		dir=get_dir(src,BeamTarget)	//Causes the source of the beam to rotate to continuosly face the BeamTarget.
-
-		for(var/obj/effect/overlay/beam/O in orange(10,src))	//This section erases the previously drawn beam because I found it was easier to
-			if(O.BeamSource==src)				//just draw another instance of the beam instead of trying to manipulate all the
-				cdel(O)							//pieces to a new orientation.
-		var/Angle=round(Get_Angle(src,BeamTarget))
-		var/icon/I=new(icon,icon_state)
-		I.Turn(Angle)
-		var/DX=(32*BeamTarget.x+BeamTarget.pixel_x)-(32*x+pixel_x)
-		var/DY=(32*BeamTarget.y+BeamTarget.pixel_y)-(32*y+pixel_y)
-		var/N=0
-		var/length=round(sqrt((DX)**2+(DY)**2))
-		for(N,N<length,N+=32)
-			var/obj/effect/overlay/beam/X=new(loc)
-			X.BeamSource=src
-			if(N+32>length)
-				var/icon/II=new(icon,icon_state)
-				II.DrawBox(null,1,(length-N),32,32)
-				II.Turn(Angle)
-				X.icon=II
-			else X.icon=I
-			var/Pixel_x=round(sin(Angle)+32*sin(Angle)*(N+16)/32)
-			var/Pixel_y=round(cos(Angle)+32*cos(Angle)*(N+16)/32)
-			if(DX==0) Pixel_x=0
-			if(DY==0) Pixel_y=0
-			if(Pixel_x>32)
-				for(var/a=0, a<=Pixel_x,a+=32)
-					X.x++
-					Pixel_x-=32
-			if(Pixel_x<-32)
-				for(var/a=0, a>=Pixel_x,a-=32)
-					X.x--
-					Pixel_x+=32
-			if(Pixel_y>32)
-				for(var/a=0, a<=Pixel_y,a+=32)
-					X.y++
-					Pixel_y-=32
-			if(Pixel_y<-32)
-				for(var/a=0, a>=Pixel_y,a-=32)
-					X.y--
-					Pixel_y+=32
-			X.pixel_x=Pixel_x
-			X.pixel_y=Pixel_y
-		sleep(3)	//Changing this to a lower value will cause the beam to follow more smoothly with movement, but it will also be more laggy.
-					//I've found that 3 ticks provided a nice balance for my use.
-	for(var/obj/effect/overlay/beam/O in orange(10,src)) if(O.BeamSource==src) cdel(O)
-
-
-//All atoms
-/atom/verb/atom_examine()
+//mob verbs are faster than object verbs. See https://secure.byond.com/forum/?post=1326139&page=2#comment8198716 for why this isn't atom/verb/examine()
+/mob/verb/examinate(atom/A as mob|obj|turf in view())
 	set name = "Examine"
 	set category = "IC"
-	set src in view(usr.client) //If it can be seen, it can be examined.
 
-	if(!usr) return
-	examine(usr)
+	if(is_blind(src))
+		to_chat(src, "<span class='notice'>Something is there but you can't see it.</span>")
+		return
+
+	face_atom(A)
+	A.examine(src)
+
 
 /atom/proc/examine(mob/user)
-	to_chat(user, "\icon[src] That's \a [src].")
+	SHOULD_CALL_PARENT(1)
+	if(!istype(src, /obj/item))
+		to_chat(user, "[icon2html(src, user)] That's \a [src].")
+
+	else // No component signaling, dropping it here.
+		var/obj/item/I = src
+		var/size
+		switch(I.w_class)
+			if(1)
+				size = "tiny"
+			if(2)
+				size = "small"
+			if(3)
+				size = "normal-sized"
+			if(4 to 5)
+				size = "bulky"
+			if(6 to INFINITY)
+				size = "huge"
+		to_chat(user, "This is a [blood_color ? blood_color != "#030303" ? "bloody " : "oil-stained " : ""][icon2html(src, user)][src.name]. It is a [size] item.")
+
+
 	if(desc)
 		to_chat(user, desc)
+
+	if(get_dist(user,src) <= 2)
+		if(reagents)
+			if(CHECK_BITFIELD(reagents.reagent_flags, TRANSPARENT))
+				to_chat(user, "It contains these reagents:")
+				if(reagents.reagent_list.len) // TODO: Implement scan_reagent and can_see_reagents() to show each individual reagent
+					var/total_volume = 0
+					for(var/datum/reagent/R in reagents.reagent_list)
+						total_volume += R.volume
+					to_chat(user, "<span class='notice'>[total_volume] units of various reagents.</span>")
+				else
+					to_chat(user, "<span class='notice'>Nothing.")
+			else if(CHECK_BITFIELD(reagents.reagent_flags, AMOUNT_VISIBLE))
+				if(reagents.total_volume)
+					to_chat(user, "<span class='notice'>It has [reagents.total_volume] unit\s left.</span>")
+				else
+					to_chat(user, "<span class='warning'>It's empty.</span>")
+			else if(CHECK_BITFIELD(reagents.reagent_flags, AMOUNT_SKILLCHECK))
+				if(isxeno(user))
+					return
+				if(user.skills.getRating("medical") >= SKILL_MEDICAL_NOVICE)
+					to_chat(user, "It contains these reagents:")
+					if(reagents.reagent_list.len)
+						for(var/datum/reagent/R in reagents.reagent_list)
+							to_chat(user, "[R.volume] units of [R.name]")
+					else
+						to_chat(user, "Nothing.")
+				else
+					to_chat(user, "You don't know what's in it.")
+			else if(reagents.reagent_flags & AMOUNT_ESTIMEE)
+				var/obj/item/reagent_containers/C = src
+				if(!reagents.total_volume)
+					to_chat(user, "<span class='notice'>\The [src] is empty!</span>")
+				else if (reagents.total_volume<= C.volume*0.3)
+					to_chat(user, "<span class='notice'>\The [src] is almost empty!</span>")
+				else if (reagents.total_volume<= C.volume*0.6)
+					to_chat(user, "<span class='notice'>\The [src] is half full!</span>")
+				else if (reagents.total_volume<= C.volume*0.9)
+					to_chat(user, "<span class='notice'>\The [src] is almost full!</span>")
+				else
+					to_chat(user, "<span class='notice'>\The [src] is full!</span>")
+
+	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user)
+
+
+/// Updates the icon of the atom
+/atom/proc/update_icon()
+	var/signalOut = SEND_SIGNAL(src, COMSIG_ATOM_UPDATE_ICON)
+
+	if(!(signalOut & COMSIG_ATOM_NO_UPDATE_ICON_STATE))
+		update_icon_state()
+
+	if(!(signalOut & COMSIG_ATOM_NO_UPDATE_OVERLAYS))
+		var/list/new_overlays = update_overlays()
+		if(managed_overlays)
+			cut_overlay(managed_overlays)
+			managed_overlays = null
+		if(length(new_overlays))
+			managed_overlays = new_overlays
+			add_overlay(new_overlays)
+
+/// Updates the icon state of the atom
+/atom/proc/update_icon_state()
+
+/// Updates the overlays of the atom
+/atom/proc/update_overlays()
+	SHOULD_CALL_PARENT(TRUE)
+	. = list()
+	SEND_SIGNAL(src, COMSIG_ATOM_UPDATE_OVERLAYS, .)
 
 // called by mobs when e.g. having the atom as their machine, pulledby, loc (AKA mob being inside the atom) or buckled var set.
 // see code/modules/mob/mob_movement.dm for more.
 /atom/proc/relaymove()
 	return
 
-/atom/proc/ex_act()
-	return
+/atom/proc/ex_act(severity, epicenter_dist, impact_range)
+	if(!(flags_atom & PREVENT_CONTENTS_EXPLOSION))
+		contents_explosion(severity, epicenter_dist, impact_range)
+	SEND_SIGNAL(src, COMSIG_ATOM_EX_ACT, severity, epicenter_dist, impact_range)
 
 /atom/proc/fire_act()
 	return
 
-/atom/proc/hitby(atom/movable/AM as mob|obj)
-	if (density)
-		AM.throwing = 0
-	return
-
-/atom/proc/add_hiddenprint(mob/living/M as mob)
-	if(isnull(M)) return
-	if(isnull(M.key)) return
-	if (ishuman(M))
-		var/mob/living/carbon/human/H = M
-		if (!istype(H.dna, /datum/dna))
-			return 0
-		if (H.gloves)
-			if(src.fingerprintslast != H.key)
-				src.fingerprintshidden += text("\[[time_stamp()]\] (Wearing gloves). Real name: [], Key: []",H.real_name, H.key)
-				src.fingerprintslast = H.key
-			return 0
-		if (!( src.fingerprints ))
-			if(src.fingerprintslast != H.key)
-				src.fingerprintshidden += text("\[[time_stamp()]\] Real name: [], Key: []",H.real_name, H.key)
-				src.fingerprintslast = H.key
-			return 1
-	else
-		if(src.fingerprintslast != M.key)
-			src.fingerprintshidden += text("\[[time_stamp()]\] Real name: [], Key: []",M.real_name, M.key)
-			src.fingerprintslast = M.key
-	return
-
-/atom/proc/add_fingerprint(mob/living/M as mob)
-	if(isnull(M)) return
-	if(isAI(M)) return
-	if(isnull(M.key)) return
-	if (ishuman(M))
-		//Add the list if it does not exist.
-		if(!fingerprintshidden)
-			fingerprintshidden = list()
-
-		//Fibers~
-		add_fibers(M)
-
-		//He has no prints!
-		if (mFingerprints in M.mutations)
-			if(fingerprintslast != M.key)
-				fingerprintshidden += "(Has no fingerprints) Real name: [M.real_name], Key: [M.key]"
-				fingerprintslast = M.key
-			return 0		//Now, lets get to the dirty work.
-		//First, make sure their DNA makes sense.
-		var/mob/living/carbon/human/H = M
-		if (!istype(H.dna, /datum/dna) || !H.dna.uni_identity || (length(H.dna.uni_identity) != 32))
-			if(!istype(H.dna, /datum/dna))
-				H.dna = new /datum/dna(null)
-				H.dna.real_name = H.real_name
-		H.check_dna()
-
-		//Now, deal with gloves.
-		if (H.gloves && H.gloves != src)
-			if(fingerprintslast != H.key)
-				fingerprintshidden += text("\[[]\](Wearing gloves). Real name: [], Key: []",time_stamp(), H.real_name, H.key)
-				fingerprintslast = H.key
-			H.gloves.add_fingerprint(M)
-
-		//Deal with gloves the pass finger/palm prints.
-		if(H.gloves != src)
-			if(prob(75) && istype(H.gloves, /obj/item/clothing/gloves/latex))
-				return 0
-			else if(H.gloves && !istype(H.gloves, /obj/item/clothing/gloves/latex))
-				return 0
-
-		//More adminstuffz
-		if(fingerprintslast != H.key)
-			fingerprintshidden += text("\[[]\]Real name: [], Key: []",time_stamp(), H.real_name, H.key)
-			fingerprintslast = H.key
-
-		//Make the list if it does not exist.
-		if(!fingerprints)
-			fingerprints = list()
-
-		//Hash this shit.
-		var/full_print = md5(H.dna.uni_identity)
-
-		// Add the fingerprints
-		//
-		if(fingerprints[full_print])
-			switch(stringpercent(fingerprints[full_print]))		//tells us how many stars are in the current prints.
-
-				if(28 to 32)
-					if(prob(1))
-						fingerprints[full_print] = full_print 		// You rolled a one buddy.
-					else
-						fingerprints[full_print] = stars(full_print, rand(0,40)) // 24 to 32
-
-				if(24 to 27)
-					if(prob(3))
-						fingerprints[full_print] = full_print     	//Sucks to be you.
-					else
-						fingerprints[full_print] = stars(full_print, rand(15, 55)) // 20 to 29
-
-				if(20 to 23)
-					if(prob(5))
-						fingerprints[full_print] = full_print		//Had a good run didn't ya.
-					else
-						fingerprints[full_print] = stars(full_print, rand(30, 70)) // 15 to 25
-
-				if(16 to 19)
-					if(prob(5))
-						fingerprints[full_print] = full_print		//Welp.
-					else
-						fingerprints[full_print]  = stars(full_print, rand(40, 100))  // 0 to 21
-
-				if(0 to 15)
-					if(prob(5))
-						fingerprints[full_print] = stars(full_print, rand(0,50)) 	// small chance you can smudge.
-					else
-						fingerprints[full_print] = full_print
-
-		else
-			fingerprints[full_print] = stars(full_print, rand(0, 20))	//Initial touch, not leaving much evidence the first time.
-
-
-		return 1
-	else
-		//Smudge up dem prints some
-		if(fingerprintslast != M.key)
-			fingerprintshidden += text("\[[]\]Real name: [], Key: []",time_stamp(), M.real_name, M.key)
-			fingerprintslast = M.key
-
-	//Cleaning up shit.
-	if(fingerprints && !fingerprints.len)
-		cdel(fingerprints)
-		fingerprints = null
+/atom/proc/hitby(atom/movable/AM)
+	if(density)
+		AM.set_throwing(FALSE)
 	return
 
 
-/atom/proc/transfer_fingerprints_to(var/atom/A)
-
-	if(!istype(A.fingerprints,/list))
-		A.fingerprints = list()
-
-	if(!istype(A.fingerprintshidden,/list))
-		A.fingerprintshidden = list()
-
-	if(!istype(fingerprintshidden, /list))
-		fingerprintshidden = list()
-
-	//skytodo
-	//A.fingerprints |= fingerprints            //detective
-	//A.fingerprintshidden |= fingerprintshidden    //admin
-	if(A.fingerprints && fingerprints)
-		A.fingerprints |= fingerprints.Copy()            //detective
-	if(A.fingerprintshidden && fingerprintshidden)
-		A.fingerprintshidden |= fingerprintshidden.Copy()    //admin	A.fingerprintslast = fingerprintslast
-
-
-
-/atom/proc/add_vomit_floor(mob/living/carbon/M, var/toxvomit = 0)
+/atom/proc/GenerateTag()
 	return
 
-/turf/add_vomit_floor(mob/living/carbon/M, var/toxvomit = 0)
-	var/obj/effect/decal/cleanable/vomit/this = new /obj/effect/decal/cleanable/vomit(src)
 
-	// Make toxins vomit look different
-	if(toxvomit)
-		this.icon_state = "vomittox_[pick(1,4)]"
+/atom/proc/prevent_content_explosion()
+	return FALSE
 
 
-/atom/proc/get_global_map_pos()
-	if(!islist(global_map) || isemptylist(global_map)) return
-	var/cur_x = null
-	var/cur_y = null
-	var/list/y_arr = null
-	for(cur_x=1,cur_x<=global_map.len,cur_x++)
-		y_arr = global_map[cur_x]
-		cur_y = y_arr.Find(src.z)
-		if(cur_y)
-			break
-//	to_chat(world, "X = [cur_x]; Y = [cur_y]")
-	if(cur_x && cur_y)
-		return list("x"=cur_x,"y"=cur_y)
-	else
-		return 0
+/atom/proc/contents_explosion(severity)
+	return //For handling the effects of explosions on contents that would not normally be effected
 
-/atom/proc/checkpass(passflag)
-	return flags_pass&passflag
 
 //Generalized Fire Proc.
 /atom/proc/flamer_fire_act()
 	return
 
 
-//things that object need to do when a movable atom inside it is deleted
-/atom/proc/on_stored_atom_del(atom/movable/AM)
-	return
+//This proc is called on the location of an atom when the atom is Destroy()'d
+/atom/proc/handle_atom_del(atom/A)
+	SEND_SIGNAL(src, COMSIG_ATOM_CONTENTS_DEL, A)
+
 
 // Generic logging helper
-/atom/proc/log_message(message, message_type, color=null, log_globally=TRUE)
+/atom/proc/log_message(message, message_type, color, log_globally = TRUE)
 	if(!log_globally)
 		return
 
-	var/log_text = "[key_name(src)] [message] [loc_name(src)]"
+	var/log_text = "[key_name(src)] [message] [AREACOORD(src)]"
 	switch(message_type)
 		if(LOG_ATTACK)
 			log_attack(log_text)
 		if(LOG_SAY)
 			log_say(log_text)
+		if(LOG_TELECOMMS)
+			log_telecomms(log_text)
 		if(LOG_WHISPER)
 			log_whisper(log_text)
 		if(LOG_HIVEMIND)
@@ -461,28 +373,28 @@ its easier to just keep the beam vertical.
 			log_emote(log_text)
 		if(LOG_DSAY)
 			log_dsay(log_text)
-		if(LOG_PDA)
-			log_pda(log_text)
 		if(LOG_OOC)
 			log_ooc(log_text)
 		if(LOG_ADMIN)
 			log_admin(log_text)
+		if(LOG_LOOC)
+			log_looc(log_text)
 		if(LOG_ADMIN_PRIVATE)
 			log_admin_private(log_text)
 		if(LOG_ASAY)
-			log_adminsay(log_text)
-		if(LOG_OWNERSHIP)
-			log_game(log_text)
+			log_admin_private_asay(log_text)
 		if(LOG_GAME)
 			log_game(log_text)
 		else
 			stack_trace("Invalid individual logging type: [message_type]. Defaulting to [LOG_GAME] (LOG_GAME).")
 			log_game(log_text)
 
+
 // Helper for logging chat messages or other logs wiht arbitrary inputs (e.g. announcements)
-/atom/proc/log_talk(message, message_type, tag=null, log_globally=TRUE)
+/atom/proc/log_talk(message, message_type, tag, log_globally = TRUE)
 	var/prefix = tag ? "([tag]) " : ""
 	log_message("[prefix]\"[message]\"", message_type, log_globally=log_globally)
+
 
 // Helper for logging of messages with only one sender and receiver
 /proc/log_directed_talk(atom/source, atom/target, message, message_type, tag)
@@ -503,7 +415,10 @@ Proc for attack log creation, because really why not
 5 is any additional text, which will be appended to the rest of the log line
 */
 
-/proc/log_combat(atom/user, atom/target, what_done, atom/object=null, addition=null)
+/proc/log_combat(atom/user, atom/target, what_done, atom/object, addition)
+	if ((user && SEND_SIGNAL(user, COMSIG_COMBAT_LOG)) | (target && SEND_SIGNAL(target, COMSIG_COMBAT_LOG)) & DONT_LOG)
+		return
+
 	var/ssource = key_name(user)
 	var/starget = key_name(target)
 
@@ -520,8 +435,313 @@ Proc for attack log creation, because really why not
 	var/postfix = "[sobject][saddition][hp]"
 
 	var/message = "has [what_done] [starget][postfix]"
-	user.log_message(message, LOG_ATTACK, color="red")
+	user.log_message(message, LOG_ATTACK, color = "#f46666")
 
-	if(user != target)
-		var/reverse_message = "has been [what_done] by [ssource][postfix]"
-		target.log_message(reverse_message, LOG_ATTACK, color="orange", log_globally=FALSE)
+	if(target && user != target)
+		var/reverse_message = "has been [what_done] by [ssource][postfix] in [AREACOORD(user)]"
+		target.log_message(reverse_message, LOG_ATTACK, color = "#eabd7e", log_globally = FALSE)
+
+
+/atom/New(loc, ...)
+	if(GLOB.use_preloader && (src.type == GLOB._preloader.target_path))//in case the instanciated atom is creating other atoms in New()
+		GLOB._preloader.load(src)
+
+	if(datum_flags & DF_USE_TAG)
+		GenerateTag()
+
+	var/do_initialize = SSatoms.initialized
+	if(do_initialize != INITIALIZATION_INSSATOMS)
+		args[1] = do_initialize == INITIALIZATION_INNEW_MAPLOAD
+		if(SSatoms.InitAtom(src, args))
+			//we were deleted
+			return
+
+/*
+	Atom Colour Priority System
+	A System that gives finer control over which atom colour to colour the atom with.
+	The "highest priority" one is always displayed as opposed to the default of
+	"whichever was set last is displayed"
+*/
+
+
+/*
+	Adds an instance of colour_type to the atom's atom_colours list
+*/
+/atom/proc/add_atom_colour(coloration, colour_priority)
+	if(!atom_colours || !atom_colours.len)
+		atom_colours = list()
+		atom_colours.len = COLOUR_PRIORITY_AMOUNT //four priority levels currently.
+	if(!coloration)
+		return
+	if(colour_priority > atom_colours.len)
+		return
+	atom_colours[colour_priority] = coloration
+	update_atom_colour()
+
+
+/*
+	Removes an instance of colour_type from the atom's atom_colours list
+*/
+/atom/proc/remove_atom_colour(colour_priority, coloration)
+	if(!atom_colours)
+		atom_colours = list()
+		atom_colours.len = COLOUR_PRIORITY_AMOUNT //four priority levels currently.
+	if(colour_priority > atom_colours.len)
+		return
+	if(coloration && atom_colours[colour_priority] != coloration)
+		return //if we don't have the expected color (for a specific priority) to remove, do nothing
+	atom_colours[colour_priority] = null
+	update_atom_colour()
+
+
+/*
+	Resets the atom's color to null, and then sets it to the highest priority
+	colour available
+*/
+/atom/proc/update_atom_colour()
+	if(!atom_colours)
+		atom_colours = list()
+		atom_colours.len = COLOUR_PRIORITY_AMOUNT //four priority levels currently.
+	color = null
+	for(var/C in atom_colours)
+		if(islist(C))
+			var/list/L = C
+			if(L.len)
+				color = L
+				return
+		else if(C)
+			color = C
+			return
+
+/**
+  * The primary method that objects are setup in SS13 with
+  *
+  * we don't use New as we have better control over when this is called and we can choose
+  * to delay calls or hook other logic in and so forth
+  *
+  * During roundstart map parsing, atoms are queued for intialization in the base atom/New(),
+  * After the map has loaded, then Initalize is called on all atoms one by one. NB: this
+  * is also true for loading map templates as well, so they don't Initalize until all objects
+  * in the map file are parsed and present in the world
+  *
+  * If you're creating an object at any point after SSInit has run then this proc will be
+  * immediately be called from New.
+  *
+  * mapload: This parameter is true if the atom being loaded is either being intialized during
+  * the Atom subsystem intialization, or if the atom is being loaded from the map template.
+  * If the item is being created at runtime any time after the Atom subsystem is intialized then
+  * it's false.
+  *
+  * You must always call the parent of this proc, otherwise failures will occur as the item
+  * will not be seen as initalized (this can lead to all sorts of strange behaviour, like
+  * the item being completely unclickable)
+  *
+  * You must not sleep in this proc, or any subprocs
+  *
+  * Any parameters from new are passed through (excluding loc), naturally if you're loading from a map
+  * there are no other arguments
+  *
+  * Must return an [initialization hint][INITIALIZE_HINT_NORMAL] or a runtime will occur.
+  *
+  * Note: the following functions don't call the base for optimization and must copypasta handling:
+  * * [/turf/Initialize]
+  * * [/turf/open/space/Initialize]
+  */
+/atom/proc/Initialize(mapload, ...)
+	if(flags_atom & INITIALIZED)
+		stack_trace("Warning: [src]([type]) initialized multiple times!")
+	flags_atom |= INITIALIZED
+
+	if(light_system == STATIC_LIGHT && light_power && light_range)
+		update_light()
+	if(loc)
+		SEND_SIGNAL(loc, COMSIG_ATOM_INITIALIZED_ON, src) //required since spawning something doesn't call Move hence it doesn't call Entered.
+		if(isturf(loc) && opacity)
+			var/turf/T = loc
+			T.directional_opacity = ALL_CARDINALS // No need to recalculate it in this case, it's guaranteed to be on afterwards anyways.
+
+	return INITIALIZE_HINT_NORMAL
+
+
+//called if Initialize returns INITIALIZE_HINT_LATELOAD
+/atom/proc/LateInitialize(mapload)
+	return
+
+
+//called when the turf the atom resides on is ChangeTurfed
+/atom/proc/HandleTurfChange(turf/T)
+	for(var/a in src)
+		var/atom/A = a
+		A.HandleTurfChange(T)
+
+
+//Hook for running code when a dir change occurs
+/atom/proc/setDir(newdir)
+	SEND_SIGNAL(src, COMSIG_ATOM_DIR_CHANGE, dir, newdir)
+	dir = newdir
+
+
+/atom/vv_get_dropdown()
+	. = ..()
+	. += "---"
+	var/turf/curturf = get_turf(src)
+	if(curturf)
+		.["Jump to"] = "?_src_=holder;[HrefToken()];observecoordjump=1;X=[curturf.x];Y=[curturf.y];Z=[curturf.z]"
+	.["Modify Transform"] = "?_src_=vars;[HrefToken()];modtransform=[REF(src)]"
+	.["Add reagent"] = "?_src_=vars;[HrefToken()];addreagent=[REF(src)]"
+
+
+/atom/Entered(atom/movable/AM, atom/oldloc)
+	SEND_SIGNAL(src, COMSIG_ATOM_ENTERED, AM, oldloc)
+
+
+/atom/Exit(atom/movable/AM, atom/newloc)
+	. = ..()
+	if(SEND_SIGNAL(src, COMSIG_ATOM_EXIT, AM, newloc) & COMPONENT_ATOM_BLOCK_EXIT)
+		return FALSE
+
+
+/atom/Exited(atom/movable/AM, atom/newloc)
+	SEND_SIGNAL(src, COMSIG_ATOM_EXITED, AM, newloc)
+
+
+// Stacks and storage redefined procs.
+
+/atom/proc/max_stack_merging(obj/item/stack/S)
+	return FALSE //But if they do, limit is not an issue.
+
+/atom/proc/recalculate_storage_space()
+	return //Nothing to see here.
+
+// Tool-specific behavior procs. To be overridden in subtypes.
+/atom/proc/crowbar_act(mob/living/user, obj/item/I)
+	return FALSE
+
+/atom/proc/multitool_act(mob/living/user, obj/item/I)
+	return FALSE
+
+/atom/proc/multitool_check_buffer(user, obj/item/I, silent = FALSE)
+	if(!istype(I, /obj/item/multitool))
+		if(user && !silent)
+			to_chat(user, "<span class='warning'>[I] has no data buffer!</span>")
+		return FALSE
+	return TRUE
+
+
+/atom/proc/screwdriver_act(mob/living/user, obj/item/I)
+	SEND_SIGNAL(src, COMSIG_ATOM_SCREWDRIVER_ACT, user, I)
+
+/atom/proc/wrench_act(mob/living/user, obj/item/I)
+	return FALSE
+
+/atom/proc/wirecutter_act(mob/living/user, obj/item/I)
+	return FALSE
+
+/atom/proc/welder_act(mob/living/user, obj/item/I)
+	return FALSE
+
+/atom/proc/weld_cut_act(mob/living/user, obj/item/I)
+	return FALSE
+
+/atom/proc/analyzer_act(mob/living/user, obj/item/I)
+	return FALSE
+
+/atom/proc/fulton_act(mob/living/user, obj/item/I)
+	if(!isturf(loc))
+		return FALSE //Storage screens, worn containers, anything we want to be able to interact otherwise.
+	to_chat(user, "<span class='warning'>Cannot extract [src].</span>")
+	return TRUE
+
+/atom/proc/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock, idnum, override=FALSE)
+	return
+
+
+//the vision impairment to give to the mob whose perspective is set to that atom (e.g. an unfocused camera giving you an impaired vision when looking through it)
+/atom/proc/get_remote_view_fullscreens(mob/user)
+	return
+
+
+//the sight changes to give to the mob whose perspective is set to that atom (e.g. A mob with nightvision loses its nightvision while looking through a normal camera)
+/atom/proc/update_remote_sight(mob/living/user)
+	return
+
+
+/atom/proc/drop_location()
+	var/atom/L = loc
+	if(!L)
+		return null
+	return L.AllowDrop() ? L : L.drop_location()
+
+
+/atom/proc/AllowDrop()
+	return FALSE
+
+
+/atom/proc/add_fingerprint(mob/M, type, special)
+	if(!islist(fingerprints))
+		fingerprints = list()
+
+	if(!type)
+		CRASH("Attempted to add fingerprint without an action type.")
+
+	if(!istype(M))
+		CRASH("Invalid mob type [M]([M.type]) when attempting to add fingerprint of type [type].")
+
+	if(!M.key)
+		return
+
+	var/current_time = stationTimestamp()
+
+	if(!LAZYACCESS(fingerprints, M.key))
+		LAZYSET(fingerprints, M.key, "First: [M.real_name] | [current_time] | [type] [special ? "| [special]" : ""]")
+	else
+		var/laststamppos = findtext(LAZYACCESS(fingerprints, M.key), " Last: ")
+		if(laststamppos)
+			LAZYSET(fingerprints, M.key, copytext(fingerprints[M.key], 1, laststamppos))
+		fingerprints[M.key] += " Last: [M.real_name] | [current_time] | [type] [special ? " | [special]" : ""]"
+
+	return TRUE
+
+
+/atom/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
+
+	add_fingerprint(usr, "topic")
+
+
+/atom/vv_edit_var(var_name, var_value)
+	switch(var_name)
+		if("light_range")
+			set_light(l_range = var_value)
+			return TRUE
+
+		if("light_power")
+			set_light(l_power = var_value)
+			return TRUE
+
+		if("light_color")
+			set_light(l_color = var_value)
+			return TRUE
+
+	return ..()
+
+
+/atom/can_interact(mob/user)
+	. = ..()
+	if(!.)
+		return FALSE
+
+	if((interaction_flags & INTERACT_REQUIRES_DEXTERITY) && !user.dextrous)
+		return FALSE
+
+	if((interaction_flags & INTERACT_CHECK_INCAPACITATED) && user.incapacitated())
+		return FALSE
+
+	return TRUE
+
+
+// For special click interactions (take first item out of container, quick-climb, etc.)
+/atom/proc/specialclick(mob/living/carbon/user)
+	return

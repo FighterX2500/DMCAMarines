@@ -1,6 +1,6 @@
 /mob/living/carbon/human/gib()
 
-	var/is_a_synth = isSynth(src)
+	var/is_a_synth = issynth(src)
 	for(var/datum/limb/E in limbs)
 		if(istype(E, /datum/limb/chest))
 			continue
@@ -26,9 +26,9 @@
 
 /mob/living/carbon/human/spawn_gibs()
 	if(species)
-		hgibs(loc, viruses, dna, species.flesh_color, species.blood_color)
+		hgibs(loc, species.flesh_color, species.blood_color)
 	else
-		hgibs(loc, viruses, dna)
+		hgibs(loc)
 
 
 
@@ -43,68 +43,43 @@
 	new /obj/effect/overlay/temp/dust_animation(loc, src, "dust-h")
 
 
+/mob/living/carbon/human/death(gibbing, deathmessage, silent, special_death_message)
+	if(stat == DEAD)
+		return ..()
+	if(!silent && species.death_sound)
+		playsound(loc, species.death_sound, 50, TRUE)
+	return ..()
 
 
-
-
-
-
-/mob/living/carbon/human/death(gibbed)
-
-	if(stat == DEAD) return
+/mob/living/carbon/human/on_death()
 	if(pulledby)
 		pulledby.stop_pulling()
-	if(heartpouncecooldown > 1)
-		src << sound(null, repeat = 0, wait = 0, channel = 4343)
-	if(heartbeatingcooldown > 1)
-		src << sound(null, repeat = 0, wait = 0, channel = 4343)
+
 	//Handle species-specific deaths.
-	if(species) species.handle_death(src, gibbed)
+	species.handle_death(src)
 
-	//callHook("death", list(src, gibbed))
+	remove_typing_indicator()
 
-	if(!gibbed && species.death_sound)
-		playsound(loc, species.death_sound, 50, 1)
+	if(SSticker && SSticker.current_state == GAME_STATE_PLAYING) //game has started, to ignore the map placed corpses.
+		GLOB.round_statistics.total_human_deaths++
+		SSblackbox.record_feedback("tally", "round_statistics", 1, "total_human_deaths")
 
-	if(ticker && ticker.current_state == 3) //game has started, to ignore the map placed corpses.
-		round_statistics.total_human_deaths++
+	GLOB.dead_human_list += src
+	GLOB.alive_human_list -= src
+	LAZYREMOVE(GLOB.humans_by_zlevel["[z]"], src)
+	UnregisterSignal(src, COMSIG_MOVABLE_Z_CHANGED)
 
-	return ..(gibbed,species.death_message)
+	return ..()
+
 
 /mob/living/carbon/human/proc/makeSkeleton()
-	if(SKELETON in src.mutations)	return
-
 	if(f_style)
 		f_style = "Shaved"
 	if(h_style)
 		h_style = "Bald"
 	update_hair(0)
 
-	mutations.Add(SKELETON)
 	status_flags |= DISFIGURED
 	update_body(0)
-	update_mutantrace()
 	name = get_visible_name()
-	return
-
-/mob/living/carbon/human/proc/ChangeToHusk()
-	if(HUSK in mutations)	return
-	if(isSynth(src)) return // dont husk synths
-
-	if(f_style)
-		f_style = "Shaved"		//we only change the icon_state of the hair datum, so it doesn't mess up their UI/UE
-	if(h_style)
-		h_style = "Bald"
-	update_hair(0)
-
-	mutations.Add(HUSK)
-	status_flags |= DISFIGURED	//makes them unknown without fucking up other stuff like admintools
-	update_body(0)
-	update_mutantrace()
-	name = get_visible_name()
-	return
-
-/mob/living/carbon/human/proc/Drain()
-	ChangeToHusk()
-	mutations |= HUSK
 	return

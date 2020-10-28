@@ -7,9 +7,26 @@
 	throwforce = 2.0
 	throw_speed = 1
 	throw_range = 4
-	w_class = 2
+	w_class = WEIGHT_CLASS_SMALL
 	attack_verb = list("called", "rang")
 	hitsound = 'sound/weapons/ring.ogg'
+
+
+/obj/item/clock
+	name = "digital clock"
+	desc = "A battery powered clock, able to keep time within about 5 seconds... it was never that accurate."
+	icon = 'icons/obj/items/items.dmi'
+	icon_state = "digital_clock"
+	force = 3.0
+	throwforce = 2.0
+	throw_speed = 1
+	throw_range = 4
+	w_class = WEIGHT_CLASS_SMALL
+
+/obj/item/clock/examine(mob/user, distance, infix, suffix)
+	. = ..()
+	to_chat(user, "The [src] reads: [GLOB.current_date_string] - [stationTimestamp()]")
+
 
 /obj/item/bananapeel
 	name = "banana peel"
@@ -17,12 +34,13 @@
 	icon = 'icons/obj/items/items.dmi'
 	icon_state = "banana_peel"
 	item_state = "banana_peel"
-	w_class = 1
+	w_class = WEIGHT_CLASS_TINY
 	throwforce = 0
 	throw_speed = 4
 	throw_range = 20
 
-/obj/item/bananapeel/Crossed(AM as mob|obj)
+/obj/item/bananapeel/Crossed(AM)
+	. = ..()
 	if (iscarbon(AM))
 		var/mob/living/carbon/C = AM
 		C.slip(name, 4, 2)
@@ -36,24 +54,8 @@
 	flags_atom = CONDUCT
 	force = 5.0
 	throwforce = 7.0
-	w_class = 2.0
-	matter = list("metal" = 50)
+	w_class = WEIGHT_CLASS_SMALL
 	attack_verb = list("bludgeoned", "whacked", "disciplined", "thrashed")
-
-
-
-/*
-/obj/item/game_kit
-	name = "Gaming Kit"
-	icon = 'icons/obj/items/items.dmi'
-	icon_state = "game_kit"
-	var/selected = null
-	var/board_stat = null
-	var/data = ""
-	var/base_url = "http://svn.slurm.us/public/spacestation13/misc/game_kit"
-	item_state = "sheet-metal"
-	w_class = 5.0
-*/
 
 /obj/item/gift
 	name = "gift"
@@ -63,10 +65,7 @@
 	var/size = 3.0
 	var/obj/item/gift = null
 	item_state = "gift"
-	w_class = 4.0
-
-
-
+	w_class = WEIGHT_CLASS_BULKY
 
 /obj/item/staff
 	name = "wizards staff"
@@ -77,8 +76,7 @@
 	throwforce = 5.0
 	throw_speed = 1
 	throw_range = 5
-	w_class = 2.0
-	flags_item = NOSHIELD
+	w_class = WEIGHT_CLASS_SMALL
 	attack_verb = list("bludgeoned", "whacked", "disciplined")
 
 /obj/item/staff/broom
@@ -104,9 +102,15 @@
 	throwforce = 5.0
 	throw_speed = 1
 	throw_range = 5
-	w_class = 2.0
-	flags_item = NOSHIELD
+	w_class = WEIGHT_CLASS_SMALL
 
+/obj/item/skub
+	desc = "It's skub."
+	name = "skub"
+	icon = 'icons/obj/items/items.dmi'
+	icon_state = "skub"
+	w_class = WEIGHT_CLASS_BULKY
+	attack_verb = list("skubbed")
 
 /obj/item/ectoplasm
 	name = "ectoplasm"
@@ -114,10 +118,3 @@
 	gender = PLURAL
 	icon = 'icons/obj/wizard.dmi'
 	icon_state = "ectoplasm"
-
-/obj/item/research//Makes testing much less of a pain -Sieve
-	name = "research"
-	icon = 'icons/obj/stock_parts.dmi'
-	icon_state = "capacitor"
-	desc = "A debug item for research."
-	origin_tech = "materials=8;programming=8;magnets=8;powerstorage=8;bluespace=8;combat=8;biotech=8;syndicate=8;phorontech=8;engineering=8"

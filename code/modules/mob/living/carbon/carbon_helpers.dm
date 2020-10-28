@@ -1,12 +1,20 @@
-
 /mob/living/carbon/can_use_hands()
 	if(handcuffed)
-		return 0
+		return FALSE
 	if(buckled && ! istype(buckled, /obj/structure/bed/chair)) // buckling does not restrict hands
-		return 0
-	return 1
+		return FALSE
+	return TRUE
 
-/mob/living/carbon/is_mob_restrained()
-	if (handcuffed)
-		return 1
-	return
+
+/mob/living/carbon/restrained(ignore_checks)
+	. = ..()
+	return (. || handcuffed)
+
+
+/mob/living/carbon/proc/need_breathe()
+	if(reagents.has_reagent(/datum/reagent/toxin/lexorin) || HAS_TRAIT(src, TRAIT_STASIS))
+		return FALSE
+	return TRUE
+
+/mob/living/carbon/get_reagent_tags()
+	return species?.reagent_tag

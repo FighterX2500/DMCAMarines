@@ -3,12 +3,16 @@
 	desc = "A folder."
 	icon = 'icons/obj/items/paper.dmi'
 	icon_state = "folder"
-	w_class = 2
+	w_class = WEIGHT_CLASS_SMALL
 	var/updateicon = 0//If they spawn with premade papers, update icon
 
 /obj/item/folder/blue
 	desc = "A blue folder."
 	icon_state = "folder_blue"
+
+/obj/item/folder/grape
+	desc = "A violet folder."
+	icon_state = "folder_grape"
 
 /obj/item/folder/red
 	desc = "A red folder."
@@ -30,11 +34,12 @@
 	desc = "A black folder. It is decorated with stripes."
 	icon_state = "folder_black_green"
 
-/obj/item/folder/black_random/New()
-	..()
+/obj/item/folder/black_random/Initialize()
+	. = ..()
 	icon_state = "folder_black[pick("_red", "_green", "_blue", "_yellow", "_white")]"
 
-/obj/item/folder/New()
+/obj/item/folder/Initialize()
+	. = ..()
 	if(updateicon)
 		update_icon()
 
@@ -44,18 +49,27 @@
 		overlays += "folder_paper"
 	return
 
-/obj/item/folder/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/paper) || istype(W, /obj/item/photo) || istype(W, /obj/item/paper_bundle))
-		if(user.drop_inv_item_to_loc(W, src))
-			to_chat(user, "<span class='notice'>You put the [W] into \the [src].</span>")
-			update_icon()
-	else if(istype(W, /obj/item/tool/pen))
-		var/n_name = copytext(sanitize(input(usr, "What would you like to label the folder?", "Folder Labelling", null)  as text), 1, MAX_NAME_LEN)
-		if((loc == usr && usr.stat == 0))
-			name = "folder[(n_name ? text("- '[n_name]'") : null)]"
+/obj/item/folder/attackby(obj/item/I, mob/user, params)
+	. = ..()
+	if(istype(I, /obj/item/paper) || istype(I, /obj/item/photo) || istype(I, /obj/item/paper_bundle))
+		if(!user.transferItemToLoc(I, src))
+			return
 
-/obj/item/folder/attack_self(mob/user as mob)
-	var/dat = "<title>[name]</title>"
+		to_chat(user, "<span class='notice'>You put the [I] into \the [src].</span>")
+		update_icon()
+
+	else if(istype(I, /obj/item/tool/pen))
+		var/n_name = stripped_input(user, "What would you like to label the folder?", "Folder Labelling")
+		if(loc != user || user.stat != CONSCIOUS)
+			return
+
+		name = "folder[(n_name ? "- '[n_name]'" : "")]"
+
+/obj/item/folder/interact(mob/user)
+	. = ..()
+	if(.)
+		return
+	var/dat
 
 	for(var/obj/item/paper/P in src)
 		dat += "<A href='?src=\ref[src];remove=\ref[P]'>Remove</A> - <A href='?src=\ref[src];read=\ref[P]'>[P.name]</A><BR>"
@@ -63,14 +77,13 @@
 		dat += "<A href='?src=\ref[src];remove=\ref[Ph]'>Remove</A> - <A href='?src=\ref[src];look=\ref[Ph]'>[Ph.name]</A><BR>"
 	for(var/obj/item/paper_bundle/Pb in src)
 		dat += "<A href='?src=\ref[src];remove=\ref[Pb]'>Remove</A> - <A href='?src=\ref[src];browse=\ref[Pb]'>[Pb.name]</A><BR>"
-	user << browse((dat), "window=folder")
-	onclose(user, "folder")
-	add_fingerprint(usr)
-	return
+	var/datum/browser/popup = new(user, "folder", "<div align='center'>[src]</div>")
+	popup.set_content(dat)
+	popup.open()
 
 /obj/item/folder/Topic(href, href_list)
-	..()
-	if((usr.stat || usr.is_mob_restrained()))
+	. = ..()
+	if(.)
 		return
 
 	if(src.loc == usr)
@@ -84,11 +97,11 @@
 		else if(href_list["read"])
 			var/obj/item/paper/P = locate(href_list["read"])
 			if(P && (P.loc == src) && istype(P))
-				if(!(istype(usr, /mob/living/carbon/human) || istype(usr, /mob/dead/observer) || istype(usr, /mob/living/silicon)))
-					usr << browse(("<HTML>[UTF_CHARSET]<HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[stars(P.info)][P.stamps]</BODY></HTML>"), "window=[P.name]")
+				if(!(ishuman(usr) || isobserver(usr) || issilicon(usr)))
+					usr << browse("<HTML><HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[stars(P.info)][P.stamps]</BODY></HTML>", "window=[P.name]")
 					onclose(usr, "[P.name]")
 				else
-					usr << browse(("<HTML>[UTF_CHARSET]<HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[P.info][P.stamps]</BODY></HTML>"), "window=[P.name]")
+					usr << browse("<HTML><HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[P.info][P.stamps]</BODY></HTML>", "window=[P.name]")
 					onclose(usr, "[P.name]")
 		else if(href_list["look"])
 			var/obj/item/photo/P = locate(href_list["look"])
@@ -101,6 +114,5 @@
 				onclose(usr, "[P.name]")
 
 		//Update everything
-		attack_self(usr)
+		updateUsrDialog()
 		update_icon()
-	return

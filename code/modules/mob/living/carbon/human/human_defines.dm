@@ -1,6 +1,16 @@
 /mob/living/carbon/human
-	//CM XENO CUFF
-	var/xenoCuffed = 0
+	name = "unknown"
+	real_name = "unknown"
+	icon = 'icons/mob/human.dmi'
+	icon_state = "body_m_s"
+	hud_possible = list(HEALTH_HUD, STATUS_HUD_SIMPLE, STATUS_HUD, XENO_EMBRYO_HUD, WANTED_HUD, IMPLOYAL_HUD, IMPCHEM_HUD, IMPTRACK_HUD, SPECIALROLE_HUD, SQUAD_HUD, ORDER_HUD, PAIN_HUD)
+	health_threshold_crit = -50
+	melee_damage = 5
+	m_intent = MOVE_INTENT_WALK
+	buckle_flags = CAN_BE_BUCKLED|BUCKLE_PREVENTS_PULL|CAN_BUCKLE
+
+	hud_type = /datum/hud/human
+
 	//Hair colour and style
 	var/r_hair = 0
 	var/g_hair = 0
@@ -26,17 +36,17 @@
 	var/g_skin = 0
 	var/b_skin = 0
 
-	var/size_multiplier = 1 //multiplier for the mob's icon size
-	var/icon_update = 1 //whether icon updating shall take place
+	//Species specific
+	var/moth_wings = "Plain"
 
-	var/lip_style = null	//no lipstick by default- arguably misleading, as it could be used for general makeup
+	var/lip_style		//no lipstick by default- arguably misleading, as it could be used for general makeup
 
 	var/age = 30		//Player's age (pure fluff)
 	var/b_type = "A+"	//Player's bloodtype
 
 	var/underwear = 1	//Which underwear the player wants
 	var/undershirt = 0	//Which undershirt the player wants.
-	var/backbag = 2		//Which backpack type the player has chosen. Nothing, Satchel or Backpack.
+	var/backpack = 2		//Which backpack type the player has chosen. Nothing, Satchel or Backpack.
 
 	// General information
 	var/home_system = ""
@@ -53,47 +63,30 @@
 	var/obj/item/clothing/glasses/glasses = null
 	var/obj/item/head = null
 	var/obj/item/wear_ear = null
-	var/obj/item/wear_id = null
+	var/obj/item/card/id/wear_id = null
 	var/obj/item/r_store = null
 	var/obj/item/l_store = null
 	var/obj/item/s_store = null
 
-	var/used_skillpoints = 0
-	var/skill_specialization = null
-	var/list/skills = null
-
 	var/icon/stand_icon = null
-
-	var/voice = ""	//Instead of new say code calling GetVoice() over and over and over, we're just going to ask this variable, which gets updated in Life()
 
 	var/speech_problem_flag = 0
 
 	var/special_voice = "" // For changing our voice. Used by a symptom.
 
-	var/failed_last_breath = 0 //This is used to determine if the mob failed a breath. If they did fail a brath, they will attempt to breathe each tick, otherwise just once per 4 ticks.
-
 	var/last_dam = -1	//Used for determining if we need to process all limbs or just some or even none.
-	//var/list/bad_limbs = list()// limbs we check until they are good.
 
-	var/xylophone = 0 //For the spoooooooky xylophone cooldown
+	var/mob/remoteview_target
 
-	var/mob/remoteview_target = null
+	var/flavor_text = ""
+	var/med_record = ""
+	var/sec_record = ""
+	var/gen_record = ""
+	var/exploit_record = ""
 
-	var/list/flavor_texts = list()
-	var/recently_unbuckled = 0
-
-	//Emotes
-	var/recent_audio_emote = 0
 
 	//Life variables
-	var/oxygen_alert = 0
-	var/phoron_alert = 0
-	var/co2_alert = 0
-	var/fire_alert = 0
-	var/pressure_alert = 0
-	var/prev_gender = null // Debug for plural genders
-	var/temperature_alert = 0
-	var/revive_grace_period = 3000 //In deciseconds. Set to 5 minutes
+
 	var/undefibbable = FALSE //whether the human is dead and past the defibbrillation period.
 
 	var/holo_card_color = "" //which color type of holocard is printed on us
@@ -109,12 +102,26 @@
 
 	var/mobility_aura = 0
 	var/protection_aura = 0
-	var/marskman_aura = 0
+	var/marksman_aura = 0
 
 	var/mobility_new = 0
 	var/protection_new = 0
-	var/marskman_new = 0
+	var/marksman_new = 0
+	var/aura_recovery_multiplier = 0
 
-	var/temporary_slowdown = 0 //Stacking slowdown caused from effects, currently used by neurotoxin gas
+	var/datum/squad/assigned_squad //the squad assigned to
 
-	var/datum/squad/assigned_squad //the squad this human is assigned to
+	var/cloaking = FALSE
+
+	var/image/SL_directional = null
+
+	var/damageoverlaytemp = 0
+
+	var/specset //Simple way to track which set has the player taken
+
+	var/static/list/can_ride_typecache = typecacheof(list(/mob/living/carbon/human, /mob/living/simple_animal/parrot))
+
+	///Amount of deciseconds gained from the braindeath timer, usually by CPR.
+	var/revive_grace_time = 0
+
+	COOLDOWN_DECLARE(xeno_push_delay)

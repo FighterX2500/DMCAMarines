@@ -7,34 +7,39 @@
 	var/height = 0							//The 'height' of the ladder. higher numbers are considered physically higher
 	var/obj/structure/ladder/down = null	//The ladder below this one
 	var/obj/structure/ladder/up = null		//The ladder above this one
-	anchored = 1
-	unacidable = 1
+	anchored = TRUE
+	resistance_flags = UNACIDABLE|INDESTRUCTIBLE
 	layer = LADDER_LAYER
 	var/is_watching = 0
 	var/obj/machinery/camera/cam
-	var/busy = 0 //Ladders are wonderful creatures, only one person can use it at a time
 
-/obj/structure/ladder/New()
-	..()
-	spawn(8)
-		cam = new /obj/machinery/camera(src)
-		cam.network = list("LADDER")
-		cam.c_tag = name
+/obj/structure/ladder/Initialize()
+	. = ..()
+	cam = new /obj/machinery/camera(src)
+	cam.network = list("LADDER")
+	cam.c_tag = name
 
-		for(var/obj/structure/ladder/L in structure_list)
-			if(L.id == id)
-				if(L.height == (height - 1))
-					down = L
-					continue
-				if(L.height == (height + 1))
-					up = L
-					continue
+	GLOB.ladder_list += src
 
-			if(up && down)	//If both our connections are filled
-				break
-		update_icon()
+	return INITIALIZE_HINT_LATELOAD
 
-/obj/structure/ladder/Dispose()
+
+/obj/structure/ladder/LateInitialize()
+	. = ..()
+	for(var/obj/structure/ladder/L in GLOB.ladder_list)
+		if(L.id == id)
+			if(L.height == (height - 1))
+				down = L
+				continue
+			if(L.height == (height + 1))
+				up = L
+				continue
+
+		if(up && down)	//If both our connections are filled
+			break
+	update_icon()
+
+/obj/structure/ladder/Destroy()
 	if(down)
 		down.up = null
 		down = null
@@ -42,8 +47,9 @@
 		up.down = null
 		up = null
 	if(cam)
-		cdel(cam)
+		qdel(cam)
 		cam = null
+	GLOB.ladder_list -= src
 	. = ..()
 
 /obj/structure/ladder/update_icon()
@@ -59,16 +65,20 @@
 	else	//wtf make your ladders properly assholes
 		icon_state = "ladder00"
 
-/obj/structure/ladder/attack_alien(mob/living/carbon/Xenomorph/M)
+/obj/structure/ladder/attack_alien(mob/living/carbon/xenomorph/M)
 	return attack_hand(M)
 
-/obj/structure/ladder/attack_larva(mob/living/carbon/Xenomorph/Larva/M)
+/obj/structure/ladder/attack_larva(mob/living/carbon/xenomorph/larva/M)
 	return attack_hand(M)
 
-/obj/structure/ladder/attack_hand(mob/user)
-	if(user.stat || get_dist(user, src) > 1 || user.blinded || user.lying || user.buckled || user.anchored) return
-	if(busy)
-		to_chat(user, "<span class='warning'>Someone else is currently using [src].</span>")
+/obj/structure/ladder/attack_hivemind(mob/living/carbon/xenomorph/hivemind/M)
+	return attack_hand(M)
+
+/obj/structure/ladder/attack_hand(mob/living/user)
+	. = ..()
+	if(.)
+		return
+	if(user.incapacitated() || !Adjacent(user) || user.lying_angle || user.buckled || user.anchored)
 		return
 	var/ladder_dir_name
 	var/obj/structure/ladder/ladder_dest
@@ -90,64 +100,40 @@
 	step(user, get_dir(user, src))
 	user.visible_message("<span class='notice'>[user] starts climbing [ladder_dir_name] [src].</span>",
 	"<span class='notice'>You start climbing [ladder_dir_name] [src].</span>")
-	busy = 1
-	if(do_after(user, 20, FALSE, 5, BUSY_ICON_GENERIC))
-		if(!user.is_mob_incapacitated() && get_dist(user, src) <= 1 && !user.blinded && !user.lying && !user.buckled && !user.anchored)
-			//TODO: Using forceMove is desirable here, but this breaks the pull. If you know how to preserve the pull, this would be nice!
-			if(user.pulling)
-				if(get_dist(src, user.pulling) <= 2)
-					//user.pulling.loc = ladder_dest.loc //Cannot use forceMove method on pulls! Move manually
-					if(isliving(user.pulling))
-						var/mob/living/P = user.pulling
-						if(P.buckled)
-							to_chat(user, "<span class='warning'>You can't climb [ladder_dir_name] [src] with unfolded [P.buckled]!</span>")
-							busy = 0
-							return
-						else
-							P.smokecloak_off()
+	if(!do_after(user, 20, FALSE, src, BUSY_ICON_GENERIC) || user.lying_angle || user.anchored)
+		return
+	user.trainteleport(ladder_dest.loc)
+	visible_message("<span class='notice'>[user] climbs [ladder_dir_name] [src].</span>") //Hack to give a visible message to the people here without duplicating user message
+	user.visible_message("<span class='notice'>[user] climbs [ladder_dir_name] [src].</span>",
+	"<span class='notice'>You climb [ladder_dir_name] [src].</span>")
 
-							P.forceMove(ladder_dest.loc) //Cannot use forceMove method on pulls! Move manually
-							user.forceMove(ladder_dest.loc)
-							user.start_pulling(P)
-					else
-						if(istype(user.pulling, /obj/structure/bed/roller))
-							to_chat(user, "<span class='warning'>You can't climb [ladder_dir_name] [src] with unfolded [user.pulling]!</span>")
-							busy = 0
-							return
-						var/obj/O = user.pulling
-						if(istype(O, /obj/structure/closet/bodybag))
-							var/obj/structure/closet/bodybag/B = O
-							if(B.roller_buckled)
-								to_chat(user, "<span class='warning'>You can't climb [ladder_dir_name] [src] with unfolded [user.pulling]!</span>")
-								busy = 0
-								return
-						O.forceMove(ladder_dest.loc)
-						user.forceMove(ladder_dest.loc)
-						user.start_pulling(O)
-				else
-					to_chat(user, "<span class='warning'>[user.pulling] is too far from ladder!</span>")
-					busy = 0
-					return
-			else
-				user.forceMove(ladder_dest.loc)
-			var/mob/living/M = user
-			M.smokecloak_off()
-			visible_message("<span class='notice'>[user] climbs [ladder_dir_name] [src].</span>") //Hack to give a visible message to the people here without duplicating user message
-			user.visible_message("<span class='notice'>[user] climbs [ladder_dir_name] [src].</span>",
-			"<span class='notice'>You climb [ladder_dir_name] [src].</span>")
-			ladder_dest.add_fingerprint(user)
-	else
-		user.visible_message("<span class='notice'>[user] stops climbing [ladder_dir_name] [src].</span>",
-		"<span class='notice'>You stop climbing [ladder_dir_name] [src].</span>")
-	busy = 0
-	add_fingerprint(user)
-
-/obj/structure/ladder/attack_paw(mob/user as mob)
+/obj/structure/ladder/attack_paw(mob/living/carbon/monkey/user)
 	return attack_hand(user)
+
+
+/obj/structure/ladder/attack_ghost(mob/dead/observer/user)
+	. = ..()
+	if(.)
+		return
+	if(up && down)
+		switch(alert("Go up or down the ladder?", "Ladder", "Up", "Down", "Cancel"))
+			if("Up")
+				user.forceMove(get_turf(up))
+			if("Down")
+				user.forceMove(get_turf(down))
+			if("Cancel")
+				return
+
+	else if(up)
+		user.forceMove(get_turf(up))
+
+	else if(down)
+		user.forceMove(get_turf(down))
+
 
 /obj/structure/ladder/check_eye(mob/user)
 	//Are we capable of looking?
-	if(user.is_mob_incapacitated() || get_dist(user, src) > 1 || user.blinded || user.lying || !user.client)
+	if(user.incapacitated() || get_dist(user, src) > 1 || is_blind(user) || user.lying_angle || !user.client)
 		user.unset_interaction()
 
 	//Are ladder cameras ok?
@@ -163,11 +149,11 @@
 /obj/structure/ladder/on_set_interaction(mob/user)
 	if (is_watching == 1)
 		if (down || down.cam || down.cam.can_use()) //Camera works
-			user.reset_view(down.cam)
+			user.reset_perspective(down.cam)
 			return
 	else if (is_watching == 2)
 		if (up || up.cam || up.cam.can_use())
-			user.reset_view(up.cam)
+			user.reset_perspective(up.cam)
 			return
 
 	user.unset_interaction() //No usable cam, we stop interacting right away
@@ -177,12 +163,12 @@
 /obj/structure/ladder/on_unset_interaction(mob/user)
 	..()
 	is_watching = 0
-	user.reset_view(null)
+	user.reset_perspective(null)
 
 //Peeking up/down
 /obj/structure/ladder/MouseDrop(over_object, src_location, over_location)
 	if((over_object == usr && (in_range(src, usr))))
-		if(isXenoLarva(usr) || isobserver(usr) || usr.is_mob_incapacitated() || usr.blinded || usr.lying)
+		if(isxenolarva(usr) || isobserver(usr) || usr.incapacitated() || is_blind(usr) || usr.lying_angle)
 			to_chat(usr, "You can't do that in your current state.")
 			return
 		if(is_watching)
@@ -218,51 +204,54 @@
 			is_watching = 1
 			usr.set_interaction(src)
 
-	add_fingerprint(usr)
-
-/obj/structure/ladder/attack_robot(mob/user as mob)
-	return attack_hand(user)
-
-/obj/structure/ladder/ex_act(severity)
-	return
 
 //Throwing Shiet
-/obj/structure/ladder/attackby(obj/item/W, mob/user)
-	//Throwing Grenades
-	if(istype(W,/obj/item/explosive/grenade))
-		var/obj/item/explosive/grenade/G = W
+/obj/structure/ladder/attackby(obj/item/I, mob/user, params)
+	. = ..()
+
+	if(istype(I, /obj/item/explosive/grenade))
+		var/obj/item/explosive/grenade/G = I
 		var/ladder_dir_name
 		var/obj/structure/ladder/ladder_dest
+
 		if(up && down)
 			ladder_dir_name = alert("Throw up or down?", "Ladder", "Up", "Down", "Cancel")
 			if(ladder_dir_name == "Cancel")
 				return
 			ladder_dir_name = lowertext(ladder_dir_name)
-			if(ladder_dir_name == "up") ladder_dest = up
-			else ladder_dest = down
+			if(ladder_dir_name == "up")
+				ladder_dest = up
+			else
+				ladder_dest = down
+
 		else if(up)
 			ladder_dir_name = "up"
 			ladder_dest = up
+
 		else if(down)
 			ladder_dir_name = "down"
 			ladder_dest = down
-		else return //just in case
+		else
+			return
 
 		user.visible_message("<span class='warning'>[user] takes position to throw [G] [ladder_dir_name] [src].</span>",
 		"<span class='warning'>You take position to throw [G] [ladder_dir_name] [src].</span>")
-		if(do_after(user, 10, TRUE, 5, BUSY_ICON_HOSTILE))
-			user.visible_message("<span class='warning'>[user] throws [G] [ladder_dir_name] [src]!</span>",
-			"<span class='warning'>You throw [G] [ladder_dir_name] [src]</span>")
-			user.drop_held_item()
-			G.forceMove(ladder_dest.loc)
-			G.dir = pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
-			step_away(G, src, rand(1, 5))
-			if(!G.active)
-				G.activate(user)
 
-	//Throwing Flares and flashlights
-	else if(istype(W,/obj/item/device/flashlight))
-		var/obj/item/device/flashlight/F = W
+		if(!do_after(user, 10, TRUE, src, BUSY_ICON_HOSTILE))
+			return
+
+		user.visible_message("<span class='warning'>[user] throws [G] [ladder_dir_name] [src]!</span>",
+		"<span class='warning'>You throw [G] [ladder_dir_name] [src]</span>")
+		user.drop_held_item()
+		G.forceMove(ladder_dest.loc)
+		G.setDir(pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
+		step_away(G, src, rand(1, 5))
+
+		if(!G.active)
+			G.activate(user)
+
+	else if(istype(I, /obj/item/flashlight))
+		var/obj/item/flashlight/F = I
 		var/ladder_dir_name
 		var/obj/structure/ladder/ladder_dest
 		if(up && down)
@@ -270,24 +259,31 @@
 			if(ladder_dir_name == "Cancel")
 				return
 			ladder_dir_name = lowertext(ladder_dir_name)
-			if(ladder_dir_name == "up") ladder_dest = up
-			else ladder_dest = down
+			if(ladder_dir_name == "up")
+				ladder_dest = up
+			else
+				ladder_dest = down
 		else if(up)
 			ladder_dir_name = "up"
 			ladder_dest = up
 		else if(down)
 			ladder_dir_name = "down"
 			ladder_dest = down
-		else return //just in case
+		else
+			return //just in case
 
 		user.visible_message("<span class='warning'>[user] takes position to throw [F] [ladder_dir_name] [src].</span>",
 		"<span class='warning'>You take position to throw [F] [ladder_dir_name] [src].</span>")
-		if(do_after(user, 10, TRUE, 5, BUSY_ICON_HOSTILE))
-			user.visible_message("<span class='warning'>[user] throws [F] [ladder_dir_name] [src]!</span>",
-			"<span class='warning'>You throw [F] [ladder_dir_name] [src]</span>")
-			user.drop_held_item()
-			F.forceMove(ladder_dest.loc)
-			F.dir = pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
-			step_away(F,src,rand(1, 5))
+
+		if(!do_after(user, 10, TRUE, src, BUSY_ICON_HOSTILE))
+			return
+
+		user.visible_message("<span class='warning'>[user] throws [F] [ladder_dir_name] [src]!</span>",
+		"<span class='warning'>You throw [F] [ladder_dir_name] [src]</span>")
+		user.drop_held_item()
+		F.forceMove(ladder_dest.loc)
+		F.setDir(pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
+		step_away(F, src, rand(1, 5))
+
 	else
 		return attack_hand(user)

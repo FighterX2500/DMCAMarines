@@ -37,24 +37,24 @@
 	icon_state = "nymph"
 	organ_tag = "special" // Turns into a nymph instantly, no transplanting possible.
 
-/obj/item/organ/diona/removed(var/mob/living/target,var/mob/living/user)
+/obj/item/organ/diona/removed(mob/living/target,mob/living/user)
 
 	var/mob/living/carbon/human/H = target
 	if(!istype(target))
-		cdel(src)
+		qdel(src)
 
 	if(!H.internal_organs.len)
 		H.death()
 
 	//This is a terrible hack and I should be ashamed.
-	var/datum/seed/diona = seed_types["diona"]
+	var/datum/seed/diona = GLOB.seed_types["diona"]
 	if(!diona)
-		cdel(src)
+		qdel(src)
 
 //	var/mob/living/carbon/alien/diona/D = new(get_turf(src))
 //	diona.request_player(D)
 
-	cdel(src)
+	qdel(src)
 
 // These are different to the standard diona organs as they have a purpose in other
 // species (absorbing radiation and light respectively)

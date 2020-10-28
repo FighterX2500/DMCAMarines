@@ -2,7 +2,7 @@
 
 /obj/item/trash
 	icon = 'icons/obj/items/trash.dmi'
-	w_class = 2
+	w_class = WEIGHT_CLASS_SMALL
 	desc = "This is rubbish."
 
 /obj/item/trash/raisins
@@ -63,23 +63,23 @@
 	icon_state = "candle4"
 
 /obj/item/trash/liquidfood
-	name = "\"LiquidFood\" ration"
+	name = "\improper \"LiquidFood\" ration"
 	icon_state = "liquidfood"
 
 /obj/item/trash/burger
 	name = "Burger wrapper"
 	icon_state = "burger"
-	desc = "A greasy plastic film that once held a Cheeseburger. Packaged by the Weyland-Yutani Corporation."
+	desc = "A greasy plastic film that once held a Cheeseburger. Packaged by the Nanotrasen Corporation."
 
 /obj/item/trash/buritto
 	name = "Burrito wrapper"
 	icon_state = "burrito"
-	desc = "A foul smelling plastic film that once held a microwave burrito. Packaged by the Weyland-Yutani Corporation."
+	desc = "A foul smelling plastic film that once held a microwave burrito. Packaged by the Nanotrasen Corporation."
 
 /obj/item/trash/hotdog
 	name = "Hotdog wrapper"
 	icon_state = "hotdog"
-	desc = "A musty plastic film that once held a hotdog. Packaged by the Weyland-Yutani Corporation."
+	desc = "A musty plastic film that once held a hotdog. Packaged by the Nanotrasen Corporation."
 
 /obj/item/trash/kepler
 	name = "Kepler wrapper"
@@ -89,13 +89,20 @@
 	name = "EAT bar wrapper"
 	icon_state = "eat"
 
+/obj/item/trash/fortunecookie
+	name = "Fortune cookie fortune"
+	icon_state = "fortune" //Thank you Alterist
+
+/obj/item/trash/fortunecookie/Initialize(mapload, ...)
+	. = ..()
+	desc = "The fortune reads. <br><span class='tip'>[pick(SSstrings.get_list_from_file("tips/marine"))]</span>"
+
 /obj/item/trash/c_tube
 	name = "cardboard tube"
 	desc = "A tube... of cardboard."
 	icon = 'icons/obj/items/items.dmi'
 	icon_state = "c_tube"
 	throwforce = 1
-	w_class = 2
 	throw_speed = 4
 	throw_range = 5
 
@@ -105,11 +112,11 @@
 	desc = "A manky old cigarette butt."
 	icon = 'icons/obj/clothing/masks.dmi'
 	icon_state = "cigbutt"
-	w_class = 1
+	w_class = WEIGHT_CLASS_TINY
 	throwforce = 1
 
-/obj/item/trash/cigbutt/New()
-	..()
+/obj/item/trash/cigbutt/Initialize(mapload, ...)
+	. = ..()
 	pixel_x = rand(-10,10)
 	pixel_y = rand(-10,10)
 	transform = turn(transform,rand(0,360))
@@ -120,8 +127,8 @@
 	icon_state = "cigarbutt"
 
 
-/obj/item/trash/USCMtray
-	name = "USCM Tray"
+/obj/item/trash/tgmc_tray
+	name = "\improper TGMC tray"
 	desc = "Finished with its tour of duty"
 	icon_state = "MREtray"
 
@@ -140,8 +147,8 @@
 	desc = "An empty wrapper from a barcardine bar. You notice the inside has several medical labels. You're not sure if you care or not about that."
 	icon_state = "barcardine_trash"
 
-/obj/item/trash/uscm_mre
-	name = "crumbled USCM MRE"
-	desc = "It has done its part for the USCM. Have you?"
+/obj/item/trash/mre
+	name = "\improper crumbled TGMC MRE"
+	desc = "It has done its part for the TGMC. Have you?"
 	icon = 'icons/obj/items/trash.dmi'
 	icon_state = "mealpackempty"

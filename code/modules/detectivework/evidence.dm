@@ -6,10 +6,10 @@
 	icon = 'icons/obj/items/storage/storage.dmi'
 	icon_state = "evidenceobj"
 	item_state = ""
-	w_class = 2
+	w_class = WEIGHT_CLASS_SMALL
 	var/obj/item/stored_item = null
 
-/obj/item/evidencebag/MouseDrop(var/obj/item/I as obj)
+/obj/item/evidencebag/MouseDrop(obj/item/I as obj)
 	if (!ishuman(usr))
 		return
 
@@ -100,15 +100,8 @@
 /obj/item/storage/box/evidence
 	name = "evidence bag box"
 	desc = "A box claiming to contain evidence bags."
-	New()
-		new /obj/item/evidencebag(src)
-		new /obj/item/evidencebag(src)
-		new /obj/item/evidencebag(src)
-		new /obj/item/evidencebag(src)
-		new /obj/item/evidencebag(src)
-		new /obj/item/evidencebag(src)
-		..()
-		return
+	spawn_type = /obj/item/evidencebag
+	spawn_number = 6
 
 /obj/item/f_card
 	name = "finger print card"
@@ -118,7 +111,7 @@
 	var/amount = 10.0
 	item_state = "paper"
 	throwforce = 1
-	w_class = 1.0
+	w_class = WEIGHT_CLASS_TINY
 	throw_speed = 3
 	throw_range = 5
 

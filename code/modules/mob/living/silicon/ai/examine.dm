@@ -1,27 +1,31 @@
 /mob/living/silicon/ai/examine(mob/user)
-	if( (user.sdisabilities & BLIND || user.blinded || user.stat) && !istype(user,/mob/dead/observer) )
-		to_chat(user, "<span class='notice'>Something is there but you can't see it.</span>")
-		return
+	SHOULD_CALL_PARENT(0)
+	var/msg = "<span class='info'>*---------*<br>"
+	msg += "This is [icon2html(src, user)] <b>[src]</b>!<br>"
 
-	var/msg = "<span class='info'>*---------*\nThis is \icon[src] <EM>[src]</EM>!\n"
-	if (src.stat == DEAD)
-		msg += "<span class='deadsay'>It appears to be powered-down.</span>\n"
+	if(stat == DEAD)
+		msg += "<span class='deadsay'>It appears to be powered-down.</span><br>"
 	else
 		msg += "<span class='warning'>"
-		if (src.getBruteLoss())
-			if (src.getBruteLoss() < 30)
-				msg += "It looks slightly dented.\n"
+		if(getBruteLoss())
+			if(getBruteLoss() < 30)
+				msg += "It looks slightly dented.<br>"
 			else
-				msg += "<B>It looks severely dented!</B>\n"
-		if (src.getFireLoss())
-			if (src.getFireLoss() < 30)
-				msg += "It looks slightly charred.\n"
+				msg += "<B>It looks severely dented!</B><br>"
+		if(getFireLoss())
+			if(getFireLoss() < 30)
+				msg += "It looks slightly charred.<br>"
 			else
-				msg += "<B>Its casing is melted and heat-warped!</B>\n"
+				msg += "<B>Its casing is melted and heat-warped!</B><br>"
 
-		if (src.stat == UNCONSCIOUS)
-			msg += "It is non-responsive and displaying the text: \"RUNTIME: Sensory Overload, stack 26/3\".\n"
+		if(stat == UNCONSCIOUS)
+			msg += "It is non-responsive and displaying the text: \"RUNTIME: Sensory Overload, stack 26/3\".<br>"
+
+		if(!client)
+			msg += "[src]/Core.exe has stopped responding! Searching for a solution to the problem...<br>"
+
 		msg += "</span>"
+
 	msg += "*---------*</span>"
 
 	to_chat(user, msg)

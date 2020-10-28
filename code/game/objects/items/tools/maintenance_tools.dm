@@ -1,58 +1,41 @@
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
-
-/* Tools!
- * Note: Multitools are /obj/item/device
- *
- * Contains:
- * 		Wrench
- * 		Screwdriver
- * 		Wirecutters
- * 		Blowtorch
- * 		Crowbar
- */
-
-/*
- * Wrench
- */
 /obj/item/tool/wrench
 	name = "wrench"
 	desc = "A wrench with many common uses. Can be usually found in your hand."
 	icon = 'icons/obj/items/items.dmi'
 	icon_state = "wrench"
 	flags_atom = CONDUCT
-	flags_equip_slot = SLOT_WAIST
-	force = 5.0
-	throwforce = 7.0
-	w_class = 2.0
-	matter = list("metal" = 150)
-	origin_tech = "materials=1;engineering=1"
+	flags_equip_slot = ITEM_SLOT_BELT
+	force = 5
+	throwforce = 7
+	w_class = WEIGHT_CLASS_SMALL
+	usesound = 'sound/items/ratchet.ogg'
 	attack_verb = list("bashed", "battered", "bludgeoned", "whacked")
+	tool_behaviour = TOOL_WRENCH
 
 
-/*
- * Screwdriver
- */
 /obj/item/tool/screwdriver
 	name = "screwdriver"
 	desc = "You can be totally screwwy with this."
 	icon = 'icons/obj/items/items.dmi'
 	icon_state = "screwdriver"
 	flags_atom = CONDUCT
-	flags_equip_slot = SLOT_WAIST
+	flags_equip_slot = ITEM_SLOT_BELT
 	force = 5.0
-	w_class = 1.0
+	w_class = WEIGHT_CLASS_TINY
 	throwforce = 5.0
 	throw_speed = 3
 	throw_range = 5
-	matter = list("metal" = 75)
 	attack_verb = list("stabbed")
+	tool_behaviour = TOOL_SCREWDRIVER
 
-	suicide_act(mob/user)
-		viewers(user) << pick("\red <b>[user] is stabbing the [src.name] into \his temple! It looks like \he's trying to commit suicide.</b>", \
-							"\red <b>[user] is stabbing the [src.name] into \his heart! It looks like \he's trying to commit suicide.</b>")
-		return(BRUTELOSS)
 
-/obj/item/tool/screwdriver/New()
+/obj/item/tool/screwdriver/suicide_act(mob/user)
+	user.visible_message("<span class='danger'>[user] is stabbing the [name] into [user.p_their()] [pick("temple","heart")]! It looks like [user.p_theyre()] trying to commit suicide.</span>")
+	return(BRUTELOSS)
+
+
+/obj/item/tool/screwdriver/Initialize()
+	. = ..()
 	switch(pick("red","blue","purple","brown","green","cyan","yellow"))
 		if ("red")
 			icon_state = "screwdriver2"
@@ -76,108 +59,120 @@
 			icon_state = "screwdriver7"
 			item_state = "screwdriver_yellow"
 
-	if (prob(75))
-		src.pixel_y = rand(0, 16)
-	return
+	if(prob(75))
+		pixel_y = rand(0, 16)
 
-/*/obj/item/tool/screwdriver/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if(!istype(M))	return ..()
-	if(user.zone_selected != "eyes") // && user.zone_selected != "head")
-		return ..()
-	if((CLUMSY in user.mutations) && prob(50))
-		M = user
-	return eyestab(M,user)*/
 
-/*
- * Wirecutters
- */
 /obj/item/tool/wirecutters
 	name = "wirecutters"
 	desc = "This cuts wires."
 	icon = 'icons/obj/items/items.dmi'
 	icon_state = "cutters"
 	flags_atom = CONDUCT
-	flags_equip_slot = SLOT_WAIST
+	flags_equip_slot = ITEM_SLOT_BELT
 	force = 6.0
 	throw_speed = 2
 	throw_range = 9
-	w_class = 2.0
-	matter = list("metal" = 80)
-	origin_tech = "materials=1;engineering=1"
+	w_class = WEIGHT_CLASS_SMALL
 	attack_verb = list("pinched", "nipped")
 	sharp = IS_SHARP_ITEM_SIMPLE
 	edge = 1
+	tool_behaviour = TOOL_WIRECUTTER
 
-/obj/item/tool/wirecutters/New()
+
+/obj/item/tool/wirecutters/Initialize()
+	. = ..()
 	if(prob(50))
 		icon_state = "cutters-y"
 		item_state = "cutters_yellow"
 
+
 /obj/item/tool/wirecutters/attack(mob/living/carbon/C, mob/user)
-	if((C.handcuffed) && (istype(C.handcuffed, /obj/item/handcuffs/cable)))
+	if((C.handcuffed) && (istype(C.handcuffed, /obj/item/restraints/handcuffs/cable)))
 		user.visible_message("\The [usr] cuts \the [C]'s restraints with \the [src]!",\
 		"You cut \the [C]'s restraints with \the [src]!",\
 		"You hear cable being cut.")
-		C.handcuffed = null
-		C.handcuff_update()
+		C.update_handcuffed(null)
 		return
 	else
 		..()
 
-/*
- * Blowtorch
- */
+
 /obj/item/tool/weldingtool
 	name = "blowtorch"
 	icon = 'icons/obj/items/items.dmi'
 	icon_state = "welder"
 	flags_atom = CONDUCT
-	flags_equip_slot = SLOT_WAIST
+	flags_equip_slot = ITEM_SLOT_BELT
 
 	//Amount of OUCH when it's thrown
-	force = 3.0
-	throwforce = 5.0
+	force = 3
+	throwforce = 5
+	usesound = list('sound/items/welder.ogg', 'sound/items/welder2.ogg')
 	throw_speed = 1
 	throw_range = 5
-	w_class = 2.0
-
-	//Cost to make in the autolathe
-	matter = list("metal" = 70, "glass" = 30)
-
-	//R&D tech level
-	origin_tech = "engineering=1"
+	w_class = WEIGHT_CLASS_SMALL
+	tool_behaviour = TOOL_WELDER
+	materials = list(/datum/material/metal = 70, /datum/material/glass = 30)
 
 	//blowtorch specific stuff
 	var/welding = 0 	//Whether or not the blowtorch is off(0), on(1) or currently welding(2)
 	var/max_fuel = 20 	//The max amount of fuel the welder can hold
 	var/weld_tick = 0	//Used to slowly deplete the fuel when the tool is left on.
-	var/synthrepair = FALSE
-
-/obj/item/tool/weldingtool/New()
-//	var/random_fuel = min(rand(10,20),max_fuel)
-	create_reagents(max_fuel)
-	reagents.add_reagent("fuel", max_fuel)
-	return
+	var/status = TRUE //When welder is secured on unsecured
 
 
-/obj/item/tool/weldingtool/Dispose()
-	if(welding)
-		if(ismob(loc))
-			loc.SetLuminosity(-2)
-		else
-			SetLuminosity(0)
-		processing_objects.Remove(src)
+/obj/item/tool/weldingtool/Initialize()
 	. = ..()
+	create_reagents(max_fuel, null, list(/datum/reagent/fuel = max_fuel))
+
+
+/obj/item/tool/weldingtool/Destroy()
+	if(welding)
+		STOP_PROCESSING(SSobj, src)
+	return ..()
+
 
 /obj/item/tool/weldingtool/examine(mob/user)
 	..()
 	to_chat(user, "It contains [get_fuel()]/[max_fuel] units of fuel!")
 
 
+/obj/item/tool/weldingtool/use(used = 0)
+	if(!isOn() || !check_fuel())
+		return FALSE
+
+	if(get_fuel() < used)
+		return FALSE
+
+	reagents.remove_reagent(/datum/reagent/fuel, used)
+	check_fuel()
+	return TRUE
+
+
+// When welding is about to start, run a normal tool_use_check, then flash a mob if it succeeds.
+/obj/item/tool/weldingtool/tool_start_check(mob/living/user, amount = 0)
+	. = tool_use_check(user, amount)
+	if(. && user)
+		eyecheck(user)
+
+
+// If welding tool ran out of fuel during a construction task, construction fails.
+/obj/item/tool/weldingtool/tool_use_check(mob/living/user, amount)
+	if(!isOn() || !check_fuel())
+		to_chat(user, "<span class='warning'>[src] has to be on to complete this task!</span>")
+		return FALSE
+
+	if(get_fuel() < amount)
+		to_chat(user, "<span class='warning'>You need more welding fuel to complete this task!</span>")
+		return FALSE
+
+	return TRUE
+
 
 /obj/item/tool/weldingtool/process()
-	if(disposed)
-		processing_objects.Remove(src)
+	if(gc_destroyed)
+		STOP_PROCESSING(SSobj, src)
 		return
 	if(welding)
 		if(++weld_tick >= 20)
@@ -186,6 +181,11 @@
 	else //should never be happening, but just in case
 		toggle(TRUE)
 
+/obj/item/tool/weldingtool/attackby(obj/item/I, mob/user, params)
+	. = ..()
+
+	if(istype(I, /obj/item/tool/screwdriver))
+		flamethrower_screwdriver(src, user)
 
 /obj/item/tool/weldingtool/attack(mob/M, mob/user)
 
@@ -194,61 +194,31 @@
 		var/datum/limb/S = H.get_limb(user.zone_selected)
 
 		if (!S) return
-		if(!(S.status & LIMB_ROBOT) || user.a_intent != "help")
+		if(!(S.limb_status & LIMB_ROBOT) || user.a_intent != INTENT_HELP)
 			return ..()
 
-		if(M == user && IS_SYNTHETIC) //Актуально только для синтов. Протезы чинятся проще.
-			if(synthrepair) //Без этой фигни можно было просто закликать себя и починить до 100%
-				to_chat(user, "<span class='warning'>You are already patching yourself!</span>")
-				return
-
-			else if(S.brute_dam && welding)
-				synthrepair = TRUE
-				user.visible_message("<span class='warning'>\The [user] starts patching some dents on his [S.display_name] with \the [src].</span>", \
-									"<span class='warning'>You start patching some dents on your [S.display_name] with \the [src].</span>")
-				if(do_after(user, 50, TRUE, 5, BUSY_ICON_BUILD)) //5 секунд для починки
-					S.heal_damage(10,0,0,1)
-					H.UpdateDamageIcon()
-					user.visible_message("<span class='warning'>\The [user] patches some dents on his [S.display_name] with \the [src].</span>", \
-										"<span class='warning'>You patch some dents on your [S.display_name] with \the [src].</span>")
-					remove_fuel(1,user)
-					synthrepair = FALSE
+		if(S.brute_dam && welding)
+			if(issynth(H) && M == user)
+				if(user.action_busy || !do_after(user, 5 SECONDS, TRUE, src, BUSY_ICON_BUILD))
 					return
-				else //Прервал действие - лох
-					synthrepair = FALSE
-					to_chat(user, "The process has been interrupted.")
-			else
-				to_chat(user, "<span class='warning'>Nothing to fix!</span>")
+			S.heal_limb_damage(15, robo_repair = TRUE, updating_health = TRUE)
+			H.UpdateDamageIcon()
+			user.visible_message("<span class='warning'>\The [user] patches some dents on \the [H]'s [S.display_name] with \the [src].</span>", \
+								"<span class='warning'>You patch some dents on \the [H]'s [S.display_name] with \the [src].</span>")
+			remove_fuel(1,user)
+			playsound(user.loc, 'sound/items/welder2.ogg', 25, 1)
+			return
 		else
-			if(S.brute_dam && welding)
-				S.heal_damage(15,0,0,1)
-				H.UpdateDamageIcon()
-				user.visible_message("<span class='warning'>\The [user] patches some dents on \the [H]'s [S.display_name] with \the [src].</span>", \
-									"<span class='warning'>You patch some dents on \the [H]'s [S.display_name] with \the [src].</span>")
-				remove_fuel(1,user)
-				return
-			else
-				to_chat(user, "<span class='warning'>Nothing to fix!</span>")
+			to_chat(user, "<span class='warning'>Nothing to fix!</span>")
 
 	else
 		return ..()
 
 /obj/item/tool/weldingtool/afterattack(obj/O as obj, mob/user as mob, proximity)
-	if(!proximity) return
-	if (istype(O, /obj/structure/reagent_dispensers/fueltank) && get_dist(src,O) <= 1)
-		if(!welding)
-			O.reagents.trans_to(src, max_fuel)
-			weld_tick = 0
-			user.visible_message("<span class='notice'>[user] refills [src].</span>", \
-			"<span class='notice'>You refill [src].</span>")
-			playsound(src.loc, 'sound/effects/refill.ogg', 25, 1, 3)
-		else
-			message_admins("[key_name_admin(user)] triggered a fueltank explosion with a blowtorch.")
-			log_game("[key_name(user)] triggered a fueltank explosion with a blowtorch.")
-			to_chat(user, "<span class='danger'>You begin welding on the fueltank, and in a last moment of lucidity realize this might not have been the smartest thing you've ever done.</span>")
-			var/obj/structure/reagent_dispensers/fueltank/tank = O
-			tank.explode()
+	if(!proximity)
 		return
+	if(!status && O.is_refillable())
+		reagents.trans_to(O, reagents.total_volume)
 	if (welding)
 		remove_fuel(1)
 
@@ -259,20 +229,23 @@
 
 
 /obj/item/tool/weldingtool/attack_self(mob/user as mob)
+	if(!status)
+		to_chat(user, "<span class='warning'>[src] can't be turned on while unsecured!</span>")
+		return
 	toggle()
 	return
 
 //Returns the amount of fuel in the welder
 /obj/item/tool/weldingtool/proc/get_fuel()
-	return reagents.get_reagent_amount("fuel")
+	return reagents.get_reagent_amount(/datum/reagent/fuel)
 
 
 //Removes fuel from the blowtorch. If a mob is passed, it will perform an eyecheck on the mob. This should probably be renamed to use()
-/obj/item/tool/weldingtool/proc/remove_fuel(var/amount = 1, var/mob/M = null)
+/obj/item/tool/weldingtool/proc/remove_fuel(amount = 1, mob/M = null)
 	if(!welding || !check_fuel())
 		return 0
 	if(get_fuel() >= amount)
-		reagents.remove_reagent("fuel", amount)
+		reagents.remove_reagent(/datum/reagent/fuel, amount)
 		check_fuel()
 		if(M)
 			eyecheck(M)
@@ -295,7 +268,7 @@
 
 
 //Toggles the welder off and on
-/obj/item/tool/weldingtool/proc/toggle(var/message = 0)
+/obj/item/tool/weldingtool/proc/toggle(message = 0)
 	var/mob/M
 	if(ismob(loc))
 		M = loc
@@ -305,16 +278,14 @@
 			welding = 1
 			if(M)
 				to_chat(M, "<span class='notice'>You switch [src] on.</span>")
-				M.SetLuminosity(2)
-			else
-				SetLuminosity(2)
+			set_light(LIGHTER_LUMINOSITY)
 			weld_tick += 8 //turning the tool on does not consume fuel directly, but it advances the process that regularly consumes fuel.
 			force = 15
 			damtype = "fire"
 			icon_state = "welder1"
-			w_class = 4
-			heat_source = 3800
-			processing_objects.Add(src)
+			w_class = WEIGHT_CLASS_BULKY
+			heat = 3800
+			START_PROCESSING(SSobj, src)
 		else
 			if(M)
 				to_chat(M, "<span class='warning'>[src] needs more fuel!</span>")
@@ -326,100 +297,49 @@
 		icon_state = "welder"
 		welding = 0
 		w_class = initial(w_class)
-		heat_source = 0
+		heat = 0
 		if(M)
 			if(!message)
 				to_chat(M, "<span class='notice'>You switch [src] off.</span>")
 			else
 				to_chat(M, "<span class='warning'>[src] shuts off!</span>")
-			M.SetLuminosity(-2)
 			if(M.r_hand == src)
 				M.update_inv_r_hand()
 			if(M.l_hand == src)
 				M.update_inv_l_hand()
-		else
-			SetLuminosity(0)
-		processing_objects.Remove(src)
+		set_light(0)
+		STOP_PROCESSING(SSobj, src)
 
-//Decides whether or not to damage a player's eyes based on what they're wearing as protection
-//Note: This should probably be moved to mob
-/obj/item/tool/weldingtool/proc/eyecheck(mob/user)
-	return
-/*	if(!iscarbon(user))	return 1
-	var/safety = user.get_eye_protection()
-	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
-		var/datum/internal_organ/eyes/E = H.internal_organs_by_name["eyes"]
-		if(!E)
-			return
-		if(E.robotic == ORGAN_ROBOT)
-			return
-		switch(safety)
-			if(1)
-				to_chat(user, "<span class='danger'>Your eyes sting a little.</span>")
-				E.damage += rand(1, 2)
-				if(E.damage > 12)
-					H.eye_blurry += rand(3,6)
-			if(0)
-				to_chat(user, "<span class='warning'>Your eyes burn.</span>")
-				E.damage += rand(2, 4)
-				if(E.damage > 10)
-					E.damage += rand(4,10)
-			if(-1)
-				to_chat(user, "<span class='warning'>Your thermals intensify [src]'s glow. Your eyes itch and burn severely.</span>")
-				H.eye_blurry += rand(12,20)
-				E.damage += rand(12, 16)
-		if(safety<2)
-
-			if(E.damage > 10)
-				to_chat(H, "<span class='warning'>Your eyes are really starting to hurt. This can't be good for you!</span>")
-
-			if (E.damage >= E.min_broken_damage)
-				to_chat(H, "<span class='warning'>You go blind!</span>")
-				H.sdisabilities |= BLIND
-			else if (E.damage >= E.min_bruised_damage)
-				to_chat(H, "<span class='warning'>You go blind!</span>")
-				H.eye_blind = 5
-				H.eye_blurry = 5
-				H.disabilities |= NEARSIGHTED
-				spawn(100)
-					H.disabilities &= ~NEARSIGHTED
-*/
-
-
-
-/obj/item/tool/weldingtool/pickup(mob/user)
-	if(welding && loc != user)
-		SetLuminosity(0)
-		user.SetLuminosity(2)
-
-
-/obj/item/tool/weldingtool/dropped(mob/user)
-	if(welding && loc != user)
-		user.SetLuminosity(-2)
-		SetLuminosity(2)
-	return ..()
-
+/obj/item/tool/weldingtool/proc/flamethrower_screwdriver(obj/item/I, mob/user)
+	if(welding)
+		to_chat(user, "<span class='warning'>Turn it off first!</span>")
+		return
+	status = !status
+	if(status)
+		to_chat(user, "<span class='notice'>You resecure [src] and close the fuel tank.</span>")
+		DISABLE_BITFIELD(reagents.reagent_flags, OPENCONTAINER)
+	else
+		to_chat(user, "<span class='notice'>[src] can now be refuelled and emptied.</span>")
+		ENABLE_BITFIELD(reagents.reagent_flags, OPENCONTAINER)
 
 /obj/item/tool/weldingtool/largetank
 	name = "industrial blowtorch"
 	max_fuel = 40
-	matter = list("metal" = 70, "glass" = 60)
-	origin_tech = "engineering=2"
+	materials = list(/datum/material/metal = 70, /datum/material/glass = 60)
+
 
 /obj/item/tool/weldingtool/hugetank
 	name = "high-capacity industrial blowtorch"
 	max_fuel = 80
-	w_class = 3.0
-	matter = list("metal" = 70, "glass" = 120)
-	origin_tech = "engineering=3"
+	w_class = WEIGHT_CLASS_NORMAL
+	materials = list(/datum/material/metal = 70, /datum/material/glass = 120)
+
 
 /obj/item/tool/weldingtool/experimental
 	name = "experimental blowtorch"
 	max_fuel = 40 //?
-	w_class = 3.0
-	matter = list("metal" = 70, "glass" = 120)
-	origin_tech = "engineering=4;phorontech=3"
+	w_class = WEIGHT_CLASS_NORMAL
+	materials = list(/datum/material/metal = 70, /datum/material/glass = 120)
 	var/last_gen = 0
 
 
@@ -430,9 +350,6 @@
 	if(reagents > max_fuel)
 		reagents = max_fuel
 
-/*
- * Crowbar
- */
 
 /obj/item/tool/crowbar
 	name = "crowbar"
@@ -440,15 +357,15 @@
 	icon = 'icons/obj/items/items.dmi'
 	icon_state = "crowbar"
 	flags_atom = CONDUCT
-	flags_equip_slot = SLOT_WAIST
+	flags_equip_slot = ITEM_SLOT_BELT
 	force = 5.0
 	throwforce = 7.0
 	item_state = "crowbar"
-	w_class = 2.0
-	matter = list("metal" = 50)
-	origin_tech = "engineering=1"
+	w_class = WEIGHT_CLASS_SMALL
 	attack_verb = list("attacked", "bashed", "battered", "bludgeoned", "whacked")
 	pry_capable = IS_PRY_CAPABLE_CROWBAR
+	tool_behaviour = TOOL_CROWBAR
+
 
 /obj/item/tool/crowbar/red
 	icon = 'icons/obj/items/items.dmi'
@@ -457,60 +374,92 @@
 
 
 
-
-
-/*
- Welding backpack
-*/
-
 /obj/item/tool/weldpack
 	name = "Welding kit"
-	desc = "A heavy-duty, portable welding fluid carrier."
-	flags_equip_slot = SLOT_BACK
+	desc = "A heavy-duty, portable fuel carrier. Welder and flamer compatible."
+	flags_equip_slot = ITEM_SLOT_BACK
 	icon = 'icons/obj/items/items.dmi'
 	icon_state = "welderpack"
-	w_class = 4.0
-	var/max_fuel = 600 //Because the marine backpack can carry 260, and still allows you to take items, there should be a reason to still use this one.
+	w_class = WEIGHT_CLASS_BULKY
+	var/max_fuel = 500 //Because the marine backpack can carry 260, and still allows you to take items, there should be a reason to still use this one.
 
-/obj/item/tool/weldpack/New()
+/obj/item/tool/weldpack/Initialize()
+	. = ..()
 	var/datum/reagents/R = new/datum/reagents(max_fuel) //Lotsa refills
 	reagents = R
 	R.my_atom = src
-	R.add_reagent("fuel", max_fuel)
+	R.add_reagent(/datum/reagent/fuel, max_fuel)
 
-/obj/item/tool/weldpack/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/tool/weldingtool))
-		var/obj/item/tool/weldingtool/T = W
-		if(T.welding & prob(50))
-			message_admins("[key_name_admin(user)] triggered a fueltank explosion.")
-			log_game("[key_name(user)] triggered a fueltank explosion.")
-			to_chat(user, "\red That was stupid of you.")
-			explosion(get_turf(src),-1,0,2)
-			if(src)
-				cdel(src)
-			return
-		else
-			if(T.welding)
-				to_chat(user, "\red That was close!")
-			src.reagents.trans_to(W, T.max_fuel)
-			to_chat(user, "\blue Welder refilled!")
-			playsound(src.loc, 'sound/effects/refill.ogg', 25, 1, 3)
-			return
-	to_chat(user, "\blue The tank scoffs at your insolence.  It only provides services to welders.")
-	return
+/obj/item/tool/weldpack/attackby(obj/item/I, mob/user, params)
+	. = ..()
+	if(reagents.total_volume == 0)
+		to_chat(user, "<span class='warning'>Out of fuel!</span>")
+		return
+
+	else if(iswelder(I))
+		var/obj/item/tool/weldingtool/T = I
+		if(T.welding)
+			to_chat(user, "<span class='warning'>That was stupid of you.</span>")
+			log_explosion("[key_name(user)] triggered a weldpack explosion at [AREACOORD(user.loc)].")
+			explosion(src, light_impact_range = 3)
+			qdel(src)
+		if(T.get_fuel() == T.max_fuel || !reagents.total_volume)
+			return ..()
+
+		reagents.trans_to(I, T.max_fuel)
+		to_chat(user, "<span class='notice'>Welder refilled!</span>")
+		playsound(loc, 'sound/effects/refill.ogg', 25, TRUE, 3)
+
+	else if(istype(I, /obj/item/ammo_magazine/flamer_tank))
+		var/obj/item/ammo_magazine/flamer_tank/FT = I
+		if(!reagents.total_volume)
+			return ..()
+
+		//Reworked and much simpler equation; fuel capacity minus the current amount, with a check for insufficient fuel
+		var/fuel_transfer_amount = min(reagents.total_volume, (FT.max_rounds - FT.current_rounds))
+		reagents.remove_reagent(/datum/reagent/fuel, fuel_transfer_amount)
+		FT.current_rounds += fuel_transfer_amount
+		playsound(loc, 'sound/effects/refill.ogg', 25, 1, 3)
+		FT.caliber = "Fuel"
+		to_chat(user, "<span class='notice'>You refill [FT] with [lowertext(FT.caliber)].</span>")
+		FT.update_icon()
+
+	else if(istype(I, /obj/item/attachable/attached_gun/flamer))
+		var/obj/item/attachable/attached_gun/flamer/FT = I
+		if(!reagents.total_volume)
+			return ..()
+
+		var/fuel_transfer_amount = min(reagents.total_volume, (FT.max_rounds - FT.current_rounds))
+		reagents.remove_reagent(/datum/reagent/fuel, fuel_transfer_amount)
+		FT.current_rounds += fuel_transfer_amount
+		playsound(loc, 'sound/effects/refill.ogg', 25, TRUE, 3)
+		to_chat(user, "<span class='notice'>You refill [FT] with fuel.</span>")
+		FT.update_icon()
+
+	else
+		to_chat(user, "<span class='notice'>The tank scoffs at your insolence.  It only provides services to welders and flamethrowers.</span>")
+
 
 /obj/item/tool/weldpack/afterattack(obj/O as obj, mob/user as mob, proximity)
 	if(!proximity) // this replaces and improves the get_dist(src,O) <= 1 checks used previously
 		return
 	if (istype(O, /obj/structure/reagent_dispensers/fueltank) && src.reagents.total_volume < max_fuel)
 		O.reagents.trans_to(src, max_fuel)
-		to_chat(user, "\blue You crack the cap off the top of the pack and fill it back up again from the tank.")
+		to_chat(user, "<span class='notice'>You crack the cap off the top of the pack and fill it back up again from the tank.</span>")
 		playsound(src.loc, 'sound/effects/refill.ogg', 25, 1, 3)
 		return
 	else if (istype(O, /obj/structure/reagent_dispensers/fueltank) && src.reagents.total_volume == max_fuel)
-		to_chat(user, "\blue The pack is already full!")
+		to_chat(user, "<span class='notice'>The pack is already full!</span>")
 		return
 
 /obj/item/tool/weldpack/examine(mob/user)
 	..()
 	to_chat(user, "[reagents.total_volume] units of welding fuel left!")
+
+/obj/item/tool/weldpack/marinestandard
+	name = "M-22 welding kit"
+	desc = "A heavy-duty, portable fuel carrier. Mainly used in flamethrowers. Welder and flamer compatible."
+	flags_equip_slot = ITEM_SLOT_BACK
+	icon_state = "marine_flamerpack"
+	w_class = WEIGHT_CLASS_BULKY
+	max_fuel = 500 //Because the marine backpack can carry 260, and still allows you to take items, there should be a reason to still use this one.

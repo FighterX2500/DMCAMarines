@@ -5,8 +5,8 @@
 	desc = "An extremely expansionistic species of vine."
 	icon = 'icons/effects/spacevines.dmi'
 	icon_state = "Light1"
-	anchored = 1
-	density = 0
+	anchored = TRUE
+	density = FALSE
 	layer = FLY_LAYER
 	flags_pass = PASSTABLE|PASSGRILLE
 
@@ -23,41 +23,44 @@
 	var/obj/effect/plant_controller/master = null
 	var/datum/seed/seed
 
-/obj/effect/plantsegment/New()
-	return
-
-/obj/effect/plantsegment/Dispose()
+/obj/effect/plantsegment/Destroy()
 	if(master)
 		master.vines -= src
 		master.growth_queue -= src
 	. = ..()
 
-/obj/effect/plantsegment/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/tool/weldingtool))
-		var/obj/item/tool/weldingtool/WT = W
-		if(WT.remove_fuel(0, user))
-			cdel(src)
-	else if(W.heat_source >= 3500)
-		cdel(src)
-	else if(W.sharp)
-		switch(W.sharp)
+/obj/effect/plantsegment/attackby(obj/item/I, mob/user, params)
+	. = ..()
+
+	if(iswelder(I))
+		var/obj/item/tool/weldingtool/WT = I
+		if(!WT.remove_fuel(0, user))
+			return
+
+		qdel(src)
+
+	else if(I.heat >= 3500)
+		qdel(src)
+
+	else if(I.sharp)
+		switch(I.sharp)
 			if(IS_SHARP_ITEM_BIG)
-				cdel(src)
+				qdel(src)
 			if(IS_SHARP_ITEM_ACCURATE)
 				if(prob(60))
-					cdel(src)
+					qdel(src)
 			if(IS_SHARP_ITEM_SIMPLE)
 				if(prob(25))
-					cdel(src)
+					qdel(src)
 	else
 		manual_unbuckle(user)
+
+
+/obj/effect/plantsegment/attack_hand(mob/living/user)
+	.  = ..()
+	if(.)
 		return
-
-
-
-/obj/effect/plantsegment/attack_hand(mob/user as mob)
-
-	if(user.a_intent == "help" && seed && harvest)
+	if(user.a_intent == INTENT_HELP && seed && harvest)
 		seed.harvest(user,1)
 		harvest = 0
 		lastproduce = age
@@ -67,33 +70,36 @@
 	manual_unbuckle(user)
 
 
-/obj/effect/plantsegment/attack_paw(mob/user as mob)
+/obj/effect/plantsegment/attack_paw(mob/living/carbon/monkey/user)
 	manual_unbuckle(user)
 
 
-/obj/effect/plantsegment/manual_unbuckle(mob/user)
-	if(buckled_mob)
-		if(prob(seed ? min(max(0,100 - seed.potency),100) : 50))
-			if(buckled_mob.buckled == src)
-				if(buckled_mob != user)
-					buckled_mob.visible_message(\
-						"<span class='notice'>[user.name] frees [buckled_mob.name] from [src].</span>",\
-						"<span class='notice'>[user.name] frees you from [src].</span>",\
-						"<span class='warning'>You hear shredding and ripping.</span>")
-				else
-					buckled_mob.visible_message(\
-						"<span class='notice'>[buckled_mob.name] struggles free of [src].</span>",\
-						"<span class='notice'>You untangle [src] from around yourself.</span>",\
-						"<span class='warning'>You hear shredding and ripping.</span>")
-			unbuckle()
-			return 1
-		else
-			var/text = pick("rips","tears","pulls")
-			user.visible_message(\
-				"<span class='notice'>[user.name] [text] at [src].</span>",\
-				"<span class='notice'>You [text] at [src].</span>",\
-				"<span class='warning'>You hear shredding and ripping.</span>")
-	return 0
+/obj/effect/plantsegment/proc/manual_unbuckle(mob/user)
+	if(!LAZYLEN(buckled_mobs))
+		return FALSE
+	if(!prob(seed ? min(max(0,100 - seed.potency),100) : 50))
+		var/text = pick("rips","tears","pulls")
+		user.visible_message(
+			"<span class='notice'>[user.name] [text] at [src].</span>",
+			"<span class='notice'>You [text] at [src].</span>",
+			"<span class='warning'>You hear shredding and ripping.</span>")
+		return FALSE
+	var/mob/living/prisoner = buckled_mobs[1]
+	if(prisoner.buckled != src)
+		CRASH("[user] attempted to free [prisoner] by attacking [src], but it was buckled to [prisoner.buckled].")
+	if(prisoner != user)
+		prisoner.visible_message(
+			"<span class='notice'>[user.name] frees [prisoner.name] from [src].</span>",
+			"<span class='notice'>[user.name] frees you from [src].</span>",
+			"<span class='warning'>You hear shredding and ripping.</span>")
+	else
+		prisoner.visible_message(
+			"<span class='notice'>[prisoner.name] struggles free of [src].</span>",
+			"<span class='notice'>You untangle [src] from around yourself.</span>",
+			"<span class='warning'>You hear shredding and ripping.</span>")
+	unbuckle_mob(prisoner)
+	return TRUE
+
 
 /obj/effect/plantsegment/proc/grow()
 
@@ -106,76 +112,67 @@
 			energy = 2
 			return
 
-		src.opacity = 1
+		src.opacity = TRUE
 		layer = FLY_LAYER
 	else if(!limited_growth)
 		src.icon_state = pick("Hvy1", "Hvy2", "Hvy3")
 		energy = 2
 
 /obj/effect/plantsegment/proc/entangle_mob()
-
 	if(limited_growth)
 		return
+	if(!prob(seed ? seed.potency : 25))
+		return
+	var/mob/living/carbon/victim = locate() in loc
+	if(!QDELETED(victim) && victim.stat != DEAD && victim.buckled != src) // If mob exists and is not dead or captured.
+		buckle_mob(victim, silent = TRUE)
+		to_chat(victim, "<span class='danger'>The vines [pick("wind", "tangle", "tighten")] around you!</span>")
 
-	if(prob(seed ? seed.potency : 25))
-
-		if(!buckled_mob)
-			var/mob/living/carbon/V = locate() in src.loc
-			if(V && (V.stat != DEAD) && (V.buckled != src)) // If mob exists and is not dead or captured.
-				V.buckled = src
-				V.loc = src.loc
-				V.update_canmove()
-				src.buckled_mob = V
-				to_chat(V, "<span class='danger'>The vines [pick("wind", "tangle", "tighten")] around you!</span>")
-
-		// FEED ME, SEYMOUR.
-		if(buckled_mob && seed && (buckled_mob.stat != DEAD)) //Don't bother with a dead mob.
-
-			var/mob/living/M = buckled_mob
-			if(!istype(M)) return
-			var/mob/living/carbon/human/H = buckled_mob
+	// FEED ME, SEYMOUR.
+	if(seed)
+		for(var/m in buckled_mobs)
+			victim = m
+			if(victim == DEAD)
+				continue
 
 			// Drink some blood/cause some brute.
 			if(seed.carnivorous == 2)
-				to_chat(buckled_mob, "<span class='danger'>\The [src] pierces your flesh greedily!</span>")
+				to_chat(victim, "<span class='danger'>\The [src] pierces your flesh greedily!</span>")
 
 				var/damage = rand(round(seed.potency/2),seed.potency)
-				if(!istype(H))
-					H.adjustBruteLoss(damage)
+				if(!ishuman(victim))
+					victim.adjustBruteLoss(damage)
 					return
 
-				var/datum/limb/affecting = H.get_limb(pick("l_foot","r_foot","l_leg","r_leg","l_hand","r_hand","l_arm", "r_arm","head","chest","groin"))
+				var/datum/limb/affecting = victim.get_limb(pick("l_foot","r_foot","l_leg","r_leg","l_hand","r_hand","l_arm", "r_arm","head","chest","groin"))
 
 				if(affecting)
-					affecting.take_damage(damage, 0)
-					if(affecting.parent)
-						affecting.parent.add_autopsy_data("[plant_damage_noun]", damage)
+					affecting.take_damage_limb(damage, updating_health = TRUE)
 				else
-					H.adjustBruteLoss(damage)
+					victim.adjustBruteLoss(damage, updating_health = TRUE)
 
-				H.UpdateDamageIcon()
-				H.updatehealth()
+				victim.UpdateDamageIcon()
 
 			// Inject some chems.
-			if(seed.chems && seed.chems.len && istype(H))
-				to_chat(H, "<span class='danger'>You feel something seeping into your skin!</span>")
+			if(length(seed.chems) && ishuman(victim))
+				to_chat(victim, "<span class='danger'>You feel something seeping into your skin!</span>")
 				for(var/rid in seed.chems)
-					var/injecting = min(5,max(1,seed.potency/5))
-					H.reagents.add_reagent(rid,injecting)
+					var/injecting = clamp(seed.potency * 0.2, 1, 5)
+					victim.reagents.add_reagent(rid, injecting)
+
 
 /obj/effect/plantsegment/proc/update()
 	if(!seed) return
 
 	// Update bioluminescence.
 	if(seed.biolum)
-		SetLuminosity(1+round(seed.potency/10))
 		if(seed.biolum_colour)
-			l_color = seed.biolum_colour
+			set_light(1 + round(seed.potency / 10), l_color = seed.biolum_colour)
 		else
-			l_color = null
+			set_light(1 + round(seed.potency / 10))
 		return
 	else
-		SetLuminosity(0)
+		set_light(0)
 
 	// Update flower/product overlay.
 	overlays.Cut()
@@ -197,7 +194,7 @@
 			overlays += flower_overlay
 
 /obj/effect/plantsegment/proc/spread()
-	var/direction = pick(cardinal)
+	var/direction = pick(GLOB.cardinals)
 	var/step = get_step(src,direction)
 	if(istype(step,/turf/open/floor))
 		var/turf/open/floor/F = step
@@ -209,27 +206,24 @@
 // Explosion damage.
 /obj/effect/plantsegment/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if(EXPLODE_DEVASTATE)
 			die()
-			return
-		if(2.0)
+		if(EXPLODE_HEAVY)
 			if (prob(90))
 				die()
-				return
-		if(3.0)
+		if(EXPLODE_LIGHT)
 			if (prob(50))
 				die()
-				return
-	return
+
 
 // Hotspots kill vines.
 /obj/effect/plantsegment/fire_act(null, temp, volume)
-	cdel(src)
+	qdel(src)
 
 /obj/effect/plantsegment/proc/die()
 	if(seed && harvest && rand(5))
 		seed.harvest(src,1)
-		cdel(src)
+		qdel(src)
 
 /obj/effect/plantsegment/proc/life()
 
@@ -254,19 +248,9 @@
 		die()
 		return
 
-	var/area/A = T.loc
-	if(A)
-		var/light_available
-		if(A.lighting_use_dynamic)
-			light_available = max(0,min(10,T.lighting_lumcount)-5)
-		else
-			light_available =  5
-		if(abs(light_available - seed.ideal_light) > seed.light_tolerance)
-			die()
-			return
 
 /obj/effect/plantsegment/flamer_fire_act()
-	cdel(src)
+	qdel(src)
 	return
 
 /obj/effect/plant_controller
@@ -289,20 +273,21 @@
 	slowdown_limit = 3
 	limited_growth = 1
 
-/obj/effect/plant_controller/New()
-	if(!istype(src.loc,/turf/open/floor))
-		cdel(src)
-
-	spawn(0)
-		spawn_piece(src.loc)
-
-	processing_objects.Add(src)
-
-/obj/effect/plant_controller/Dispose()
-	processing_objects.Remove(src)
+/obj/effect/plant_controller/Initialize()
 	. = ..()
 
-/obj/effect/plant_controller/proc/spawn_piece(var/turf/location)
+	if(!istype(loc,/turf/open/floor))
+		return INITIALIZE_HINT_QDEL
+
+	spawn_piece(loc)
+
+	START_PROCESSING(SSobj, src)
+
+/obj/effect/plant_controller/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	. = ..()
+
+/obj/effect/plant_controller/proc/spawn_piece(turf/location)
 	var/obj/effect/plantsegment/SV = new(location)
 	SV.limited_growth = src.limited_growth
 	growth_queue += SV
@@ -317,12 +302,12 @@
 
 	// Space vines exterminated. Remove the controller
 	if(!vines)
-		cdel(src)
+		qdel(src)
 		return
 
 	// Sanity check.
 	if(!growth_queue)
-		cdel(src)
+		qdel(src)
 		return
 
 	// Check if we're too big for our own good.

@@ -9,7 +9,7 @@
 	var/eye_step
 
 /datum/surgery_step/eye/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected, checks_only)
-	if(!affected || (affected.status & DESTROYED))
+	if(!affected || (affected.limb_status & LIMB_DESTROYED))
 		return 0
 
 	if(target_zone != "eyes")
@@ -23,9 +23,9 @@
 
 /datum/surgery_step/eye/cut_open
 	allowed_tools = list(
-	/obj/item/tool/surgery/scalpel = 100,		\
-	/obj/item/tool/kitchen/knife = 75,	\
-	/obj/item/shard = 50, 		\
+		/obj/item/tool/surgery/scalpel = 100,
+		/obj/item/tool/kitchen/knife = 75,
+		/obj/item/shard = 50,
 	)
 
 	min_duration = EYE_CUT_MIN_DURATION
@@ -56,8 +56,8 @@
 
 /datum/surgery_step/eye/lift_eyes
 	allowed_tools = list(
-	/obj/item/tool/surgery/retractor = 100,          \
-	/obj/item/tool/kitchen/utensil/fork = 50
+		/obj/item/tool/surgery/retractor = 100,
+		/obj/item/tool/kitchen/utensil/fork = 50,
 	)
 
 	min_duration = EYE_LIFT_MIN_DURATION
@@ -77,17 +77,16 @@
 
 /datum/surgery_step/eye/lift_eyes/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected)
 	var/datum/internal_organ/eyes/eyes = target.internal_organs_by_name["eyes"]
-	user.visible_message("<span class='warning'>[user]'s hand slips, damaging [target]'s eyes with \the [tool]!</span>", \
+	user.visible_message("<span class='warning'>[user]'s hand slips, damaging [target]'s eyes with \the [tool]!</span>",
 	"<span class='warning'>Your hand slips, damaging [target]'s eyes with \the [tool]!</span>")
-	target.apply_damage(10, BRUTE, affected)
 	eyes.take_damage(5, 0)
-	target.updatehealth()
+	target.apply_damage(10, BRUTE, affected, updating_health = TRUE)
 
 /datum/surgery_step/eye/mend_eyes
 	allowed_tools = list(
-	/obj/item/tool/surgery/hemostat = 100,         \
-	/obj/item/stack/cable_coil = 75,         \
-	/obj/item/device/assembly/mousetrap = 10 //I don't know. Don't ask me. But I'm leaving it because hilarity.
+		/obj/item/tool/surgery/hemostat = 100,
+		/obj/item/stack/cable_coil = 75,
+		/obj/item/assembly/mousetrap = 10,
 	)
 
 	min_duration = EYE_MEND_MIN_DURATION
@@ -107,21 +106,20 @@
 
 /datum/surgery_step/eye/mend_eyes/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected)
 	var/datum/internal_organ/eyes/E = target.internal_organs_by_name["eyes"]
-	user.visible_message("<span class='warning'>[user]'s hand slips, stabbing \the [tool] into [target]'s eye!</span>", \
+	user.visible_message("<span class='warning'>[user]'s hand slips, stabbing \the [tool] into [target]'s eye!</span>",
 	"<span class='warning'>Your hand slips, stabbing \the [tool] into [target]'s eye!</span>")
-	target.apply_damage(10, BRUTE, affected, sharp = 1)
 	E.take_damage(5, 0)
-	target.updatehealth()
+	target.apply_damage(10, BRUTE, affected, 0, TRUE, updating_health = TRUE)
 
 
 /datum/surgery_step/eye/cauterize
 	allowed_tools = list(
-	/obj/item/tool/surgery/cautery = 100,			\
-	/obj/item/clothing/mask/cigarette = 75,	\
-	/obj/item/tool/lighter = 50,    \
-	/obj/item/tool/weldingtool = 25
+		/obj/item/tool/surgery/cautery = 100,
+		/obj/item/clothing/mask/cigarette = 75,
+		/obj/item/tool/lighter = 50,
+		/obj/item/tool/weldingtool = 25,
 	)
-	
+
 	min_duration = EYE_CAUTERISE_MIN_DURATION
 	max_duration = EYE_CAUTERISE_MAX_DURATION
 	eye_step = 3
@@ -134,7 +132,7 @@
 	user.visible_message("<span class='notice'>[user] cauterizes the incision around [target]'s eyes with \the [tool].</span>", \
 	"<span class='notice'>You cauterize the incision around [target]'s eyes with \the [tool].</span>")
 	target.disabilities &= ~NEARSIGHTED
-	target.sdisabilities &= ~BLIND
+	target.disabilities &= ~BLIND
 	var/datum/internal_organ/eyes/E = target.internal_organs_by_name["eyes"]
 	E.damage = 0
 	E.eye_surgery_stage = 0
@@ -142,8 +140,7 @@
 
 /datum/surgery_step/eye/cauterize/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/limb/affected)
 	var/datum/internal_organ/eyes/E = target.internal_organs_by_name["eyes"]
-	user.visible_message("<span class='warning'>[user]'s hand slips, searing [target]'s eyes with \the [tool]!</span>", \
+	user.visible_message("<span class='warning'>[user]'s hand slips, searing [target]'s eyes with \the [tool]!</span>",
 	"<span class='warning'>Your hand slips, searing [target]'s eyes with \the [tool]!</span>")
-	target.apply_damage(5, BURN, affected)
 	E.take_damage(5, 0)
-	target.updatehealth()
+	target.apply_damage(5, BURN, affected, updating_health = TRUE)

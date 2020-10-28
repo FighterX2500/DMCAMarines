@@ -1,5 +1,5 @@
 /*
-	Datum-based species. Should make for much cleaner and easier to maintain mutantrace code.
+	Datum-based species. Should make for much cleaner and easier to maintain species code.
 */
 
 /datum/species
@@ -19,20 +19,20 @@
 	var/datum/hud_data/hud
 	var/hud_type
 	var/slowdown = 0
+	var/taste_sensitivity = TASTE_NORMAL
 	var/gluttonous        // Can eat some mobs. 1 for monkeys, 2 for people.
 	var/rarity_value = 1  // Relative rarity/collector value for this species. Only used by ninja and cultists atm.
 	var/unarmed_type =           /datum/unarmed_attack
 	var/secondary_unarmed_type = /datum/unarmed_attack/bite
-
-	var/language                  // Default racial language, if any.
-	// Default language is used when 'say' is used without modifiers.
-	var/default_language = "English"
+	var/default_language_holder = /datum/language_holder
+	var/speech_verb_override
 	var/secondary_langs = list()  // The names of secondary languages that are available to this species.
-	var/mutantrace                // Safeguard due to old code.
 	var/list/speech_sounds        // A list of sounds to potentially play when speaking.
 	var/list/speech_chance
-	var/has_fine_manipulation = 1 // Can use small items.
+	var/has_fine_manipulation = TRUE // Can use small items.
 	var/insulated                 // Immune to electrocution and glass shards to the feet.
+	var/show_paygrade = FALSE
+	var/count_human = FALSE // Does this count as a human?
 
 	// Some species-specific gibbing data.
 	var/gibbed_anim = "gibbed-h"
@@ -46,16 +46,17 @@
 	var/exhale_type = "carbon_dioxide"      // Exhaled gas type.
 
 	var/total_health = 100  //new maxHealth
+	var/max_stamina_buffer = 50
 
-	var/cold_level_1 = 260  // Cold damage level 1 below this point.
-	var/cold_level_2 = 240  // Cold damage level 2 below this point.
-	var/cold_level_3 = 120  // Cold damage level 3 below this point.
+	var/cold_level_1 = BODYTEMP_COLD_DAMAGE_LIMIT_ONE  	// Cold damage level 1 below this point.
+	var/cold_level_2 = BODYTEMP_COLD_DAMAGE_LIMIT_TWO  	// Cold damage level 2 below this point.
+	var/cold_level_3 = BODYTEMP_COLD_DAMAGE_LIMIT_THREE	// Cold damage level 3 below this point.
 
-	var/heat_level_1 = 360  // Heat damage level 1 above this point.
-	var/heat_level_2 = 400  // Heat damage level 2 above this point.
-	var/heat_level_3 = 1000 // Heat damage level 2 above this point.
+	var/heat_level_1 = BODYTEMP_HEAT_DAMAGE_LIMIT_ONE  	// Heat damage level 1 above this point.
+	var/heat_level_2 = BODYTEMP_HEAT_DAMAGE_LIMIT_TWO  	// Heat damage level 2 above this point.
+	var/heat_level_3 = BODYTEMP_HEAT_DAMAGE_LIMIT_THREE	// Heat damage level 2 above this point.
 
-	var/body_temperature = 310.15	//non-IS_SYNTHETIC species will try to stabilize at this temperature. (also affects temperature processing)
+	var/body_temperature = BODYTEMP_NORMAL 	//non-IS_SYNTHETIC species will try to stabilize at this temperature. (also affects temperature processing)
 	var/reagent_tag                 //Used for metabolizing reagents.
 
 	var/darksight = 2
@@ -67,9 +68,16 @@
 	var/brute_mod = null    // Physical damage reduction/malus.
 	var/burn_mod = null     // Burn damage reduction/malus.
 
-	var/flags = 0       // Various specific features.
+	var/species_flags  = NONE       // Various specific features.
 
 	var/list/abilities = list()	// For species-derived or admin-given powers
+	var/list/preferences = list()
+	var/list/screams = list()
+	var/list/paincries = list()
+	var/list/goredcries = list()
+	var/list/gasps = list()
+	var/list/coughs = list()
+	var/list/burstscreams = list()
 
 	var/blood_color = "#A10808" //Red.
 	var/flesh_color = "#FFC896" //Pink.
@@ -95,6 +103,11 @@
 	var/knock_down_reduction = 1 //how much the knocked_down effect is reduced per Life call.
 	var/stun_reduction = 1 //how much the stunned effect is reduced per Life call.
 	var/knock_out_reduction = 1 //same thing
+	var/lighting_alpha
+	var/see_in_dark
+
+	var/datum/namepool/namepool = /datum/namepool
+	var/special_death_message = "You have perished." // Special death message that gets overwritten if possible.
 
 /datum/species/New()
 	if(hud_type)
@@ -105,7 +118,7 @@
 	if(unarmed_type) unarmed = new unarmed_type()
 	if(secondary_unarmed_type) secondary_unarmed = new secondary_unarmed_type()
 
-/datum/species/proc/create_organs(var/mob/living/carbon/human/H) //Handles creation of mob organs and limbs.
+/datum/species/proc/create_organs(mob/living/carbon/human/H) //Handles creation of mob organs and limbs.
 
 	H.limbs = list()
 	H.internal_organs = list()
@@ -125,98 +138,172 @@
 	H.limbs += LL
 	var/datum/limb/r_leg/RL = new(G, H)
 	H.limbs += RL
-	H.limbs +=  new/datum/limb/l_hand(LA, H)
-	H.limbs +=  new/datum/limb/r_hand(RA, H)
-	H.limbs +=  new/datum/limb/l_foot(LL, H)
-	H.limbs +=  new/datum/limb/r_foot(RL, H)
+	H.limbs +=  new/datum/limb/hand/l_hand(LA, H)
+	H.limbs +=  new/datum/limb/hand/r_hand(RA, H)
+	H.limbs +=  new/datum/limb/foot/l_foot(LL, H)
+	H.limbs +=  new/datum/limb/foot/r_foot(RL, H)
 
 	for(var/organ in has_organ)
 		var/organ_type = has_organ[organ]
 		H.internal_organs_by_name[organ] = new organ_type(H)
 
-	if(flags & IS_SYNTHETIC)
-		for(var/datum/limb/E in H.limbs)
-			if(E.status & LIMB_DESTROYED) continue
-			E.status |= LIMB_ROBOT
+	if(species_flags & IS_SYNTHETIC)
+		for(var/datum/limb/l in H.limbs)
+			var/datum/limb/robotic_limb = l
+			if(robotic_limb.limb_status & LIMB_DESTROYED)
+				continue
+			robotic_limb.add_limb_flags(LIMB_ROBOT)
 		for(var/datum/internal_organ/I in H.internal_organs)
 			I.mechanize()
 
 
-/datum/species/proc/hug(var/mob/living/carbon/human/H,var/mob/living/target)
+/datum/species/proc/hug(mob/living/carbon/human/H,mob/living/target)
+	if(H.zone_selected == "head")
+		H.visible_message("<span class='notice'>[H] pats [target] on the head.</span>", \
+					"<span class='notice'>You pat [target] on the head.</span>", null, 4)
+	else
+		H.visible_message("<span class='notice'>[H] hugs [target] to make [target.p_them()] feel better!</span>", \
+					"<span class='notice'>You hug [target] to make [target.p_them()] feel better!</span>", null, 4)
 
-	var/t_him = "them"
-	switch(target.gender)
-		if(MALE)
-			t_him = "him"
-		if(FEMALE)
-			t_him = "her"
+/datum/species/proc/random_name(gender)
+	return GLOB.namepool[namepool].get_random_name(gender)
 
-	H.visible_message("<span class='notice'>[H] hugs [target] to make [t_him] feel better!</span>", \
-					"<span class='notice'>You hug [target] to make [t_him] feel better!</span>", null, 4)
+/datum/species/human/random_name(gender)
+	. = ..()
+	if(CONFIG_GET(flag/humans_need_surnames))
+		. += " " + pick(SSstrings.get_list_from_file("names/last_name"))
+
+/datum/species/proc/prefs_name(datum/preferences/prefs)
+	return prefs.real_name
+
+/datum/species/human/prefs_name(datum/preferences/prefs)
+	. = ..()
+	if(CONFIG_GET(flag/humans_need_surnames))
+		var/firstspace = findtext(., " ")
+		if(!firstspace || firstspace == length(.))
+			. += " " + pick(SSstrings.get_list_from_file("names/last_name"))
+
+/datum/species/synthetic/prefs_name(datum/preferences/prefs)
+	. = prefs.synthetic_name
+	if(!. || . == "Undefined") //In case they don't have a name set.
+		switch(prefs.gender)
+			if(MALE)
+				. = "David"
+			if(FEMALE)
+				. = "Anna"
+			else
+				. = "Jeri"
+		to_chat(prefs.parent, "<span class='warning'>You forgot to set your synthetic name in your preferences. Please do so next time.</span>")
+
+/datum/species/early_synthetic/prefs_name(datum/preferences/prefs)
+	. = prefs.synthetic_name
+	if(!. || . == "Undefined") //In case they don't have a name set.
+		switch(prefs.gender)
+			if(MALE)
+				. = "David"
+			if(FEMALE)
+				. = "Anna"
+			else
+				. = "Jeri"
+		to_chat(prefs.parent, "<span class='warning'>You forgot to set your synthetic name in your preferences. Please do so next time.</span>")
 
 //special things to change after we're no longer that species
 /datum/species/proc/post_species_loss(mob/living/carbon/human/H)
 	return
 
-/datum/species/proc/remove_inherent_verbs(var/mob/living/carbon/human/H)
+/datum/species/proc/remove_inherent_verbs(mob/living/carbon/human/H)
 	if(inherent_verbs)
 		for(var/verb_path in inherent_verbs)
 			H.verbs -= verb_path
 	return
 
-/datum/species/proc/add_inherent_verbs(var/mob/living/carbon/human/H)
+/datum/species/proc/add_inherent_verbs(mob/living/carbon/human/H)
 	if(inherent_verbs)
 		for(var/verb_path in inherent_verbs)
 			H.verbs |= verb_path
 	return
 
-/datum/species/proc/handle_post_spawn(var/mob/living/carbon/human/H) //Handles anything not already covered by basic species assignment.
+/datum/species/proc/handle_post_spawn(mob/living/carbon/human/H) //Handles anything not already covered by basic species assignment.
 	add_inherent_verbs(H)
 
-/datum/species/proc/handle_death(var/mob/living/carbon/human/H) //Handles any species-specific death events.
-/*
-	if(flags & IS_SYNTHETIC)
-		H.h_style = ""
-		spawn(100)
-			if(!H) return
-			H.update_hair()
-	return
-*/
+/datum/species/proc/handle_death(mob/living/carbon/human/H) //Handles any species-specific death events.
 
 //Only used by horrors at the moment. Only triggers if the mob is alive and not dead.
-/datum/species/proc/handle_unique_behavior(var/mob/living/carbon/human/H)
+/datum/species/proc/handle_unique_behavior(mob/living/carbon/human/H)
 	return
 
 // Used to update alien icons for aliens.
-/datum/species/proc/handle_login_special(var/mob/living/carbon/human/H)
+/datum/species/proc/handle_login_special(mob/living/carbon/human/H)
 	return
 
 // As above.
-/datum/species/proc/handle_logout_special(var/mob/living/carbon/human/H)
+/datum/species/proc/handle_logout_special(mob/living/carbon/human/H)
 	return
 
 // Builds the HUD using species-specific icons and usable slots.
-/datum/species/proc/build_hud(var/mob/living/carbon/human/H)
+/datum/species/proc/build_hud(mob/living/carbon/human/H)
 	return
 
 // Grabs the window recieved when you click-drag someone onto you.
-/datum/species/proc/get_inventory_dialogue(var/mob/living/carbon/human/H)
+/datum/species/proc/get_inventory_dialogue(mob/living/carbon/human/H)
 	return
 
 //Used by xenos understanding larvae and dionaea understanding nymphs.
-/datum/species/proc/can_understand(var/mob/other)
+/datum/species/proc/can_understand(mob/other)
 	return
+
+/datum/species/proc/handle_fire(mob/living/carbon/human/H)
+	return
+
+/datum/species/proc/update_body(mob/living/carbon/human/H)
+	return
+
+/datum/species/proc/update_inv_head(mob/living/carbon/human/H)
+	return
+
+/datum/species/proc/update_inv_w_uniform(mob/living/carbon/human/H)
+	return
+
+/datum/species/proc/update_inv_wear_suit(mob/living/carbon/human/H)
+	return
+
+/datum/species/proc/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	if(CHECK_BITFIELD(species_flags, NO_CHEM_METABOLIZATION)) //explicit
+		H.reagents.del_reagent(chem.type) //for the time being
+		return TRUE
+	if(CHECK_BITFIELD(species_flags, NO_POISON) && istype(chem, /datum/reagent/toxin))
+		H.reagents.remove_reagent(chem.type, chem.custom_metabolism * H.metabolism_efficiency)
+		return TRUE
+	if(CHECK_BITFIELD(species_flags, NO_OVERDOSE)) //no stacking
+		if(chem.overdose_threshold && chem.volume > chem.overdose_threshold)
+			H.reagents.remove_reagent(chem.type, chem.volume - chem.overdose_threshold)
+	return FALSE
 
 /datum/species/human
 	name = "Human"
 	name_plural = "Humans"
-	language = "Sol Common"
 	primitive = /mob/living/carbon/monkey
 	unarmed_type = /datum/unarmed_attack/punch
-	flags = HAS_SKIN_TONE|HAS_LIPS|HAS_UNDERWEAR
+	species_flags = HAS_SKIN_TONE|HAS_LIPS|HAS_UNDERWEAR
+	show_paygrade = TRUE
+	count_human = TRUE
+
+	screams = list(MALE = "male_scream", FEMALE = "female_scream")
+	paincries = list(MALE = "male_pain", FEMALE = "female_pain")
+	goredcries = list(MALE = "male_gored", FEMALE = "female_gored")
+	gasps = list(MALE = "male_gasp", FEMALE = "female_gasp")
+	coughs = list(MALE = "male_cough", FEMALE = "female_cough")
+	burstscreams = list(MALE = "male_preburst", FEMALE = "female_preburst")
+	special_death_message = "<big>You have perished.</big><br><small>But it is not the end of you yet... if you still have your body or an unbursted corpse, wait until somebody can resurrect you...</small>"
 
 	//If you wanted to add a species-level ability:
 	/*abilities = list(/client/proc/test_ability)*/
+
+/datum/species/human/vatborn
+	name = "Vatborn"
+	name_plural = "Vatborns"
+
+	namepool = /datum/namepool/vatborn
 
 //Slightly tougher humans.
 /datum/species/human/hero
@@ -233,27 +320,64 @@
 	heat_level_2 = 480
 	heat_level_3 = 1100
 
+/datum/species/human/vatgrown
+	name = "Vat-Grown Human"
+	name_plural = "Vat-Grown Humans"
+	species_flags = HAS_SKIN_TONE
+	brute_mod = 1.05
+	burn_mod = 1.05
+	slowdown = 1.05
+
+/datum/species/human/vatgrown/random_name(gender)
+	. = "CS-[gender == FEMALE ? "F": "M"]-[rand(111,999)]"
+
+/datum/species/human/vatgrown/handle_post_spawn(mob/living/carbon/human/H)
+	. = ..()
+	H.h_style = "Bald"
+	H.skills = getSkillsType(/datum/skills/vatgrown)
+
+/datum/species/human/vatgrown/early
+	name = "Early Vat-Grown Human"
+	name_plural = "Early Vat-Grown Humans"
+	brute_mod = 1.3
+	burn_mod = 1.3
+	slowdown = 1.3
+
+	var/timerid
+
+/datum/species/human/vatgrown/early/handle_post_spawn(mob/living/carbon/human/H)
+	. = ..()
+	H.skills = getSkillsType(/datum/skills/vatgrown/early)
+	timerid = addtimer(CALLBACK(src, .proc/handle_age, H), 15 MINUTES, TIMER_STOPPABLE)
+
+/datum/species/human/vatgrown/early/post_species_loss(mob/living/carbon/human/H)
+	. = ..()
+	// Ensure we don't update the species again
+	if(timerid)
+		deltimer(timerid)
+		timerid = null
+
+/datum/species/human/vatgrown/early/proc/handle_age(mob/living/carbon/human/H)
+	H.set_species("Vat-Grown Human")
 
 //Various horrors that spawn in and haunt the living.
 /datum/species/human/spook
 	name = "Horror"
 	name_plural = "Horrors"
-	default_language = "Drrrrrrr"
 	icobase = 'icons/mob/human_races/r_spooker.dmi'
 	deform = 'icons/mob/human_races/r_spooker.dmi'
 	brute_mod = 0.15
 	burn_mod = 1.50
 	reagent_tag = IS_HORROR
-	flags = HAS_SKIN_COLOR|NO_BREATHE|NO_POISON|HAS_LIPS|NO_PAIN|NO_SCAN|NO_POISON|NO_BLOOD|NO_SLIP|NO_CHEM_METABOLIZATION
+	species_flags = HAS_SKIN_COLOR|NO_BREATHE|NO_POISON|HAS_LIPS|NO_PAIN|NO_SCAN|NO_POISON|NO_BLOOD|NO_SLIP|NO_CHEM_METABOLIZATION|NO_STAMINA
 	unarmed_type = /datum/unarmed_attack/punch/strong
 	secondary_unarmed_type = /datum/unarmed_attack/bite/strong
 	death_message = "doubles over, unleashes a horrible, ear-shattering scream, then falls motionless and still..."
 	death_sound = 'sound/voice/scream_horror1.ogg'
 
-	darksight = 8
 	slowdown = 0.3
 	insulated = 1
-	has_fine_manipulation = 0
+	has_fine_manipulation = FALSE
 
 	heat_level_1 = 1000
 	heat_level_2 = 1500
@@ -263,27 +387,28 @@
 	cold_level_2 = 50
 	cold_level_3 = 20
 
-	//To show them we mean business.
-	handle_unique_behavior(var/mob/living/carbon/human/H)
-		if(prob(25)) animation_horror_flick(H)
+//To show them we mean business.
+/datum/species/human/spook/handle_unique_behavior(mob/living/carbon/human/H)
+	if(prob(25))
+		animation_horror_flick(H)
 
-		//Organ damage will likely still take them down eventually.
-		H.adjustBruteLoss(-3)
-		H.adjustFireLoss(-3)
-		H.adjustOxyLoss(-15)
-		H.adjustToxLoss(-15)
+	//Organ damage will likely still take them down eventually.
+	H.adjustBruteLoss(-3)
+	H.adjustFireLoss(-3)
+	H.adjustOxyLoss(-15)
+	H.adjustToxLoss(-15)
 
 /datum/species/unathi
 	name = "Unathi"
 	name_plural = "Unathi"
 	icobase = 'icons/mob/human_races/r_lizard.dmi'
 	deform = 'icons/mob/human_races/r_def_lizard.dmi'
-	language = "Sinta'unathi"
+	default_language_holder = /datum/language_holder/unathi
 	tail = "sogtail"
 	unarmed_type = /datum/unarmed_attack/claws
 	secondary_unarmed_type = /datum/unarmed_attack/bite/strong
 	primitive = /mob/living/carbon/monkey/unathi
-	darksight = 3
+	taste_sensitivity = TASTE_SENSITIVE
 	gluttonous = 1
 
 	cold_level_1 = 280 //Default 260 - Lower is better
@@ -294,7 +419,7 @@
 	heat_level_2 = 480 //Default 400
 	heat_level_3 = 1100 //Default 1000
 
-	flags = IS_WHITELISTED|HAS_LIPS|HAS_UNDERWEAR|HAS_SKIN_COLOR
+	species_flags = HAS_LIPS|HAS_UNDERWEAR|HAS_SKIN_COLOR
 
 	flesh_color = "#34AF10"
 
@@ -306,10 +431,9 @@
 	name_plural = "Tajaran"
 	icobase = 'icons/mob/human_races/r_tajaran.dmi'
 	deform = 'icons/mob/human_races/r_def_tajaran.dmi'
-	language = "Siik'tajr"
+	default_language_holder = /datum/language_holder/tajaran
 	tail = "tajtail"
 	unarmed_type = /datum/unarmed_attack/claws
-	darksight = 8
 
 	cold_level_1 = 200 //Default 260
 	cold_level_2 = 140 //Default 200
@@ -321,7 +445,7 @@
 
 	primitive = /mob/living/carbon/monkey/tajara
 
-	flags = IS_WHITELISTED|HAS_LIPS|HAS_UNDERWEAR|HAS_SKIN_COLOR
+	species_flags = HAS_LIPS|HAS_UNDERWEAR|HAS_SKIN_COLOR
 
 	flesh_color = "#AFA59E"
 	base_color = "#333333"
@@ -331,23 +455,106 @@
 	name_plural = "Skrell"
 	icobase = 'icons/mob/human_races/r_skrell.dmi'
 	deform = 'icons/mob/human_races/r_def_skrell.dmi'
-	language = "Skrellian"
+	default_language_holder = /datum/language_holder/skrell
 	primitive = /mob/living/carbon/monkey/skrell
 	unarmed_type = /datum/unarmed_attack/punch
 
-	flags = IS_WHITELISTED|HAS_LIPS|HAS_UNDERWEAR|HAS_SKIN_COLOR
+	species_flags = HAS_LIPS|HAS_UNDERWEAR|HAS_SKIN_COLOR
 
 	flesh_color = "#8CD7A3"
 
 	reagent_tag = IS_SKRELL
+
+/datum/species/moth
+	name = "Moth"
+	name_plural = "Moth"
+	icobase = 'icons/mob/human_races/r_moth.dmi'
+	deform = 'icons/mob/human_races/r_moth.dmi'
+	default_language_holder = /datum/language_holder/moth
+	eyes = "blank_eyes"
+	speech_verb_override = "flutters"
+	show_paygrade = TRUE
+	count_human = TRUE
+
+	species_flags = HAS_LIPS|HAS_NO_HAIR
+	preferences = list("moth_wings" = "Wings")
+
+	screams = list("neuter" = 'sound/voice/moth_scream.ogg')
+	paincries = list("neuter" = 'sound/voice/human_male_pain_3.ogg')
+	goredcries = list("neuter" = 'sound/voice/moth_scream.ogg')
+	burstscreams = list("neuter" = 'sound/voice/moth_scream.ogg')
+
+	flesh_color = "#E5CD99"
+
+	reagent_tag = IS_MOTH
+
+	namepool = /datum/namepool/moth
+
+/datum/species/moth/handle_fire(mob/living/carbon/human/H)
+	if(H.moth_wings != "Burnt Off" && H.bodytemperature >= 400 && H.fire_stacks > 0)
+		to_chat(H, "<span class='danger'>Your precious wings burn to a crisp!</span>")
+		H.moth_wings = "Burnt Off"
+		H.update_body()
+
+/datum/species/moth/proc/update_moth_wings(mob/living/carbon/human/H)
+	H.remove_overlay(MOTH_WINGS_LAYER)
+	H.remove_underlay(MOTH_WINGS_BEHIND_LAYER)
+
+	var/datum/sprite_accessory/moth_wings/wings = GLOB.moth_wings_list[H.moth_wings]
+
+	if(wings)
+		H.overlays_standing[MOTH_WINGS_LAYER] = image(wings.icon, icon_state = "m_moth_wings_[wings.icon_state]_FRONT")
+		H.underlays_standing[MOTH_WINGS_BEHIND_LAYER] = image(wings.icon, icon_state = "m_moth_wings_[wings.icon_state]_BEHIND")
+		H.apply_overlay(MOTH_WINGS_LAYER)
+		H.apply_underlay(MOTH_WINGS_BEHIND_LAYER)
+
+/datum/species/moth/update_body(mob/living/carbon/human/H)
+	update_moth_wings(H)
+
+/datum/species/moth/update_inv_head(mob/living/carbon/human/H)
+	update_moth_wings(H)
+
+/datum/species/moth/update_inv_w_uniform(mob/living/carbon/human/H)
+	update_moth_wings(H)
+
+/datum/species/moth/update_inv_wear_suit(mob/living/carbon/human/H)
+	update_moth_wings(H)
+
+/datum/species/moth/post_species_loss(mob/living/carbon/human/H)
+	H.remove_overlay(MOTH_WINGS_LAYER)
+	H.remove_underlay(MOTH_WINGS_BEHIND_LAYER)
+
+/datum/species/sectoid
+	name = "Sectoid"
+	name_plural = "Sectoids"
+	icobase = 'icons/mob/human_races/r_sectoid.dmi'
+	deform = 'icons/mob/human_races/r_sectoid.dmi'
+	default_language_holder = /datum/language_holder/sectoid
+	eyes = "blank_eyes"
+	speech_verb_override = "transmits"
+	show_paygrade = TRUE
+	count_human = TRUE
+
+	species_flags = HAS_NO_HAIR|NO_BREATHE|NO_POISON|NO_PAIN|USES_ALIEN_WEAPONS|NO_DAMAGE_OVERLAY
+
+	paincries = list("neuter" = 'sound/voice/sectoid_death.ogg')
+	death_sound = 'sound/voice/sectoid_death.ogg'
+
+	blood_color = "#00FF00"
+	flesh_color = "#C0C0C0"
+
+	reagent_tag = IS_SECTOID
+
+	namepool = /datum/namepool/sectoid
+	special_death_message = "You have perished."
 
 /datum/species/vox
 	name = "Vox"
 	name_plural = "Vox"
 	icobase = 'icons/mob/human_races/r_vox.dmi'
 	deform = 'icons/mob/human_races/r_def_vox.dmi'
-	default_language = "Vox-pidgin"
-	language = "English"
+	default_language_holder = /datum/language_holder/vox
+	taste_sensitivity = TASTE_DULL
 	unarmed_type = /datum/unarmed_attack/claws/strong
 	secondary_unarmed_type = /datum/unarmed_attack/bite/strong
 	rarity_value = 2
@@ -368,16 +575,12 @@
 	poison_type = "phoron"//"oxygen"
 	insulated = 1
 
-	flags = NO_SCAN
+	species_flags = NO_SCAN
 
 	blood_color = "#2299FC"
 	flesh_color = "#808D11"
 
 	reagent_tag = IS_VOX
-
-	inherent_verbs = list(
-		/mob/living/carbon/human/proc/leap
-		)
 
 	has_organ = list(
 		"heart" =    /datum/internal_organ/heart,
@@ -414,7 +617,7 @@
 	breath_type = "nitrogen"
 	poison_type = "oxygen"
 
-	flags = NO_SCAN|NO_BLOOD|NO_PAIN
+	species_flags = NO_SCAN|NO_BLOOD|NO_PAIN|NO_STAMINA
 
 	blood_color = "#2299FC"
 	flesh_color = "#808D11"
@@ -424,11 +627,6 @@
 
 	reagent_tag = IS_VOX
 
-	inherent_verbs = list(
-		/mob/living/carbon/human/proc/leap,
-		/mob/living/carbon/human/proc/gut,
-		/mob/living/carbon/human/proc/commune
-		)
 
 /datum/species/machine
 	name = "Machine"
@@ -436,7 +634,7 @@
 
 	icobase = 'icons/mob/human_races/r_machine.dmi'
 	deform = 'icons/mob/human_races/r_machine.dmi'
-	language = "Tradeband"
+	default_language_holder = /datum/language_holder/machine
 	unarmed_type = /datum/unarmed_attack/punch
 	rarity_value = 2
 
@@ -457,7 +655,7 @@
 
 	body_temperature = 350
 
-	flags = IS_WHITELISTED|NO_BREATHE|NO_SCAN|NO_BLOOD|NO_POISON|NO_PAIN|IS_SYNTHETIC|NO_CHEM_METABOLIZATION
+	species_flags = NO_BREATHE|NO_SCAN|NO_BLOOD|NO_POISON|NO_PAIN|IS_SYNTHETIC|NO_CHEM_METABOLIZATION|NO_STAMINA|DETACHABLE_HEAD
 
 	blood_color = "#EEEEEE"
 	flesh_color = "#272757"
@@ -466,18 +664,40 @@
 		"heart" =    /datum/internal_organ/heart,
 		"brain" =    /datum/internal_organ/brain,
 		)
+	special_death_message = "You have shut down."
+
+/datum/species/skeleton
+	name = "Skeleton"
+	name_plural = "skeletons"
+	icobase = 'icons/mob/human_races/r_skeleton.dmi'
+	deform = 'icons/mob/human_races/r_skeleton.dmi'
+	unarmed_type = /datum/unarmed_attack/punch
+	speech_verb_override = "rattles"
+	show_paygrade = TRUE
+	count_human = TRUE
+
+	species_flags = NO_BREATHE|NO_SCAN|NO_BLOOD|NO_POISON|NO_CHEM_METABOLIZATION|DETACHABLE_HEAD // Where we're going, we don't NEED underwear.
+
+	screams = list("neuter" = 'sound/voice/skeleton_scream.ogg') // RATTLE ME BONES
+	paincries = list("neuter" = 'sound/voice/skeleton_scream.ogg')
+	goredcries = list("neuter" = 'sound/voice/skeleton_scream.ogg')
+	burstscreams = list("neuter" = 'sound/voice/moth_scream.ogg')
+	death_message = "collapses in a pile of bones, with a final rattle..."
+	death_sound = 'sound/voice/skeleton_scream.ogg'
+	namepool = /datum/namepool/skeleton
 
 /datum/species/synthetic
 	name = "Synthetic"
 	name_plural = "synthetics"
 
-	unarmed_type = /datum/unarmed_attack/punch/strong
+	default_language_holder = /datum/language_holder/synthetic
+	unarmed_type = /datum/unarmed_attack/punch
 	rarity_value = 2
 
-	total_health = 150 //more health than regular humans
+	total_health = 125 //more health than regular humans
 
-	brute_mod = 0.75
-	burn_mod = 1.1
+	brute_mod = 0.70
+	burn_mod = 0.70 //Synthetics should not be instantly melted by acid compared to humans - This is a test to hopefully fix very glaring issues involving synthetics taking 2.6 trillion damage when so much as touching acid
 
 	cold_level_1 = -1
 	cold_level_2 = -1
@@ -489,7 +709,7 @@
 
 	body_temperature = 350
 
-	flags = IS_WHITELISTED|NO_BREATHE|NO_SCAN|NO_BLOOD|NO_POISON|NO_PAIN|IS_SYNTHETIC|NO_CHEM_METABOLIZATION
+	species_flags = NO_BREATHE|NO_SCAN|NO_BLOOD|NO_POISON|NO_PAIN|IS_SYNTHETIC|NO_CHEM_METABOLIZATION|NO_STAMINA|DETACHABLE_HEAD|HAS_UNDERWEAR
 
 	blood_color = "#EEEEEE"
 
@@ -498,22 +718,38 @@
 		"brain" =    /datum/internal_organ/brain/prosthetic,
 		)
 
-	knock_down_reduction = 5
-	stun_reduction = 5
+	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
+	see_in_dark = 8
+
+	screams = list(MALE = "male_scream", FEMALE = "female_scream")
+	paincries = list(MALE = "male_pain", FEMALE = "female_pain")
+	goredcries = list(MALE = "male_gored", FEMALE = "female_gored")
+	special_death_message = "You have been shut down.<br><small>But it is not the end of you yet... if you still have your body, wait until somebody can resurrect you...</small>"
 
 
-/datum/species/early_synthetic
+/datum/species/synthetic/handle_post_spawn(mob/living/carbon/human/H)
+	. = ..()
+	var/datum/atom_hud/AH = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED_SYNTH]
+	AH.add_hud_to(H)
+
+
+/datum/species/synthetic/post_species_loss(mob/living/carbon/human/H)
+	var/datum/atom_hud/AH = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED_SYNTH]
+	AH.remove_hud_from(H)
+	return ..()
+
+
+/datum/species/early_synthetic //cosmetic differences only
 	name = "Early Synthetic"
 	name_plural = "Early Synthetics"
 	icobase = 'icons/mob/human_races/r_synthetic.dmi'
 	deform = 'icons/mob/human_races/r_synthetic.dmi'
-	unarmed_type = /datum/unarmed_attack/punch/strong
+	default_language_holder = /datum/language_holder/synthetic
+	unarmed_type = /datum/unarmed_attack/punch
 	rarity_value = 1.5
-	slowdown = 1.3 //Slower than later synths
-	total_health = 200 //But more durable
-	insulated = 1
-	brute_mod = 0.75
-	burn_mod = 1.1
+	total_health = 125
+	brute_mod = 0.70
+	burn_mod = 0.70
 
 	cold_level_1 = -1
 	cold_level_2 = -1
@@ -525,7 +761,7 @@
 
 	body_temperature = 350
 
-	flags = IS_WHITELISTED|NO_BREATHE|NO_SCAN|NO_BLOOD|NO_POISON|NO_PAIN|IS_SYNTHETIC|NO_CHEM_METABOLIZATION
+	species_flags = NO_BREATHE|NO_SCAN|NO_BLOOD|NO_POISON|NO_PAIN|IS_SYNTHETIC|NO_CHEM_METABOLIZATION|NO_STAMINA|DETACHABLE_HEAD|HAS_UNDERWEAR
 
 	blood_color = "#EEEEEE"
 	hair_color = "#000000"
@@ -534,170 +770,36 @@
 		"brain" =    /datum/internal_organ/brain/prosthetic,
 		)
 
-	knock_down_reduction = 2
-	stun_reduction = 2
+	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
+	see_in_dark = 8
 
-/datum/species/zombie
-	name= "Zombie"
-	name_plural = "Zombies"
-	slowdown = 1
-	blood_color = "#333333"
-	icobase = 'icons/mob/human_races/r_goo_zed.dmi'
-	deform = 'icons/mob/human_races/r_goo_zed.dmi'
-	death_message = "seizes up and falls limp... But is it dead?"
-	language = "Zombie"
-	default_language = "Zombie"
-	flags = NO_PAIN|NO_BREATHE|NO_SCAN|NO_POISON
-	brute_mod = 0.25 //EXTREME BULLET RESISTANCE
-	burn_mod = 2 //IT BURNS
-	speech_chance  = 5
-	warning_low_pressure = 0
-	hazard_low_pressure = 0
-	cold_level_1 = -1  //zombies don't mind the cold
-	cold_level_2 = -1
-	cold_level_3 = -1
-	hud_type = /datum/hud_data/zombie
-	has_fine_manipulation = FALSE
-	knock_down_reduction = 10
-	stun_reduction = 10
-	knock_out_reduction = 5
-	has_organ = list()
+	screams = list(MALE = "male_scream", FEMALE = "female_scream")
+	paincries = list(MALE = "male_pain", FEMALE = "female_pain")
+	goredcries = list(MALE = "male_gored", FEMALE = "female_gored")
+	special_death_message = "You have been shut down.<br><small>But it is not the end of you yet... if you still have your body, wait until somebody can resurrect you...</small>"
 
 
-/datum/species/zombie/handle_post_spawn(var/mob/living/carbon/human/H)
-	if(H.hud_used)
-		cdel(H.hud_used)
-		H.hud_used = null
-//		H.create_mob_hud()
-		if(H.hud_used)
-			H.hud_used.show_hud(H.hud_used.hud_version)
-	if(H.l_hand) H.drop_inv_item_on_ground(H.l_hand, FALSE, TRUE)
-	if(H.r_hand) H.drop_inv_item_on_ground(H.r_hand, FALSE, TRUE)
-	if(H.wear_id) cdel(H.wear_id)
-	if(H.gloves) cdel(H.gloves)
-	if(H.head) cdel(H.head)
-	if(H.glasses) cdel(H.glasses)
-	if(H.wear_mask) cdel(H.wear_mask)
-	var/obj/item/weapon/zombie_claws/ZC = new()
-	ZC.icon_state = "claw_r"
-	H.equip_to_slot_or_del(ZC, WEAR_R_HAND, TRUE)
-	H.equip_to_slot_or_del(new /obj/item/weapon/zombie_claws, WEAR_L_HAND, TRUE)
-	H.equip_to_slot(new /obj/item/clothing/glasses/zombie_eyes, WEAR_EYES, TRUE)
-	H.equip_to_slot(new /obj/item/clothing/mask/rebreather/scarf/zombie, WEAR_FACE, TRUE)
+/datum/species/early_synthetic/handle_post_spawn(mob/living/carbon/human/H)
+	. = ..()
+	var/datum/atom_hud/AH = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED_SYNTH]
+	AH.add_hud_to(H)
+
+
+/datum/species/early_synthetic/post_species_loss(mob/living/carbon/human/H)
+	var/datum/atom_hud/AH = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED_SYNTH]
+	AH.remove_hud_from(H)
 	return ..()
 
 
-
-/datum/species/zombie/handle_unique_behavior(var/mob/living/carbon/human/H)
-	if(prob(5))
-		playsound(H.loc, 'sound/voice/alien_talk3.ogg', 25, 1)
+/mob/living/carbon/human/proc/reset_jitteriness()
+	jitteriness = 0
 
 
-/datum/species/zombie/handle_death(var/mob/living/carbon/human/H, gibbed)
-	set waitfor = 0
-	if(gibbed) return
-	if(!H.regenZ) return  //Also in each check, in case they are hit with the stuff to stop the regenerating during timers.
-	sleep(5)
-	if(H && H.loc && H.stat == DEAD && H.regenZ)
-		to_chat(H, "\green You fall... but your body is slowly regenerating itself.")
-	sleep(1200)
-	if(H && H.loc && H.stat == DEAD && H.regenZ)
-		to_chat(H, "\green Your body is half regenerated...")
-	sleep(1200)
-
-	if(H && H.loc && H.stat == DEAD && H.regenZ)
-		H.revive(TRUE)
-		H.stunned = 4
-		H.make_jittery(500)
-		H.visible_message("<span class = 'warning'>[H] rises!", "\green YOU RISE AGAIN!")
-		H.equip_to_slot(new /obj/item/clothing/glasses/zombie_eyes, WEAR_EYES, TRUE)
-		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/marine, WEAR_FEET, TRUE)
-
-		spawn(30)
-			H.jitteriness = 0
-
-
-/datum/hud_data/zombie
-	has_a_intent = 1
-	has_m_intent = 1
-	has_warnings = 1
-	has_pressure = 1
-	has_nutrition = 0
-	has_bodytemp = 1
-	has_hands = 1
-	has_drop = 0
-	has_throw = 0
-	has_resist = 1
-	has_internals = 0
-	gear = list()
-
-
-/datum/species/synthetic/handle_post_spawn(mob/living/carbon/human/H)
-	H.universal_understand = 1
-	return ..()
-
-
-/datum/species/yautja
-	name = "Yautja"
-	name_plural = "Yautja"
-	icobase = 'icons/mob/human_races/r_predator.dmi'
-	deform = 'icons/mob/human_races/r_predator.dmi'
-	brute_mod = 0.33 //Beefy!
-	burn_mod = 0.65
-	reagent_tag = IS_YAUTJA
-	flags = IS_WHITELISTED|HAS_SKIN_COLOR|NO_PAIN|NO_SCAN|NO_POISON //Hmm, let's see if this does anything
-	language = "Sainja" //"Warrior"
-	default_language = "Sainja"
-	unarmed_type = /datum/unarmed_attack/punch/strong
-	secondary_unarmed_type = /datum/unarmed_attack/bite/strong
-	blood_color = "#20d450"
-	flesh_color = "#907E4A"
-	speech_sounds = list('sound/voice/pred_click1.ogg', 'sound/voice/pred_click2.ogg')
-	speech_chance = 100
-	hud_type = /datum/hud_data/yautja
-	death_message = "clicks in agony and falls still, motionless and completely lifeless..."
-	darksight = 5
-	slowdown = -0.5
-
-	heat_level_1 = 500
-	heat_level_2 = 700
-	heat_level_3 = 1000
-
-	inherent_verbs = list(
-		/mob/living/carbon/human/proc/pred_buy,
-		/mob/living/carbon/human/proc/butcher
-		)
-
-	knock_down_reduction = 2
-	stun_reduction = 2
-
-
-/datum/species/yautja/post_species_loss(mob/living/carbon/human/H)
-	var/datum/mob_hud/medical/advanced/A = huds[MOB_HUD_MEDICAL_ADVANCED]
-	A.add_to_hud(H)
-	H.dna.b_type = pick("A+","A-","B+","B-","O-","O+","AB+","AB-")
-
-/datum/species/yautja/handle_post_spawn(var/mob/living/carbon/human/H)
-	//Spawn them some equipment
-	H.equip_to_slot_or_del(new /obj/item/clothing/under/chainshirt(H), WEAR_BODY)
-	H.equip_to_slot_or_del(new /obj/item/clothing/gloves/yautja(H), WEAR_HANDS)
-	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/yautja(H), WEAR_EAR)
-	H.equip_to_slot_or_del(new /obj/item/weapon/yautja_knife(H), WEAR_R_STORE)
-	H.equip_to_slot_or_del(new /obj/item/device/yautja_teleporter(H),WEAR_L_STORE)
-
-	H.universal_understand = 1
-
-	H.dna.b_type = "Y*"
-
-	var/datum/mob_hud/medical/advanced/A = huds[MOB_HUD_MEDICAL_ADVANCED]
-	A.remove_from_hud(H)
-
-	return ..()
 
 // Called when using the shredding behavior.
-/datum/species/proc/can_shred(var/mob/living/carbon/human/H)
+/datum/species/proc/can_shred(mob/living/carbon/human/H)
 
-	if(H.a_intent != "hurt")
+	if(H.a_intent != INTENT_HARM)
 		return 0
 
 	if(unarmed.is_usable(H))
@@ -719,17 +821,17 @@
 	var/sharp = 0
 	var/edge = 0
 
-/datum/unarmed_attack/proc/is_usable(var/mob/living/carbon/human/user)
-	if(user.is_mob_restrained())
+/datum/unarmed_attack/proc/is_usable(mob/living/carbon/human/user)
+	if(user.restrained())
 		return 0
 
 	// Check if they have a functioning hand.
 	var/datum/limb/E = user.get_limb("l_hand")
-	if(E && !(E.status & LIMB_DESTROYED))
+	if(E && !(E.limb_status & LIMB_DESTROYED))
 		return 1
 
 	E = user.get_limb("r_hand")
-	if(E && !(E.status & LIMB_DESTROYED))
+	if(E && !(E.limb_status & LIMB_DESTROYED))
 		return 1
 
 	return 0
@@ -742,7 +844,7 @@
 	sharp = 1
 	edge = 1
 
-/datum/unarmed_attack/bite/is_usable(var/mob/living/carbon/human/user)
+/datum/unarmed_attack/bite/is_usable(mob/living/carbon/human/user)
 	if (user.wear_mask && istype(user.wear_mask, /obj/item/clothing/mask/muzzle))
 		return 0
 	return 1
@@ -786,45 +888,122 @@
 	var/has_throw = 1     // Set to draw throw button.
 	var/has_resist = 1    // Set to draw resist button.
 	var/has_internals = 1 // Set to draw the internals toggle button.
-	var/is_yautja = 0
 	var/list/equip_slots = list() // Checked by mob_can_equip().
 
 	// Contains information on the position and tag for all inventory slots
 	// to be drawn for the mob. This is fairly delicate, try to avoid messing with it
 	// unless you know exactly what it does.
 	var/list/gear = list(
-		"i_clothing" =   list("loc" = ui_iclothing, "slot" = WEAR_BODY, "state" = "center", "toggle" = 1, "dir" = SOUTH),
-		"o_clothing" =   list("loc" = ui_oclothing, "slot" = WEAR_JACKET, "state" = "equip",  "toggle" = 1,  "dir" = SOUTH),
-		"mask" =         list("loc" = ui_mask,      "slot" = WEAR_FACE, "state" = "equip",  "toggle" = 1,  "dir" = NORTH),
-		"gloves" =       list("loc" = ui_gloves,    "slot" = WEAR_HANDS,    "state" = "gloves", "toggle" = 1),
-		"eyes" =         list("loc" = ui_glasses,   "slot" = WEAR_EYES,   "state" = "glasses","toggle" = 1),
-		"wear_ear" =     list("loc" = ui_wear_ear,  "slot" = WEAR_EAR,     "state" = "ears",   "toggle" = 1),
-		"head" =         list("loc" = ui_head,      "slot" = WEAR_HEAD,      "state" = "hair",   "toggle" = 1),
-		"shoes" =        list("loc" = ui_shoes,     "slot" = WEAR_FEET,     "state" = "shoes",  "toggle" = 1),
-		"suit storage" = list("loc" = ui_sstore1,   "slot" = WEAR_J_STORE,   "state" = "belt",   "dir" = 8),
-		"back" =         list("loc" = ui_back,      "slot" = WEAR_BACK,      "state" = "back",   "dir" = NORTH),
-		"id" =           list("loc" = ui_id,        "slot" = WEAR_ID,   "state" = "id",     "dir" = NORTH),
-		"storage1" =     list("loc" = ui_storage1,  "slot" = WEAR_L_STORE,   "state" = "pocket"),
-		"storage2" =     list("loc" = ui_storage2,  "slot" = WEAR_R_STORE,   "state" = "pocket"),
-		"belt" =         list("loc" = ui_belt,      "slot" = WEAR_WAIST,      "state" = "belt")
+		"i_clothing" =   list("loc" = ui_iclothing, "slot" = SLOT_W_UNIFORM, "state" = "uniform", "toggle" = TRUE),
+		"o_clothing" =   list("loc" = ui_oclothing, "slot" = SLOT_WEAR_SUIT, "state" = "suit",  "toggle" = TRUE),
+		"mask" =         list("loc" = ui_mask,      "slot" = SLOT_WEAR_MASK, "state" = "mask",  "toggle" = TRUE),
+		"gloves" =       list("loc" = ui_gloves,    "slot" = SLOT_GLOVES,    "state" = "gloves", "toggle" = TRUE),
+		"eyes" =         list("loc" = ui_glasses,   "slot" = SLOT_GLASSES,   "state" = "glasses","toggle" = TRUE),
+		"wear_ear" =     list("loc" = ui_wear_ear,  "slot" = SLOT_EARS,     "state" = "ears",   "toggle" = TRUE),
+		"head" =         list("loc" = ui_head,      "slot" = SLOT_HEAD,      "state" = "head",   "toggle" = TRUE),
+		"shoes" =        list("loc" = ui_shoes,     "slot" = SLOT_SHOES,     "state" = "shoes",  "toggle" = TRUE),
+		"suit storage" = list("loc" = ui_sstore1,   "slot" = SLOT_S_STORE,   "state" = "suit_storage"),
+		"back" =         list("loc" = ui_back,      "slot" = SLOT_BACK,      "state" = "back"),
+		"id" =           list("loc" = ui_id,        "slot" = SLOT_WEAR_ID,   "state" = "id"),
+		"storage1" =     list("loc" = ui_storage1,  "slot" = SLOT_L_STORE,   "state" = "pocket"),
+		"storage2" =     list("loc" = ui_storage2,  "slot" = SLOT_R_STORE,   "state" = "pocket"),
+		"belt" =         list("loc" = ui_belt,      "slot" = SLOT_BELT,      "state" = "belt")
 		)
 
 /datum/hud_data/New()
-	..()
+	. = ..()
 	for(var/slot in gear)
 		equip_slots |= gear[slot]["slot"]
 
 	if(has_hands)
-		equip_slots |= WEAR_L_HAND
-		equip_slots |= WEAR_R_HAND
-		equip_slots |= WEAR_HANDCUFFS
+		equip_slots |= SLOT_L_HAND
+		equip_slots |= SLOT_R_HAND
+		equip_slots |= SLOT_HANDCUFFED
+	if(SLOT_HEAD in equip_slots)
+		equip_slots |= SLOT_IN_HEAD
+	if(SLOT_BACK in equip_slots)
+		equip_slots |= SLOT_IN_BACKPACK
+		equip_slots |= SLOT_IN_B_HOLSTER
+	if(SLOT_BELT in equip_slots)
+		equip_slots |= SLOT_IN_HOLSTER
+		equip_slots |= SLOT_IN_BELT
+	if(SLOT_WEAR_SUIT in equip_slots)
+		equip_slots |= SLOT_IN_S_HOLSTER
+		equip_slots |= SLOT_IN_SUIT
+	if(SLOT_SHOES in equip_slots)
+		equip_slots |= SLOT_IN_BOOT
+	if(SLOT_W_UNIFORM in equip_slots)
+		equip_slots |= SLOT_IN_STORAGE
+		equip_slots |= SLOT_IN_L_POUCH
+		equip_slots |= SLOT_IN_R_POUCH
+		equip_slots |= SLOT_ACCESSORY
+		equip_slots |= SLOT_IN_ACCESSORY
 
-	if(WEAR_BACK in equip_slots)
-		equip_slots |= WEAR_IN_BACK
-	if(WEAR_WAIST in equip_slots)
-		equip_slots |= WEAR_IN_HOLSTER
-	if(WEAR_JACKET in equip_slots)
-		equip_slots |= WEAR_IN_J_HOLSTER
 
-	equip_slots |= WEAR_LEGCUFFS
-	equip_slots |= WEAR_IN_B_HOLSTER
+/datum/species/proc/apply_damage(damage = 0, damagetype = BRUTE, def_zone, blocked = 0, sharp = FALSE, edge = FALSE, updating_health = FALSE, mob/living/carbon/human/victim)
+	var/hit_percent = (100 - blocked) * 0.01
+
+	if(hit_percent <= 0) //total negation
+		return 0
+
+	damage *= CLAMP01(hit_percent) //Percentage reduction
+
+	if(!damage) //Complete negation
+		return 0
+
+	if(victim.protection_aura)
+		damage = round(damage * ((15 - victim.protection_aura) / 15))
+
+	var/datum/limb/organ = null
+	if(isorgan(def_zone))
+		organ = def_zone
+	else
+		if(!def_zone)
+			def_zone = ran_zone(def_zone)
+		organ = victim.get_limb(check_zone(def_zone))
+	if(!organ)
+		return FALSE
+
+	switch(damagetype)
+		if(BRUTE)
+			victim.damageoverlaytemp = 20
+			if(brute_mod)
+				damage *= brute_mod
+			if(organ.take_damage_limb(damage, 0, sharp, edge))
+				victim.UpdateDamageIcon()
+		if(BURN)
+			victim.damageoverlaytemp = 20
+			if(burn_mod)
+				damage *= burn_mod
+			if(organ.take_damage_limb(0, damage, sharp, edge))
+				victim.UpdateDamageIcon()
+		if(HALLOSS)
+			if(species_flags & NO_PAIN)
+				return
+			switch(damage)
+				if(-INFINITY to 0)
+					return FALSE
+				if(25 to 50)
+					if(prob(20))
+						victim.emote("pain")
+				if(50 to INFINITY)
+					if(prob(60))
+						victim.emote("pain")
+			victim.adjustHalLoss(damage)
+		if(TOX)
+			victim.adjustToxLoss(damage)
+		if(OXY)
+			victim.adjustOxyLoss(damage)
+		if(CLONE)
+			victim.adjustCloneLoss(damage)
+		if(STAMINA)
+			if(species_flags & NO_STAMINA)
+				return
+			victim.adjustStaminaLoss(damage)
+
+	// Will set our damageoverlay icon to the next level, which will then be set back to the normal level the next mob.Life().
+	SEND_SIGNAL(victim, COMSIG_HUMAN_DAMAGE_TAKEN, damage)
+
+	if(updating_health)
+		victim.updatehealth()
+	return damage

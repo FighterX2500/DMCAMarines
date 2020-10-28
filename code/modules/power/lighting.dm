@@ -23,9 +23,9 @@
 	var/sheets_refunded = 2
 	var/obj/machinery/light/newlight = null
 
-/obj/machinery/light_construct/New()
-	..()
-	if (fixture_type == "bulb")
+/obj/machinery/light_construct/Initialize()
+	. = ..()
+	if(fixture_type == "bulb")
 		icon_state = "bulb-construct-stage1"
 
 /obj/machinery/light_construct/examine(mob/user)
@@ -39,81 +39,83 @@
 			to_chat(user, "The casing is closed.")
 
 
-/obj/machinery/light_construct/attackby(obj/item/W as obj, mob/user as mob)
-	src.add_fingerprint(user)
-	if (istype(W, /obj/item/tool/wrench))
-		if (src.stage == 1)
-			playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
-			to_chat(usr, "You begin deconstructing [src].")
-			if (!do_after(usr, 30, TRUE, 5, BUSY_ICON_BUILD))
+/obj/machinery/light_construct/attackby(obj/item/I, mob/user, params)
+	. = ..()
+
+	if(iswrench(I))
+		if(stage == 1)
+			playsound(loc, 'sound/items/ratchet.ogg', 25, 1)
+			to_chat(user, "You begin deconstructing [src].")
+			if(!do_after(usr, 30, TRUE, src, BUSY_ICON_BUILD))
 				return
-			new /obj/item/stack/sheet/metal( get_turf(src.loc), sheets_refunded )
-			user.visible_message("[user.name] deconstructs [src].", \
+			new /obj/item/stack/sheet/metal(get_turf(loc), sheets_refunded)
+			user.visible_message("[user] deconstructs [src].", \
 				"You deconstruct [src].", "You hear a noise.")
-			playsound(src.loc, 'sound/items/Deconstruct.ogg', 25, 1)
-			cdel(src)
-		if (src.stage == 2)
-			to_chat(usr, "You have to remove the wires first.")
+			playsound(loc, 'sound/items/deconstruct.ogg', 25, 1)
+			qdel(src)
+		else if(stage == 2)
+			to_chat(user, "You have to remove the wires first.")
+			return
+		else if(stage == 3)
+			to_chat(user, "You have to unscrew the case first.")
 			return
 
-		if (src.stage == 3)
-			to_chat(usr, "You have to unscrew the case first.")
+	else if(iswirecutter(I))
+		if(stage != 2)
 			return
-
-	if(istype(W, /obj/item/tool/wirecutters))
-		if (src.stage != 2)
-			return
-		src.stage = 1
+		stage = 1
 		switch(fixture_type)
-			if ("tube")
-				src.icon_state = "tube-construct-stage1"
+			if("tube")
+				icon_state = "tube-construct-stage1"
 			if("bulb")
-				src.icon_state = "bulb-construct-stage1"
-		new /obj/item/stack/cable_coil(get_turf(src.loc), 1, "red")
+				icon_state = "bulb-construct-stage1"
+		new /obj/item/stack/cable_coil(get_turf(loc), 1, "red")
 		user.visible_message("[user.name] removes the wiring from [src].", \
 			"You remove the wiring from [src].", "You hear a noise.")
-		playsound(src.loc, 'sound/items/Wirecutter.ogg', 25, 1)
-		return
+		playsound(loc, 'sound/items/wirecutter.ogg', 25, 1)
 
-	if(istype(W, /obj/item/stack/cable_coil))
-		if (src.stage != 1)
+	else if(iscablecoil(I))
+		var/obj/item/stack/cable_coil/coil = I
+
+		if(stage != 1)
 			return
-		var/obj/item/stack/cable_coil/coil = W
-		if (coil.use(1))
-			switch(fixture_type)
-				if ("tube")
-					src.icon_state = "tube-construct-stage2"
-				if("bulb")
-					src.icon_state = "bulb-construct-stage2"
-			src.stage = 2
-			user.visible_message("[user.name] adds wires to [src].", \
-				"You add wires to [src].")
-		return
 
-	if(istype(W, /obj/item/tool/screwdriver))
-		if (src.stage == 2)
-			switch(fixture_type)
-				if ("tube")
-					src.icon_state = "tube-empty"
-				if("bulb")
-					src.icon_state = "bulb-empty"
-			src.stage = 3
-			user.visible_message("[user.name] closes [src]'s casing.", \
-				"You close [src]'s casing.", "You hear a noise.")
-			playsound(src.loc, 'sound/items/Screwdriver.ogg', 25, 1)
-
-			switch(fixture_type)
-
-				if("tube")
-					newlight = new /obj/machinery/light/built(src.loc)
-				if ("bulb")
-					newlight = new /obj/machinery/light/small/built(src.loc)
-
-			newlight.dir = src.dir
-			src.transfer_fingerprints_to(newlight)
-			cdel(src)
+		if(!coil.use(1))
 			return
-	..()
+
+		switch(fixture_type)
+			if("tube")
+				icon_state = "tube-construct-stage2"
+			if("bulb")
+				icon_state = "bulb-construct-stage2"
+		stage = 2
+		user.visible_message("[user] adds wires to [src].", \
+			"You add wires to [src].")
+
+	else if(isscrewdriver(I))
+		if(stage != 2)
+			return
+
+		switch(fixture_type)
+			if("tube")
+				icon_state = "tube-empty"
+			if("bulb")
+				icon_state = "bulb-empty"
+
+		stage = 3
+		user.visible_message("[user] closes [src]'s casing.", \
+			"You close [src]'s casing.", "You hear a noise.")
+		playsound(loc, 'sound/items/screwdriver.ogg', 25, 1)
+
+		switch(fixture_type)
+			if("tube")
+				newlight = new /obj/machinery/light/built(loc)
+			if("bulb")
+				newlight = new /obj/machinery/light/small/built(loc)
+
+		newlight.setDir(dir)
+		qdel(src)
+
 
 /obj/machinery/light_construct/small
 	name = "small light fixture frame"
@@ -134,13 +136,15 @@
 	desc = "A lighting fixture."
 	anchored = TRUE
 	layer = FLY_LAYER
-	use_power = 2
+	use_power = ACTIVE_POWER_USE
 	idle_power_usage = 2
 	active_power_usage = 20
 	power_channel = LIGHT //Lights are calc'd via area so they dont need to be in the machine list
 	var/on = FALSE
 	var/on_gs = FALSE
 	var/brightness = 8			// luminosity when on, also used in power calculation
+	var/bulb_power = 1			// basically the alpha of the emitted light source
+	var/bulb_colour = COLOR_WHITE
 	var/status = LIGHT_OK		// LIGHT_OK, _EMPTY, _BURNED or _BROKEN
 	var/flickering = FALSE
 	var/light_type = /obj/item/light_bulb/tube		// the type of light item
@@ -166,49 +170,54 @@
 	light_type = /obj/item/light_bulb/tube/large
 	brightness = 12
 
-/obj/machinery/light/built/New()
+/obj/machinery/light/built/Initialize()
+	. = ..()
 	status = LIGHT_EMPTY
-	update(0)
-	..()
+	update(FALSE)
 
-/obj/machinery/light/small/built/New()
+
+/obj/machinery/light/small/built/Initialize()
+	. = ..()
 	status = LIGHT_EMPTY
-	update(0)
-	..()
+	update(FALSE)
 
 // create a new lighting fixture
-/obj/machinery/light/New()
-	..()
+/obj/machinery/light/Initialize(mapload, ...)
+	. = ..()
 
-	spawn(2)
-		switch(fitting)
-			if("tube")
-				brightness = 8
-				if(prob(2))
-					broken(1)
-			if("bulb")
-				brightness = 4
-				if(prob(5))
-					broken(1)
+	switch(fitting)
+		if("tube")
+			brightness = 8
+			if(prob(2))
+				broken(TRUE)
+		if("bulb")
+			brightness = 4
+			if(prob(5))
+				broken(TRUE)
 
-		spawn(1)
-			update(0)
+	update(FALSE)
 
 	switch(dir)
-		if(1)
-			pixel_y = 23
-		if(4)
+		if(NORTH)
+			pixel_y = 20
+		if(EAST)
 			pixel_x = 10
-		if(8)
+		if(WEST)
 			pixel_x = -10
 
-/obj/machinery/light/Dispose()
+	return INITIALIZE_HINT_LATELOAD
+
+
+/obj/machinery/light/LateInitialize()
+	var/area/A = get_area(src)
+	seton(A.lightswitch && A.power_light)
+
+
+/obj/machinery/light/Destroy()
 	var/area/A = get_area(src)
 	if(A)
 		on = FALSE
-//		A.update_lights()
-	SetLuminosity(0)
-	. = ..()
+	return ..()
 
 /obj/machinery/light/proc/is_broken()
 	if(status == LIGHT_BROKEN)
@@ -232,40 +241,41 @@
 	return
 
 // update the icon_state and luminosity of the light depending on its state
-/obj/machinery/light/proc/update(var/trigger = 1)
-
-	update_icon()
+/obj/machinery/light/proc/update(trigger = TRUE)
+	switch(status)
+		if(LIGHT_BROKEN, LIGHT_BURNED, LIGHT_EMPTY)
+			on = FALSE
 	if(on)
-		if(luminosity != brightness)
+		var/BR = brightness
+		var/PO = bulb_power
+		var/CO = bulb_colour
+		if(color)
+			CO = color
+		var/matching = light && BR == light.light_range && PO == light.light_power && CO == light.light_color
+		if(!matching)
 			switchcount++
 			if(rigged)
 				if(status == LIGHT_OK && trigger)
-
-					log_admin("LOG: Rigged light explosion, last touched by [fingerprintslast]")
-					message_admins("LOG: Rigged light explosion, last touched by [fingerprintslast]")
-
 					explode()
-			else if( prob( min(60, switchcount*switchcount*0.01) ) )
-				if(status == LIGHT_OK && trigger)
-					status = LIGHT_BURNED
-					icon_state = "[base_state]-burned"
-					on = FALSE
-					SetLuminosity(0)
+			else if(prob(min(60, (switchcount ^ 2) * 0.01)))
+				if(trigger)
+					broken()
 			else
-				use_power = 2
-				SetLuminosity(brightness)
+				use_power = ACTIVE_POWER_USE
+				set_light(BR, PO, CO)
 	else
-		use_power = 1
-		SetLuminosity(0)
+		use_power = IDLE_POWER_USE
+		set_light(0)
 
 	active_power_usage = (luminosity * 10)
 	if(on != on_gs)
 		on_gs = on
+	update_icon()
 
 
 // attempt to set the light's on/off status
 // will not switch on if broken/burned/empty
-/obj/machinery/light/proc/seton(var/s)
+/obj/machinery/light/proc/seton(s)
 	on = (s && status == LIGHT_OK)
 	update()
 
@@ -286,109 +296,87 @@
 
 // attack with item - insert light (if right type), otherwise try to break the light
 
-/obj/machinery/light/attackby(obj/item/W, mob/user)
+/obj/machinery/light/attackby(obj/item/I, mob/user, params)
+	. = ..()
 
-	//Light replacer code
-	if(istype(W, /obj/item/device/lightreplacer))
-		var/obj/item/device/lightreplacer/LR = W
-		if(isliving(user))
-			var/mob/living/U = user
-			LR.ReplaceLight(src, U)
+	if(istype(I, /obj/item/lightreplacer))
+		var/obj/item/lightreplacer/LR = I
+		if(!isliving(user))
 			return
 
-	// attempt to insert light
-	if(istype(W, /obj/item/light_bulb))
+		var/mob/living/L = user
+		LR.ReplaceLight(src, L)
+
+	else if(istype(I, /obj/item/light_bulb))
 		if(status != LIGHT_EMPTY)
 			to_chat(user, "There is a [fitting] already inserted.")
 			return
-		else
-			src.add_fingerprint(user)
-			var/obj/item/light_bulb/L = W
-			if(istype(L, light_type))
-				status = L.status
-				to_chat(user, "You insert the [L.name].")
-				switchcount = L.switchcount
-				rigged = L.rigged
-				brightness = L.brightness
-				l_color = L.color
-				on = has_power()
-				update()
 
-				if(user.temp_drop_inv_item(L))
-					cdel(L)
+		var/obj/item/light_bulb/L = I
+		if(!istype(L, light_type))
+			to_chat(user, "This type of light requires a [fitting].")
+			return
 
-					if(on && rigged)
+		status = L.status
+		to_chat(user, "You insert \the [L].")
+		switchcount = L.switchcount
+		rigged = L.rigged
+		brightness = L.brightness
+		on = has_power()
+		update()
 
-						log_admin("LOG: Rigged light explosion, last touched by [fingerprintslast]")
-						message_admins("LOG: Rigged light explosion, last touched by [fingerprintslast]")
+		if(!user.temporarilyRemoveItemFromInventory(L))
+			return
 
-						explode()
-			else
-				to_chat(user, "This type of light requires a [fitting].")
-				return
+		qdel(L)
 
-		// attempt to break the light
-		//If xenos decide they want to smash a light bulb with a toolbox, who am I to stop them? /N
+		if(on && rigged)
+			explode()
 
 	else if(status != LIGHT_BROKEN && status != LIGHT_EMPTY)
-
-
-		if(prob(1+W.force * 5))
-
-			to_chat(user, "You hit the light, and it smashes!")
-			for(var/mob/M in viewers(src))
-				if(M == user)
-					continue
-				M.show_message("[user.name] smashed the light!", 3, "You hear a tinkle of breaking glass", 2)
-			if(on && (W.flags_atom & CONDUCT))
-				//if(!user.mutations & COLD_RESISTANCE)
-				if (prob(12))
-					electrocute_mob(user, get_area(src), src, 0.3)
-			broken()
-
-		else
+		if(!prob(1 + I.force * 5))
 			to_chat(user, "You hit the light!")
+			return
 
-	// attempt to stick weapon into light socket
+		visible_message("[user] smashed the light!", "You hit the light, and it smashes!")
+		if(on && (I.flags_atom & CONDUCT) && prob(12))
+			electrocute_mob(user, get_area(src), src, 0.3)
+		broken()
+
 	else if(status == LIGHT_EMPTY)
-		if(istype(W, /obj/item/tool/screwdriver)) //If it's a screwdriver open it.
-			playsound(src.loc, 'sound/items/Screwdriver.ogg', 25, 1)
-			user.visible_message("[user.name] opens [src]'s casing.", \
+		if(isscrewdriver(I)) //If it's a screwdriver open it.
+			playsound(loc, 'sound/items/screwdriver.ogg', 25, 1)
+			user.visible_message("[user] opens [src]'s casing.", \
 				"You open [src]'s casing.", "You hear a noise.")
-			var/obj/machinery/light_construct/newlight = null
+			var/obj/machinery/light_construct/newlight
 			switch(fitting)
 				if("tube")
-					newlight = new /obj/machinery/light_construct(src.loc)
+					newlight = new /obj/machinery/light_construct(loc)
 					newlight.icon_state = "tube-construct-stage2"
 
 				if("bulb")
-					newlight = new /obj/machinery/light_construct/small(src.loc)
+					newlight = new /obj/machinery/light_construct/small(loc)
 					newlight.icon_state = "bulb-construct-stage2"
-			newlight.dir = src.dir
+			newlight.setDir(dir)
 			newlight.stage = 2
-			newlight.fingerprints = src.fingerprints
-			newlight.fingerprintshidden = src.fingerprintshidden
-			newlight.fingerprintslast = src.fingerprintslast
-			cdel(src)
-			return
+			qdel(src)
 
-		to_chat(user, "You stick \the [W] into the light socket!")
-		if(has_power() && (W.flags_atom & CONDUCT))
+		else if(has_power() && (I.flags_atom & CONDUCT))
+			to_chat(user, "You stick \the [I] into the light socket!")
 			var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
 			s.set_up(3, 1, src)
 			s.start()
-			//if(!user.mutations & COLD_RESISTANCE)
-			if (prob(75))
-				electrocute_mob(user, get_area(src), src, rand(0.7,1.0))
+			if(prob(75))
+				electrocute_mob(user, get_area(src), src, rand(7, 10) * 0.1)
 
 
 // returns whether this light has power
 // true if area has power and lightswitch is on
 /obj/machinery/light/proc/has_power()
-	var/area/A = src.loc.loc
-	return A.master.lightswitch && A.master.power_light
+	var/area/A = get_area(src)
+	return A.lightswitch && A.power_light
 
-/obj/machinery/light/proc/flicker(var/amount = rand(10, 20))
+/obj/machinery/light/proc/flicker(amount = rand(10, 20))
 	if(flickering)
 		return
 	flickering = TRUE
@@ -407,37 +395,25 @@
 // ai attack - make lights flicker, because why not
 
 /obj/machinery/light/attack_ai(mob/user)
-	src.flicker(1)
-	return
+	flicker(1)
 
-/obj/machinery/light/attack_animal(mob/living/M)
-	if(M.melee_damage_upper == 0)
-		return
-	if(status == LIGHT_EMPTY||status == LIGHT_BROKEN)
-		to_chat(M, "\red That object is useless to you.")
-		return
-	else if (status == LIGHT_OK||status == LIGHT_BURNED)
-		for(var/mob/O in viewers(src))
-			O.show_message("\red [M.name] smashed the light!", 3, "You hear a tinkle of breaking glass", 2)
-		broken()
-	return
 
 //Xenos smashing lights
-/obj/machinery/light/attack_alien(mob/living/carbon/Xenomorph/M)
+/obj/machinery/light/attack_alien(mob/living/carbon/xenomorph/M)
 	if(status == 2) //Ignore if broken.
 		return FALSE
-	M.animation_attack_on(src)
+	M.do_attack_animation(src, ATTACK_EFFECT_SMASH)
 	M.visible_message("<span class='danger'>\The [M] smashes [src]!</span>", \
-	"<span class='danger'>You smash [src]!</span>", null, 5)
+	"<span class='danger'>We smash [src]!</span>", null, 5)
 	broken() //Smashola!
 
 // attack with hand - remove tube/bulb
 // if hands aren't protected and the light is on, burn the player
 
-/obj/machinery/light/attack_hand(mob/user)
-
-	add_fingerprint(user)
-
+/obj/machinery/light/attack_hand(mob/living/user)
+	. = ..()
+	if(.)
+		return
 	if(status == LIGHT_EMPTY)
 		to_chat(user, "There is no [fitting] in this light.")
 		return
@@ -445,8 +421,7 @@
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
 		if(H.species.can_shred(H))
-			for(var/mob/M in viewers(src))
-				M.show_message("\red [user.name] smashed the light!", 3, "You hear a tinkle of breaking glass", 2)
+			visible_message("<span class='warning'>[user] smashed the light!</span>", null, "You hear a tinkle of breaking glass")
 			broken()
 			return
 
@@ -464,10 +439,8 @@
 		else
 			prot = 1
 
-		if(prot > 0 || (COLD_RESISTANCE in user.mutations))
+		if(prot > 0)
 			to_chat(user, "You remove the light [fitting]")
-		else if(TK in user.mutations)
-			to_chat(user, "You telekinetically remove the light [fitting].")
 		else
 			to_chat(user, "You try to remove the light [fitting], but it's too hot and you don't want to burn your hand.")
 			return				// if burned, don't remove the light
@@ -479,7 +452,6 @@
 	L.status = status
 	L.rigged = rigged
 	L.brightness = src.brightness
-	L.color = l_color
 
 	// light item inherits the switchcount, then zero it
 	L.switchcount = switchcount
@@ -487,41 +459,14 @@
 
 	L.update()
 
-	if(user.put_in_active_hand(L))	//succesfully puts it in our active hand
-		L.add_fingerprint(user)
-	else
+	if(!user.put_in_active_hand(L))	//succesfully puts it in our active hand
 		L.forceMove(loc) //if not, put it on the ground
-	status = LIGHT_EMPTY
-	update()
-
-
-/obj/machinery/light/attack_tk(mob/user)
-	if(status == LIGHT_EMPTY)
-		to_chat(user, "There is no [fitting] in this light.")
-		return
-
-	to_chat(user, "You telekinetically remove the light [fitting].")
-	// create a light tube/bulb item and put it in the user's hand
-	var/obj/item/light_bulb/L = new light_type()
-	L.status = status
-	L.rigged = rigged
-	L.brightness = brightness
-	L.color = l_color
-
-	// light item inherits the switchcount, then zero it
-	L.switchcount = switchcount
-	switchcount = 0
-
-	L.update()
-	L.add_fingerprint(user)
-	L.loc = loc
-
 	status = LIGHT_EMPTY
 	update()
 
 // break the light and make sparks if was on
 
-/obj/machinery/light/proc/broken(var/skip_sound_and_sparks = 0)
+/obj/machinery/light/proc/broken(skip_sound_and_sparks = 0)
 	if(status == LIGHT_EMPTY)
 		return
 
@@ -548,13 +493,13 @@
 
 /obj/machinery/light/ex_act(severity)
 	switch(severity)
-		if(1.0)
-			cdel(src)
+		if(EXPLODE_DEVASTATE)
+			qdel(src)
 			return
-		if(2.0)
+		if(EXPLODE_HEAVY)
 			if (prob(75))
 				broken()
-		if(3.0)
+		if(EXPLODE_LIGHT)
 			if (prob(50))
 				broken()
 	return
@@ -571,11 +516,8 @@
 
 // called when area power state changes
 /obj/machinery/light/power_change()
-	spawn(10)
-		if(loc)
-			var/area/A = src.loc.loc
-			A = A.master
-			seton(A.lightswitch && A.power_light)
+	var/area/A = get_area(src)
+	seton(A.lightswitch && A.power_light)
 
 // called when on fire
 
@@ -586,13 +528,12 @@
 // explode the light
 
 /obj/machinery/light/proc/explode()
-	var/turf/T = get_turf(src.loc)
-	spawn(0)
-		broken()	// break it first to give a warning
-		sleep(2)
-		explosion(T, 0, 0, 2, 2)
-		sleep(1)
-		cdel(src)
+	broken()	// break it first to give a warning
+	addtimer(CALLBACK(src, .proc/delayed_explosion), 0.5 SECONDS)
+
+/obj/machinery/light/proc/delayed_explosion()
+	explosion(loc, 0, 1, 3, 2)
+	qdel(src)
 
 // the light item
 // can be tube or bulb subtypes
@@ -602,11 +543,10 @@
 	icon = 'icons/obj/lighting.dmi'
 	force = 2
 	throwforce = 5
-	w_class = 2
+	w_class = WEIGHT_CLASS_SMALL
 	var/status = 0		// LIGHT_OK, LIGHT_BURNED or LIGHT_BROKEN
 	var/base_state
 	var/switchcount = 0	// number of times switched
-	matter = list("metal" = 60)
 	var/rigged = 0		// true if rigged to explode
 	var/brightness = 2 //how much light it gives off
 
@@ -620,11 +560,11 @@
 	icon_state = "ltube"
 	base_state = "ltube"
 	item_state = "c_tube"
-	matter = list("glass" = 100)
+	materials = list(/datum/material/glass = 100)
 	brightness = 8
 
 /obj/item/light_bulb/tube/large
-	w_class = 2
+	w_class = WEIGHT_CLASS_SMALL
 	name = "large light tube"
 	brightness = 15
 
@@ -634,7 +574,7 @@
 	icon_state = "lbulb"
 	base_state = "lbulb"
 	item_state = "contvapour"
-	matter = list("glass" = 100)
+	materials = list(/datum/material/glass = 100)
 	brightness = 5
 
 /obj/item/light_bulb/bulb/fire
@@ -643,7 +583,6 @@
 	icon_state = "fbulb"
 	base_state = "fbulb"
 	item_state = "egg4"
-	matter = list("glass" = 100)
 	brightness = 5
 
 // update the icon state and description of the light
@@ -661,8 +600,8 @@
 			desc = "A broken [name]."
 
 
-/obj/item/light_bulb/New()
-	..()
+/obj/item/light_bulb/Initialize()
+	. = ..()
 	switch(name)
 		if("light tube")
 			brightness = rand(6,9)
@@ -673,24 +612,18 @@
 
 // attack bulb/tube with object
 // if a syringe, can inject phoron to make it explode
-/obj/item/light_bulb/attackby(var/obj/item/I, var/mob/user)
-	..()
-	if(istype(I, /obj/item/reagent_container/syringe))
-		var/obj/item/reagent_container/syringe/S = I
+/obj/item/light_bulb/attackby(obj/item/I, mob/user, params)
+	. = ..()
+
+	if(istype(I, /obj/item/reagent_containers/syringe))
+		var/obj/item/reagent_containers/syringe/S = I
 
 		to_chat(user, "You inject the solution into the [src].")
 
-		if(S.reagents.has_reagent("phoron", 5))
-
-			log_admin("LOG: [user.name] ([user.ckey]) injected a light with phoron, rigging it to explode.")
-			message_admins("LOG: [user.name] ([user.ckey]) injected a light with phoron, rigging it to explode.")
-
+		if(S.reagents.has_reagent(/datum/reagent/toxin/phoron, 5))
 			rigged = TRUE
 
 		S.reagents.clear_reagents()
-	else
-		..()
-	return
 
 // called after an attack with a light item
 // shatter light, unless it was an attempt to put it in a light socket
@@ -701,14 +634,14 @@
 		return
 	if(istype(target, /obj/machinery/light))
 		return
-	if(user.a_intent != "hurt")
+	if(user.a_intent != INTENT_HARM)
 		return
 
 	shatter()
 
 /obj/item/light_bulb/proc/shatter()
 	if(status == LIGHT_OK || status == LIGHT_BURNED)
-		src.visible_message("\red [name] shatters.","\red You hear a small glass object shatter.")
+		src.visible_message("<span class='warning'> [name] shatters.</span>","<span class='warning'> You hear a small glass object shatter.</span>")
 		status = LIGHT_BROKEN
 		force = 5
 		sharp = IS_SHARP_ITEM_SIMPLE
@@ -724,53 +657,58 @@
 	anchored = TRUE
 	density = FALSE
 	layer = BELOW_TABLE_LAYER
-	use_power = 2
+	use_power = ACTIVE_POWER_USE
 	idle_power_usage = 2
 	active_power_usage = 20
 	power_channel = LIGHT //Lights are calc'd via area so they dont need to be in the machine list
-	unacidable = TRUE
+	resistance_flags = UNACIDABLE|INDESTRUCTIBLE
 
-//Don't allow blowing those up, so Marine nades don't fuck them
-/obj/machinery/landinglight/ex_act(severity)
-	return
-
-/obj/machinery/landinglight/New()
+/obj/machinery/landinglight/Initialize()
+	. = ..()
 	turn_off()
 
 /obj/machinery/landinglight/proc/turn_off()
 	icon_state = "landingstripe"
-	SetLuminosity(0)
+	set_light(0)
 
 /obj/machinery/landinglight/ds1
-	id = "USS Almayer Dropship 1" // ID for landing zone
+
+
+/obj/machinery/landinglight/ds1/Initialize(mapload, ...)
+	. = ..()
+	id = "alamo"
 
 /obj/machinery/landinglight/ds2
-	id = "USS Almayer Dropship 2" // ID for landing zone
+
+
+/obj/machinery/landinglight/ds2/Initialize(mapload, ...)
+	. = ..()
+	id = "normandy" // ID for landing zone
 
 /obj/machinery/landinglight/proc/turn_on()
 	icon_state = "landingstripe0"
-	SetLuminosity(2)
+	set_light(2)
 
 /obj/machinery/landinglight/ds1/delayone/turn_on()
 	icon_state = "landingstripe1"
-	SetLuminosity(2)
+	set_light(2)
 
 /obj/machinery/landinglight/ds1/delaytwo/turn_on()
 	icon_state = "landingstripe2"
-	SetLuminosity(2)
+	set_light(2)
 
 /obj/machinery/landinglight/ds1/delaythree/turn_on()
 	icon_state = "landingstripe3"
-	SetLuminosity(2)
+	set_light(2)
 
 /obj/machinery/landinglight/ds2/delayone/turn_on()
 	icon_state = "landingstripe1"
-	SetLuminosity(2)
+	set_light(2)
 
 /obj/machinery/landinglight/ds2/delaytwo/turn_on()
 	icon_state = "landingstripe2"
-	SetLuminosity(2)
+	set_light(2)
 
 /obj/machinery/landinglight/ds2/delaythree/turn_on()
 	icon_state = "landingstripe3"
-	SetLuminosity(2)
+	set_light(2)

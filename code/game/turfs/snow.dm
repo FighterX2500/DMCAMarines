@@ -3,41 +3,46 @@
 
 //FLOORS-----------------------------------//
 //Snow Floor
-/turf/open/snow
+/turf/open/floor/plating/ground/snow
 	name = "snow layer"
 	icon = 'icons/turf/snow2.dmi'
 	icon_state = "snow_0"
-	is_groundmap_turf = TRUE
+	hull_floor = TRUE
+	shoefootstep = FOOTSTEP_SNOW
+	barefootstep = FOOTSTEP_SNOW
+	mediumxenofootstep = FOOTSTEP_SNOW
 
-/turf/open/snow/attack_larva(mob/living/carbon/Xenomorph/Larva/M)
-	return //Larvae can't do shit
+// Melting snow
+/turf/open/floor/plating/ground/snow/fire_act(exposed_temperature, exposed_volume)
+	slayer = 0
+	update_icon(1, 0)
 
 //Xenos digging up snow
-/turf/open/snow/attack_alien(mob/living/carbon/Xenomorph/M)
-	if(M.a_intent == "grab")
+/turf/open/floor/plating/ground/snow/attack_alien(mob/living/carbon/xenomorph/M)
+	if(M.a_intent == INTENT_GRAB)
 
 		if(!slayer)
 			to_chat(M, "<span class='warning'>There is nothing to clear out!</span>")
 			return FALSE
 
 		M.visible_message("<span class='notice'>\The [M] starts clearing out \the [src].</span>", \
-		"<span class='notice'>You start clearing out \the [src].</span>", null, 5)
+		"<span class='notice'>We start clearing out \the [src].</span>", null, 5)
 		playsound(M.loc, 'sound/weapons/alien_claw_swipe.ogg', 25, 1)
-		if(!do_after(M, 25, FALSE, 5, BUSY_ICON_FRIENDLY))
+		if(!do_after(M, 25, FALSE, src, BUSY_ICON_BUILD))
 			return FALSE
 
 		if(!slayer)
-			M  << "<span class='warning'>There is nothing to clear out!</span>"
+			to_chat(M, "<span class='warning'>There is nothing to clear out!</span>")
 			return
 
 		M.visible_message("<span class='notice'>\The [M] clears out \the [src].</span>", \
-		"<span class='notice'>You clear out \the [src].</span>", null, 5)
+		"<span class='notice'>We clear out \the [src].</span>", null, 5)
 		slayer -= 1
 		update_icon(1, 0)
 
 	//PLACING/REMOVING/BUILDING
-/turf/open/snow/attackby(var/obj/item/I, var/mob/user)
-
+/turf/open/floor/plating/ground/snow/attackby(obj/item/I, mob/user, params)
+	. = ..()
 	//Light Stick
 	if(istype(I, /obj/item/lightstick))
 		var/obj/item/lightstick/L = I
@@ -46,49 +51,41 @@
 			return
 
 		to_chat(user, "Now planting \the [L].")
-		if(!do_after(user,20, TRUE, 5, BUSY_ICON_BUILD))
+		if(!do_after(user,20, TRUE, src, BUSY_ICON_BUILD))
 			return
 
-		user.visible_message("\blue[user.name] planted \the [L] into [src].")
-		L.anchored = 1
+		user.visible_message("<span class='notice'>[user.name] planted \the [L] into [src].</span>")
+		L.anchored = TRUE
 		L.icon_state = "lightstick_[L.s_color][L.anchored]"
 		user.drop_held_item()
 		L.x = x
 		L.y = y
 		L.pixel_x += rand(-5,5)
 		L.pixel_y += rand(-5,5)
-		L.SetLuminosity(2)
-		playsound(user, 'sound/weapons/Genhit.ogg', 25, 1)
+		L.set_light(2)
+		playsound(user, 'sound/weapons/genhit.ogg', 25, 1)
 
 
 
 //Update icon and sides on start, but skip nearby check for turfs.
-/turf/open/snow/New()
-	..()
+/turf/open/floor/plating/ground/snow/Initialize()
+	. = ..()
 	update_icon(1,1)
 
-/turf/open/snow/Entered(atom/movable/AM)
+/turf/open/floor/plating/ground/snow/Entered(atom/movable/AM)
 	if(slayer > 0)
 		if(iscarbon(AM))
 			var/mob/living/carbon/C = AM
-			var/slow_amount = 0.75
-			var/can_stuck = 1
-			if(istype(C, /mob/living/carbon/Xenomorph)||isYautja(C))
-				slow_amount = 0.25
-				can_stuck = 0
-			C.next_move_slowdown += slow_amount * slayer
-			if(prob(2))
+			C.next_move_slowdown += (isxeno(C) ? 0.25 : 0.5) * slayer
+			if(prob(1))
 				to_chat(C, "<span class='warning'>Moving through [src] slows you down.</span>")
-			else if(can_stuck && slayer == 3 && prob(2))
-				to_chat(C, "<span class='warning'>You get stuck in [src] for a moment!</span>")
-				C.next_move_slowdown += 10
 	..()
 
 
 //Update icon
-/turf/open/snow/update_icon(var/update_full, var/skip_sides)
+/turf/open/floor/plating/ground/snow/update_icon(update_full, skip_sides)
 	icon_state = "snow_[slayer]"
-	dir = pick(NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST)
+	setDir(pick(NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST))
 	switch(slayer)
 		if(0)
 			name = "dirt floor"
@@ -103,15 +100,15 @@
 	if(update_full)
 		var/turf/open/T
 		if(!skip_sides)
-			for(var/dirn in alldirs)
-				var/turf/open/snow/D = get_step(src,dirn)
+			for(var/dirn in GLOB.alldirs)
+				var/turf/open/floor/plating/ground/snow/D = get_step(src,dirn)
 				if(istype(D))
 					//Update turfs that are near us, but only once
 					D.update_icon(1,1)
 
 		overlays.Cut()
 
-		for(var/dirn in alldirs)
+		for(var/dirn in GLOB.alldirs)
 			T = get_step(src, dirn)
 			if(istype(T))
 				if(slayer > T.slayer && T.slayer < 1)
@@ -143,35 +140,36 @@
 
 
 //Explosion act
-/turf/open/snow/ex_act(severity)
+/turf/open/floor/plating/ground/snow/ex_act(severity)
 	switch(severity)
-		if(1)
+		if(EXPLODE_DEVASTATE)
 			if(slayer)
 				slayer = 0
 				update_icon(1, 0)
-		if(2)
-			if(prob(60) && slayer)
+		if(EXPLODE_HEAVY)
+			if(slayer && prob(60))
 				slayer = max(slayer - 2, 0)
 				update_icon(1, 0)
-		if(3)
-			if(prob(20) && slayer)
+		if(EXPLODE_LIGHT)
+			if(slayer && prob(20))
 				slayer -= 1
 				update_icon(1, 0)
+	return ..()
 
 //SNOW LAYERS-----------------------------------//
-/turf/open/snow/layer0
+/turf/open/floor/plating/ground/snow/layer0
 	icon_state = "snow_0"
 	slayer = 0
 
-/turf/open/snow/layer1
+/turf/open/floor/plating/ground/snow/layer1
 	icon_state = "snow_1"
 	slayer = 1
 
-/turf/open/snow/layer2
+/turf/open/floor/plating/ground/snow/layer2
 	icon_state = "snow_2"
 	slayer = 2
 
-/turf/open/snow/layer3
+/turf/open/floor/plating/ground/snow/layer3
 	icon_state = "snow_3"
 	slayer = 3
 

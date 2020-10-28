@@ -1,35 +1,33 @@
 /obj/effect/acid_hole
 	name = "hole"
-	desc = "What could have done this?"
+	desc = "What could have done this? Something agile enough could probably climb through."
 	icon = 'icons/effects/new_acid.dmi'
 	icon_state = "hole_0"
-	anchored = 1
-	unacidable = TRUE
+	anchored = TRUE
+	resistance_flags = UNACIDABLE|INDESTRUCTIBLE
 	layer = LOWER_ITEM_LAYER
 	var/turf/closed/wall/holed_wall
 
-/obj/effect/acid_hole/New(loc)
-	..()
-	if(istype(loc, /turf/closed/wall))
+/obj/effect/acid_hole/Initialize()
+	. = ..()
+	if(iswallturf(loc))
 		var/turf/closed/wall/W = loc
 		W.acided_hole = src
 		holed_wall = W
-		holed_wall.opacity = 0
+		holed_wall.opacity = FALSE
 		if(W.junctiontype & (NORTH|SOUTH))
-			dir = EAST
+			setDir(EAST)
 		if(W.junctiontype & (EAST|WEST))
-			dir = SOUTH
+			setDir(SOUTH)
 
 
-/obj/effect/acid_hole/Dispose()
+/obj/effect/acid_hole/Destroy()
 	if(holed_wall)
 		holed_wall.opacity = initial(holed_wall.opacity)
 		holed_wall.acided_hole = null
 		holed_wall = null
 	. = ..()
 
-/obj/effect/acid_hole/ex_act(severity)
-	return
 
 /obj/effect/acid_hole/fire_act()
 	return
@@ -39,27 +37,33 @@
 	if (!holed_wall)
 		return
 
-	if(M == user && isXeno(user))
+	if(M == user && isxeno(user))
 		use_wall_hole(user)
 
 
-/obj/effect/acid_hole/attack_alien(mob/living/carbon/Xenomorph/user)
+/obj/effect/acid_hole/specialclick(mob/living/carbon/user)
+	if(!isxeno(user))
+		return
+	if(!user.CanReach(src))
+		return
 	if(holed_wall)
 		if(user.mob_size == MOB_SIZE_BIG)
 			expand_hole(user)
+			return
+		use_wall_hole(user)
 
-/obj/effect/acid_hole/proc/expand_hole(mob/living/carbon/Xenomorph/user)
-	if(user.action_busy || user.lying)
+/obj/effect/acid_hole/proc/expand_hole(mob/living/carbon/xenomorph/user)
+	if(user.action_busy || user.lying_angle)
 		return
 
 	playsound(src, 'sound/effects/metal_creaking.ogg', 25, 1)
-	if(do_after(user,60, FALSE, 5, BUSY_ICON_GENERIC) && !disposed && holed_wall && !user.lying)
+	if(do_after(user,60, FALSE, holed_wall, BUSY_ICON_HOSTILE) && !QDELETED(src) && !user.lying_angle)
 		holed_wall.take_damage(rand(2000,3500))
 		user.emote("roar")
 
 /obj/effect/acid_hole/proc/use_wall_hole(mob/user)
 
-	if(user.mob_size == MOB_SIZE_BIG || user.is_mob_incapacitated() || user.lying || user.buckled || user.anchored)
+	if(user.mob_size == MOB_SIZE_BIG || user.incapacitated() || user.lying_angle || user.buckled || user.anchored)
 		return
 
 	var/mob_dir = get_dir(user, src)
@@ -87,78 +91,83 @@
 			to_chat(user, "<span class='warning'>The hole's exit is blocked by something!</span>")
 			return
 
+	for(var/obj/machinery/door/poddoor/timed_late/containment/shutter in get_turf(src))
+		if(shutter.density)
+			to_chat(user, "<span class='warning'>You can't reach the hole's entrance under the shutters.</span>")
+			return
+
 	if(user.action_busy)
 		return
 
 	to_chat(user, "<span class='notice'>You start crawling through the hole.</span>")
 
-	if(do_after(user, 15, FALSE, 5, BUSY_ICON_GENERIC))
-		if(!user.is_mob_incapacitated() && !user.lying && !user.buckled)
-			if (T.density)
+	if(do_after(user, 15, FALSE, src, BUSY_ICON_HOSTILE) && !T.density && !user.lying_angle && !user.buckled)
+		for(var/obj/O in T)
+			if(!O.CanPass(user, user.loc))
 				return
-			for(var/obj/O in T)
-				if(!O.CanPass(user, user.loc))
-					return
-			if(user.pulling)
-				user.stop_pulling()
-				to_chat(user, "<span class='warning'>You release what you're pulling to fit into the tunnel!</span>")
-			user.forceMove(T)
+		if(user.pulling)
+			user.stop_pulling()
+			to_chat(user, "<span class='warning'>You release what you're pulling to fit into the tunnel!</span>")
+		user.forceMove(T)
 
 
 
 
 //Throwing Shiet
-/obj/effect/acid_hole/attackby(obj/item/W, mob/user)
+/obj/effect/acid_hole/attackby(obj/item/I, mob/user, params)
+	. = ..()
 
 	var/mob_dir = get_dir(user, src)
 	var/crawl_dir = dir & mob_dir
 	if(!crawl_dir)
-		crawl_dir = turn(dir,180) & mob_dir
+		crawl_dir = turn(dir, 180) & mob_dir
 	if(!crawl_dir)
 		return
-	var/turf/Target = get_step(src, crawl_dir)
+
+	var/turf/T = get_step(src, crawl_dir)
 
 	//Throwing Grenades
-	if(istype(W,/obj/item/explosive/grenade))
-		var/obj/item/explosive/grenade/G = W
+	if(istype(I, /obj/item/explosive/grenade))
+		var/obj/item/explosive/grenade/G = I
 
-		if(!Target ||Target.density)
+		if(!T || T.density)
 			to_chat(user, "<span class='warning'>This hole leads nowhere!</span>")
 			return
 
 		to_chat(user, "<span class='notice'>You take the position to throw [G].</span>")
-		if(do_after(user,10, TRUE, 5, BUSY_ICON_HOSTILE))
-			if(Target.density)
-				return
-			user.visible_message("<span class='warning'>[user] throws [G] through [src]!</span>", \
-								 "<span class='warning'>You throw [G] through [src]</span>")
-			user.drop_held_item()
-			G.forceMove(Target)
-			G.dir = pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
-			step_away(G,src,rand(2,5))
-			if(!G.active)
-				G.activate(user)
-		return
+
+		if(!do_after(user, 10, TRUE, src, BUSY_ICON_HOSTILE) || !T || T.density)
+			return
+
+		user.visible_message("<span class='warning'>[user] throws [G] through [src]!</span>", \
+							"<span class='warning'>You throw [G] through [src]</span>")
+		user.drop_held_item()
+		G.forceMove(T)
+		G.setDir(pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
+		step_away(G, src, rand(2,5))
+		if(!G.active)
+			G.activate(user)
 
 	//Throwing Flares and flashlights
-	else if(istype(W,/obj/item/device/flashlight))
-		var/obj/item/device/flashlight/F = W
+	else if(istype(I, /obj/item/flashlight))
+		var/obj/item/flashlight/F = I
 
-		if(!Target ||Target.density)
+		if(!T || T.density)
 			to_chat(user, "<span class='warning'>This hole leads nowhere!</span>")
 			return
 
 		to_chat(user, "<span class='notice'>You take the position to throw [F].</span>")
-		if(do_after(user,10, TRUE, 5, BUSY_ICON_HOSTILE))
-			if(Target.density)
-				return
-			user.visible_message("<span class='warning'>[user] throws [F] through [src]!</span>", \
-								 "<span class='warning'>You throw [F] through [src]</span>")
-			user.drop_held_item()
-			F.forceMove(Target)
-			F.dir = pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
-			step_away(F,src,rand(1,5))
-			F.SetLuminosity(0)
-			if(F.on && loc != user)
-				F.SetLuminosity(F.brightness_on)
-		return
+
+		if(!do_after(user,10, TRUE, src, BUSY_ICON_GENERIC) || !T || T.density)
+			return
+
+		user.visible_message("<span class='warning'>[user] throws [F] through [src]!</span>", \
+							"<span class='warning'>You throw [F] through [src]</span>")
+		user.drop_held_item()
+		F.forceMove(T)
+		F.setDir(pick(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
+		step_away(F, src, rand(1,5))
+		if(F.light_on && loc != user)
+			F.set_light_on(TRUE)
+		else
+			F.set_light_on(FALSE)

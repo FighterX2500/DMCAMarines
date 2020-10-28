@@ -5,32 +5,32 @@
 	name = "banhammer"
 	icon = 'icons/obj/items/items.dmi'
 	icon_state = "toyhammer"
-	flags_equip_slot = SLOT_WAIST
+	flags_equip_slot = ITEM_SLOT_BELT
 	throwforce = 0
-	w_class = 2.0
+	w_class = WEIGHT_CLASS_SMALL
 	throw_speed = 7
 	throw_range = 15
 	attack_verb = list("banned")
 
-	suicide_act(mob/user)
-		viewers(user) << "\red <b>[user] is hitting \himself with the [src.name]! It looks like \he's trying to ban \himself from life.</b>"
-		return (BRUTELOSS|FIRELOSS|TOXLOSS|OXYLOSS)
+/obj/item/weapon/banhammer/suicide_act(mob/user)
+	user.visible_message("<span class='danger'>[user] is hitting [p_them()]self with the [name]! It looks like [user.p_theyre()] trying to ban [p_them()]self from life.</span>")
+	return (BRUTELOSS|FIRELOSS|TOXLOSS|OXYLOSS)
 
 /obj/item/weapon/nullrod
 	name = "null rod"
 	desc = "A rod of pure obsidian, its very presence disrupts and dampens the powers of paranormal phenomenae."
 	icon_state = "nullrod"
 	item_state = "nullrod"
-	flags_equip_slot = SLOT_WAIST
+	flags_equip_slot = ITEM_SLOT_BELT
 	force = 15
 	throw_speed = 1
 	throw_range = 4
 	throwforce = 10
-	w_class = 2
+	w_class = WEIGHT_CLASS_SMALL
 
-	suicide_act(mob/user)
-		viewers(user) << "\red <b>[user] is impaling \himself with the [src.name]! It looks like \he's trying to commit suicide.</b>"
-		return (BRUTELOSS|FIRELOSS)
+/obj/item/weapon/nullrod/suicide_act(mob/user)
+	user.visible_message("<span class='danger'>[user] is impaling [p_them()]self with the [name]! It looks like [user.p_theyre()] trying to commit suicide.</span>")
+	return (BRUTELOSS|FIRELOSS)
 
 /obj/item/weapon/harpoon
 	name = "harpoon"
@@ -41,17 +41,17 @@
 	item_state = "harpoon"
 	force = 20
 	throwforce = 15
-	w_class = 3
+	w_class = WEIGHT_CLASS_NORMAL
 	attack_verb = list("jabbed","stabbed","ripped")
 
 /obj/item/weapon/baseballbat
-	name = "wooden baseball bat"
+	name = "\improper wooden baseball bat"
 	desc = "A large wooden baseball bat. Commonly used in colony recreation, but also used as a means of self defense. Often carried by thugs and ruffians."
 	icon_state = "woodbat"
 	item_state = "woodbat"
 	sharp = 0
 	edge = 0
-	w_class = 3
+	w_class = WEIGHT_CLASS_NORMAL
 	force = 20
 	throw_speed = 3
 	throw_range = 7
@@ -61,12 +61,12 @@
 
 
 /obj/item/weapon/baseballbat/metal
-	name = "metal baseball bat"
+	name = "\improper metal baseball bat"
 	desc = "A large metal baseball bat. Compared to its wooden cousin, the metal bat offers a bit more more force. Often carried by thugs and ruffians."
 	icon_state = "metalbat"
 	item_state = "metalbat"
 	force = 25
-	w_class = 3.0
+	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/weapon/butterfly
 	name = "butterfly knife"
@@ -74,8 +74,7 @@
 	icon_state = "butterflyknife"
 	item_state = null
 	hitsound = null
-	var/active = 0
-	w_class = 1
+	w_class = WEIGHT_CLASS_TINY
 	force = 8
 	sharp = 0
 	edge = 0
@@ -97,7 +96,7 @@
 		sharp = IS_SHARP_ITEM_ACCURATE
 		hitsound = 'sound/weapons/bladeslice.ogg'
 		icon_state += "_open"
-		w_class = 3
+		w_class = WEIGHT_CLASS_NORMAL
 		attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	else
 		to_chat(user, "<span class='notice'>The butterfly knife can now be concealed.</span>")
@@ -108,7 +107,6 @@
 		icon_state = initial(icon_state)
 		w_class = initial(w_class)
 		attack_verb = initial(attack_verb)
-		add_fingerprint(user)
 
 /obj/item/weapon/butterfly/switchblade
 	name = "switchblade"
@@ -134,27 +132,27 @@
 	flags_atom = CONDUCT
 	force = 8
 	throwforce = 10
-	w_class = 3
+	w_class = WEIGHT_CLASS_NORMAL
 	attack_verb = list("hit", "bludgeoned", "whacked", "bonked")
 
 
-/obj/item/weapon/wirerod/attackby(var/obj/item/I, mob/user as mob)
-	..()
+/obj/item/weapon/wirerod/attackby(obj/item/I, mob/user, params)
+	. = ..()
+
 	if(istype(I, /obj/item/shard))
-		var/obj/item/weapon/twohanded/spear/S = new /obj/item/weapon/twohanded/spear
+		var/obj/item/weapon/twohanded/spear/S = new
 
 		user.put_in_hands(S)
 		to_chat(user, "<span class='notice'>You fasten the glass shard to the top of the rod with the cable.</span>")
-		cdel(I)
-		cdel(src)
-		update_icon(user)
+		qdel(I)
+		qdel(src)
 
-	else if(istype(I, /obj/item/tool/wirecutters))
-		var/obj/item/weapon/baton/cattleprod/P = new /obj/item/weapon/baton/cattleprod
+	else if(iswirecutter(I))
+		var/obj/item/weapon/baton/cattleprod/P = new
 
 		user.put_in_hands(P)
 		to_chat(user, "<span class='notice'>You fasten the wirecutters to the top of the rod with the cable, prongs outward.</span>")
-		cdel(I)
-		cdel(src)
-		update_icon(user)
+		qdel(I)
+		qdel(src)
+
 	update_icon(user)

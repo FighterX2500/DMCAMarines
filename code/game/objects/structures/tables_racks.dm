@@ -1,70 +1,66 @@
-/* Tables and Racks
- * Contains:
- *		Tables
- *		Wooden tables
- *		Reinforced tables
- *		Racks
- */
+#define TABLE_STATUS_WEAKENED 1
+#define TABLE_STATUS_FIRM 2
 
-
-/*
- * Tables
- */
 /obj/structure/table
 	name = "table"
 	desc = "A square metal surface resting on four legs. Useful to put stuff on. Can be flipped in emergencies to act as cover."
 	icon = 'icons/obj/structures/tables.dmi'
 	icon_state = "table"
 	density = TRUE
-	anchored = 1.0
+	anchored = TRUE
 	layer = TABLE_LAYER
 	throwpass = TRUE	//You can throw objects over this, despite it's density.")
 	climbable = TRUE
-	breakable = TRUE
-	parts = /obj/item/frame/table
-
+	resistance_flags = XENO_DAMAGEABLE
+	hit_sound = 'sound/effects/metalhit.ogg'
+	coverage = 10
+	var/parts = /obj/item/frame/table
+	var/table_status = TABLE_STATUS_FIRM
 	var/sheet_type = /obj/item/stack/sheet/metal
 	var/table_prefix = "" //used in update_icon()
 	var/reinforced = FALSE
 	var/flipped = FALSE
 	var/flip_cooldown = 0 //If flip cooldown exists, don't allow flipping or putting back. This carries a WORLD.TIME value
-	var/health = 100
+	max_integrity = 100
 
-/obj/structure/table/destroy(deconstruct)
-	if(deconstruct)
-		if(parts)
-			new parts(loc)
+/obj/structure/table/deconstruct(disassembled)
+	if(disassembled)
+		new parts(loc)
 	else
 		if(reinforced)
 			if(prob(50))
 				new /obj/item/stack/rods(loc)
 		new sheet_type(src)
-	cdel(src)
+	return ..()
 
-/obj/structure/table/proc/update_adjacent(location)
-	if(!location) location = src //location arg is used to correctly update neighbour tables when deleting a table.
+/obj/structure/table/proc/update_adjacent(location = loc)
 	for(var/direction in CARDINAL_ALL_DIRS)
 		var/obj/structure/table/T = locate(/obj/structure/table, get_step(location,direction))
-		if(T)
-			T.update_icon()
+		if(!T)
+			continue
+		T.update_icon()
 
-/obj/structure/table/New()
-	..()
-	for(var/obj/structure/table/T in src.loc)
-		if(T != src)
-			cdel(T)
-	update_icon()
-	update_adjacent()
+
+/obj/structure/table/Initialize()
+	. = ..()
+	for(var/obj/structure/table/evil_table in loc)
+		if(evil_table != src)
+			stack_trace("Duplicate table found in ([x], [y], [z])")
+			qdel(evil_table)
+	if(!flipped)
+		update_icon()
+		update_adjacent()
+
 
 /obj/structure/table/Crossed(atom/movable/O)
-	..()
-	if(istype(O,/mob/living/carbon/Xenomorph/Ravager) || istype(O,/mob/living/carbon/Xenomorph/Crusher))
-		var/mob/living/carbon/Xenomorph/M = O
+	. = ..()
+	if(istype(O,/mob/living/carbon/xenomorph/ravager))
+		var/mob/living/carbon/xenomorph/M = O
 		if(!M.stat) //No dead xenos jumpin on the bed~
 			visible_message("<span class='danger'>[O] plows straight through [src]!</span>")
-			destroy()
+			deconstruct(FALSE)
 
-/obj/structure/table/Dispose()
+/obj/structure/table/Destroy()
 	var/tableloc = loc
 	. = ..()
 	update_adjacent(tableloc) //so neighbouring tables get updated correctly
@@ -117,22 +113,22 @@
 						dir_sum += 128
 
 	var/table_type = 0 //stand_alone table
-	if(dir_sum%16 in cardinal)
+	if((dir_sum%16) in GLOB.cardinals)
 		table_type = 1 //endtable
 		dir_sum %= 16
-	if(dir_sum%16 in list(3, 12))
+	if((dir_sum%16) in list(3, 12))
 		table_type = 2 //1 tile thick, streight table
 		if(dir_sum%16 == 3) //3 doesn't exist as a dir
 			dir_sum = 2
 		if(dir_sum%16 == 12) //12 doesn't exist as a dir.
 			dir_sum = 4
-	if(dir_sum%16 in list(5, 6, 9, 10))
+	if((dir_sum%16) in list(5, 6, 9, 10))
 		if(locate(/obj/structure/table, get_step(src.loc, dir_sum%16)))
 			table_type = 3 //full table (not the 1 tile thick one, but one of the 'tabledir' tables)
 		else
 			table_type = 2 //1 tile thick, corner table (treated the same as streight tables in code later on)
 		dir_sum %= 16
-	if(dir_sum%16 in list(13, 14, 7, 11)) //Three-way intersection
+	if((dir_sum%16) in list(13, 14, 7, 11)) //Three-way intersection
 		table_type = 5 //full table as three-way intersections are not sprited, would require 64 sprites to handle all combinations.  TOO BAD -- SkyMarshal
 		switch(dir_sum%16)	//Begin computation of the special type tables.  --SkyMarshal
 			if(7)
@@ -203,29 +199,27 @@
 			icon_state = "[table_prefix]tabledir3"
 
 	if(dir_sum in CARDINAL_ALL_DIRS)
-		dir = dir_sum
+		setDir(dir_sum)
 	else
-		dir = SOUTH
+		setDir(SOUTH)
 
-
-/obj/structure/table/attack_tk() // no telehulk sorry
-	return
 
 /obj/structure/table/CanPass(atom/movable/mover, turf/target)
-	if(istype(mover) && mover.checkpass(PASSTABLE))
+	if(istype(mover) && CHECK_BITFIELD(mover.flags_pass, PASSTABLE))
 		return TRUE
 	var/obj/structure/S = locate(/obj/structure) in get_turf(mover)
-	if(S && S.climbable && !(S.flags_atom & ON_BORDER) && climbable && isliving(mover)) //Climbable non-border objects allow you to universally climb over others
+	if(S?.climbable && !(S.flags_atom & ON_BORDER) && climbable && isliving(mover)) //Climbable non-border objects allow you to universally climb over others
 		return TRUE
 	if(flipped)
 		if(get_dir(loc, target) & dir)
 			return !density
 		else
 			return TRUE
-	return FALSE
+	return !density
 
-/obj/structure/table/CheckExit(atom/movable/O as mob|obj, target as turf)
-	if(istype(O) && O.checkpass(PASSTABLE))
+
+/obj/structure/table/CheckExit(atom/movable/mover, turf/target)
+	if(istype(mover) && CHECK_BITFIELD(mover.flags_pass, PASSTABLE))
 		return TRUE
 	if(flipped)
 		if(get_dir(loc, target) & dir)
@@ -233,6 +227,7 @@
 		else
 			return TRUE
 	return TRUE
+
 
 //Flipping tables, nothing more, nothing less
 /obj/structure/table/MouseDrop(over_object, src_location, over_location)
@@ -246,96 +241,95 @@
 
 /obj/structure/table/MouseDrop_T(obj/item/I, mob/user)
 
-	if (!istype(I) || user.get_active_hand() != I)
+	if (!istype(I) || user.get_active_held_item() != I)
 		return ..()
-	if(isrobot(user))
-		return
 	user.drop_held_item()
 	if(I.loc != loc)
 		step(I, get_dir(I, src))
 
-/obj/structure/table/attack_alien(mob/living/carbon/Xenomorph/M)
-	if(breakable)
-		M.animation_attack_on(src)
-		if(sheet_type == /obj/item/stack/sheet/wood)
-			playsound(src, 'sound/effects/woodhit.ogg', 25, 1)
-		else
-			playsound(src, 'sound/effects/metalhit.ogg', 25, 1)
-		health -= rand(M.melee_damage_lower, M.melee_damage_upper)
-		if(health <= 0)
-			M.visible_message("<span class='danger'>\The [M] slices [src] apart!</span>", \
-			"<span class='danger'>You slice [src] apart!</span>", null, 5)
-			destroy()
-		else
-			M.visible_message("<span class='danger'>[M] slashes [src]!</span>", \
-			"<span class='danger'>You slash [src]!</span>", null, 5)
+/obj/structure/table/attack_alien(mob/living/carbon/xenomorph/M)
+	SEND_SIGNAL(M, COMSIG_XENOMORPH_ATTACK_TABLE)
+	return ..()
 
-/obj/structure/table/attackby(obj/item/W, mob/user)
-	if(!W)
-		return
-	if(istype(W, /obj/item/grab) && get_dist(src, user) <= 1)
-		if(isXeno(user))
-			return
-		var/obj/item/grab/G = W
-		if(istype(G.grabbed_thing, /mob/living))
-			var/mob/living/M = G.grabbed_thing
-			if(user.a_intent == "hurt")
-				if(user.grab_level > GRAB_AGGRESSIVE)
-					if (prob(15))	M.KnockDown(5)
-					M.apply_damage(8, def_zone = "head")
-					user.visible_message("<span class='danger'>[user] slams [M]'s face against [src]!</span>",
-					"<span class='danger'>You slam [M]'s face against [src]!</span>")
-					playsound(src.loc, 'sound/weapons/tablehit1.ogg', 25, 1)
-				else
-					to_chat(user, "<span class='warning'>You need a better grip to do that!</span>")
-					return
-			else if(user.grab_level >= GRAB_AGGRESSIVE)
-				M.forceMove(loc)
-				M.KnockDown(5)
-				user.visible_message("<span class='danger'>[user] throws [M] on [src].</span>",
-				"<span class='danger'>You throw [M] on [src].</span>")
-		return
 
-	if(istype(W, /obj/item/tool/wrench))
-		user.visible_message("<span class='notice'>[user] starts disassembling [src].</span>",
+/obj/structure/table/wrench_act(mob/living/user, obj/item/I)
+	. = ..()
+	if(reinforced && table_status != TABLE_STATUS_WEAKENED)
+		return FALSE
+
+	user.visible_message("<span class='notice'>[user] starts disassembling [src].</span>",
 		"<span class='notice'>You start disassembling [src].</span>")
-		playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
-		if(do_after(user,50, TRUE, 5, BUSY_ICON_BUILD))
-			user.visible_message("<span class='notice'>[user] disassembles [src].</span>",
-			"<span class='notice'>You disassemble [src].</span>")
-			destroy(1)
+
+	playsound(loc, 'sound/items/ratchet.ogg', 25, TRUE)
+	if(!do_after(user, 5 SECONDS, TRUE, src, BUSY_ICON_BUILD))
+		return TRUE
+
+	user.visible_message("<span class='notice'>[user] disassembles [src].</span>",
+		"<span class='notice'>You disassemble [src].</span>")
+	deconstruct(TRUE)
+	return TRUE
+
+
+/obj/structure/table/attackby(obj/item/I, mob/user, params)
+	. = ..()
+
+	if(istype(I, /obj/item/grab) && get_dist(src, user) <= 1)
+		if(isxeno(user))
+			return
+
+		var/obj/item/grab/G = I
+		if(!isliving(G.grabbed_thing))
+			return
+
+		var/mob/living/M = G.grabbed_thing
+		if(user.a_intent == INTENT_HARM)
+			if(user.grab_state <= GRAB_AGGRESSIVE)
+				to_chat(user, "<span class='warning'>You need a better grip to do that!</span>")
+				return
+
+			if(prob(15))
+				M.Paralyze(10 SECONDS)
+			M.apply_damage(8, BRUTE, "head")
+			UPDATEHEALTH(M)
+			user.visible_message("<span class='danger'>[user] slams [M]'s face against [src]!</span>",
+			"<span class='danger'>You slam [M]'s face against [src]!</span>")
+			log_combat(user, M, "slammed", "", "against \the [src]")
+			playsound(loc, 'sound/weapons/tablehit1.ogg', 25, 1)
+
+		else if(user.grab_state >= GRAB_AGGRESSIVE)
+			M.forceMove(loc)
+			M.Paralyze(10 SECONDS)
+			user.visible_message("<span class='danger'>[user] throws [M] on [src].</span>",
+			"<span class='danger'>You throw [M] on [src].</span>")
 		return
 
-	if((W.flags_item & ITEM_ABSTRACT) || isrobot(user))
-		return
-
-	if(istype(W, /obj/item/weapon/wristblades))
-		if(rand(0, 2) == 0)
-			playsound(src.loc, 'sound/weapons/wristblades_hit.ogg', 25, 1)
-			user.visible_message("<span class='danger'>[user] slices [src] apart!",
-			"<span class='danger'>You slice [src] apart!")
-			destroy()
-		else
-			to_chat(user, "<span class='warning'>You slice at the table, but only claw it up a little.</span>")
-		return
-
-	user.drop_inv_item_to_loc(W, loc)
+	if(user.a_intent != INTENT_HARM)
+		if(user.transferItemToLoc(I, loc))
+			var/list/click_params = params2list(params)
+			//Center the icon where the user clicked.
+			if(!click_params || !click_params["icon-x"] || !click_params["icon-y"])
+				return
+			//Clamp it so that the icon never moves more than 16 pixels in either direction (thus leaving the table turf)
+			I.pixel_x = clamp(text2num(click_params["icon-x"]) - 16, -(world.icon_size/2), world.icon_size/2)
+			I.pixel_y = clamp(text2num(click_params["icon-y"]) - 16, -(world.icon_size/2), world.icon_size/2)
+			return TRUE
 
 
-/obj/structure/table/proc/straight_table_check(var/direction)
+/obj/structure/table/proc/straight_table_check(direction)
 	var/obj/structure/table/T
 	for(var/angle in list(-90, 90))
 		T = locate() in get_step(loc, turn(direction, angle))
 		if(T && !T.flipped)
 			return FALSE
-	T = locate() in get_step(src.loc,direction)
+	T = locate() in get_step(loc, direction)
 	if(!T || T.flipped)
 		return TRUE
-	if(istype(T, /obj/structure/table/reinforced/))
+	if(istype(T, /obj/structure/table/reinforced))
 		var/obj/structure/table/reinforced/R = T
-		if(R.status == 2)
+		if(R.table_status == TABLE_STATUS_FIRM)
 			return FALSE
 	return T.straight_table_check(direction)
+
 
 /obj/structure/table/verb/do_flip()
 	set name = "Flip table"
@@ -343,7 +337,7 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if(!can_touch(usr) || ismouse(usr))
+	if(!can_interact(usr))
 		return
 
 	if(!flip(get_cardinal_dir(usr, src)))
@@ -358,12 +352,12 @@
 
 	flip_cooldown = world.time + 50
 
-/obj/structure/table/proc/unflipping_check(var/direction)
+/obj/structure/table/proc/unflipping_check(direction)
 
 	if(world.time < flip_cooldown)
 		return FALSE
 
-	for(var/mob/M in oview(src, 0))
+	for(var/mob/living/blocker in loc)
 		return FALSE
 
 	var/list/L = list()
@@ -388,7 +382,7 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if(!can_touch(usr))
+	if(!can_interact(usr))
 		return
 
 	if(!unflipping_check())
@@ -399,9 +393,9 @@
 
 	flip_cooldown = world.time + 50
 
-/obj/structure/table/proc/flip(var/direction)
 
-	if(world.time < flip_cooldown)
+/obj/structure/table/proc/flip(direction, forced)
+	if(!forced && world.time < flip_cooldown)
 		return FALSE
 
 	if(!straight_table_check(turn(direction, 90)) || !straight_table_check(turn(direction, -90)))
@@ -410,13 +404,16 @@
 	verbs -=/obj/structure/table/verb/do_flip
 	verbs +=/obj/structure/table/proc/do_put
 
-	var/list/targets = list(get_step(src,dir),get_step(src, turn(dir, 45)),get_step(src, turn(dir, -45)))
-	for(var/atom/movable/A in get_turf(src))
-		if(!A.anchored)
-			spawn(0)
-				A.throw_at(pick(targets), 1, 1)
+	var/list/targets = list(get_step(src, dir), get_step(src, turn(dir, 45)),get_step(src, turn(dir, -45)))
+	for(var/i in get_turf(src))
+		if(isobserver(i))
+			continue
+		var/atom/movable/thing_to_throw = i
+		if(thing_to_throw.anchored)
+			continue
+		thing_to_throw.throw_at(pick(targets), 1, 1)
 
-	dir = direction
+	setDir(direction)
 	if(dir != NORTH)
 		layer = FLY_LAYER
 	flipped = TRUE
@@ -429,6 +426,7 @@
 	update_adjacent()
 
 	return TRUE
+
 
 /obj/structure/table/proc/unflip()
 
@@ -448,9 +446,26 @@
 
 	return TRUE
 
+
+/obj/structure/table/flipped
+	flipped = TRUE //Just not to get the icon updated on Initialize()
+
+
+/obj/structure/table/flipped/Initialize()
+	. = ..()
+	flipped = FALSE //We'll properly flip it in LateInitialize()
+	return INITIALIZE_HINT_LATELOAD
+
+
+/obj/structure/table/flipped/LateInitialize(mapload)
+	. = ..()
+	if(!flipped)
+		flip(dir, TRUE)
+
+
 /*
- * Wooden tables
- */
+* Wooden tables
+*/
 /obj/structure/table/woodentable
 	name = "wooden table"
 	desc = "A square wood surface resting on four legs. Useful to put stuff on. Can be flipped in emergencies to act as cover."
@@ -458,10 +473,11 @@
 	sheet_type = /obj/item/stack/sheet/wood
 	parts = /obj/item/frame/table/wood
 	table_prefix = "wood"
-	health = 50
+	hit_sound = 'sound/effects/woodhit.ogg'
+	max_integrity = 50
 /*
- * Gambling tables
- */
+* Gambling tables
+*/
 /obj/structure/table/gamblingtable
 	name = "gambling table"
 	desc = "A curved wood and carpet surface resting on four legs. Used for gambling games. Can be flipped in emergencies to act as cover."
@@ -469,72 +485,87 @@
 	sheet_type = /obj/item/stack/sheet/wood
 	parts = /obj/item/frame/table/gambling
 	table_prefix = "gamble"
-	health = 50
+	hit_sound = 'sound/effects/woodhit.ogg'
+	max_integrity = 50
 /*
- * Reinforced tables
- */
+* Reinforced tables
+*/
 /obj/structure/table/reinforced
 	name = "reinforced table"
 	desc = "A square metal surface resting on four legs. This one has side panels, making it useful as a desk, but impossible to flip."
 	icon_state = "reinftable"
-	health = 200
-	var/status = 2
+	max_integrity = 200
 	reinforced = TRUE
 	table_prefix = "reinf"
 	parts = /obj/item/frame/table/reinforced
 
-/obj/structure/table/reinforced/flip(var/direction)
-	return FALSE //No, just no. It's a full desk, you can't flip that
 
-/obj/structure/table/reinforced/attackby(obj/item/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/tool/weldingtool))
-		var/obj/item/tool/weldingtool/WT = W
-		if(WT.remove_fuel(0, user))
-			if(status == 2)
-				user.visible_message("<span class='notice'>[user] starts weakening [src].</span>",
-				"<span class='notice'>You start weakening [src]</span>")
-				playsound(src.loc, 'sound/items/Welder.ogg', 25, 1)
-				if (do_after(user, 50, TRUE, 5, BUSY_ICON_BUILD))
-					if(!src || !WT.isOn())
-						return
-					user.visible_message("<span class='notice'>[user] weakens [src].</span>",
-					"<span class='notice'>You weaken [src]</span>")
-					src.status = 1
-			else
-				user.visible_message("<span class='notice'>[user] starts welding [src] back together.</span>",
-				"<span class='notice'>You start welding [src] back together.</span>")
-				playsound(src.loc, 'sound/items/Welder.ogg', 25, 1)
-				if(do_after(user, 50, TRUE, 5, BUSY_ICON_BUILD))
-					if(!src || !WT.isOn())
-						return
-					user.visible_message("<span class='notice'>[user] welds [src] back together.</span>",
-					"<span class='notice'>You weld [src] back together.</span>")
-					status = 2
-			return
-		return
+/obj/structure/table/reinforced/flipped
+	flipped = TRUE
+	table_status = TABLE_STATUS_WEAKENED
 
-	if(istype(W, /obj/item/tool/wrench))
-		if(status == 2)
-			return
-	..()
+
+/obj/structure/table/reinforced/flipped/Initialize()
+	. = ..()
+	flipped = FALSE
+	return INITIALIZE_HINT_LATELOAD
+
+
+/obj/structure/table/reinforced/flipped/LateInitialize(mapload)
+	. = ..()
+	if(!flipped)
+		flip(dir, TRUE)
+
+
+/obj/structure/table/reinforced/flip(direction, forced)
+	if(!forced && table_status == TABLE_STATUS_FIRM)
+		return FALSE
+	return ..()
+
+
+/obj/structure/table/reinforced/welder_act(mob/living/user, obj/item/I)
+	. = ..()
+	var/obj/item/tool/weldingtool/WT = I
+	if(!WT.isOn())
+		return FALSE
+
+	if(table_status == TABLE_STATUS_FIRM)
+		user.visible_message("<span class='notice'>[user] starts weakening [src].</span>",
+		"<span class='notice'>You start weakening [src]</span>")
+		playsound(loc, 'sound/items/welder.ogg', 25, TRUE)
+		if(!do_after(user, 5 SECONDS, TRUE, src, BUSY_ICON_BUILD, extra_checks = CALLBACK(WT, /obj/item/tool/weldingtool/proc/isOn)) || !WT.remove_fuel(1, user))
+			return TRUE
+
+		user.visible_message("<span class='notice'>[user] weakens [src].</span>",
+			"<span class='notice'>You weaken [src]</span>")
+		table_status = TABLE_STATUS_WEAKENED
+		return TRUE
+
+	user.visible_message("<span class='notice'>[user] starts welding [src] back together.</span>",
+		"<span class='notice'>You start welding [src] back together.</span>")
+	playsound(loc, 'sound/items/welder.ogg', 25, TRUE)
+	if(!do_after(user, 5 SECONDS, TRUE, src, BUSY_ICON_BUILD, extra_checks = CALLBACK(WT, /obj/item/tool/weldingtool/proc/isOn)) || !WT.remove_fuel(1, user))
+		return TRUE
+
+	user.visible_message("<span class='notice'>[user] welds [src] back together.</span>",
+		"<span class='notice'>You weld [src] back together.</span>")
+	table_status = TABLE_STATUS_FIRM
+	return TRUE
+
 
 /obj/structure/table/reinforced/prison
 	desc = "A square metal surface resting on four legs. This one has side panels, making it useful as a desk, but impossible to flip."
 	icon_state = "prisontable"
 	table_prefix = "prison"
 
-/obj/structure/table/almayer
-	icon_state = "almtable"
-	table_prefix = "alm"
-
-
-
-
+/obj/structure/table/mainship
+	icon_state = "shiptable"
+	table_prefix = "ship"
 
 
 /*
- * Racks
- */
+* Racks
+*/
 /obj/structure/rack
 	name = "rack"
 	desc = "A bunch of metal shelves stacked on top of eachother. Excellent for storage purposes, less so as cover."
@@ -542,62 +573,62 @@
 	icon_state = "rack"
 	density = TRUE
 	layer = TABLE_LAYER
-	anchored = 1.0
+	anchored = TRUE
 	throwpass = TRUE	//You can throw objects over this, despite it's density.
-	breakable = TRUE
 	climbable = TRUE
-	parts = /obj/item/frame/rack
+	max_integrity = 150
+	resistance_flags = XENO_DAMAGEABLE
+	var/parts = /obj/item/frame/rack
 
 /obj/structure/rack/CanPass(atom/movable/mover, turf/target)
 	if(!density) //Because broken racks
 		return TRUE
-	if(istype(mover) && mover.checkpass(PASSTABLE))
+	if(istype(mover) && CHECK_BITFIELD(mover.flags_pass, PASSTABLE))
 		return TRUE
 	var/obj/structure/S = locate(/obj/structure) in get_turf(mover)
-	if(S && S.climbable && !(S.flags_atom & ON_BORDER) && climbable && isliving(mover)) //Climbable non-border  objects allow you to universally climb over others
+	if(S?.climbable && !(S.flags_atom & ON_BORDER) && climbable && isliving(mover)) //Climbable non-border  objects allow you to universally climb over others
 		return TRUE
 	else
 		return FALSE
 
 /obj/structure/rack/MouseDrop_T(obj/item/I, mob/user)
-	if (!istype(I) || user.get_active_hand() != I)
-		return
-	if(isrobot(user))
-		return
+	if (!istype(I) || user.get_active_held_item() != I)
+		return ..()
 	user.drop_held_item()
 	if(I.loc != loc)
 		step(I, get_dir(I, src))
 
-/obj/structure/rack/attack_alien(mob/living/carbon/Xenomorph/M)
-	M.animation_attack_on(src)
-	playsound(src, 'sound/effects/metalhit.ogg', 25, 1)
-	M.visible_message("<span class='danger'>[M] slices [src] apart!</span>", \
-	"<span class='danger'>You slice [src] apart!</span>", null, 5)
-	destroy()
+/obj/structure/rack/attack_alien(mob/living/carbon/xenomorph/M)
+	SEND_SIGNAL(M, COMSIG_XENOMORPH_ATTACK_RACK)
+	return ..()
 
-/obj/structure/rack/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/tool/wrench))
-		destroy(1)
-		playsound(src.loc, 'sound/items/Ratchet.ogg', 25, 1)
+/obj/structure/rack/attackby(obj/item/I, mob/user, params)
+	. = ..()
+
+	if(iswrench(I))
+		deconstruct(TRUE)
+		playsound(loc, 'sound/items/ratchet.ogg', 25, 1)
 		return
-	if((W.flags_item & ITEM_ABSTRACT) || isrobot(user))
-		return
-	user.drop_inv_item_to_loc(W, loc)
+
+	if(user.a_intent != INTENT_HARM)
+		return user.transferItemToLoc(I, loc)
 
 
 /obj/structure/rack/Crossed(atom/movable/O)
-	..()
-	if(istype(O,/mob/living/carbon/Xenomorph/Ravager) || istype(O,/mob/living/carbon/Xenomorph/Crusher))
-		var/mob/living/carbon/Xenomorph/M = O
+	. = ..()
+	if(istype(O,/mob/living/carbon/xenomorph/ravager))
+		var/mob/living/carbon/xenomorph/M = O
 		if(!M.stat) //No dead xenos jumpin on the bed~
 			visible_message("<span class='danger'>[O] plows straight through [src]!</span>")
-			destroy()
+			deconstruct(FALSE)
 
-/obj/structure/rack/destroy(deconstruct)
-	if(deconstruct)
-		if(parts)
-			new parts(loc)
+/obj/structure/rack/deconstruct(disassembled = TRUE)
+	if(disassembled && parts)
+		new parts(loc)
 	else
 		new /obj/item/stack/sheet/metal(loc)
-	density = 0
-	cdel(src)
+	density = FALSE
+	return ..()
+
+#undef TABLE_STATUS_WEAKENED
+#undef TABLE_STATUS_FIRM

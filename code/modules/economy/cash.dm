@@ -2,42 +2,42 @@
 	name = "0 dollars"
 	desc = "You have no dollars."
 	gender = PLURAL
-	icon = 'icons/obj/items/items.dmi'
+	icon = 'icons/obj/stack_objects.dmi'
 	icon_state = "spacecash1"
-	opacity = 0
-	density = 0
-	anchored = 0.0
+	opacity = FALSE
+	density = FALSE
+	anchored = FALSE
 	force = 1.0
 	throwforce = 1.0
 	throw_speed = 1
 	throw_range = 2
-	w_class = 1
+	w_class = WEIGHT_CLASS_TINY
 	var/access = list()
-	access = ACCESS_MARINE_COMMANDER
+	access = ACCESS_MARINE_CAPTAIN
 	var/worth = 0
 
-/obj/item/spacecash/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/spacecash))
-		if(istype(W, /obj/item/spacecash/ewallet)) return 0
+/obj/item/spacecash/attackby(obj/item/I, mob/user, params)
+	. = ..()
 
+	if(istype(I, /obj/item/spacecash) && !istype(I, /obj/item/spacecash/ewallet))
 		var/obj/item/spacecash/bundle/bundle
-		if(!istype(W, /obj/item/spacecash/bundle))
-			var/obj/item/spacecash/cash = W
-			user.temp_drop_inv_item(cash)
-			bundle = new (src.loc)
+		if(!istype(I, /obj/item/spacecash/bundle))
+			var/obj/item/spacecash/cash = I
+			user.temporarilyRemoveItemFromInventory(cash)
+			bundle = new(loc)
 			bundle.worth += cash.worth
-			cdel(cash)
-		else //is bundle
-			bundle = W
-		bundle.worth += src.worth
+			qdel(cash)
+		else
+			bundle = I
+		bundle.worth += worth
 		bundle.update_icon()
-		if(istype(user, /mob/living/carbon/human))
+		if(ishuman(user))
 			var/mob/living/carbon/human/h_user = user
-			h_user.temp_drop_inv_item(src)
-			h_user.temp_drop_inv_item(bundle)
+			h_user.temporarilyRemoveItemFromInventory(src)
+			h_user.temporarilyRemoveItemFromInventory(bundle)
 			h_user.put_in_hands(bundle)
-		to_chat(user, "<span class='notice'>You add [src.worth] dollars worth of money to the bundles.<br>It holds [bundle.worth] dollars now.</span>")
-		cdel(src)
+		to_chat(user, "<span class='notice'>You add [worth] dollars worth of money to the bundles.<br>It holds [bundle.worth] dollars now.</span>")
+		qdel(src)
 
 /obj/item/spacecash/bundle
 	name = "stack of dollars"
@@ -53,14 +53,14 @@
 		while(sum >= i && num < 50)
 			sum -= i
 			num++
-			var/image/banknote = image('icons/obj/items/items.dmi', "spacecash[i]")
+			var/image/banknote = image('icons/obj/stack_objects.dmi', "spacecash[i]")
 			var/matrix/M = matrix()
 			M.Translate(rand(-6, 6), rand(-4, 8))
 			M.Turn(pick(-45, -27.5, 0, 0, 0, 0, 0, 0, 0, 27.5, 45))
 			banknote.transform = M
 			overlays += banknote
 	if(num == 0) // Less than one thaler, let's just make it look like 1 for ease
-		var/image/banknote = image('icons/obj/items/items.dmi', "spacecash1")
+		var/image/banknote = image('icons/obj/stack_objects.dmi', "spacecash1")
 		var/matrix/M = matrix()
 		M.Translate(rand(-6, 6), rand(-4, 8))
 		M.Turn(pick(-45, -27.5, 0, 0, 0, 0, 0, 0, 0, 27.5, 45))
@@ -71,14 +71,14 @@
 /obj/item/spacecash/bundle/attack_self(mob/user)
 	var/oldloc = loc
 	var/amount = input(user, "How many dollars do you want to take? (0 to [src.worth])", "Take Money", 20) as num
-	amount = round(CLAMP(amount, 0, src.worth))
+	amount = round(clamp(amount, 0, src.worth))
 	if(amount==0) return 0
-	if(disposed || loc != oldloc) return
+	if(gc_destroyed || loc != oldloc) return
 
 	src.worth -= amount
 	src.update_icon()
 	if(!worth)
-		usr.temp_drop_inv_item(src)
+		usr.temporarilyRemoveItemFromInventory(src)
 	if(amount in list(1000,500,200,100,50,20,1))
 		var/cashtype = text2path("/obj/item/spacecash/c[amount]")
 		var/obj/cash = new cashtype (usr.loc)
@@ -89,7 +89,7 @@
 		bundle.update_icon()
 		user.put_in_hands(bundle)
 	if(!worth)
-		cdel(src)
+		qdel(src)
 
 /obj/item/spacecash/c1
 	name = "1 dollar bill"
@@ -133,33 +133,28 @@
 	desc = "Five US Government minted hundred dollar bills. All of them have pictures of Ben Franklin on them. They all eagarly glare at you, making you feel as if you owe them something. "
 	worth = 500
 
-/obj/item/spacecash/c1000
-	name = "1000 dollars"
-	icon_state = "spacecash1000"
-	desc = "Ten US Government minted hundred dollar bills. Every single damn one of them has Ben Fucking Franklin on them. The court of Bens sit inpatiently, as if each one thought they alone belonged to you. This coven of angry Bens have all since learned about your relations with the other Bens, and they want answers."
-	worth = 1000
 
 proc/spawn_money(var/sum, spawnloc, mob/living/carbon/human/human_user as mob)
 	if(sum in list(1000,500,200,100,50,20,10,1))
 		var/cash_type = text2path("/obj/item/spacecash/c[sum]")
 		var/obj/cash = new cash_type (usr.loc)
-		if(ishuman(human_user) && !human_user.get_active_hand())
+		if(ishuman(human_user) && !human_user.get_active_held_item())
 			human_user.put_in_hands(cash)
 	else
 		var/obj/item/spacecash/bundle/bundle = new (spawnloc)
 		bundle.worth = sum
 		bundle.update_icon()
-		if (ishuman(human_user) && !human_user.get_active_hand())
+		if (ishuman(human_user) && !human_user.get_active_held_item())
 			human_user.put_in_hands(bundle)
 	return
 
 /obj/item/spacecash/ewallet
-	name = "Weyland Yutani cash card"
+	name = "\improper Nanotrasen cash card"
 	icon_state = "efundcard"
-	desc = "A Weyland Yutani backed cash card that holds an amount of money."
+	desc = "A Nanotrasen backed cash card that holds an amount of money."
 	var/owner_name = "" //So the ATM can set it so the EFTPOS can put a valid name on transactions.
 
 /obj/item/spacecash/ewallet/examine(mob/user)
-	..()
+	. = ..()
 	if(user == loc)
 		to_chat(user, "<span class='notice'>Charge card's owner: [owner_name]. Dollars remaining: [worth].</span>")

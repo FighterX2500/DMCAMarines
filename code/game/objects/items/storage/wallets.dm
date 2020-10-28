@@ -3,28 +3,29 @@
 	desc = "It can hold a few small and personal things."
 	storage_slots = 10
 	icon_state = "wallet"
-	w_class = 1
+	w_class = WEIGHT_CLASS_TINY
 	can_hold = list(
-		"/obj/item/spacecash",
-		"/obj/item/card",
-		"/obj/item/clothing/mask/cigarette",
-		"/obj/item/device/flashlight/pen",
-		"/obj/item/seeds",
-		"/obj/item/stack/medical",
-		"/obj/item/toy/crayon",
-		"/obj/item/coin",
-		"/obj/item/toy/dice",
-		"/obj/item/disk",
-		"/obj/item/implanter",
-		"/obj/item/tool/lighter",
-		"/obj/item/tool/match",
-		"/obj/item/paper",
-		"/obj/item/tool/pen",
-		"/obj/item/photo",
-		"/obj/item/reagent_container/dropper",
-		"/obj/item/tool/screwdriver",
-		"/obj/item/tool/stamp")
-	flags_equip_slot = SLOT_ID
+		/obj/item/spacecash,
+		/obj/item/card,
+		/obj/item/clothing/mask/cigarette,
+		/obj/item/flashlight/pen,
+		/obj/item/seeds,
+		/obj/item/stack/medical,
+		/obj/item/toy/crayon,
+		/obj/item/coin,
+		/obj/item/toy/dice,
+		/obj/item/disk,
+		/obj/item/implanter,
+		/obj/item/tool/lighter,
+		/obj/item/tool/match,
+		/obj/item/paper,
+		/obj/item/tool/pen,
+		/obj/item/photo,
+		/obj/item/reagent_containers/dropper,
+		/obj/item/tool/screwdriver,
+		/obj/item/tool/stamp,
+	)
+	flags_equip_slot = ITEM_SLOT_ID
 
 	var/obj/item/card/id/front_id = null
 
@@ -64,28 +65,17 @@
 	icon_state = "wallet"
 
 
-/obj/item/storage/wallet/GetID()
-	return front_id
-
-/obj/item/storage/wallet/GetAccess()
-	var/obj/item/I = GetID()
-	if(I)
-		return I.GetAccess()
-	else
-		return ..()
-
-/obj/item/storage/wallet/random/New()
-	..()
-	var/item1_type = pick( /obj/item/spacecash/c10,/obj/item/spacecash/c100,/obj/item/spacecash/c1000,/obj/item/spacecash/c20,/obj/item/spacecash/c200,/obj/item/spacecash/c50, /obj/item/spacecash/c500)
+/obj/item/storage/wallet/random/Initialize()
+	. = ..()
+	var/item1_type = pick( /obj/item/spacecash/c10,/obj/item/spacecash/c100,/obj/item/spacecash/c20,/obj/item/spacecash/c200,/obj/item/spacecash/c50, /obj/item/spacecash/c500)
 	var/item2_type
 	if(prob(50))
-		item2_type = pick( /obj/item/spacecash/c10,/obj/item/spacecash/c100,/obj/item/spacecash/c1000,/obj/item/spacecash/c20,/obj/item/spacecash/c200,/obj/item/spacecash/c50, /obj/item/spacecash/c500)
+		item2_type = pick( /obj/item/spacecash/c10,/obj/item/spacecash/c100,/obj/item/spacecash/c20,/obj/item/spacecash/c200,/obj/item/spacecash/c50, /obj/item/spacecash/c500)
 	var/item3_type = pick( /obj/item/coin/silver, /obj/item/coin/silver, /obj/item/coin/gold, /obj/item/coin/iron, /obj/item/coin/iron, /obj/item/coin/iron )
 
-	spawn(2)
-		if(item1_type)
-			new item1_type(src)
-		if(item2_type)
-			new item2_type(src)
-		if(item3_type)
-			new item3_type(src)
+	if(item1_type)
+		new item1_type(src)
+	if(item2_type)
+		new item2_type(src)
+	if(item3_type)
+		new item3_type(src)

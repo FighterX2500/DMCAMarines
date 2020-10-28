@@ -10,4 +10,3 @@
 		if(istype(A)) //a sanity check just to be safe
 			remove_ventcrawl()
 			add_ventcrawl(A)
-

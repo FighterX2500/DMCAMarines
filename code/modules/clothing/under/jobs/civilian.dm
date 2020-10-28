@@ -6,7 +6,7 @@
 /obj/item/clothing/under/rank/bartender
 	desc = "It looks like it could use some more flair."
 	name = "bartender's uniform"
-	icon_state = "ba_suit"
+	icon_state = "barman"
 	rollable_sleeves = FALSE
 
 /obj/item/clothing/under/rank/captain //Alright, technically not a 'civilian' but its better then giving a .dm file for a single define.
@@ -25,7 +25,7 @@
 	desc = "Shooooorts! They're comfy and easy to wear!"
 	icon_state = "cargotech"
 	item_state = "lb_suit"
-	flags_armor_protection = UPPER_TORSO|LOWER_TORSO|ARMS
+	flags_armor_protection = CHEST|GROIN|ARMS
 
 /obj/item/clothing/under/rank/chaplain
 	desc = "It's a black jumpsuit, often worn by religious folk."
@@ -35,9 +35,14 @@
 	rollable_sleeves = FALSE
 
 /obj/item/clothing/under/rank/chef
-	desc = "It's an apron which is given only to the most <b>hardcore</b> chefs in space."
+	desc = "It's an apron which is given only to the most <b>hardcore</b> chefs."
 	name = "chef's uniform"
 	icon_state = "chef"
+
+/obj/item/clothing/under/rank/chef/altchef
+	name = "red cook's suit"
+	desc = "A flashier chef's suit, if a bit more impractical."
+	icon_state = "altchef"
 
 /obj/item/clothing/under/rank/clown
 	name = "clown suit"
@@ -74,7 +79,7 @@
 	desc = "It's the official uniform of the station's janitor. It has minor protection from biohazards."
 	name = "janitor's jumpsuit"
 	icon_state = "janitor"
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 10, rad = 0)
+	soft_armor = list("melee" = 0, "bullet" = 0, "laser" = 0, "energy" = 0, "bomb" = 0, "bio" = 10, "rad" = 0, "fire" = 0, "acid" = 0)
 
 /obj/item/clothing/under/lawyer
 	desc = "Slick threads."
@@ -105,6 +110,7 @@
 /obj/item/clothing/under/lawyer/purpsuit
 	name = "Purple Suit"
 	icon_state = "lawyer_purp"
+	rollable_sleeves = TRUE
 
 /obj/item/clothing/under/lawyer/oldman
 	name = "Old Man's Suit"

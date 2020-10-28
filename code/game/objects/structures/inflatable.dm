@@ -3,15 +3,14 @@
 	desc = "A folded membrane which rapidly expands into a large cubical shape on activation."
 	icon = 'icons/obj/inflatable.dmi'
 	icon_state = "folded_wall"
-	w_class = 3.0
+	hit_sound = 'sound/effects/Glasshit_old.ogg'
+	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/inflatable/attack_self(mob/user)
 	playsound(loc, 'sound/items/zip.ogg', 25, 1)
-	to_chat(user, "\blue You inflate [src].")
-	var/obj/structure/inflatable/R = new /obj/structure/inflatable(user.loc)
-	src.transfer_fingerprints_to(R)
-	R.add_fingerprint(user)
-	cdel(src)
+	to_chat(user, "<span class='notice'>You inflate [src].</span>")
+	new /obj/structure/inflatable(user.loc)
+	qdel(src)
 
 
 
@@ -23,11 +22,9 @@
 
 	attack_self(mob/user)
 		playsound(loc, 'sound/items/zip.ogg', 25, 1)
-		to_chat(user, "\blue You inflate [src].")
-		var/obj/structure/inflatable/door/R = new /obj/structure/inflatable/door(user.loc)
-		src.transfer_fingerprints_to(R)
-		R.add_fingerprint(user)
-		cdel(src)
+		to_chat(user, "<span class='notice'>You inflate [src].</span>")
+		new /obj/structure/inflatable/door(user.loc)
+		qdel(src)
 
 
 
@@ -36,85 +33,49 @@
 /obj/structure/inflatable
 	name = "inflatable wall"
 	desc = "An inflated membrane. Do not puncture."
-	density = 1
-	anchored = 1
-	opacity = 0
+	density = TRUE
+	anchored = TRUE
+	opacity = FALSE
 
 	icon = 'icons/obj/inflatable.dmi'
 	icon_state = "wall"
 
-	var/health = 50.0
+	max_integrity = 50
+	resistance_flags = XENO_DAMAGEABLE
 	var/deflated = FALSE
 
+
+/obj/structure/inflatable/deconstruct(disassembled = TRUE)
+	if(!deflated)
+		deflate(!disassembled)
+	return ..()
 
 
 /obj/structure/inflatable/CanPass(atom/movable/mover, turf/target, height = 0, air_group = 0)
 	return 0
 
-/obj/structure/inflatable/bullet_act(var/obj/item/projectile/Proj)
-	health -= Proj.damage
-	..()
-	if(health <= 0 && !deflated)
-		deflate(1)
-	return 1
-
 
 /obj/structure/inflatable/ex_act(severity)
 	switch(severity)
-		if(1)
-			cdel(src)
-		if(2)
+		if(EXPLODE_DEVASTATE)
+			qdel(src)
+		if(EXPLODE_HEAVY)
 			deflate(1)
 
-		if(3)
+		if(EXPLODE_LIGHT)
 			if(prob(50))
 				deflate(1)
 
 
-/obj/structure/inflatable/attack_paw(mob/user as mob)
-	return attack_generic(user, 15)
+/obj/structure/inflatable/attackby(obj/item/I, mob/user, params)
+	. = ..()
 
-/obj/structure/inflatable/attack_hand(mob/user as mob)
-	add_fingerprint(user)
-	return
-
-
-/obj/structure/inflatable/proc/attack_generic(mob/living/user, damage = 0)	//used by attack_animal
-	health -= damage
-	user.animation_attack_on(src)
-	if(health <= 0)
-		user.visible_message("<span class='danger'>[user] tears open [src]!</span>")
-		deflate(1)
-	else	//for nicer text~
-		user.visible_message("<span class='danger'>[user] tears at [src]!</span>")
-
-/obj/structure/inflatable/attack_animal(mob/user as mob)
-	if(!isanimal(user)) return
-	var/mob/living/simple_animal/M = user
-	if(M.melee_damage_upper <= 0) return
-	attack_generic(M, M.melee_damage_upper)
+	if(can_puncture(I))
+		visible_message("<span class='danger'>[user] pierces [src] with [I]!</span>")
+		deflate(TRUE)
 
 
-/obj/structure/inflatable/attackby(obj/item/W as obj, mob/user as mob)
-	if(!istype(W)) return
-
-	if (can_puncture(W))
-		visible_message("\red <b>[user] pierces [src] with [W]!</b>")
-		deflate(1)
-	if(W.damtype == BRUTE || W.damtype == BURN)
-		hit(W.force)
-		..()
-	return
-
-/obj/structure/inflatable/proc/hit(var/damage, var/sound_effect = 1)
-	health = max(0, health - damage)
-	if(sound_effect)
-		playsound(loc, 'sound/effects/Glasshit_old.ogg', 25, 1)
-	if(health <= 0 && !deflated)
-		deflate(1)
-
-
-/obj/structure/inflatable/proc/deflate(var/violent=0)
+/obj/structure/inflatable/proc/deflate(violent=0)
 	set waitfor = 0
 	if(deflated)
 		return
@@ -126,16 +87,14 @@
 		sleep(10)
 		new /obj/structure/inflatable/popped(loc)
 		//var/obj/item/inflatable/torn/R = new /obj/item/inflatable/torn(loc)
-		//src.transfer_fingerprints_to(R)
-		cdel(src)
+		qdel(src)
 	else
-		//to_chat(user, "\blue You slowly deflate the inflatable wall.")
+		//to_chat(user, "<span class='notice'>You slowly deflate the inflatable wall.</span>")
 		visible_message("[src] slowly deflates.")
 		flick("wall_deflating", src)
 		spawn(50)
-			var/obj/item/inflatable/R = new /obj/item/inflatable(loc)
-			src.transfer_fingerprints_to(R)
-			cdel(src)
+			new /obj/item/inflatable(loc)
+			qdel(src)
 
 /obj/structure/inflatable/verb/hand_deflate()
 	set name = "Deflate"
@@ -144,7 +103,7 @@
 
 	if(isobserver(usr)) //to stop ghosts from deflating
 		return
-	if(isXeno(usr))
+	if(isxeno(usr))
 		return
 
 	if(!deflated)
@@ -159,8 +118,8 @@
 /obj/structure/inflatable/popped
 	name = "popped inflatable wall"
 	desc = "It used to be an inflatable wall, now it's just a mess of plastic."
-	density = 0
-	anchored = 1
+	density = FALSE
+	anchored = TRUE
 	deflated = TRUE
 
 	icon = 'icons/obj/inflatable.dmi'
@@ -183,9 +142,9 @@
 
 /obj/structure/inflatable/door //Based on mineral door code
 	name = "inflatable door"
-	density = 1
-	anchored = 1
-	opacity = 0
+	density = TRUE
+	anchored = TRUE
+	opacity = FALSE
 
 	icon = 'icons/obj/inflatable.dmi'
 	icon_state = "door_closed"
@@ -194,18 +153,13 @@
 	var/isSwitchingStates = 0
 
 
-
-/obj/structure/inflatable/door/attack_ai(mob/user as mob) //those aren't machinery, they're just big fucking slabs of a mineral
-	if(isAI(user)) //so the AI can't open it
-		return
-	else if(isrobot(user)) //but cyborgs can
-		if(get_dist(user,src) <= 1) //not remotely though
-			return TryToSwitchState(user)
-
-/obj/structure/inflatable/door/attack_paw(mob/user as mob)
+/obj/structure/inflatable/door/attack_paw(mob/living/carbon/monkey/user)
 	return TryToSwitchState(user)
 
-/obj/structure/inflatable/door/attack_hand(mob/user as mob)
+/obj/structure/inflatable/door/attack_hand(mob/living/user)
+	. = ..()
+	if(.)
+		return
 	return TryToSwitchState(user)
 
 /obj/structure/inflatable/door/CanPass(atom/movable/mover, turf/target, height = 0, air_group = 0)
@@ -216,10 +170,12 @@
 	return !density
 
 /obj/structure/inflatable/door/proc/TryToSwitchState(atom/user)
-	if(isSwitchingStates) return
+	if(isSwitchingStates)
+		return
 	if(ismob(user))
 		var/mob/M = user
-		if(world.time - user.last_bumped <= 60) return //NOTE do we really need that?
+		if(TIMER_COOLDOWN_CHECK(M, COOLDOWN_BUMP))
+			return
 		if(M.client)
 			if(iscarbon(M))
 				var/mob/living/carbon/C = M
@@ -227,8 +183,7 @@
 					SwitchState()
 			else
 				SwitchState()
-	else if(istype(user, /obj/mecha))
-		SwitchState()
+			TIMER_COOLDOWN_START(M, COOLDOWN_BUMP, 6 SECONDS)
 
 /obj/structure/inflatable/door/proc/SwitchState()
 	if(state)
@@ -242,8 +197,8 @@
 	//playsound(loc, 'sound/effects/stonedoor_openclose.ogg', 25, 1)
 	flick("door_opening",src)
 	sleep(10)
-	density = 0
-	opacity = 0
+	density = FALSE
+	opacity = FALSE
 	state = 1
 	update_icon()
 	isSwitchingStates = 0
@@ -253,8 +208,8 @@
 	//playsound(loc, 'sound/effects/stonedoor_openclose.ogg', 25, 1)
 	flick("door_closing",src)
 	sleep(10)
-	density = 1
-	opacity = 0
+	density = TRUE
+	opacity = FALSE
 	state = 0
 	update_icon()
 	isSwitchingStates = 0
@@ -265,7 +220,7 @@
 	else
 		icon_state = "door_closed"
 
-/obj/structure/inflatable/door/deflate(var/violent=0)
+/obj/structure/inflatable/door/deflate(violent=0)
 	set waitfor = 0
 	playsound(loc, 'sound/machines/hiss.ogg', 25, 1)
 	if(violent)
@@ -274,16 +229,14 @@
 		sleep(10)
 		new /obj/structure/inflatable/popped/door(loc)
 		//var/obj/item/inflatable/door/torn/R = new /obj/item/inflatable/door/torn(loc)
-		//src.transfer_fingerprints_to(R)
-		cdel(src)
+		qdel(src)
 	else
-		//to_chat(user, "\blue You slowly deflate the inflatable wall.")
+		//to_chat(user, "<span class='notice'>You slowly deflate the inflatable wall.</span>")
 		visible_message("[src] slowly deflates.")
 		flick("door_deflating", src)
 		spawn(50)
-			var/obj/item/inflatable/door/R = new /obj/item/inflatable/door(loc)
-			src.transfer_fingerprints_to(R)
-			cdel(src)
+			new /obj/item/inflatable/door(loc)
+			qdel(src)
 
 
 

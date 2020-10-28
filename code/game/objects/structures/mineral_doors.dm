@@ -1,5 +1,5 @@
-#define CLOSED 0
-#define OPEN 1
+#define D_CLOSED 0
+#define D_OPEN 1
 
 //NOT using the existing /obj/machinery/door type, since that has some complications on its own, mainly based on its
 //machineryness
@@ -14,13 +14,13 @@
 	icon_state = "metal"
 
 	var/mineralType = "metal"
-	var/state = CLOSED
+	var/state = D_CLOSED
 	var/isSwitchingStates = FALSE
 	var/hardness = 1
 	var/oreAmount = 7
 
-/obj/structure/mineral_door/New(location)
-	..()
+/obj/structure/mineral_door/Initialize()
+	. = ..()
 	icon_state = mineralType
 	name = "[mineralType] door"
 
@@ -31,17 +31,13 @@
 		return TryToSwitchState(user)
 	return
 
-/obj/structure/mineral_door/attack_ai(mob/user as mob) //those aren't machinery, they're just big fucking slabs of a mineral
-	if(isAI(user)) //so the AI can't open it
-		return
-	else if(isrobot(user)) //but cyborgs can
-		if(get_dist(user,src) <= 1) //not remotely though
-			return TryToSwitchState(user)
-
-/obj/structure/mineral_door/attack_paw(mob/user as mob)
+/obj/structure/mineral_door/attack_paw(mob/living/carbon/monkey/user)
 	return TryToSwitchState(user)
 
-/obj/structure/mineral_door/attack_hand(mob/user as mob)
+/obj/structure/mineral_door/attack_hand(mob/living/user)
+	. = ..()
+	if(.)
+		return
 	return TryToSwitchState(user)
 
 /obj/structure/mineral_door/CanPass(atom/movable/mover, turf/target)
@@ -61,8 +57,6 @@
 					SwitchState()
 			else
 				SwitchState()
-	else if(istype(user, /obj/mecha))
-		SwitchState()
 
 /obj/structure/mineral_door/proc/SwitchState()
 	if(state)
@@ -77,7 +71,7 @@
 	sleep(10)
 	density = FALSE
 	opacity = FALSE
-	state = OPEN
+	state = D_OPEN
 	update_icon()
 	isSwitchingStates = FALSE
 
@@ -89,7 +83,7 @@
 	sleep(10)
 	density = TRUE
 	opacity = TRUE
-	state = CLOSED
+	state = D_CLOSED
 	update_icon()
 	isSwitchingStates = FALSE
 
@@ -101,16 +95,25 @@
 		icon_state = mineralType
 
 /obj/structure/mineral_door/attackby(obj/item/W, mob/living/user)
-	if(istype(W,/obj/item/tool/pickaxe))
-		var/obj/item/tool/pickaxe/digTool = W
-		to_chat(user, "You start digging the [name].")
-		if(do_after(user,digTool.digspeed*hardness, TRUE, 5, BUSY_ICON_GENERIC) && src)
-			to_chat(user, "You finished digging.")
-			Dismantle()
-	else if(!(W.flags_item & NOBLUDGEON) && W.force)
-		user.animation_attack_on(src)
-		hardness -= W.force/100
-		to_chat(user, "You hit the [name] with your [W.name]!")
+	var/is_resin = istype(src, /obj/structure/mineral_door/resin)
+	if(!(W.flags_item & NOBLUDGEON) && W.force)
+		user.changeNext_move(W.attack_speed)
+		var/multiplier = 1
+		var/obj/item/tool/pickaxe/plasmacutter/P
+		if(istype(W, /obj/item/tool/pickaxe/plasmacutter) && !user.action_busy)
+			P = W
+			if(P.start_cut(user, src.name, src, PLASMACUTTER_BASE_COST * PLASMACUTTER_VLOW_MOD))
+				if(is_resin)
+					multiplier += PLASMACUTTER_RESIN_MULTIPLIER //Plasma cutters are particularly good at destroying resin structures.
+				else
+					multiplier += PLASMACUTTER_RESIN_MULTIPLIER * 0.5 //Plasma cutters are particularly good at destroying resin structures.
+				P.cut_apart(user, src.name, src, PLASMACUTTER_BASE_COST * PLASMACUTTER_VLOW_MOD) //Minimal energy cost.
+		if(W.damtype == "fire" && is_resin) //Burn damage deals extra vs resin structures (mostly welders).
+			multiplier += 1
+		user.do_attack_animation(src, used_item = W)
+		hardness -= W.force * multiplier * 0.01
+		if(!P)
+			to_chat(user, "You hit the [name] with your [W.name]!")
 		CheckHardness()
 	else
 		attack_hand(user)
@@ -139,22 +142,22 @@
 			var/ore = text2path("/obj/item/stack/sheet/mineral/[mineralType]")
 			for(var/i = 3, i <= oreAmount, i++)
 				new ore(get_turf(src))
-	cdel(src)
+	qdel(src)
 
 /obj/structure/mineral_door/ex_act(severity = 1)
 	switch(severity)
-		if(1)
+		if(EXPLODE_DEVASTATE)
 			Dismantle(1)
-		if(2)
+		if(EXPLODE_HEAVY)
 			if(prob(20))
 				Dismantle(1)
 			else
 				hardness--
 				CheckHardness()
-		if(3)
+		if(EXPLODE_LIGHT)
 			hardness -= 0.1
 			CheckHardness()
-	return
+
 
 /obj/structure/mineral_door/iron
 	mineralType = "metal"
@@ -170,11 +173,6 @@
 /obj/structure/mineral_door/uranium
 	mineralType = "uranium"
 	hardness = 3
-	luminosity = 2
-
-/obj/structure/mineral_door/uranium/Dispose()
-	SetLuminosity(0)
-	. = ..()
 
 /obj/structure/mineral_door/sandstone
 	mineralType = "sandstone"
@@ -219,7 +217,7 @@
 	sleep(10)
 	density = FALSE
 	opacity = FALSE
-	state = OPEN
+	state = D_OPEN
 	update_icon()
 	isSwitchingStates = FALSE
 
@@ -230,7 +228,7 @@
 	sleep(10)
 	density = TRUE
 	opacity = TRUE
-	state = CLOSED
+	state = D_CLOSED
 	update_icon()
 	isSwitchingStates = FALSE
 
@@ -238,14 +236,14 @@
 	if(!devastated)
 		for(var/i = 1, i <= oreAmount, i++)
 			new/obj/item/stack/sheet/wood(get_turf(src))
-	cdel(src)
+	qdel(src)
 
 //Mapping instance
 /obj/structure/mineral_door/wood/open
 	density = FALSE
 	opacity = FALSE
-	state = OPEN
+	state = D_OPEN
 	icon_state = "woodopen"
 
-#undef CLOSED
-#undef OPEN
+#undef D_CLOSED
+#undef D_OPEN

@@ -1,200 +1,311 @@
-//toggles
-/client/verb/toggle_ghost_ears()
-	set name = "Show/Hide GhostEars"
+/client/verb/toggle_statistics()
 	set category = "Preferences"
-	set desc = ".Toggle Between seeing all mob speech, and only speech of nearby mobs"
-	prefs.toggles_chat ^= CHAT_GHOSTEARS
-	to_chat(src, "As a ghost, you will now [(prefs.toggles_chat & CHAT_GHOSTEARS) ? "see all speech in the world" : "only see speech from nearby mobs"].")
+	set name = "Toggle Statistics"
+
+	prefs.toggles_chat ^= CHAT_STATISTICS
 	prefs.save_preferences()
-	feedback_add_details("admin_verb","TGE") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+	to_chat(src, "<span class='notice'>At the end of the round you will [(prefs.toggles_chat & CHAT_STATISTICS) ? "see all statistics" : "not see any statistics"].</span>")
+
+
+/client/verb/toggle_ghost_ears()
+	set category = "Preferences"
+	set name = "Toggle Ghost Ears"
+
+	prefs.toggles_chat ^= CHAT_GHOSTEARS
+	prefs.save_preferences()
+
+	to_chat(src, "<span class='notice'>As a ghost, you will now [(prefs.toggles_chat & CHAT_GHOSTEARS) ? "see all speech in the world" : "only see speech from nearby mobs"].</span>")
+
 
 /client/verb/toggle_ghost_sight()
-	set name = "Show/Hide GhostSight"
 	set category = "Preferences"
-	set desc = ".Toggle Between seeing all mob emotes, and only emotes of nearby mobs"
+	set name = "Toggle Ghost Sight"
+
 	prefs.toggles_chat ^= CHAT_GHOSTSIGHT
-	to_chat(src, "As a ghost, you will now [(prefs.toggles_chat & CHAT_GHOSTSIGHT) ? "see all emotes in the world" : "only see emotes from nearby mobs"].")
 	prefs.save_preferences()
-	feedback_add_details("admin_verb","TGS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+	to_chat(src, "<span class='notice'>As a ghost, you will now [(prefs.toggles_chat & CHAT_GHOSTSIGHT) ? "see all emotes in the world" : "only see emotes from nearby mobs"].</span>")
+
 
 /client/verb/toggle_ghost_radio()
-	set name = "Enable/Disable GhostRadio"
 	set category = "Preferences"
-	set desc = ".Toggle between hearing all radio chatter, or only from nearby speakers"
-	prefs.toggles_chat ^= CHAT_GHOSTRADIO
-	to_chat(src, "As a ghost, you will now [(prefs.toggles_chat & CHAT_GHOSTRADIO) ? "hear all radio chat in the world" : "only hear from nearby speakers"].")
-	prefs.save_preferences()
-	feedback_add_details("admin_verb","TGR")
+	set name = "Toggle Ghost Radio"
 
-/client/proc/toggle_hear_radio()
-	set name = "Show/Hide RadioChatter"
+	prefs.toggles_chat ^= CHAT_GHOSTRADIO
+	prefs.save_preferences()
+
+	to_chat(src, "<span class='notice'>As a ghost, you will now [(prefs.toggles_chat & CHAT_GHOSTRADIO) ? "hear all radio chat in the world" : "only hear from nearby speakers"].</span>")
+
+
+/client/proc/toggle_ghost_speaker()
 	set category = "Preferences"
-	set desc = "Toggle seeing radiochatter from radios and speakers"
-	if(!holder) return
+	set name = "Toggle Speakers"
+
 	prefs.toggles_chat ^= CHAT_RADIO
 	prefs.save_preferences()
-	to_chat(usr, "You will [(prefs.toggles_chat & CHAT_RADIO) ? "now" : "no longer"] see radio chatter from radios or speakers")
-	feedback_add_details("admin_verb","THR") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+	to_chat(usr, "<span class='notice'>You will [(prefs.toggles_chat & CHAT_RADIO) ? "now" : "no longer"] see radio chatter from radios or speakers.</span>")
+
 
 /client/verb/toggle_ghost_hivemind()
-	set name = "Show/Hide GhostHivemind"
 	set category = "Preferences"
-	set desc = ".Toggle seeing all chatter from the Xenomorph Hivemind"
+	set name = "Toggle Ghost Hivemind"
+
 	prefs.toggles_chat ^= CHAT_GHOSTHIVEMIND
-	to_chat(src, "As a ghost, you will [(prefs.toggles_chat & CHAT_GHOSTHIVEMIND) ? "now see chatter from the Xenomorph Hivemind" : "no longer see chatter from the Xenomorph Hivemind"].")
 	prefs.save_preferences()
-	feedback_add_details("admin_verb","TGH") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/toggleadminhelpsound()
-	set name = "Hear/Silence Adminhelps"
-	set category = "Preferences"
-	set desc = "Toggle hearing a notification when admin PMs are recieved"
-	if(!holder)	return
-	prefs.toggles_sound ^= SOUND_ADMINHELP
-	prefs.save_preferences()
-	to_chat(usr, "You will [(prefs.toggles_sound & SOUND_ADMINHELP) ? "now" : "no longer"] hear a sound when adminhelps arrive.")
-	feedback_add_details("admin_verb","AHS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	to_chat(src, "<span class='notice'>As a ghost, you will [(prefs.toggles_chat & CHAT_GHOSTHIVEMIND) ? "now see chatter from the Xenomorph Hivemind" : "no longer see chatter from the Xenomorph Hivemind"].</span>")
 
-/client/verb/deadchat() // Deadchat toggle is usable by anyone.
-	set name = "Show/Hide Deadchat"
+
+/client/verb/toggle_deadchat_self()
 	set category = "Preferences"
-	set desc ="Toggles seeing deadchat"
+	set name = "Toggle  Deadchat"
+
 	prefs.toggles_chat ^= CHAT_DEAD
 	prefs.save_preferences()
 
-	if(src.holder)
-		to_chat(src, "You will [(prefs.toggles_chat & CHAT_DEAD) ? "now" : "no longer"] see deadchat.")
-	else
-		to_chat(src, "As a ghost, you will [(prefs.toggles_chat & CHAT_DEAD) ? "now" : "no longer"] see deadchat.")
+	to_chat(src, "<span class='notice'>You will [(prefs.toggles_chat & CHAT_DEAD) ? "now" : "no longer"] see deadchat.</span>")
 
-	feedback_add_details("admin_verb","TDV") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/toggleprayers()
-	set name = "Show/Hide Prayers"
+/client/verb/toggle_admin_music()
 	set category = "Preferences"
-	set desc = "Toggles seeing prayers"
-	prefs.toggles_chat ^= CHAT_PRAYER
+	set name = "Toggle Admin Music"
+
+	prefs.toggles_sound ^= SOUND_MIDI
 	prefs.save_preferences()
-	to_chat(src, "You will [(prefs.toggles_chat & CHAT_PRAYER) ? "now" : "no longer"] see prayerchat.")
-	feedback_add_details("admin_verb","TP") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/verb/toggletitlemusic()
-	set name = "Hear/Silence LobbyMusic"
+	to_chat(src, "<span class='notice'>You will [(prefs.toggles_sound & SOUND_MIDI) ? "now" : "no longer"] hear admin music.</span>")
+
+/client/verb/toggle_radial_medical()
 	set category = "Preferences"
-	set desc = "Toggles hearing the GameLobby music"
+	set name = "Toggle Radial Medical Wheel"
+
+	prefs.toggles_gameplay ^= RADIAL_MEDICAL
+	prefs.save_preferences()
+
+	to_chat(src, "<span class='notice'>You will [(prefs.toggles_gameplay & RADIAL_MEDICAL) ? "now" : "no longer"] use the radial menu for medical purposes.</span>")
+
+
+/client/verb/toggle_lobby_music()
+	set category = "Preferences"
+	set name = "Toggle Lobby Music"
+
 	prefs.toggles_sound ^= SOUND_LOBBY
 	prefs.save_preferences()
+
 	if(prefs.toggles_sound & SOUND_LOBBY)
-		to_chat(src, "You will now hear music in the game lobby.")
-		if(istype(mob, /mob/new_player))
-			playtitlemusic()
-	else
-		to_chat(src, "You will no longer hear music in the game lobby.")
-		if(istype(mob, /mob/new_player))
-			src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // stop the jamsz
-	feedback_add_details("admin_verb","TLobby") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+		to_chat(src, "<span class='notice'>You will now hear music in the game lobby.</span>")
+		if(!isnewplayer(mob))
+			return
+		play_title_music()
 
-/client/verb/togglemidis()
-	set name = "Silence Current Midi"
-	set category = "Preferences"
-	set desc = "Toggles hearing sounds uploaded by admins"
-	// prefs.toggles_sound ^= SOUND_MIDI // Toggle on/off
-	// prefs.save_preferences() // We won't save the change - it'll be a temporary switch instead of permanent, but they can still make it permanent in character setup.
-	if(prefs.toggles_sound & SOUND_MIDI) // Not using && midi_playing here - since we can't tell how long an admin midi is, the user should always be able to turn it off at any time.
-		to_chat(src, "The currently playing midi has been silenced.")
-		var/sound/break_sound = sound(null, repeat = 0, wait = 0, channel = 777)
-		break_sound.priority = 250
-		src << break_sound
-		if(src.mob.client.midi_silenced)	return
-		if(midi_playing)
-			total_silenced++
-			message_admins("A player has silenced the currently playing midi. Total: [total_silenced] player(s).", 1)
-			src.mob.client.midi_silenced = 1
-			spawn(300) // Prevents message_admins() spam. Should match with the midi_playing_timer spawn() in playsound.dm
-				src.mob.client.midi_silenced = 0
 	else
-		to_chat(src, "You have 'Play Admin Midis' disabled in your Character Setup, so this verb is useless to you.")
-	feedback_add_details("admin_verb","TMidi") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+		to_chat(src, "<span class='notice'>You will no longer hear music in the game lobby.</span>")
+		if(!isnewplayer(mob))
+			return
+		mob.stop_sound_channel(CHANNEL_LOBBYMUSIC)
 
-/client/verb/listen_ooc()
-	set name = "Show/Hide OOC"
+
+/client/verb/toggle_ooc_self()
 	set category = "Preferences"
-	set desc = "Toggles seeing OutOfCharacter chat"
+	set name = "Toggle  OOC"
+
 	prefs.toggles_chat ^= CHAT_OOC
 	prefs.save_preferences()
-	to_chat(src, "You will [(prefs.toggles_chat & CHAT_OOC) ? "now" : "no longer"] see messages on the OOC channel.")
-	feedback_add_details("admin_verb","TOOC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/verb/listen_looc()
-	set name = "Show/Hide LOOC"
+	to_chat(src, "<span class='notice'>You will [(prefs.toggles_chat & CHAT_OOC) ? "now" : "no longer"] see messages on the OOC channel.</span>")
+
+
+/client/verb/toggle_looc_self()
 	set category = "Preferences"
-	set desc = "Toggles seeing Local OutOfCharacter chat"
+	set name = "Toggle  LOOC"
+
 	prefs.toggles_chat ^= CHAT_LOOC
 	prefs.save_preferences()
 
-	to_chat(src, "You will [(prefs.toggles_chat & CHAT_LOOC) ? "now" : "no longer"] see messages on the LOOC channel.")
-	feedback_add_details("admin_verb","TLOOC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	to_chat(src, "<span class='notice'>You will [(prefs.toggles_chat & CHAT_LOOC) ? "now" : "no longer"] see messages on the LOOC channel.</span>")
 
-/client/verb/Toggle_Soundscape() //All new ambience should be added here so it works with this verb until someone better at things comes up with a fix that isn't awful
-	set name = "Hear/Silence Ambience"
+
+/client/verb/toggle_ambience()
 	set category = "Preferences"
-	set desc = "Toggles hearing ambient sound effects"
+	set name = "Toggle Ambience"
+
 	prefs.toggles_sound ^= SOUND_AMBIENCE
 	prefs.save_preferences()
+
 	if(prefs.toggles_sound & SOUND_AMBIENCE)
-		to_chat(src, "You will now hear ambient sounds.")
+		to_chat(src, "<span class='notice'>You will now hear ambient sounds.</span>")
 	else
-		to_chat(src, "You will no longer hear ambient sounds.")
-		src << sound(null, repeat = 0, wait = 0, volume = 0, channel = 1)
-		src << sound(null, repeat = 0, wait = 0, volume = 0, channel = 2)
-	feedback_add_details("admin_verb","TAmbi") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+		to_chat(src, "<span class='notice'>You will no longer hear ambient sounds.</span>")
+		mob.stop_sound_channel(CHANNEL_AMBIENT)
 
-//be special
-/client/verb/toggle_be_special(role in be_special_flags)
-	set name = "Toggle SpecialRole Candidacy"
+
+/client/verb/toggle_special(role in BE_SPECIAL_FLAGS)
 	set category = "Preferences"
-	set desc = "Toggles which special roles you would like to be a candidate for, during events."
-	var/role_flag = be_special_flags[role]
-	if(!role_flag)	return
+	set name = "Toggle Special Roles"
+
+	var/role_flag = BE_SPECIAL_FLAGS[role]
+	if(!role_flag)
+		return
 	prefs.be_special ^= role_flag
+	prefs.save_character()
+
+	to_chat(src, "<span class='notice'>You will [(prefs.be_special & role_flag) ? "now" : "no longer"] be considered for [role] events (where possible).</span>")
+
+
+/client/verb/preferred_slot()
+	set category = "Preferences"
+	set name = "Set Preferred Slot"
+
+	var/slot = input("Which slot would you like to draw/equip from?", "Preferred Slot") as null|anything in list("Suit Storage", "Suit Inside", "Belt", "Back", "Boot", "Helmet", "Left Pocket", "Right Pocket", "Webbing", "Belt", "Belt Holster", "Suit Storage Holster", "Back Holster")
+	switch(slot)
+		if("Suit Storage")
+			prefs.preferred_slot = SLOT_S_STORE
+		if("Suit Inside")
+			prefs.preferred_slot = SLOT_WEAR_SUIT
+		if("Belt")
+			prefs.preferred_slot = SLOT_BELT
+		if("Back")
+			prefs.preferred_slot = SLOT_BACK
+		if("Boot")
+			prefs.preferred_slot = SLOT_IN_BOOT
+		if("Helmet")
+			prefs.preferred_slot = SLOT_IN_HEAD
+		if("Left Pocket")
+			prefs.preferred_slot = SLOT_L_STORE
+		if("Right Pocket")
+			prefs.preferred_slot = SLOT_R_STORE
+		if("Webbing")
+			prefs.preferred_slot = SLOT_IN_ACCESSORY
+		if("Belt")
+			prefs.preferred_slot = SLOT_IN_BELT
+		if("Belt Holster")
+			prefs.preferred_slot = SLOT_IN_HOLSTER
+		if("Suit Storage Holster")
+			prefs.preferred_slot = SLOT_IN_S_HOLSTER
+		if("Back Holster")
+			prefs.preferred_slot = SLOT_IN_B_HOLSTER
+
+	prefs.save_character()
+
+	to_chat(src, "<span class='notice'>You will now equip/draw from the [slot] slot first.</span>")
+
+
+/client/verb/typing_indicator()
+	set category = "Preferences"
+	set name = "Toggle Typing Indicator"
+	set desc = "Toggles showing an indicator when you are typing emote or say message."
+
+	prefs.show_typing = !prefs.show_typing
 	prefs.save_preferences()
-	to_chat(src, "You will [(prefs.be_special & role_flag) ? "now" : "no longer"] be considered for [role] events (where possible).")
-	feedback_add_details("admin_verb","TBeSpecial") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+	//Clear out any existing typing indicator.
+	if(!prefs.show_typing && istype(mob))
+		mob.remove_typing_indicator()
+
+	to_chat(src, "<span class='notice'>You will [prefs.show_typing ? "now" : "no longer"] display a typing indicator.</span>")
 
 
-// /client/verb/change_ui()
-// 	set name = "Change UI"
-// 	set category = "Preferences"
-// 	set desc = "Configure your user interface"
-//
-// 	if(!ishuman(usr))
-// 		to_chat(usr, "This only for human")
-// 		return
-//
-// 	var/UI_style_new = input(usr, "Select a style, we recommend White for customization") in list("White", "Midnight", "Orange", "old")
-// 	if(!UI_style_new) return
-//
-// 	var/UI_style_alpha_new = input(usr, "Select a new alpha(transparence) parametr for UI, between 50 and 255") as num
-// 	if(!UI_style_alpha_new|!(UI_style_alpha_new <= 255 && UI_style_alpha_new >= 50)) return
-//
-// 	var/UI_style_color_new = input(usr, "Choose your UI color, dark colors are not recommended!") as color|null
-// 	if(!UI_style_color_new) return
-//
-// 	//update UI
-// 	var/list/icons = usr.hud_used.adding + usr.hud_used.other +usr.hud_used.hotkeybuttons
-// 	icons.Add(usr.zone_sel)
-//
-// 	for(var/obj/screen/I in icons)
-// 		if(I.name in list("help", "harm", "disarm", "grab")) continue
-// 		I.icon = ui_style2icon(UI_style_new)
-// 		I.color = UI_style_color_new
-// 		I.alpha = UI_style_alpha_new
-//
-//
-//
-// 	if(alert("Like it? Save changes?",,"Yes", "No") == "Yes")
-// 		prefs.UI_style = UI_style_new
-// 		prefs.UI_style_alpha = UI_style_alpha_new
-// 		prefs.UI_style_color = UI_style_color_new
-// 		prefs.save_preferences()
-// 		to_chat(usr, "UI was saved")
+/client/verb/setup_character()
+	set category = "Preferences"
+	set name = "Game Preferences"
+	set desc = "Allows you to access the Setup Character screen. Changes to your character won't take effect until next round, but other changes will."
+	prefs.ShowChoices(usr)
+
+
+GLOBAL_LIST_INIT(ghost_forms, list("Default" = GHOST_DEFAULT_FORM, "Ghost Ian 1" = "ghostian", "Ghost Ian 2" = "ghostian2", "Skeleton" = "skeleghost", "Red" = "ghost_red",\
+							"Black" = "ghost_black", "Blue" = "ghost_blue", "Yellow" = "ghost_yellow", "Green" = "ghost_green", "Pink" = "ghost_pink", \
+							"Cyan" = "ghost_cyan", "Dark Blue" = "ghost_dblue", "Dark Red" = "ghost_dred", "Dark Green" = "ghost_dgreen", \
+							"Dark Cyan" = "ghost_dcyan", "Grey" = "ghost_grey", "Dark Yellow" = "ghost_dyellow", "Dark Pink" = "ghost_dpink",\
+							"Purple" = "ghost_purpleswirl", "Funky" = "ghost_funkypurp", "Transparent Pink" = "ghost_pinksherbert", "Blaze it" = "ghost_blazeit",\
+							"Mellow" = "ghost_mellow", "Rainbow" = "ghost_rainbow", "Camo" = "ghost_camo", "Fire" = "ghost_fire", "Cat" = "catghost"))
+
+
+/client/proc/pick_form()
+	var/new_form = input(src, "Choose your ghostly form:", "Ghost Customization") as null|anything in GLOB.ghost_forms
+	if(!new_form)
+		return
+
+
+	prefs.ghost_form = GLOB.ghost_forms[new_form]
+	prefs.save_preferences()
+
+	to_chat(src, "<span class='notice'>You will use the [new_form] ghost form when starting as an observer.</span>")
+
+	if(!isobserver(mob))
+		return
+
+	var/mob/dead/observer/O = mob
+	O.update_icon(GLOB.ghost_forms[new_form])
+
+
+GLOBAL_LIST_INIT(ghost_orbits, list(GHOST_ORBIT_CIRCLE, GHOST_ORBIT_TRIANGLE, GHOST_ORBIT_SQUARE, GHOST_ORBIT_HEXAGON, GHOST_ORBIT_PENTAGON))
+
+/client/proc/pick_ghost_orbit()
+	var/new_orbit = input(src, "Choose your ghostly orbit:", "Ghost Customization") as null|anything in GLOB.ghost_orbits
+	if(!new_orbit)
+		return
+
+	prefs.ghost_orbit = new_orbit
+	prefs.save_preferences()
+
+	to_chat(src, "<span class='notice'>You will use the [new_orbit] as a ghost.</span>")
+
+	if(!isobserver(mob))
+		return
+
+	var/mob/dead/observer/O = mob
+	O.ghost_orbit = new_orbit
+
+
+GLOBAL_LIST_INIT(ghost_others_options, list(GHOST_OTHERS_SIMPLE, GHOST_OTHERS_DEFAULT_SPRITE, GHOST_OTHERS_THEIR_SETTING))
+
+/client/proc/pick_ghost_other_form()
+	var/new_others = input(src, "Choose how you see other observers:", "Ghost Customization") as null|anything in GLOB.ghost_others_options
+	if(!new_others)
+		return
+
+	prefs.ghost_others = new_others
+	prefs.save_preferences()
+
+	to_chat(src, "<span class='notice'>You will now see people who started as an observer as [new_others].</span>")
+
+	if(!isobserver(mob))
+		return
+
+	var/mob/dead/observer/O = mob
+	O.ghost_others = new_others
+
+
+/client/verb/pick_ghost_customization()
+	set category = "Preferences"
+	set name = "Ghost Customization"
+	set desc = "Customize your ghastly appearance."
+
+
+	switch(input(src, "Which setting do you want to change?", "Ghost Customization") as null|anything in list("Ghost Form", "Ghost Orbit", "Ghosts of others"))
+		if("Ghost Form")
+			pick_form()
+		if("Ghost Orbit")
+			pick_ghost_orbit()
+		if("Ghosts of others")
+			pick_ghost_other_form()
+
+
+/client/verb/toggle_deadchat_arrivalrattle()
+	set category = "Preferences"
+	set name = "Toggle Deadchat arrivalrattles"
+	set desc = "Announces when a player spawns for the first time."
+
+	TOGGLE_BITFIELD(prefs.toggles_deadchat, DISABLE_ARRIVALRATTLE)
+	to_chat(usr, "<span class='notice'>New spawn announcements have been [(prefs.toggles_deadchat & DISABLE_ARRIVALRATTLE) ? "disabled" : "enabled"].</span>")
+
+
+/client/verb/toggle_deadchat_deathrattle()
+	set category = "Preferences"
+	set name = "Toggle Deadchat deathrattles"
+	set desc = "Announces when a player dies."
+
+	TOGGLE_BITFIELD(prefs.toggles_deadchat, DISABLE_DEATHRATTLE)
+	to_chat(usr, "<span class='notice'>Death announcements have been [(prefs.toggles_deadchat & DISABLE_DEATHRATTLE) ? "disabled" : "enabled"].</span>")

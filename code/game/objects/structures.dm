@@ -1,64 +1,34 @@
 /obj/structure
 	icon = 'icons/obj/structures/structures.dmi'
-	var/climbable
+	var/climbable = FALSE
 	var/climb_delay = 50
-	var/breakable
-	var/parts
+	var/flags_barrier = 0
+	var/broken = FALSE //similar to machinery's stat BROKEN
+	var/coverage = 50 //Percentage area covered by the structure. Increases bullet blockage chance.
+	obj_flags = CAN_BE_HIT
 	anchored = TRUE
+	destroy_sound = 'sound/effects/meteorimpact.ogg'
 
-/obj/structure/New()
-	..()
-	structure_list += src
-
-/obj/structure/Dispose()
-	. = ..()
-	structure_list -= src
-
-/obj/structure/proc/destroy(deconstruct)
-	if(parts)
-		new parts(loc)
-	density = FALSE
-	cdel(src)
-
-/obj/structure/attack_hand(mob/user)
-	..()
-	if(breakable)
-		if(HULK in user.mutations)
-			user.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" ))
-			visible_message("<span class='danger'>[user] smashes the [src] apart!</span>")
-			destroy()
-
-//Default "structure" proc. This should be overwritten by sub procs.
-/obj/structure/attack_alien(mob/living/carbon/Xenomorph/M)
+/obj/structure/proc/handle_barrier_chance(mob/living/M)
 	return FALSE
 
-/obj/structure/attack_animal(mob/living/user)
-	if(breakable)
-		if(user.wall_smash)
-			visible_message("<span class='danger'>[user] smashes [src] apart!</span>")
-			destroy()
-
-/obj/structure/attack_paw(mob/user)
-	if(breakable)
-		attack_hand(user)
-
-/obj/structure/attack_tk()
-	return
 
 /obj/structure/ex_act(severity)
+	if(CHECK_BITFIELD(resistance_flags, INDESTRUCTIBLE))
+		return
 	switch(severity)
-		if(1.0)
-			cdel(src)
+		if(EXPLODE_DEVASTATE)
+			qdel(src)
 			return
-		if(2.0)
+		if(EXPLODE_HEAVY)
 			if(prob(50))
-				cdel(src)
+				qdel(src)
 				return
-		if(3.0)
+		if(EXPLODE_LIGHT)
 			return
 
-/obj/structure/New()
-	..()
+/obj/structure/Initialize()
+	. = ..()
 	if(climbable)
 		verbs += /obj/structure/proc/climb_on
 
@@ -71,6 +41,10 @@
 
 	do_climb(usr)
 
+/obj/structure/specialclick(mob/living/carbon/user)
+	. = ..()
+	do_climb(user)
+
 /obj/structure/MouseDrop_T(mob/target, mob/user)
 	. = ..()
 	var/mob/living/H = user
@@ -79,8 +53,8 @@
 
 	do_climb(target)
 
-/obj/structure/proc/can_climb(var/mob/living/user)
-	if(!climbable || !can_touch(user))
+/obj/structure/proc/can_climb(mob/living/user)
+	if(!climbable || !can_interact(user))
 		return FALSE
 
 	var/turf/T = src.loc
@@ -134,17 +108,17 @@
 						return
 	return TRUE
 
-/obj/structure/proc/do_climb(var/mob/living/user)
+/obj/structure/proc/do_climb(mob/living/user)
 	if(!can_climb(user))
 		return
 
 	user.visible_message("<span class='warning'>[user] starts [flags_atom & ON_BORDER ? "leaping over":"climbing onto"] \the [src]!</span>")
 
-	if(!do_after(user, climb_delay, FALSE, 5, BUSY_ICON_GENERIC))
+	if(!do_after(user, climb_delay, FALSE, src, BUSY_ICON_GENERIC, extra_checks = CALLBACK(src, .proc/can_climb, user)))
 		return
 
-	if(!can_climb(user))
-		return
+	for(var/m in user.buckled_mobs)
+		user.unbuckle_mob(m)
 
 	if(!(flags_atom & ON_BORDER)) //If not a border structure or we are not on its tile, assume default behavior
 		user.forceMove(get_turf(src))
@@ -179,21 +153,22 @@
 
 	for(var/mob/living/M in get_turf(src))
 
-		if(M.lying)
+		if(M.lying_angle)
 			return //No spamming this on people.
 
-		M.KnockDown(5)
-		to_chat(M, "\red You topple as \the [src] moves under you!")
+		M.Paralyze(10 SECONDS)
+		to_chat(M, "<span class='warning'>You topple as \the [src] moves under you!</span>")
 
 		if(prob(25))
 
 			var/damage = rand(15,30)
-			var/mob/living/carbon/human/H = M
-			if(!istype(H))
-				to_chat(H, "<span class='danger'>You land heavily!</span>")
+			if(!ishuman(M))
+				to_chat(M, "<span class='danger'>You land heavily!</span>")
 				M.apply_damage(damage, BRUTE)
+				UPDATEHEALTH(M)
 				return
 
+			var/mob/living/carbon/human/H = M
 			var/datum/limb/affecting
 
 			switch(pick(list("ankle","wrist","head","knee","elbow")))
@@ -210,28 +185,32 @@
 
 			if(affecting)
 				to_chat(M, "<span class='danger'>You land heavily on your [affecting.display_name]!</span>")
-				affecting.take_damage(damage, 0)
-				if(affecting.parent)
-					affecting.parent.add_autopsy_data("Misadventure", damage)
+				affecting.take_damage_limb(damage)
 			else
 				to_chat(H, "<span class='danger'>You land heavily!</span>")
 				H.apply_damage(damage, BRUTE)
 
+			UPDATEHEALTH(H)
 			H.UpdateDamageIcon()
-			H.updatehealth()
-	return
 
-/obj/structure/proc/can_touch(mob/user)
-	if(!user)
+
+/obj/structure/can_interact(mob/user)
+	. = ..()
+	if(!.)
 		return FALSE
-	if(!Adjacent(user) || !isturf(user.loc))
+
+	if(!user.CanReach(src))
 		return FALSE
-	if(user.is_mob_restrained() || user.buckled)
-		to_chat(user, "<span class='notice'>You need your hands and legs free for this.</span>")
-		return FALSE
-	if(user.is_mob_incapacitated(TRUE) || user.lying)
-		return FALSE
-	if(issilicon(user))
-		to_chat(user, "<span class='notice'>You need hands for this.</span>")
-		return FALSE
+
 	return TRUE
+
+
+/obj/structure/attack_hand(mob/living/user)
+	. = ..()
+	if(.)
+		return
+
+	if(!can_interact(user))
+		return
+
+	return interact(user)

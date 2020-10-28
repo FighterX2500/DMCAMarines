@@ -4,46 +4,9 @@
 	icon_state = "briefcase"
 	item_state = "briefcase"
 	flags_atom = CONDUCT
-	force = 8.0
+	force = 8
 	throw_speed = 1
 	throw_range = 4
-	w_class = 4.0
+	w_class = WEIGHT_CLASS_BULKY
 	max_w_class = 3
 	max_storage_space = 16
-
-/obj/item/storage/briefcase/New()
-	..()
-
-/obj/item/storage/briefcase/attack(mob/living/M as mob, mob/living/user as mob)
-	//..()
-
-	if ((CLUMSY in user.mutations) && prob(50))
-		to_chat(user, "\red The [src] slips out of your hand and hits your head.")
-		user.take_limb_damage(10)
-		user.KnockOut(2)
-		return
-
-
-	log_combat(user, M, "attack", src)
-	msg_admin_attack("[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A>)")
-
-	if (M.stat < 2 && M.health < 50 && prob(90))
-		if(ishuman(M))
-			var/mob/living/carbon/human/H = M
-			var/obj/item/P = H.head
-			if(istype(P) && P.flags_inventory & BLOCKSHARPOBJ && prob(80))
-				to_chat(M, "\red The helmet protects you from being hit hard in the head!")
-				return
-		var/time = rand(2, 6)
-		if (prob(75))
-			M.KnockOut(time)
-		else
-			M.Stun(time)
-		if(M.stat != 2)	M.stat = 1
-		for(var/mob/O in viewers(M, null))
-			O.show_message(text("\red <B>[] has been knocked unconscious!</B>", M), 1, "\red You hear someone fall.", 2)
-	else
-		to_chat(M, text("\red [] tried to knock you unconcious!",user))
-		M.eye_blurry += 3
-
-	return

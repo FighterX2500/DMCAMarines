@@ -1,34 +1,22 @@
-
-
-
-
-
-/////////////////////// Hand Labeler ////////////////////////////////
-
-
 /obj/item/tool/hand_labeler
 	name = "hand labeler"
 	icon = 'icons/obj/items/paper.dmi'
 	icon_state = "labeler0"
 	item_state = "flight"
+	w_class = WEIGHT_CLASS_SMALL
+
 	var/label = null
 	var/labels_left = 50
-	var/mode = 0	//off or on.
+	var/on = FALSE
+
 
 /obj/item/tool/hand_labeler/afterattack(atom/A, mob/user as mob, proximity)
 	if(!proximity)
 		return
-	if(!mode)	//if it's off, give up.
+	if(!on)
 		return
-	if(A == loc)	// if placing the labeller into something (e.g. backpack)
-		return		// don't set a label
-
-	if(istype(A, /obj/vehicle/multitile/root/cm_armored))
-		to_chat(user, "<span class='notice'>The label won't stick to that.</span>")	//NOPE!
-		return
-
-	if(!label || !length(label))
-		to_chat(user, "<span class='notice'>No text set.</span>")
+	if(!label)
+		to_chat(user, "<span class='notice'>No label set.</span>")
 		return
 	if(length(A.name) + length(label) > 64)
 		to_chat(user, "<span class='notice'>Label too big.</span>")
@@ -39,24 +27,27 @@
 	if(isturf(A) || ismob(A))
 		to_chat(user, "<span class='notice'>The label won't stick to that.</span>")
 		return
+	if(A.name == "[initial(A.name)] ([label])")
+		to_chat(user, "<span class='notice'>It already has the same label.</span>")
+		return
 
 	user.visible_message("<span class='notice'>[user] labels [A] as \"[label]\".</span>", \
-						 "<span class='notice'>You label [A] as \"[label]\".</span>")
-	A.name = "[A.name] ([label])"
+						"<span class='notice'>You label [A] as \"[label]\".</span>")
+	A.name = "[initial(A.name)] ([label])"
 	labels_left--
 
+
 /obj/item/tool/hand_labeler/attack_self(mob/user as mob)
-	mode = !mode
-	icon_state = "labeler[mode]"
-	if(mode)
+	on = !on
+	icon_state = "labeler[on]"
+	if(on)
 		to_chat(user, "<span class='notice'>You turn on \the [src].</span>")
-		//Now let them chose the text.
-		var/str = copytext(reject_bad_text(input(user,"Label text?", "Set label", "")), 1, MAX_NAME_LEN)
-		if(!str || !length(str))
-			to_chat(user, "<span class='notice'>Invalid text.</span>")
+		var/str = reject_bad_text(stripped_input(user, "Label text?", "Set label","", MAX_NAME_LEN))
+		if(!str)
+			to_chat(user, "<span class='notice'>Invalid label.</span>")
 			return
 		label = str
-		to_chat(user, "<span class='notice'>You set the text to '[str]'.</span>")
+		to_chat(user, "<span class='notice'>You set the label text to '[str]'.</span>")
 	else
 		to_chat(user, "<span class='notice'>You turn off \the [src].</span>")
 
@@ -65,26 +56,30 @@
 	. = ..()
 	if(istype(I, /obj/item/paper))
 		to_chat(user, "<span class='notice'>You insert [I] into [src].</span>")
-		cdel(I)
-		labels_left = min(labels_left+5, initial(labels_left))
+		qdel(I)
+		labels_left = min(labels_left + 5, initial(labels_left))
+
+
+/obj/item/tool/hand_labeler/examine(mob/user)
+	. = ..()
+	to_chat(user, "<span class='notice'>It has [labels_left] out of [initial(labels_left)] labels left.")
 
 
 
 /*
- * Pens
- */
+* Pens
+*/
 /obj/item/tool/pen
 	desc = "It's a normal black ink pen."
 	name = "pen"
 	icon = 'icons/obj/items/paper.dmi'
 	icon_state = "pen"
 	item_state = "pen"
-	flags_equip_slot = SLOT_WAIST|SLOT_EAR
+	flags_equip_slot = ITEM_SLOT_BELT|ITEM_SLOT_EARS
 	throwforce = 0
-	w_class = 1
+	w_class = WEIGHT_CLASS_TINY
 	throw_speed = 7
 	throw_range = 15
-	matter = list("metal" = 10)
 	var/colour = "black"	//what colour the ink is!
 
 
@@ -109,29 +104,21 @@
 	if(!ismob(M))
 		return
 	to_chat(user, "<span class='warning'>You stab [M] with the pen.</span>")
-//	to_chat(M, "\red You feel a tiny prick!")
+//	to_chat(M, "<span class='warning'>You feel a tiny prick!</span>")
 	log_combat(user, M, "stabbed", src)
-	msg_admin_attack("[user.name] ([user.ckey]) Used the [name] to stab [M.name] ([M.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
-	return
 
 
 /*
- * Sleepy Pens
- */
+* Sleepy Pens
+*/
 /obj/item/tool/pen/sleepypen
 	desc = "It's a black ink pen with a sharp point and a carefully engraved \"Waffle Co.\""
-	flags_atom = OPENCONTAINER
-	flags_equip_slot = SLOT_WAIST
-	origin_tech = "materials=2;syndicate=5"
+	flags_equip_slot = ITEM_SLOT_BELT
 
 
-/obj/item/tool/pen/sleepypen/New()
-	var/datum/reagents/R = new/datum/reagents(30) //Used to be 300
-	reagents = R
-	R.my_atom = src
-	R.add_reagent("chloralhydrate", 22)	//Used to be 100 sleep toxin//30 Chloral seems to be fatal, reducing it to 22./N
-	..()
-	return
+/obj/item/tool/pen/sleepypen/Initialize()
+	. = ..()
+	create_reagents(30, OPENCONTAINER, list("chloralhydrate" = 22))
 
 
 /obj/item/tool/pen/sleepypen/attack(mob/M as mob, mob/user as mob)
@@ -139,17 +126,16 @@
 		return
 	..()
 	if(reagents.total_volume)
+		reagents.reaction(M, INJECT)
 		if(M.reagents) reagents.trans_to(M, 50) //used to be 150
 	return
 
 
 /*
- * Parapens
- */
- /obj/item/tool/pen/paralysis
-	flags_atom = OPENCONTAINER
-	flags_equip_slot = SLOT_WAIST
-	origin_tech = "materials=2;syndicate=5"
+* Parapens
+*/
+/obj/item/tool/pen/paralysis
+	flags_equip_slot = ITEM_SLOT_BELT
 
 
 /obj/item/tool/pen/paralysis/attack(mob/living/M as mob, mob/user as mob)
@@ -158,17 +144,14 @@
 	..()
 	if(M.can_inject(user,1))
 		if(reagents.total_volume)
+			reagents.reaction(M, INJECT)
 			if(M.reagents) reagents.trans_to(M, 50)
 
 
 
-/obj/item/tool/pen/paralysis/New()
-	var/datum/reagents/R = new/datum/reagents(50)
-	reagents = R
-	R.my_atom = src
-	R.add_reagent("zombiepowder", 10)
-	R.add_reagent("cryptobiolin", 15)
-	..()
+/obj/item/tool/pen/paralysis/Initialize()
+	. = ..()
+	create_reagents(50, OPENCONTAINER, list(/datum/reagent/toxin/zombiepowder = 10, /datum/reagent/cryptobiolin = 15))
 
 
 
@@ -180,11 +163,13 @@
 	icon_state = "stamp-qm"
 	item_state = "stamp"
 	throwforce = 0
-	w_class = 1.0
+	w_class = WEIGHT_CLASS_TINY
 	throw_speed = 7
 	throw_range = 15
-	matter = list("metal" = 60)
 	attack_verb = list("stamped")
+
+/obj/item/tool/stamp/qm
+	name = "Quartermaster's Stamp"	
 
 /obj/item/tool/stamp/captain
 	name = "captain's rubber stamp"
@@ -199,7 +184,7 @@
 	icon_state = "stamp-hos"
 
 /obj/item/tool/stamp/ce
-	name = "chief engineer's rubber stamp"
+	name = "chief ship engineer's rubber stamp"
 	icon_state = "stamp-ce"
 
 /obj/item/tool/stamp/rd
@@ -211,7 +196,7 @@
 	icon_state = "stamp-cmo"
 
 /obj/item/tool/stamp/denied
-	name = "DENIED rubber stamp"
+	name = "\improper DENIED rubber stamp"
 	icon_state = "stamp-deny"
 
 /obj/item/tool/stamp/clown
@@ -227,5 +212,5 @@
 	icon_state = "stamp-cent"
 
 
-/obj/item/tool/stamp/attack_paw(mob/user as mob)
+/obj/item/tool/stamp/attack_paw(mob/living/carbon/monkey/user)
 	return attack_hand(user)

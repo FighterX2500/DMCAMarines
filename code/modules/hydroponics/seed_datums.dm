@@ -1,39 +1,19 @@
-var/global/list/seed_types = list()       // A list of all seed data.
-var/global/list/gene_tag_masks = list()   // Gene obfuscation for delicious trial and error goodness.
-
-// Debug for testing seed genes.
-/client/proc/show_plant_genes()
-	set category = "Debug"
-	set name = "Show Plant Genes"
-	set desc = "Prints the round's plant gene masks."
-
-	if(!holder)	return
-
-	if(!gene_tag_masks)
-		to_chat(usr, "Gene masks not set.")
-		return
-
-	for(var/mask in gene_tag_masks)
-		to_chat(usr, "[mask]: [gene_tag_masks[mask]]")
+GLOBAL_LIST_EMPTY(seed_types)       // A list of all seed data.
+GLOBAL_LIST_EMPTY(gene_tag_masks)   // Gene obfuscation for delicious trial and error goodness.
 
 // Predefined/roundstart varieties use a string key to make it
 // easier to grab the new variety when mutating. Post-roundstart
 // and mutant varieties use their uid converted to a string instead.
 // Looks like shit but it's sort of necessary.
 
-proc/populate_seed_list()
+/proc/populate_seed_list()
 
 	// Populate the global seed datum list.
 	for(var/type in subtypesof(/datum/seed))
 		var/datum/seed/S = new type
-		seed_types[S.name] = S
-		S.uid = "[seed_types.len]"
-		S.roundstart = 1
-
-	// Make sure any seed packets that were mapped in are updated
-	// correctly (since the seed datums did not exist a tick ago).
-	for(var/obj/item/seeds/S in item_list)
-		S.update_seed()
+		GLOB.seed_types[S.name] = S
+		S.uid = "[length(GLOB.seed_types)]"
+		S.roundstart = TRUE
 
 	//Might as well mask the gene types while we're at it.
 	var/list/gene_tags = list("products","consumption","environment","resistance","vigour","flowers")
@@ -48,7 +28,9 @@ proc/populate_seed_list()
 
 		used_masks += gene_mask
 		gene_tags -= gene_tag
-		gene_tag_masks[gene_tag] = gene_mask
+		GLOB.gene_tag_masks[gene_tag] = gene_mask
+
+	return TRUE
 
 /datum/plantgene
 	var/genetype    // Label used when applying trait.
@@ -122,7 +104,7 @@ proc/populate_seed_list()
 	mysterious = 1
 
 	seed_noun = pick("spores","nodes","cuttings","seeds")
-	products = list(pick(typesof(/obj/item/reagent_container/food/snacks/grown)-/obj/item/reagent_container/food/snacks/grown))
+	products = list(pick(typesof(/obj/item/reagent_containers/food/snacks/grown)-/obj/item/reagent_containers/food/snacks/grown))
 	potency = rand(5,30)
 
 	var/list/plant_icons = pick(list(
@@ -204,45 +186,41 @@ proc/populate_seed_list()
 
 	chems = list()
 	if(prob(80))
-		chems["nutriment"] = list(rand(1,10),rand(10,20))
+		chems[/datum/reagent/consumable/nutriment] = list(rand(1,10),rand(10,20))
 
 	var/additional_chems = rand(0,5)
 
 	if(additional_chems)
 		var/list/possible_chems = list(
-			"bicaridine",
-			"hyperzine",
-			"cryoxadone",
-			"blood",
-			"water",
-			"potassium",
-			"plasticide",
-			"slimetoxin",
-			"aslimetoxin",
-			"inaprovaline",
-			"space_drugs",
-			"paroxetine",
-			"mercury",
-			"sugar",
-			"radium",
-			"ryetalyn",
-			"alkysine",
-			"thermite",
-			"tramadol",
-			"cryptobiolin",
-			"dermaline",
-			"dexalin",
-			"phoron",
-			"synaptizine",
-			"impedrezene",
-			"hyronalin",
-			"peridaxon",
-			"toxin",
-			"rezadone",
-			"ethylredoxrazine",
-			"cyanide",
-			"mindbreaker",
-			"stoxin"
+			/datum/reagent/medicine/bicaridine,
+			/datum/reagent/medicine/hyperzine,
+			/datum/reagent/medicine/cryoxadone,
+			/datum/reagent/blood,
+			/datum/reagent/water,
+			/datum/reagent/potassium,
+			/datum/reagent/toxin/plasticide,
+			/datum/reagent/medicine/inaprovaline,
+			/datum/reagent/space_drugs,
+			/datum/reagent/mercury,
+			/datum/reagent/consumable/sugar,
+			/datum/reagent/radium,
+			/datum/reagent/medicine/ryetalyn,
+			/datum/reagent/medicine/alkysine,
+			/datum/reagent/medicine/tramadol,
+			/datum/reagent/cryptobiolin,
+			/datum/reagent/medicine/dermaline,
+			/datum/reagent/medicine/dexalin,
+			/datum/reagent/toxin/phoron,
+			/datum/reagent/medicine/synaptizine,
+			/datum/reagent/impedrezene,
+			/datum/reagent/medicine/hyronalin,
+			/datum/reagent/medicine/peridaxon,
+			/datum/reagent/toxin,
+			/datum/reagent/medicine/rezadone,
+			/datum/reagent/medicine/ethylredoxrazine,
+			/datum/reagent/toxin/cyanide,
+			/datum/reagent/toxin/mindbreaker,
+			/datum/reagent/toxin/sleeptoxin
 			)
 
 		for(var/x=1;x<=additional_chems;x++)
@@ -311,11 +289,11 @@ proc/populate_seed_list()
 	return pick(mutants)
 
 //Mutates the plant overall (randomly).
-/datum/seed/proc/mutate(var/degree,var/turf/source_turf)
+/datum/seed/proc/mutate(degree,turf/source_turf)
 
 	if(!degree || immutable > 0) return
 
-	source_turf.visible_message("\blue \The [display_name] quivers!")
+	source_turf.visible_message("<span class='notice'> \The [display_name] quivers!</span>")
 
 	//This looks like shit, but it's a lot easier to read/change this way.
 	var/total_mutations = rand(1,1+degree)
@@ -324,7 +302,7 @@ proc/populate_seed_list()
 			if(0) //Plant cancer!
 				lifespan = max(0,lifespan-rand(1,5))
 				endurance = max(0,endurance-rand(10,20))
-				source_turf.visible_message("\red \The [display_name] withers rapidly!")
+				source_turf.visible_message("<span class='warning'> \The [display_name] withers rapidly!</span>")
 			if(1)
 				nutrient_consumption =      max(0,  min(5,   nutrient_consumption + rand(-(degree*0.1),(degree*0.1))))
 				water_consumption =         max(0,  min(50,  water_consumption    + rand(-degree,degree)))
@@ -343,7 +321,7 @@ proc/populate_seed_list()
 				if(prob(degree*5))
 					carnivorous =           max(0,  min(2,   carnivorous          + rand(-degree,degree)))
 					if(carnivorous)
-						source_turf.visible_message("\blue \The [display_name] shudders hungrily.")
+						source_turf.visible_message("<span class='notice'> \The [display_name] shudders hungrily.</span>")
 			if(6)
 				weed_tolerance  =           max(0,  min(10,  weed_tolerance       + (rand(-2,2)   * degree)))
 				if(prob(degree*5))          parasite = !parasite
@@ -357,7 +335,7 @@ proc/populate_seed_list()
 				potency =                   max(0,  min(200, potency              + (rand(-20,20) * degree)))
 				if(prob(degree*5))
 					spread =                max(0,  min(2,   spread               + rand(-1,1)))
-					source_turf.visible_message("\blue \The [display_name] spasms visibly, shifting in the tray.")
+					source_turf.visible_message("<span class='notice'> \The [display_name] spasms visibly, shifting in the tray.</span>")
 			if(9)
 				maturation =                max(0,  min(30,  maturation      + (rand(-1,1)   * degree)))
 				if(prob(degree*5))
@@ -366,26 +344,26 @@ proc/populate_seed_list()
 				if(prob(degree*2))
 					biolum = !biolum
 					if(biolum)
-						source_turf.visible_message("\blue \The [display_name] begins to glow!")
+						source_turf.visible_message("<span class='notice'> \The [display_name] begins to glow!</span>")
 						if(prob(degree*2))
 							biolum_colour = "#[pick(list("FF0000","FF7F00","FFFF00","00FF00","0000FF","4B0082","8F00FF"))]"
-							source_turf.visible_message("\blue \The [display_name]'s glow <font color='[biolum_colour]'>changes colour</font>!")
+							source_turf.visible_message("<span class='notice'> \The [display_name]'s glow <font color='[biolum_colour]'>changes colour</font>!</span>")
 					else
-						source_turf.visible_message("\blue \The [display_name]'s glow dims...")
+						source_turf.visible_message("<span class='notice'> \The [display_name]'s glow dims...</span>")
 			if(11)
 				if(prob(degree*2))
 					flowers = !flowers
 					if(flowers)
-						source_turf.visible_message("\blue \The [display_name] sprouts a bevy of flowers!")
+						source_turf.visible_message("<span class='notice'> \The [display_name] sprouts a bevy of flowers!</span>")
 						if(prob(degree*2))
 							flower_colour = "#[pick(list("FF0000","FF7F00","FFFF00","00FF00","0000FF","4B0082","8F00FF"))]"
-						source_turf.visible_message("\blue \The [display_name]'s flowers <font=[flower_colour]>changes colour</font>!")
+						source_turf.visible_message("<span class='notice'> \The [display_name]'s flowers <font=[flower_colour]>changes colour</font>!</span>")
 					else
-						source_turf.visible_message("\blue \The [display_name]'s flowers wither and fall off.")
+						source_turf.visible_message("<span class='notice'> \The [display_name]'s flowers wither and fall off.</span>")
 	return
 
 //Mutates a specific trait/set of traits.
-/datum/seed/proc/apply_gene(var/datum/plantgene/gene)
+/datum/seed/proc/apply_gene(datum/plantgene/gene)
 
 	if(!gene || !gene.values || immutable > 0) return
 
@@ -489,7 +467,7 @@ proc/populate_seed_list()
 			flower_colour =        gene.values[7]
 
 //Returns a list of the desired trait values.
-/datum/seed/proc/get_gene(var/genetype)
+/datum/seed/proc/get_gene(genetype)
 
 	if(!genetype) return 0
 
@@ -559,7 +537,7 @@ proc/populate_seed_list()
 	return (P ? P : 0)
 
 //Place the plant products at the feet of the user.
-/datum/seed/proc/harvest(var/mob/user,var/yield_mod,var/harvest_sample)
+/datum/seed/proc/harvest(mob/user,yield_mod,harvest_sample)
 
 	if(!user)
 		return
@@ -569,15 +547,15 @@ proc/populate_seed_list()
 		got_product = 1
 
 	if(!got_product && !harvest_sample)
-		to_chat(user, "\red You fail to harvest anything useful.")
+		to_chat(user, "<span class='warning'>You fail to harvest anything useful.</span>")
 	else
 		to_chat(user, "You [harvest_sample ? "take a sample" : "harvest"] from the [display_name].")
 
 		//This may be a new line. Update the global if it is.
-		if(name == "new line" || !(name in seed_types))
-			uid = seed_types.len + 1
+		if(name == "new line" || !(name in GLOB.seed_types))
+			uid = GLOB.seed_types.len + 1
 			name = "[uid]"
-			seed_types[name] = src
+			GLOB.seed_types[name] = src
 
 		if(harvest_sample)
 			var/obj/item/seeds/seeds = new(get_turf(user))
@@ -603,16 +581,17 @@ proc/populate_seed_list()
 
 			if(biolum)
 				if(biolum_colour)
-					product.l_color = biolum_colour
-				product.SetLuminosity(biolum)
+					product.set_light(biolum, l_color = biolum_colour)
+				else
+					product.set_light(biolum)
 
 			//Handle spawning in living, mobile products (like dionaea).
 			if(istype(product,/mob/living))
-				product.visible_message("\blue The pod disgorges [product]!")
+				product.visible_message("<span class='notice'> The pod disgorges [product]!</span>")
 
 			// Make sure the product is inheriting the correct seed type reference.
-			else if(istype(product,/obj/item/reagent_container/food/snacks/grown))
-				var/obj/item/reagent_container/food/snacks/grown/current_product = product
+			else if(istype(product,/obj/item/reagent_containers/food/snacks/grown))
+				var/obj/item/reagent_containers/food/snacks/grown/current_product = product
 				current_product.plantname = name
 			else if(istype(product,/obj/item/grown))
 				var/obj/item/grown/current_product = product
@@ -622,7 +601,7 @@ proc/populate_seed_list()
 // When the seed in this machine mutates/is modified, the tray seed value
 // is set to a new datum copied from the original. This datum won't actually
 // be put into the global datum list until the product is harvested, though.
-/datum/seed/proc/diverge(var/modified)
+/datum/seed/proc/diverge(modified)
 
 	if(immutable > 0) return
 
@@ -686,8 +665,8 @@ proc/populate_seed_list()
 	name = "chili"
 	seed_name = "chili"
 	display_name = "chili plants"
-	products = list(/obj/item/reagent_container/food/snacks/grown/chili)
-	chems = list("capsaicin" = list(3,5), "nutriment" = list(1,25))
+	products = list(/obj/item/reagent_containers/food/snacks/grown/chili)
+	chems = list(/datum/reagent/consumable/capsaicin = list(3,5), /datum/reagent/consumable/nutriment = list(1,25))
 	mutants = list("icechili")
 	packet_icon = "seed-chili"
 	plant_icon = "chili"
@@ -704,8 +683,8 @@ proc/populate_seed_list()
 	seed_name = "ice pepper"
 	display_name = "ice-pepper plants"
 	mutants = null
-	products = list(/obj/item/reagent_container/food/snacks/grown/icepepper)
-	chems = list("frostoil" = list(3,5), "nutriment" = list(1,50))
+	products = list(/obj/item/reagent_containers/food/snacks/grown/icepepper)
+	chems = list(/datum/reagent/consumable/frostoil = list(3,5), /datum/reagent/consumable/nutriment = list(1,50))
 	packet_icon = "seed-icepepper"
 	plant_icon = "chiliice"
 
@@ -717,12 +696,12 @@ proc/populate_seed_list()
 	name = "berries"
 	seed_name = "berry"
 	display_name = "berry bush"
-	products = list(/obj/item/reagent_container/food/snacks/grown/berries)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/berries)
 	mutants = list("glowberries","poisonberries")
 	packet_icon = "seed-berry"
 	plant_icon = "berry"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1,10))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,10))
 
 	lifespan = 20
 	maturation = 5
@@ -734,11 +713,11 @@ proc/populate_seed_list()
 	name = "glowberries"
 	seed_name = "glowberry"
 	display_name = "glowberry bush"
-	products = list(/obj/item/reagent_container/food/snacks/grown/glowberries)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/glowberries)
 	mutants = null
 	packet_icon = "seed-glowberry"
 	plant_icon = "glowberry"
-	chems = list("nutriment" = list(1,10), "uranium" = list(3,5))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,10), /datum/reagent/uranium = list(3,5))
 
 	lifespan = 30
 	maturation = 5
@@ -750,21 +729,21 @@ proc/populate_seed_list()
 	name = "poisonberries"
 	seed_name = "poison berry"
 	display_name = "poison berry bush"
-	products = list(/obj/item/reagent_container/food/snacks/grown/poisonberries)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/poisonberries)
 	mutants = list("deathberries")
 	packet_icon = "seed-poisonberry"
 	plant_icon = "poisonberry"
-	chems = list("nutriment" = list(1), "toxin" = list(3,5))
+	chems = list(/datum/reagent/consumable/nutriment = list(1), /datum/reagent/toxin = list(3,5))
 
 /datum/seed/berry/poison/death
 	name = "deathberries"
 	seed_name = "death berry"
 	display_name = "death berry bush"
 	mutants = null
-	products = list(/obj/item/reagent_container/food/snacks/grown/deathberries)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/deathberries)
 	packet_icon = "seed-deathberry"
 	plant_icon = "deathberry"
-	chems = list("nutriment" = list(1), "toxin" = list(3,3), "lexorin" = list(1,5))
+	chems = list(/datum/reagent/consumable/nutriment = list(1), /datum/reagent/toxin = list(3,3), /datum/reagent/toxin/lexorin = list(1,5))
 
 	yield = 3
 	potency = 50
@@ -779,7 +758,7 @@ proc/populate_seed_list()
 	packet_icon = "seed-nettle"
 	plant_icon = "nettle"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1,50), "sacid" = list(0,1))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,50), /datum/reagent/toxin/acid = list(0,1))
 	lifespan = 30
 	maturation = 6
 	production = 6
@@ -795,7 +774,7 @@ proc/populate_seed_list()
 	mutants = null
 	packet_icon = "seed-deathnettle"
 	plant_icon = "deathnettle"
-	chems = list("nutriment" = list(1,50), "pacid" = list(0,1))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,50), /datum/reagent/toxin/acid/polyacid = list(0,1))
 
 	maturation = 8
 	yield = 2
@@ -805,12 +784,12 @@ proc/populate_seed_list()
 	name = "tomato"
 	seed_name = "tomato"
 	display_name = "tomato plant"
-	products = list(/obj/item/reagent_container/food/snacks/grown/tomato)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/tomato)
 	mutants = list("bluetomato","bloodtomato")
 	packet_icon = "seed-tomato"
 	plant_icon = "tomato"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1,10))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,10))
 
 	lifespan = 25
 	maturation = 8
@@ -822,11 +801,11 @@ proc/populate_seed_list()
 	name = "bloodtomato"
 	seed_name = "blood tomato"
 	display_name = "blood tomato plant"
-	products = list(/obj/item/reagent_container/food/snacks/grown/bloodtomato)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/bloodtomato)
 	mutants = list("killer")
 	packet_icon = "seed-bloodtomato"
 	plant_icon = "bloodtomato"
-	chems = list("nutriment" = list(1,10), "blood" = list(1,5))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,10), /datum/reagent/blood = list(1,5))
 
 	yield = 3
 
@@ -834,7 +813,7 @@ proc/populate_seed_list()
 	name = "killertomato"
 	seed_name = "killer tomato"
 	display_name = "killer tomato plant"
-	products = list(/obj/item/reagent_container/food/snacks/grown/killertomato)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/killertomato)
 	mutants = null
 	packet_icon = "seed-killertomato"
 	plant_icon = "killertomato"
@@ -846,33 +825,33 @@ proc/populate_seed_list()
 	name = "bluetomato"
 	seed_name = "blue tomato"
 	display_name = "blue tomato plant"
-	products = list(/obj/item/reagent_container/food/snacks/grown/bluetomato)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/bluetomato)
 	mutants = list("bluespacetomato")
 	packet_icon = "seed-bluetomato"
 	plant_icon = "bluetomato"
-	chems = list("nutriment" = list(1,20), "lube" = list(1,5))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,20), /datum/reagent/lube = list(1,5))
 
 /datum/seed/tomato/blue/teleport
 	name = "bluespacetomato"
 	seed_name = "bluespace tomato"
 	display_name = "bluespace tomato plant"
-	products = list(/obj/item/reagent_container/food/snacks/grown/bluespacetomato)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/bluespacetomato)
 	mutants = null
 	packet_icon = "seed-bluespacetomato"
 	plant_icon = "bluespacetomato"
-	chems = list("nutriment" = list(1,20), "singulo" = list(1,5))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,20))
 
 //Eggplants/varieties.
 /datum/seed/eggplant
 	name = "eggplant"
 	seed_name = "eggplant"
 	display_name = "eggplants"
-	products = list(/obj/item/reagent_container/food/snacks/grown/eggplant)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/eggplant)
 	mutants = list("realeggplant")
 	packet_icon = "seed-eggplant"
 	plant_icon = "eggplant"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1,10))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,10))
 
 	lifespan = 25
 	maturation = 6
@@ -884,7 +863,7 @@ proc/populate_seed_list()
 	name = "realeggplant"
 	seed_name = "egg-plant"
 	display_name = "egg-plants"
-	products = list(/obj/item/reagent_container/food/snacks/egg)
+	products = list(/obj/item/reagent_containers/food/snacks/egg)
 	mutants = null
 	packet_icon = "seed-eggy"
 	plant_icon = "eggy"
@@ -898,12 +877,12 @@ proc/populate_seed_list()
 	name = "apple"
 	seed_name = "apple"
 	display_name = "apple tree"
-	products = list(/obj/item/reagent_container/food/snacks/grown/apple)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/apple)
 	mutants = list("poisonapple","goldapple")
 	packet_icon = "seed-apple"
 	plant_icon = "apple"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1,10))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,10))
 
 	lifespan = 55
 	maturation = 6
@@ -914,18 +893,18 @@ proc/populate_seed_list()
 /datum/seed/apple/poison
 	name = "poisonapple"
 	mutants = null
-	products = list(/obj/item/reagent_container/food/snacks/grown/apple/poisoned)
-	chems = list("cyanide" = list(1,5))
+	products = list(/obj/item/reagent_containers/food/snacks/grown/apple/poisoned)
+	chems = list(/datum/reagent/toxin/cyanide = list(1,5))
 
 /datum/seed/apple/gold
 	name = "goldapple"
 	seed_name = "golden apple"
 	display_name = "gold apple tree"
-	products = list(/obj/item/reagent_container/food/snacks/grown/goldapple)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/goldapple)
 	mutants = null
 	packet_icon = "seed-goldapple"
 	plant_icon = "goldapple"
-	chems = list("nutriment" = list(1,10), "gold" = list(1,5))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,10), /datum/reagent/gold = list(1,5))
 
 	maturation = 10
 	production = 10
@@ -936,12 +915,12 @@ proc/populate_seed_list()
 	name = "ambrosia"
 	seed_name = "ambrosia vulgaris"
 	display_name = "ambrosia vulgaris"
-	products = list(/obj/item/reagent_container/food/snacks/grown/ambrosiavulgaris)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/ambrosiavulgaris)
 	mutants = list("ambrosiadeus")
 	packet_icon = "seed-ambrosiavulgaris"
 	plant_icon = "ambrosiavulgaris"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1), "space_drugs" = list(1,8), "kelotane" = list(1,8,1), "bicaridine" = list(1,10,1), "toxin" = list(1,10))
+	chems = list(/datum/reagent/consumable/nutriment = list(1), /datum/reagent/space_drugs = list(1,8), /datum/reagent/medicine/kelotane = list(1,8,1), /datum/reagent/medicine/bicaridine = list(1,10,1), /datum/reagent/toxin = list(1,10))
 
 	lifespan = 60
 	maturation = 6
@@ -953,11 +932,11 @@ proc/populate_seed_list()
 	name = "ambrosiadeus"
 	seed_name = "ambrosia deus"
 	display_name = "ambrosia deus"
-	products = list(/obj/item/reagent_container/food/snacks/grown/ambrosiadeus)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/ambrosiadeus)
 	mutants = null
 	packet_icon = "seed-ambrosiadeus"
 	plant_icon = "ambrosiadeus"
-	chems = list("nutriment" = list(1), "bicaridine" = list(1,8), "synaptizine" = list(1,8,1), "hyperzine" = list(1,10,1), "space_drugs" = list(1,10))
+	chems = list(/datum/reagent/consumable/nutriment = list(1), /datum/reagent/medicine/bicaridine = list(1,8), /datum/reagent/medicine/synaptizine = list(1,8,1), /datum/reagent/medicine/hyperzine = list(1,10,1), /datum/reagent/space_drugs = list(1,10))
 
 //Mushrooms/varieties.
 /datum/seed/mushroom
@@ -965,11 +944,11 @@ proc/populate_seed_list()
 	seed_name = "chanterelle"
 	seed_noun = "spores"
 	display_name = "chanterelle mushrooms"
-	products = list(/obj/item/reagent_container/food/snacks/grown/mushroom/chanterelle)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/mushroom/chanterelle)
 	mutants = list("reishi","amanita","plumphelmet")
 	packet_icon = "mycelium-chanter"
 	plant_icon = "chanter"
-	chems = list("nutriment" = list(1,25))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,25))
 
 	lifespan = 35
 	maturation = 7
@@ -995,11 +974,11 @@ proc/populate_seed_list()
 	name = "plumphelmet"
 	seed_name = "plump helmet"
 	display_name = "plump helmet mushrooms"
-	products = list(/obj/item/reagent_container/food/snacks/grown/mushroom/plumphelmet)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/mushroom/plumphelmet)
 	mutants = list("walkingmushroom","towercap")
 	packet_icon = "mycelium-plump"
 	plant_icon = "plump"
-	chems = list("nutriment" = list(2,10))
+	chems = list(/datum/reagent/consumable/nutriment = list(2,10))
 
 	lifespan = 25
 	maturation = 8
@@ -1010,11 +989,11 @@ proc/populate_seed_list()
 	name = "reishi"
 	seed_name = "reishi"
 	display_name = "reishi"
-	products = list(/obj/item/reagent_container/food/snacks/grown/mushroom/reishi)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/mushroom/reishi)
 	mutants = list("libertycap","glowshroom")
 	packet_icon = "mycelium-reishi"
 	plant_icon = "reishi"
-	chems = list("nutriment" = list(1,50), "psilocybin" = list(3,5))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,50), /datum/reagent/consumable/psilocybin = list(3,5))
 
 	maturation = 10
 	production = 5
@@ -1026,11 +1005,11 @@ proc/populate_seed_list()
 	name = "libertycap"
 	seed_name = "liberty cap"
 	display_name = "liberty cap mushrooms"
-	products = list(/obj/item/reagent_container/food/snacks/grown/mushroom/libertycap)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/mushroom/libertycap)
 	mutants = null
 	packet_icon = "mycelium-liberty"
 	plant_icon = "liberty"
-	chems = list("nutriment" = list(1), "stoxin" = list(3,3), "space_drugs" = list(1,25))
+	chems = list(/datum/reagent/consumable/nutriment = list(1), /datum/reagent/toxin/sleeptoxin = list(3,3), /datum/reagent/space_drugs = list(1,25))
 
 	lifespan = 25
 	production = 1
@@ -1041,11 +1020,11 @@ proc/populate_seed_list()
 	name = "amanita"
 	seed_name = "fly amanita"
 	display_name = "fly amanita mushrooms"
-	products = list(/obj/item/reagent_container/food/snacks/grown/mushroom/amanita)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/mushroom/amanita)
 	mutants = list("destroyingangel","plastic")
 	packet_icon = "mycelium-amanita"
 	plant_icon = "amanita"
-	chems = list("nutriment" = list(1), "amatoxin" = list(3,3), "psilocybin" = list(1,25))
+	chems = list(/datum/reagent/consumable/nutriment = list(1), /datum/reagent/toxin/amatoxin = list(3,3), /datum/reagent/consumable/psilocybin = list(1,25))
 
 	lifespan = 50
 	maturation = 10
@@ -1058,10 +1037,10 @@ proc/populate_seed_list()
 	seed_name = "destroying angel"
 	display_name = "destroying angel mushrooms"
 	mutants = null
-	products = list(/obj/item/reagent_container/food/snacks/grown/mushroom/angel)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/mushroom/angel)
 	packet_icon = "mycelium-angel"
 	plant_icon = "angel"
-	chems = list("nutriment" = list(1,50), "amatoxin" = list(13,3), "psilocybin" = list(1,25))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,50), /datum/reagent/toxin/amatoxin = list(13,3), /datum/reagent/consumable/psilocybin = list(1,25))
 
 	maturation = 12
 	yield = 2
@@ -1083,11 +1062,11 @@ proc/populate_seed_list()
 	name = "glowshroom"
 	seed_name = "glowshroom"
 	display_name = "glowshrooms"
-	products = list(/obj/item/reagent_container/food/snacks/grown/mushroom/glowshroom)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/mushroom/glowshroom)
 	mutants = null
 	packet_icon = "mycelium-glowshroom"
 	plant_icon = "glowshroom"
-	chems = list("radium" = list(1,20))
+	chems = list(/datum/reagent/radium = list(1,20))
 
 	lifespan = 120
 	maturation = 15
@@ -1101,11 +1080,11 @@ proc/populate_seed_list()
 	name = "walkingmushroom"
 	seed_name = "walking mushroom"
 	display_name = "walking mushrooms"
-	products = list(/obj/item/reagent_container/food/snacks/grown/mushroom/walkingmushroom)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/mushroom/walkingmushroom)
 	mutants = null
 	packet_icon = "mycelium-walkingmushroom"
 	plant_icon = "walkingmushroom"
-	chems = list("nutriment" = list(2,10))
+	chems = list(/datum/reagent/consumable/nutriment = list(2,10))
 
 	lifespan = 30
 	maturation = 5
@@ -1117,11 +1096,11 @@ proc/populate_seed_list()
 	name = "plastic"
 	seed_name = "plastellium"
 	display_name = "plastellium"
-	products = list(/obj/item/reagent_container/food/snacks/grown/plastellium)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/plastellium)
 	mutants = null
 	packet_icon = "mycelium-plast"
 	plant_icon = "plastellium"
-	chems = list("plasticide" = list(1,10))
+	chems = list(/datum/reagent/toxin/plasticide = list(1,10))
 
 	lifespan = 15
 	maturation = 5
@@ -1134,10 +1113,10 @@ proc/populate_seed_list()
 	name = "harebells"
 	seed_name = "harebell"
 	display_name = "harebells"
-	products = list(/obj/item/reagent_container/food/snacks/grown/harebell)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/harebell)
 	packet_icon = "seed-harebell"
 	plant_icon = "harebell"
-	chems = list("nutriment" = list(1,20))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,20))
 
 	lifespan = 100
 	maturation = 7
@@ -1150,9 +1129,9 @@ proc/populate_seed_list()
 	seed_name = "poppy"
 	display_name = "poppies"
 	packet_icon = "seed-poppy"
-	products = list(/obj/item/reagent_container/food/snacks/grown/poppy)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/poppy)
 	plant_icon = "poppy"
-	chems = list("nutriment" = list(1,20), "bicaridine" = list(1,10))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,20), /datum/reagent/medicine/bicaridine = list(1,10))
 
 	lifespan = 25
 	potency = 20
@@ -1180,10 +1159,10 @@ proc/populate_seed_list()
 	display_name = "grapevines"
 	packet_icon = "seed-grapes"
 	mutants = list("greengrapes")
-	products = list(/obj/item/reagent_container/food/snacks/grown/grapes)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/grapes)
 	plant_icon = "grape"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1,10), "sugar" = list(1,5))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,10), /datum/reagent/consumable/sugar = list(1,5))
 
 	lifespan = 50
 	maturation = 3
@@ -1196,10 +1175,10 @@ proc/populate_seed_list()
 	seed_name = "green grape"
 	display_name = "green grapevines"
 	packet_icon = "seed-greengrapes"
-	products = list(/obj/item/reagent_container/food/snacks/grown/greengrapes)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/greengrapes)
 	mutants = null
 	plant_icon = "greengrape"
-	chems = list("nutriment" = list(1,10), "kelotane" = list(3,5))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,10), /datum/reagent/medicine/kelotane = list(3,5))
 
 //Everything else
 /datum/seed/peanuts
@@ -1207,10 +1186,10 @@ proc/populate_seed_list()
 	seed_name = "peanut"
 	display_name = "peanut vines"
 	packet_icon = "seed-peanut"
-	products = list(/obj/item/reagent_container/food/snacks/grown/peanut)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/peanut)
 	plant_icon = "peanut"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1,10))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,10))
 
 	lifespan = 55
 	maturation = 6
@@ -1223,10 +1202,10 @@ proc/populate_seed_list()
 	seed_name = "cabbage"
 	display_name = "cabbages"
 	packet_icon = "seed-cabbage"
-	products = list(/obj/item/reagent_container/food/snacks/grown/cabbage)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/cabbage)
 	plant_icon = "cabbage"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1,10))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,10))
 
 	lifespan = 50
 	maturation = 3
@@ -1242,7 +1221,7 @@ proc/populate_seed_list()
 	packet_icon = "seed-shand"
 	products = list(/obj/item/stack/medical/bruise_pack/tajaran)
 	plant_icon = "shand"
-	chems = list("bicaridine" = list(0,10))
+	chems = list(/datum/reagent/medicine/bicaridine = list(0,10))
 
 	lifespan = 50
 	maturation = 3
@@ -1258,7 +1237,7 @@ proc/populate_seed_list()
 	packet_icon = "seed-mtear"
 	products = list(/obj/item/stack/medical/ointment/tajaran)
 	plant_icon = "mtear"
-	chems = list("honey" = list(1,10), "kelotane" = list(3,5))
+	chems = list(/datum/reagent/consumable/honey = list(1,10), /datum/reagent/medicine/kelotane = list(3,5))
 
 	lifespan = 50
 	maturation = 3
@@ -1272,10 +1251,10 @@ proc/populate_seed_list()
 	seed_name = "banana"
 	display_name = "banana tree"
 	packet_icon = "seed-banana"
-	products = list(/obj/item/reagent_container/food/snacks/grown/banana)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/banana)
 	plant_icon = "banana"
 	harvest_repeat = 1
-	chems = list("banana" = list(1,10))
+	chems = list(/datum/reagent/consumable/drink/banana = list(1,10))
 
 	lifespan = 50
 	maturation = 6
@@ -1287,9 +1266,9 @@ proc/populate_seed_list()
 	seed_name = "corn"
 	display_name = "ears of corn"
 	packet_icon = "seed-corn"
-	products = list(/obj/item/reagent_container/food/snacks/grown/corn)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/corn)
 	plant_icon = "corn"
-	chems = list("nutriment" = list(1,10))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,10))
 
 	lifespan = 25
 	maturation = 8
@@ -1303,9 +1282,9 @@ proc/populate_seed_list()
 	seed_name = "potato"
 	display_name = "potatoes"
 	packet_icon = "seed-potato"
-	products = list(/obj/item/reagent_container/food/snacks/grown/potato)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/potato)
 	plant_icon = "potato"
-	chems = list("nutriment" = list(1,10))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,10))
 
 	lifespan = 30
 	maturation = 10
@@ -1319,10 +1298,10 @@ proc/populate_seed_list()
 	seed_name = "soybean"
 	display_name = "soybeans"
 	packet_icon = "seed-soybean"
-	products = list(/obj/item/reagent_container/food/snacks/grown/soybeans)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/soybeans)
 	plant_icon = "soybean"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1,20))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,20))
 
 	lifespan = 25
 	maturation = 4
@@ -1335,9 +1314,9 @@ proc/populate_seed_list()
 	seed_name = "wheat"
 	display_name = "wheat stalks"
 	packet_icon = "seed-wheat"
-	products = list(/obj/item/reagent_container/food/snacks/grown/wheat)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/wheat)
 	plant_icon = "wheat"
-	chems = list("nutriment" = list(1,25))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,25))
 
 	lifespan = 25
 	maturation = 6
@@ -1350,9 +1329,9 @@ proc/populate_seed_list()
 	seed_name = "rice"
 	display_name = "rice stalks"
 	packet_icon = "seed-rice"
-	products = list(/obj/item/reagent_container/food/snacks/grown/ricestalk)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/ricestalk)
 	plant_icon = "rice"
-	chems = list("nutriment" = list(1,25))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,25))
 
 	lifespan = 25
 	maturation = 6
@@ -1366,9 +1345,9 @@ proc/populate_seed_list()
 	seed_name = "carrot"
 	display_name = "carrots"
 	packet_icon = "seed-carrot"
-	products = list(/obj/item/reagent_container/food/snacks/grown/carrot)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/carrot)
 	plant_icon = "carrot"
-	chems = list("nutriment" = list(1,20), "imidazoline" = list(3,5))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,20), /datum/reagent/medicine/imidazoline = list(3,5))
 
 	lifespan = 25
 	maturation = 10
@@ -1397,9 +1376,9 @@ proc/populate_seed_list()
 	seed_name = "white-beet"
 	display_name = "white-beets"
 	packet_icon = "seed-whitebeet"
-	products = list(/obj/item/reagent_container/food/snacks/grown/whitebeet)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/whitebeet)
 	plant_icon = "whitebeet"
-	chems = list("nutriment" = list(0,20), "sugar" = list(1,5))
+	chems = list(/datum/reagent/consumable/nutriment = list(0,20), /datum/reagent/consumable/sugar = list(1,5))
 
 	lifespan = 60
 	maturation = 6
@@ -1412,10 +1391,10 @@ proc/populate_seed_list()
 	seed_name = "sugarcane"
 	display_name = "sugarcanes"
 	packet_icon = "seed-sugarcane"
-	products = list(/obj/item/reagent_container/food/snacks/grown/sugarcane)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/sugarcane)
 	plant_icon = "sugarcane"
 	harvest_repeat = 1
-	chems = list("sugar" = list(4,5))
+	chems = list(/datum/reagent/consumable/sugar = list(4,5))
 
 	lifespan = 60
 	maturation = 3
@@ -1429,10 +1408,10 @@ proc/populate_seed_list()
 	seed_name = "watermelon"
 	display_name = "watermelon vine"
 	packet_icon = "seed-watermelon"
-	products = list(/obj/item/reagent_container/food/snacks/grown/watermelon)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/watermelon)
 	plant_icon = "watermelon"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1,6))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,6))
 
 	lifespan = 50
 	maturation = 6
@@ -1445,10 +1424,10 @@ proc/populate_seed_list()
 	seed_name = "pumpkin"
 	display_name = "pumpkin vine"
 	packet_icon = "seed-pumpkin"
-	products = list(/obj/item/reagent_container/food/snacks/grown/pumpkin)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/pumpkin)
 	plant_icon = "pumpkin"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1,6))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,6))
 
 	lifespan = 50
 	maturation = 6
@@ -1462,10 +1441,10 @@ proc/populate_seed_list()
 	seed_name = "lime"
 	display_name = "lime trees"
 	packet_icon = "seed-lime"
-	products = list(/obj/item/reagent_container/food/snacks/grown/lime)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/lime)
 	plant_icon = "lime"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1,20))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,20))
 
 	lifespan = 55
 	maturation = 6
@@ -1478,10 +1457,10 @@ proc/populate_seed_list()
 	seed_name = "lemon"
 	display_name = "lemon trees"
 	packet_icon = "seed-lemon"
-	products = list(/obj/item/reagent_container/food/snacks/grown/lemon)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/lemon)
 	plant_icon = "lemon"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1,20))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,20))
 
 	lifespan = 55
 	maturation = 6
@@ -1494,10 +1473,10 @@ proc/populate_seed_list()
 	seed_name = "orange"
 	display_name = "orange trees"
 	packet_icon = "seed-orange"
-	products = list(/obj/item/reagent_container/food/snacks/grown/orange)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/orange)
 	plant_icon = "orange"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1,20))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,20))
 
 	lifespan = 60
 	maturation = 6
@@ -1525,10 +1504,10 @@ proc/populate_seed_list()
 	seed_name = "cacao"
 	display_name = "cacao tree"
 	packet_icon = "seed-cocoapod"
-	products = list(/obj/item/reagent_container/food/snacks/grown/cocoapod)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/cocoapod)
 	plant_icon = "cocoapod"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1,10), "coco" = list(4,5))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,10), /datum/reagent/consumable/coco = list(4,5))
 
 	lifespan = 20
 	maturation = 5
@@ -1543,10 +1522,10 @@ proc/populate_seed_list()
 	seed_noun = "pits"
 	display_name = "cherry tree"
 	packet_icon = "seed-cherry"
-	products = list(/obj/item/reagent_container/food/snacks/grown/cherries)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/cherries)
 	plant_icon = "cherry"
 	harvest_repeat = 1
-	chems = list("nutriment" = list(1,15), "sugar" = list(1,15))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,15), /datum/reagent/consumable/sugar = list(1,15))
 
 	lifespan = 35
 	maturation = 5
@@ -1560,10 +1539,10 @@ proc/populate_seed_list()
 	seed_name = "kudzu"
 	display_name = "kudzu vines"
 	packet_icon = "seed-kudzu"
-	products = list(/obj/item/reagent_container/food/snacks/grown/kudzupod)
+	products = list(/obj/item/reagent_containers/food/snacks/grown/kudzupod)
 	plant_icon = "kudzu"
 	product_colour = "#96D278"
-	chems = list("nutriment" = list(1,50), "anti_toxin" = list(1,25))
+	chems = list(/datum/reagent/consumable/nutriment = list(1,50), /datum/reagent/medicine/dylovene = list(1,25))
 
 	lifespan = 20
 	maturation = 6

@@ -6,7 +6,6 @@
 /area/sulaco/bridge
 	name = "Sulaco Bridge"
 	icon_state = "bridge"
-	music = "signal"
 
 /area/sulaco/bridge/quarters
 	name = "Sulaco Officer's Quarters"
@@ -73,8 +72,7 @@
 	name = "Sulaco Solar Array"
 	requires_power = 1
 	always_unpowered = 1
-	luminosity = 1
-	lighting_use_dynamic = 0
+	dynamic_lighting = DYNAMIC_LIGHTING_DISABLED
 
 /area/sulaco/solar/south
 	icon_state = "panelsA"
@@ -105,7 +103,6 @@
 /area/sulaco/briefing
 	name = "Sulaco Briefing Room"
 	icon_state = "law"
-	music = null
 
 /area/sulaco/cryosleep
 	name = "Sulaco Cryogenic Storage"
@@ -126,6 +123,9 @@
 /area/sulaco/cargo/office
 	name = "Sulaco Cargo Office"
 	icon_state = "quartoffice"
+
+/area/sulaco/supply/station
+	name = "Sulaco Supply Station"
 
 /area/sulaco/maintenance
 	name = "Sulaco Maintenance"

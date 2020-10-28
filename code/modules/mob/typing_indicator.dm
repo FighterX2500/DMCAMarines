@@ -1,85 +1,49 @@
-#define TYPING_INDICATOR_LIFETIME 30 * 10	//grace period after which typing indicator disappears regardless of text in chatbar
+/mob/proc/add_typing_indicator(emoting)
+	if(stat != CONSCIOUS || !client.prefs.show_typing || (status_flags & INCORPOREAL))
+		return
 
-mob/var/hud_typing = 0 //set when typing in an input window instead of chatline
-mob/var/typing
-mob/var/last_typed
-mob/var/last_typed_time
+	if(typing_indicator)
+		remove_typing_indicator(typing_indicator)
 
-var/global/image/typing_indicator
+	if(emoting)
+		typing_indicator = image('icons/mob/talk.dmi', src, "emoting")
+	else
+		typing_indicator = image('icons/mob/talk.dmi', src, "typing")
 
-/mob/proc/set_typing_indicator(var/state)
+	add_emote_overlay(typing_indicator, remove_delay = NONE)
 
+
+/mob/proc/remove_typing_indicator()
 	if(!typing_indicator)
-		typing_indicator = image('icons/mob/talk.dmi',null,"typing")
+		return
 
-	if(client)
-		if(client.prefs.toggles_chat & SHOW_TYPING)
-			overlays -= typing_indicator
-		else
-			if(state)
-				if(!typing)
-					if(stat == CONSCIOUS) overlays += typing_indicator
-					typing = 1
-			else
-				if(typing)
-					overlays -= typing_indicator
-					typing = 0
-			return state
+	remove_emote_overlay(typing_indicator)
+	QDEL_NULL(typing_indicator)
+
 
 /mob/verb/say_wrapper()
 	set name = ".Say"
-	set hidden = 1
+	set hidden = TRUE
 
-	set_typing_indicator(1)
-	hud_typing = 1
-	var/message = input("","say (text)") as text
-	hud_typing = 0
-	set_typing_indicator(0)
-	if(message)
-		say_verb(message)
+	add_typing_indicator()
+	var/message = input("", "Say") as text
+	remove_typing_indicator()
+
+	if(!message)
+		return
+
+	say_verb(message)
+
 
 /mob/verb/me_wrapper()
 	set name = ".Me"
-	set hidden = 1
+	set hidden = TRUE
 
-	set_typing_indicator(1)
-	hud_typing = 1
-	var/message = input("","me (text)") as text
-	hud_typing = 0
-	set_typing_indicator(0)
-	if(message)
-		me_verb(message)
+	add_typing_indicator(TRUE)
+	var/message = input("", "Me \"text\"") as null|text
+	remove_typing_indicator()
 
-/mob/proc/handle_typing_indicator()
-	if(client)
-		if(!(client.prefs.toggles_chat & SHOW_TYPING) && !hud_typing)
-			var/temp = winget(client, "input", "text")
+	if(!message)
+		return
 
-			if (temp != last_typed)
-				last_typed = temp
-				last_typed_time = world.time
-
-			if (world.time > last_typed_time + TYPING_INDICATOR_LIFETIME)
-				set_typing_indicator(0)
-				return
-			if(length(temp) > 5 && findtext(temp, "Say \"", 1, 7))
-				set_typing_indicator(1)
-			else if(length(temp) > 3 && findtext(temp, "Me ", 1, 5))
-				set_typing_indicator(1)
-
-			else
-				set_typing_indicator(0)
-
-/client/verb/typing_indicator()
-	set name = "Show/Hide Typing Indicator"
-	set category = "Preferences"
-	set desc = "Toggles showing an indicator when you are typing emote or say message."
-	prefs.toggles_chat ^= SHOW_TYPING
-	prefs.save_preferences()
-	to_chat(src, "You will [(prefs.toggles_chat & SHOW_TYPING) ? "no longer" : "now"] display a typing indicator.")
-
-	// Clear out any existing typing indicator.
-	if(prefs.toggles_chat & SHOW_TYPING)
-		if(istype(mob)) mob.set_typing_indicator(0)
-
-	feedback_add_details("admin_verb","TID") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	me_verb(message)

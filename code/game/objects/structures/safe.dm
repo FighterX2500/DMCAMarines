@@ -10,26 +10,24 @@ FLOOR SAFES
 	name = "Secure Safe Combination"
 	var/obj/structure/safe/safe = null
 
-/obj/item/paper/safe_key/New()
-	..()
-	spawn(10)
-		for(var/obj/structure/safe/safe in loc)
-			if(safe)
-				info = "This looks like a handwritten page with two numbers on it: \n\n<b>[safe.tumbler_1_open]|[safe.tumbler_2_open]</b>."
-				info_links = info
-				icon_state = "paper_words"
-				break
+/obj/item/paper/safe_key/Initialize()
+	. = ..()
+	for(var/obj/structure/safe/safe in loc)
+		if(safe)
+			info = "This looks like a handwritten page with two numbers on it: \n\n<b>[safe.tumbler_1_open]|[safe.tumbler_2_open]</b>."
+			info_links = info
+			icon_state = "paper_words"
+			break
 
 /obj/structure/safe
 	name = "safe"
 	desc = "A huge chunk of metal with a dial embedded in it. Fine print on the dial reads \"Scarborough Arms - 2 tumbler safe, guaranteed thermite resistant, explosion resistant, and assistant resistant.\""
 	icon = 'icons/obj/structures/structures.dmi'
 	icon_state = "safe"
-	anchored = 1
-	density = 1
+	anchored = TRUE
+	density = TRUE
 	layer = BELOW_OBJ_LAYER
-	unacidable = 1
-	explosion_resistance = 500
+	resistance_flags = UNACIDABLE|INDESTRUCTIBLE
 	var/spawnkey = 1 //Spawn safe code on top of it?
 	var/open = 0		//is the safe open?
 	var/tumbler_1_pos	//the tumbler position- from 0 to 72
@@ -40,20 +38,13 @@ FLOOR SAFES
 	var/space = 0		//the combined w_class of everything in the safe
 	var/maxspace = 24	//the maximum combined w_class of stuff in the safe
 
-
-/obj/structure/safe/New()
-	..()
+/obj/structure/safe/Initialize()
+	. = ..()
 	tumbler_1_pos = 0
 	tumbler_1_open = (rand(0,10) * 5)
 
 	tumbler_2_pos = 0
 	tumbler_2_open = (rand(0,10) * 5)
-
-	spawn(5)
-		if(loc && spawnkey)
-			new /obj/item/paper/safe_key(loc) //Spawn the key on top of the safe.
-
-/obj/structure/safe/initialize()
 	for(var/obj/item/I in loc)
 		if(istype(I,/obj/item/paper/safe_key))
 			continue
@@ -62,6 +53,10 @@ FLOOR SAFES
 		if(I.w_class + space <= maxspace)
 			space += I.w_class
 			I.loc = src
+
+	// do this after swallowing items for obvious reasons
+	if(loc && spawnkey)
+		new /obj/item/paper/safe_key(loc) //Spawn the key on top of the safe.
 
 
 /obj/structure/safe/proc/check_unlocked(mob/user as mob, canhear)
@@ -107,8 +102,11 @@ FLOOR SAFES
 		icon_state = initial(icon_state)
 
 
-/obj/structure/safe/attack_hand(mob/user as mob)
-	user.set_interaction(src)
+/obj/structure/safe/interact(mob/user)
+	. = ..()
+	if(.)
+		return
+
 	var/dat = "<center>"
 	dat += "<a href='?src=\ref[src];open=1'>[open ? "Close" : "Open"] [src]</a><br>"
 	dat += "Dial 1: <a href='?src=\ref[src];decrement=1'>-</a> [tumbler_1_pos] <a href='?src=\ref[src];increment=1'>+</a><br>"
@@ -119,10 +117,16 @@ FLOOR SAFES
 			var/obj/item/P = contents[i]
 			dat += "<tr><td><a href='?src=\ref[src];retrieve=\ref[P]'>[P.name]</a></td></tr>"
 		dat += "</table></center>"
-	user << browse("<html><head><title>[name]</title></head><body>[dat]</body></html>", "window=safe;size=350x300")
-	onclose(user, "safe")
+
+	var/datum/browser/popup = new(user, "safe", "<div align='center'>[src]</div>", 350, 300)
+	popup.set_content(dat)
+	popup.open()
+
 
 /obj/structure/safe/Topic(href, href_list)
+	. = ..()
+	if(.)
+		return
 	if(!ishuman(usr))	return
 	var/mob/living/carbon/human/user = usr
 
@@ -163,8 +167,6 @@ FLOOR SAFES
 		return
 
 	if(href_list["retrieve"])
-		user << browse("", "window=safe") // Close the menu
-
 		var/obj/item/P = locate(href_list["retrieve"]) in src
 		if(open)
 			if(P && in_range(src, user))
@@ -173,39 +175,44 @@ FLOOR SAFES
 				updateUsrDialog()
 
 
-/obj/structure/safe/attackby(obj/item/I as obj, mob/user as mob)
-	if(open)
-		if(I.w_class + space <= maxspace)
-			space += I.w_class
-			if(user.drop_inv_item_to_loc(I, src))
-				to_chat(user, "<span class='notice'>You put [I] in [src].</span>")
-			updateUsrDialog()
-			return
-		else
-			to_chat(user, "<span class='notice'>[I] won't fit in [src].</span>")
-			return
-	else
-		if(istype(I, /obj/item/clothing/tie/stethoscope))
-			to_chat(user, "Hold [I] in one of your hands while you manipulate the dial.")
-			return
+/obj/structure/safe/attackby(obj/item/I, mob/user, params)
+	. = ..()
 
-obj/structure/safe/ex_act(severity)
-	return
+	if(!open)
+		return
+
+	else if(istype(I, /obj/item/clothing/tie/stethoscope))
+		to_chat(user, "Hold [I] in one of your hands while you manipulate the dial.")
+
+	else if(I.w_class + space <= maxspace)
+		space += I.w_class
+		if(user.transferItemToLoc(I, src))
+			to_chat(user, "<span class='notice'>You put [I] in [src].</span>")
+		updateUsrDialog()
+
+	else
+		to_chat(user, "<span class='notice'>[I] won't fit in [src].</span>")
+
 
 //FLOOR SAFES
 /obj/structure/safe/floor
 	name = "floor safe"
 	icon_state = "floorsafe"
-	density = 0
+	density = FALSE
 	level = 1	//underfloor
 	layer = UNDERFLOOR_OBJ_LAYER
 
 
-/obj/structure/safe/floor/initialize()
-	..()
+/obj/structure/safe/floor/Initialize()
+	. = ..()
 	var/turf/T = loc
 	hide(T.intact_tile)
 
 
-/obj/structure/safe/floor/hide(var/intact)
-	invisibility = intact ? 101 : 0
+/obj/structure/safe/floor/hide(intact)
+	invisibility = intact ? INVISIBILITY_MAXIMUM : 0
+
+/obj/structure/safe/floor/lvcolony
+	name = "safe"
+	spawnkey = FALSE
+	pixel_x = 30

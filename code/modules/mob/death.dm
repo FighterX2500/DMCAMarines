@@ -1,17 +1,16 @@
 //This is the proc for gibbing a mob. Cannot gib ghosts.
 //added different sort of gibs and animations. N
 /mob/proc/gib()
-	death(1)
 	gib_animation()
 	spawn_gibs()
-	cdel(src)
+	death(TRUE)
 
 
 /mob/proc/gib_animation()
 	return
 
 /mob/proc/spawn_gibs()
-	hgibs(loc, viruses, dna)
+	hgibs(loc)
 
 
 
@@ -21,10 +20,9 @@
 //Originally created for wizard disintegrate. I've removed the virus code since it's irrelevant here.
 //Dusting robots does not eject the MMI, so it's a bit more powerful than gib() /N
 /mob/proc/dust()
-	death(1)
 	dust_animation()
 	spawn_dust_remains()
-	cdel(src)
+	death(TRUE)
 
 
 /mob/proc/spawn_dust_remains()
@@ -35,26 +33,28 @@
 
 
 
-/mob/proc/death(gibbed,deathmessage="seizes up and falls limp...")
-
+/mob/proc/death(gibbing, deathmessage = "seizes up and falls limp...", silent)
 	if(stat == DEAD)
-		return 0
+		if(gibbing)
+			qdel(src)
+		return
 
-	if(!gibbed)
-		src.visible_message("<b>\The [src.name]</b> [deathmessage]")
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MOB_DEATH, src)
+	SEND_SIGNAL(src, COMSIG_MOB_DEATH, gibbing)
+	log_combat(src, src, "[deathmessage]")
 
-	stat = DEAD
+	if(deathmessage && !silent && !gibbing)
+		visible_message("<b>\The [name]</b> [deathmessage]")
 
-	update_canmove()
+	set_stat(DEAD)
 
-	dizziness = 0
-	jitteriness = 0
+	if(!QDELETED(src) && gibbing)
+		qdel(src)
 
-	if(client)
-		client.change_view(world.view) //just so we never get stuck with a large view somehow
 
-	if(client && client.ambience_playing)
-		src << sound(null, repeat = 0, wait = 0, channel = 1)
+/mob/proc/on_death()
+	SHOULD_CALL_PARENT(TRUE) // no exceptions
+	client?.change_view(WORLD_VIEW) //just so we never get stuck with a large view somehow
 
 	hide_fullscreens()
 
@@ -67,18 +67,20 @@
 		hud_used.healths.icon_state = "health7"
 
 	timeofdeath = world.time
-	if(mind) mind.store_memory("Time of death: [worldtime2text()]", 0)
-	living_mob_list -= src
-	dead_mob_list |= src
+	if(mind)
+		mind.store_memory("Time of death: [worldtime2text()]", 0)
+		if(mind.active && is_gameplay_level(z))
+			var/turf/T = get_turf(src)
+			deadchat_broadcast(" has died at <b>[get_area_name(T)]</b>.", "<b>[mind.name]</b>", follow_target = src, turf_target = T, message_type = DEADCHAT_DEATHRATTLE)
 
+	GLOB.dead_mob_list |= src
+	GLOB.offered_mob_list -= src
+
+	med_pain_set_perceived_health()
 	med_hud_set_health()
 	med_hud_set_status()
 
 	update_icons()
 
-//This is an expensive proc, let's not fire it on EVERY death. It already gets checked in gamemodes.
-//	if(ticker && ticker.mode)
-//		ticker.mode.check_win()
-
-
-	return 1
+	if(SSticker.HasRoundStarted())
+		SSblackbox.ReportDeath(src)
