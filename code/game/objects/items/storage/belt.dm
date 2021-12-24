@@ -651,6 +651,25 @@
 	new /obj/item/ammo_magazine/revolver/mateba(src)
 	new_gun.on_enter_storage(src)
 
+/obj/item/storage/belt/gun/kt42
+	name = "Type 46 pistol holster rig"
+	desc = "A modification of the standard UPP pouch rig to carry a single KT-42 automag. It also contains side pouches that can store automag magazines."
+	icon_state = "korovin_holster"
+	item_state = "korovin_holster"
+	can_hold = list(
+		"/obj/item/weapon/gun/pistol/kt42",
+		"/obj/item/ammo_magazine/pistol/automatic"
+		)
+
+/obj/item/storage/belt/gun/kt42/standard/New()
+	..()
+	var/obj/item/weapon/gun/new_gun = new /obj/item/weapon/gun/pistol/kt42(src)
+	new /obj/item/ammo_magazine/pistol/automatic(src)
+	new /obj/item/ammo_magazine/pistol/automatic(src)
+	new /obj/item/ammo_magazine/pistol/automatic(src)
+	new /obj/item/ammo_magazine/pistol/automatic(src)
+	new_gun.on_enter_storage(src)
+
 /obj/item/storage/belt/gun/korovin
 	name = "Type 41 pistol holster rig"
 	desc = "A modification of the standard UPP pouch rig to carry a single Korovin PK-9 pistol. It also contains side pouches that can store .22 magazines, either hollowpoints or tranquilizers."

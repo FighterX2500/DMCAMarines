@@ -13,8 +13,7 @@
 					/datum/job/marine/leader/equipped,
 					/datum/job/civilian/doctor,
 					/datum/job/command/commander,
-					/datum/job/logistics/tech/maint,
-					/datum/job/command/police,
+					/datum/job/logistics/engineering,
 					/datum/job/civilian/synthetic
 					)
 

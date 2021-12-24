@@ -28,7 +28,7 @@
 	flag = ROLE_MARINE_LEADER
 	total_positions = 2
 	spawn_positions = 2
-	supervisors = "the acting commander"
+	supervisors = "the acting marshal"
 	access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_LEADER, ACCESS_MARINE_DROPSHIP)
 	minimal_access = list(ACCESS_IFF_MARINE, ACCESS_MARINE_PREP, ACCESS_MARINE_LEADER, ACCESS_MARINE_DROPSHIP)
 	minimal_player_age = 7

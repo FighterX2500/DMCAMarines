@@ -10,7 +10,7 @@
 	department_flag = ROLEGROUP_MARINE_SQUAD_MARINES
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the acting commander"
+	supervisors = "the acting marshal"
 	selection_color = "#FDD24C"
 	access = list(ACCESS_IFF_MARINE)
 	minimal_access = list(ACCESS_IFF_MARINE)

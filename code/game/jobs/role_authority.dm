@@ -37,7 +37,6 @@ var/global/datum/authority/branch/role/RoleAuthority
 							/datum/job/command,
 							/datum/job/civilian,
 							/datum/job/logistics,
-							/datum/job/logistics/tech,
 							/datum/job/marine,
 							/datum/job/pmc/elite_responder)
 	var/list/squads_all = subtypesof(/datum/squad)
