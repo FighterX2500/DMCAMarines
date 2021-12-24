@@ -53,6 +53,42 @@
 		if(!M.anchored)
 			M.throw_at(throw_target, 2, 3, user)
 
+/obj/item/weapon/twohanded/hammer/upp
+	name = "K96 ''Kolotushka'' hammer"
+	desc = "RIP AND TEAR."
+	icon_state = "sledgehammer"
+	item_state = "sledgehammer"
+	force = 20
+	flags_item = TWOHANDED
+	force_wielded = 35
+	w_class = 4
+	sharp = IS_SHARP_ITEM_BIG
+	flags_equip_slot = SLOT_WAIST|SLOT_BACK
+
+/obj/item/weapon/twohanded/hammer/upp/attack(mob/M, mob/user)
+    ..()
+    if(flags_item & WIELDED && prob(40))
+        M.KnockDown(6)
+
+/obj/item/weapon/twohanded/hammer/upp/afterattack(atom/A as mob|obj, mob/user, proximity)
+	if(get_dist(A,user) > 1)
+		return
+
+	var/atom/throw_target = get_edge_target_turf(A, get_dir(user, A))
+	if(istype(A, /mob/living))
+		var/mob/living/AM = A
+		AM.throw_at(throw_target, 4, 2, user)
+
+	for(var/mob/living/M in range(A,1))
+		if(M == user)
+			continue
+
+		if(M == A)
+			continue
+
+		if(!M.anchored)
+			M.throw_at(throw_target, 2, 3, user)
+
 /obj/item/weapon/shield/montage/marine
 	name = "N30-2 standard defensive shield"
 	desc = "A heavy shield adept at blocking blunt or sharp objects from connecting with the shield wielder."

@@ -663,4 +663,81 @@
 	. = ..()
 	marine_vendors.Remove(src)
 
+/obj/machinery/vending/upp_uniform_supply
+	name = "H-OurTech surplus uniform vendor"
+	desc = "A automated weapon rack hooked up to a colossal storage of uniforms"
+	icon_state = "uniform_marine"
+	icon_vend = "uniform_marine_vend"
+	icon_deny = "uniform_marine"
+	req_access = null
+	req_access_txt = "0"
+	req_one_access = null
+	req_one_access_txt = "9;2;21"
+	var/squad_tag = ""
 
+	product_ads = "If it moves, it's hostile!;How many enemies have you killed today?;Shoot first, perform autopsy later!;Your ammo is right here.;Guns!;Die, scumbag!;Don't shoot me bro!;Shoot them, bro.;Why not have a donut?"
+	products = list(
+					/obj/item/storage/backpack/marine = 10,
+					/obj/item/storage/backpack/marine/satchel/upp = 10,
+					/obj/item/storage/belt/marine/upp = 10,
+					/obj/item/storage/belt/shotgun = 10,
+					/obj/item/clothing/shoes/marine = 20,
+					/obj/item/clothing/under/marine/veteran/UPP = 20,
+					/obj/item/clothing/suit/storage/faction/UPP = 20,
+					/obj/item/clothing/head/helmet/UPP = 20,
+					/obj/item/clothing/head/ushanka = 10,
+					/obj/item/clothing/mask/rebreather/scarf = 10,
+					)
+
+	prices = list()
+
+/obj/machinery/vending/upp_uniform_supply/Dispose()
+	. = ..()
+	marine_vendors.Remove(src)
+
+
+/obj/machinery/vending/marine/upp
+	name = "H-OurTech Automated Weapons rack"
+	desc = "A automated weapon rack hooked up to a colossal storage of standard-issue weapons."
+	icon_state = "armory"
+	icon_vend = "armory-vend"
+	icon_deny = "armory"
+	req_access = null
+	req_access_txt = "0"
+	req_one_access = null
+	req_one_access_txt = "9;2;21"
+	wrenchable = FALSE
+	tokensupport = TOKEN_MARINE
+
+	product_ads = "If it moves, it's hostile!;How many enemies have you killed today?;Shoot first, perform autopsy later!;Your ammo is right here.;Guns!;Die, scumbag!;Don't shoot me bro!;Shoot them, bro.;Why not have a donut?"
+	products = list(
+					/obj/item/weapon/gun/pistol/c99/upp = 25,
+					/obj/item/weapon/gun/revolver/upp = 5,
+					/obj/item/weapon/gun/smg/ppsh = 20,
+					/obj/item/weapon/gun/rifle/type71 = 25,
+					/obj/item/weapon/gun/shotgun/double = 10,
+					/obj/item/ammo_magazine/pistol/c99 = 30,
+					/obj/item/ammo_magazine/revolver/upp = 25,
+					/obj/item/ammo_magazine/smg/ppsh = 30,
+					/obj/item/ammo_magazine/rifle/type71 = 22,
+					/obj/item/ammo_magazine/shotgun = 8,
+					/obj/item/ammo_magazine/shotgun/buckshot = 8,
+					/obj/item/ammo_magazine/shotgun/flechette = 8,
+					/obj/item/weapon/combat_knife/upp = 20,
+					/obj/item/weapon/throwing_knife = 5,
+					/obj/item/storage/box/lightstick = 5,
+					/obj/item/attachable/flashlight = 10,
+					/obj/item/attachable/bayonet = 10,
+					)
+
+	contraband =   list(/obj/item/ammo_magazine/rifle/ak/incendiary = 2,
+						/obj/item/ammo_magazine/rifle/ak/ap = 2,
+						/obj/item/ammo_magazine/smg/ppsh/extended = 1
+						)
+
+	premium = list(
+					/obj/item/weapon/gun/rifle/ak = 1,
+					/obj/item/ammo_magazine/rifle/ak = 6
+					)
+
+	prices = list()

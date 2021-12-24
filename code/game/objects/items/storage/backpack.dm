@@ -310,6 +310,11 @@
 	storage_slots = null
 	max_storage_space = 15
 
+/obj/item/storage/backpack/marine/satchel/upp
+	name = "RD-60 satchel"
+	desc = "A heavy-duty satchel carried by UPP soldiers and support personnel."
+	icon_state = "securitypack"
+
 
 /obj/item/storage/backpack/marine/satchel/medic
 	name = "USCM medic satchel"
