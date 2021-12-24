@@ -725,7 +725,7 @@
 					/obj/item/ammo_magazine/shotgun/flechette = 8,
 					/obj/item/weapon/combat_knife/upp = 20,
 					/obj/item/weapon/throwing_knife = 5,
-					/obj/item/storage/box/lightstick = 5,
+					/obj/item/storage/box/matches = 10,
 					/obj/item/attachable/flashlight = 10,
 					/obj/item/attachable/bayonet = 10,
 					)
@@ -736,7 +736,7 @@
 						)
 
 	premium = list(
-					/obj/item/weapon/gun/rifle/ak = 1,
+					/obj/item/weapon/gun/rifle/ak = 1, // v budushem dadje 1 mosinki na 6 chelovek stalo mnogo...
 					/obj/item/ammo_magazine/rifle/ak = 6
 					)
 
